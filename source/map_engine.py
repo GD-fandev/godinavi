@@ -1567,7 +1567,7 @@ class MapEngine:
         cached = self.favorite_icon_images.get(key)
         if cached:
             return cached
-        path = RESOURCE_DIR / "assets" / "icons" / "godinavi" / "blank.jpg"
+        path = BUNDLE_DIR / "assets" / "icons" / "godinavi" / "blank.jpg"
         try:
             with Image.open(path) as source:
                 normal = source.convert("RGB").resize((width, height), Image.Resampling.LANCZOS)
@@ -2678,7 +2678,7 @@ class MapEngine:
         panel = tk.Frame(win, bg="#2a2118")
         panel.pack(fill="both", expand=True, padx=2, pady=2)
 
-        image_path = RESOURCE_DIR / "assets" / "map_ocr" / "calibration_example.png"
+        image_path = BUNDLE_DIR / "assets" / "map_ocr" / "calibration_example.png"
         if image_path.exists():
             with Image.open(image_path) as source:
                 self.ocr_guide_image = ImageTk.PhotoImage(source.convert("RGB"))
