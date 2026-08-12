@@ -36,12 +36,14 @@ TEXTS = {
 
 
 class MapUpdateUI:
-    def __init__(self, root, app_dir, language_provider, state_callback=None, installed_callback=None):
+    def __init__(self, root, app_dir, language_provider, state_callback=None, installed_callback=None, target_rect_provider=None):
         self.root = root
         self.app_dir = Path(app_dir)
         self.language_provider = language_provider
         self.state_callback = state_callback
         self.installed_callback = installed_callback
+        self.target_rect_provider = target_rect_provider
+        self.drag_origin = None
         self.state = "idle"
         self.manifest = None
         self.error = ""
@@ -132,15 +134,20 @@ class MapUpdateUI:
             return
         win = tk.Toplevel(self.root)
         self.window = win
-        win.title(TEXTS[self.language()]["title"])
+        win.overrideredirect(True)
         win.configure(bg="#17130f")
         win.resizable(False, False)
         win.transient(self.root)
-        win.protocol("WM_DELETE_WINDOW", self.close)
-        frame = tk.Frame(win, bg="#17130f", padx=14, pady=14, highlightbackground="#d8b15a", highlightthickness=1)
+        frame = tk.Frame(win, bg="#17130f", padx=10, pady=10, highlightbackground="#d8b15a", highlightthickness=1)
         frame.pack(fill="both", expand=True)
-        self.labels["title"] = tk.Label(frame, bg="#2a2118", fg="#e9bd55", anchor="w", padx=12, pady=9, font=("Malgun Gothic", 13, "bold"))
-        self.labels["title"].pack(fill="x", pady=(0, 12))
+        header = tk.Frame(frame, bg="#5a4932")
+        header.pack(fill="x", pady=(0, 12))
+        self.labels["title"] = tk.Label(header, bg="#5a4932", fg="#ffe09a", anchor="w", padx=12, pady=9, font=("Malgun Gothic", 13, "bold"))
+        self.labels["title"].pack(side="left", fill="x", expand=True)
+        tk.Button(header, text="×", command=self.close, bg="#5a4932", fg="#ffffff", activebackground="#6b5537", activeforeground="#ffffff", relief="flat", bd=0, padx=12, font=("Malgun Gothic", 13, "bold")).pack(side="right", fill="y")
+        for widget in (header, self.labels["title"]):
+            widget.bind("<ButtonPress-1>", self._start_drag)
+            widget.bind("<B1-Motion>", self._drag)
         for key in ("current", "latest", "size"):
             row = tk.Frame(frame, bg="#17130f")
             row.pack(fill="x", pady=3)
@@ -159,10 +166,27 @@ class MapUpdateUI:
         self.secondary_button = tk.Button(buttons, command=self.close, relief="flat", bg="#2a2118", fg="#f1e5c7", activebackground="#443422", activeforeground="#ffffff", padx=18, pady=6, font=("Malgun Gothic", 9))
         self.secondary_button.pack(side="right", padx=(0, 7))
         win.update_idletasks()
-        x = max(10, self.root.winfo_rootx() + (self.root.winfo_width() - win.winfo_reqwidth()) // 2)
-        y = max(10, self.root.winfo_rooty() - win.winfo_reqheight() - 12)
-        win.geometry(f"+{x}+{y}")
+        self._center_window()
         self._refresh()
+
+    def _center_window(self):
+        self.window.update_idletasks()
+        width, height = self.window.winfo_reqwidth(), self.window.winfo_reqheight()
+        rect = self.target_rect_provider() if self.target_rect_provider else None
+        if rect:
+            left, top, right, bottom = rect
+            x, y = left + (right - left - width) // 2, top + (bottom - top - height) // 2
+        else:
+            x, y = (self.window.winfo_screenwidth() - width) // 2, (self.window.winfo_screenheight() - height) // 2
+        self.window.geometry(f"+{max(0, x)}+{max(0, y)}")
+
+    def _start_drag(self, event):
+        self.drag_origin = event.x_root, event.y_root, self.window.winfo_x(), self.window.winfo_y()
+
+    def _drag(self, event):
+        if self.drag_origin:
+            sx, sy, wx, wy = self.drag_origin
+            self.window.geometry(f"+{wx + event.x_root - sx}+{wy + event.y_root - sy}")
 
     def close(self):
         if self.window and self.window.winfo_exists():
@@ -172,7 +196,6 @@ class MapUpdateUI:
         if not self.window or not self.window.winfo_exists():
             return
         text = TEXTS[self.language()]
-        self.window.title(text["title"])
         self.labels["title"].configure(text=text["title"])
         for key in ("current", "latest", "size"):
             self.labels[key + "_name"].configure(text=text[key])

@@ -148,6 +148,7 @@ class PrototypeApp:
             lambda: self.map_engine.ui_language if self.map_engine else "EN",
             self._map_update_state_changed,
             self._map_update_installed,
+            lambda: self.client_rect,
         )
         self.app_update_ui = AppUpdateUI(
             self.root,
@@ -155,6 +156,7 @@ class PrototypeApp:
             lambda: self.map_engine.ui_language if self.map_engine else "EN",
             self._app_update_state_changed,
             self.shutdown,
+            lambda: self.client_rect,
         )
         self._start_tray_icon()
         self.root.after(100, self._follow_godius)
@@ -427,7 +429,7 @@ class PrototypeApp:
                 tuple(map_actions),
                 str(ICON_DIR / "map.jpg"),
                 state=lambda: bool(self.map_engine and self.map_engine.minimap_enabled),
-                alert=lambda: "↓" if self.map_update_ui and self.map_update_ui.update_available else "",
+                alert=lambda: "NEW" if self.map_update_ui and self.map_update_ui.update_available else "",
             ),
             DockItem(
                 "portal", "◈", texts["portal"], self.toggle_portal_bar,
@@ -466,7 +468,7 @@ class PrototypeApp:
                 ),
                 str(ICON_DIR / "settings.jpg"),
                 badge=lambda: self.map_engine.ui_language if self.map_engine else "KR",
-                alert=lambda: "↓" if self.app_update_ui and self.app_update_ui.update_available else "",
+                alert=lambda: "NEW" if self.app_update_ui and self.app_update_ui.update_available else "",
             ),
             DockItem(
                 "quit", "🚪", texts["quit"], self.shutdown,

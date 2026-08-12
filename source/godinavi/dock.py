@@ -320,20 +320,21 @@ class OverlayDock:
 
     def _draw_alert_badge(self, image: Image.Image, label: str):
         draw = ImageDraw.Draw(image)
-        size = max(15, round(18 * self.icon_scale))
         right = image.width - max(2, round(3 * self.icon_scale))
         top = max(2, round(3 * self.icon_scale))
-        left = right - size
-        bottom = top + size
         try:
-            font = ImageFont.truetype("arialbd.ttf", max(10, round(12 * self.icon_scale)))
+            font = ImageFont.truetype("arialbd.ttf", max(7, round(8 * self.icon_scale)))
         except OSError:
             font = ImageFont.load_default()
-        draw.ellipse((left, top, right, bottom), fill="#a52d33", outline="#ffd1d1", width=1)
         box = draw.textbbox((0, 0), label, font=font)
-        x = left + (size - (box[2] - box[0])) / 2
-        y = top + (size - (box[3] - box[1])) / 2 - box[1]
-        draw.text((x, y), label, font=font, fill="#ffffff")
+        pad_x = max(3, round(3 * self.icon_scale))
+        pad_y = max(2, round(2 * self.icon_scale))
+        width = box[2] - box[0] + pad_x * 2
+        height = box[3] - box[1] + pad_y * 2
+        left = right - width
+        bottom = top + height
+        draw.rounded_rectangle((left, top, right, bottom), radius=3, fill="#a52d33", outline="#ffd1d1", width=1)
+        draw.text((left + pad_x, top + pad_y - box[1]), label, font=font, fill="#ffffff")
 
     def _invoke_primary(self, item: DockItem):
         item.primary()
