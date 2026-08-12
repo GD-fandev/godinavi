@@ -14,6 +14,7 @@ from pathlib import Path
 import certifi
 
 from app_update_checker import APP_VERSION, extract_patch_notes, fetch_latest_release, is_newer_version
+from .window_attachment import attach_above
 
 
 TEXTS = {
@@ -48,13 +49,14 @@ TEXTS = {
 
 
 class AppUpdateUI:
-    def __init__(self, root, app_dir, language_provider, state_callback=None, shutdown_callback=None, target_rect_provider=None):
+    def __init__(self, root, app_dir, language_provider, state_callback=None, shutdown_callback=None, target_rect_provider=None, owner_hwnd_provider=None):
         self.root = root
         self.app_dir = Path(app_dir)
         self.language_provider = language_provider
         self.state_callback = state_callback
         self.shutdown_callback = shutdown_callback
         self.target_rect_provider = target_rect_provider
+        self.owner_hwnd_provider = owner_hwnd_provider
         self.drag_origin = None
         self.state = "idle"
         self.release = None
@@ -188,7 +190,11 @@ class AppUpdateUI:
 
     def open(self):
         if self.window and self.window.winfo_exists():
-            self.window.deiconify(); self.window.lift(); self._refresh(); return
+            self.window.deiconify()
+            owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
+            if owner: attach_above(self.window, owner)
+            else: self.window.lift()
+            self._refresh(); return
         win = tk.Toplevel(self.root)
         self.window = win
         win.overrideredirect(True)
@@ -245,6 +251,9 @@ class AppUpdateUI:
         else:
             x, y = (self.window.winfo_screenwidth() - width) // 2, (self.window.winfo_screenheight() - height) // 2
         self.window.geometry(f"{width}x{height}+{max(0, x)}+{max(0, y)}")
+        owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
+        if owner:
+            attach_above(self.window, owner, max(0, x), max(0, y))
 
     def _start_drag(self, event):
         self.drag_origin = event.x_root, event.y_root, self.window.winfo_x(), self.window.winfo_y()

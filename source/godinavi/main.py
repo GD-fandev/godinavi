@@ -149,6 +149,7 @@ class PrototypeApp:
             self._map_update_state_changed,
             self._map_update_installed,
             lambda: self.client_rect,
+            lambda: self.target_hwnd,
         )
         self.app_update_ui = AppUpdateUI(
             self.root,
@@ -157,6 +158,7 @@ class PrototypeApp:
             self._app_update_state_changed,
             self.shutdown,
             lambda: self.client_rect,
+            lambda: self.target_hwnd,
         )
         self._start_tray_icon()
         self.root.after(100, self._follow_godius)

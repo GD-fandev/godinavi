@@ -5,6 +5,7 @@ import tkinter as tk
 from pathlib import Path
 
 from map_updater import download_and_install, fetch_manifest, load_local_version, update_is_available
+from .window_attachment import attach_above
 
 
 TEXTS = {
@@ -36,13 +37,14 @@ TEXTS = {
 
 
 class MapUpdateUI:
-    def __init__(self, root, app_dir, language_provider, state_callback=None, installed_callback=None, target_rect_provider=None):
+    def __init__(self, root, app_dir, language_provider, state_callback=None, installed_callback=None, target_rect_provider=None, owner_hwnd_provider=None):
         self.root = root
         self.app_dir = Path(app_dir)
         self.language_provider = language_provider
         self.state_callback = state_callback
         self.installed_callback = installed_callback
         self.target_rect_provider = target_rect_provider
+        self.owner_hwnd_provider = owner_hwnd_provider
         self.drag_origin = None
         self.state = "idle"
         self.manifest = None
@@ -129,7 +131,11 @@ class MapUpdateUI:
     def open(self):
         if self.window and self.window.winfo_exists():
             self.window.deiconify()
-            self.window.lift()
+            owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
+            if owner:
+                attach_above(self.window, owner)
+            else:
+                self.window.lift()
             self._refresh()
             return
         win = tk.Toplevel(self.root)
@@ -179,6 +185,9 @@ class MapUpdateUI:
         else:
             x, y = (self.window.winfo_screenwidth() - width) // 2, (self.window.winfo_screenheight() - height) // 2
         self.window.geometry(f"+{max(0, x)}+{max(0, y)}")
+        owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
+        if owner:
+            attach_above(self.window, owner, max(0, x), max(0, y))
 
     def _start_drag(self, event):
         self.drag_origin = event.x_root, event.y_root, self.window.winfo_x(), self.window.winfo_y()
