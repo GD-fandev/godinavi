@@ -1,0 +1,75 @@
+{
+  "id": "centerpvp1f",
+  "names": {
+    "ko": [
+      "중평지하전투"
+    ],
+    "ja": [
+      "中平地下戦闘場"
+    ],
+    "en": [
+      "Jungpyeong B Battlefield"
+    ]
+  },
+  "image": "maps/other/centerPVP1F.jpg",
+  "images": {
+    "ko": "maps/other/ko/centerPVP1F.jpg",
+    "ja": "maps/other/ja/centerPVP1F.jpg"
+  },
+  "imageSize": {
+    "width": 960,
+    "height": 480
+  },
+  "controlPoints": [
+    {
+      "gameX": 175,
+      "gameY": 128,
+      "imageX": 577,
+      "imageY": 302
+    },
+    {
+      "gameX": 142,
+      "gameY": 79,
+      "imageX": 609,
+      "imageY": 220
+    },
+    {
+      "gameX": 80,
+      "gameY": 95,
+      "imageX": 452,
+      "imageY": 174
+    },
+    {
+      "gameX": 74,
+      "gameY": 124,
+      "imageX": 383,
+      "imageY": 197
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.0050384482710486,
+      "gameY": -1.9937667104544663,
+      "offset": 481.4928773794847
+    },
+    "imageY": {
+      "gameX": 0.9999999999999999,
+      "gameY": 1.0000000000000002,
+      "offset": -1.0000000000000242
+    },
+    "rmsePixels": 0.34932640466869225,
+    "maxErrorPixels": 0.4881157479942999,
+    "pointErrorsPixels": [
+      0.17246688874649863,
+      0.29923309192929537,
+      0.4881157479942999,
+      0.36134954481156
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.8301997649822397,
+      1.6312224856079638,
+      0.9999999999996589,
+      1.3508132361544654
+    ]
+  }
+}

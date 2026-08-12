@@ -1,0 +1,79 @@
+{
+  "id": "7_laslan",
+  "names": {
+    "ko": [
+      "라슬란"
+    ],
+    "ja": [
+      "ラスラン"
+    ],
+    "en": [
+      "raslan"
+    ]
+  },
+  "image": "maps/town/7_laslan.png",
+  "images": {
+    "ko": "maps/town/ko/7_laslan.png",
+    "ja": "maps/town/ja/7_laslan.png"
+  },
+  "imageSize": {
+    "width": 1216,
+    "height": 608
+  },
+  "controlPoints": [
+    {
+      "gameX": 38,
+      "gameY": 67,
+      "imageX": 656,
+      "imageY": 210
+    },
+    {
+      "gameX": 45,
+      "gameY": 75,
+      "imageX": 650,
+      "imageY": 242
+    },
+    {
+      "gameX": 56,
+      "gameY": 101,
+      "imageX": 590,
+      "imageY": 315
+    },
+    {
+      "gameX": 38,
+      "gameY": 111,
+      "imageX": 479,
+      "imageY": 299
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 3.9180093291570484,
+      "gameY": -4.007498253599863,
+      "offset": 775.041682628388
+    },
+    "imageY": {
+      "gameX": 2.0304399426129134,
+      "gameY": 2.00308155125403,
+      "offset": -0.6196847466030444
+    },
+    "rmsePixels": 0.8398256834865023,
+    "maxErrorPixels": 1.28902024623984,
+    "pointErrorsPixels": [
+      0.9407243716247012,
+      1.28902024623984,
+      0.5012856513155632,
+      0.15298977669932257
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.9989960924496826,
+      2.1886612896925466,
+      5.627986173483603,
+      18.44063554717585
+    ]
+  },
+  "worldMapPosition": {
+    "x": 646,
+    "y": 433
+  }
+}

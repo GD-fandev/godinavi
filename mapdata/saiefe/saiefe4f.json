@@ -1,0 +1,93 @@
+{
+  "id": "saiefe4f",
+  "names": {
+    "ko": [
+      "사에프동굴4"
+    ],
+    "ja": [
+      "サエフ洞窟4"
+    ],
+    "en": [
+      "Saiefe Cave 4"
+    ]
+  },
+  "image": "maps/saiefe/saiefe4F.jpg",
+  "images": {
+    "ko": "maps/saiefe/ko/saiefe4F.jpg",
+    "ja": "maps/saiefe/ja/saiefe4F.jpg"
+  },
+  "imageSize": {
+    "width": 479,
+    "height": 270
+  },
+  "controlPoints": [
+    {
+      "gameX": 48,
+      "gameY": 8,
+      "imageX": 400,
+      "imageY": 75
+    },
+    {
+      "gameX": 52,
+      "gameY": 27,
+      "imageX": 374,
+      "imageY": 99
+    },
+    {
+      "gameX": 16,
+      "gameY": 5,
+      "imageX": 318,
+      "imageY": 24
+    },
+    {
+      "gameX": 9,
+      "gameY": 9,
+      "imageX": 287,
+      "imageY": 20
+    },
+    {
+      "gameX": 5,
+      "gameY": 13,
+      "imageX": 263,
+      "imageY": 19
+    },
+    {
+      "gameX": 40,
+      "gameY": 120,
+      "imageX": 58,
+      "imageY": 221
+    },
+    {
+      "gameX": 40,
+      "gameY": 108,
+      "imageX": 91,
+      "imageY": 205
+    },
+    {
+      "gameX": 44,
+      "gameY": 108,
+      "imageX": 102,
+      "imageY": 211
+    },
+    {
+      "gameX": 44,
+      "gameY": 88,
+      "imageX": 157,
+      "imageY": 182
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 3.041036053505679,
+      "gameY": -2.923651861063846,
+      "offset": 284.96289561470417
+    },
+    "imageY": {
+      "gameX": 1.3516912160992154,
+      "gameY": 1.44386578644956,
+      "offset": -5.391417179116932
+    },
+    "rmsePixels": 5.016403066671711,
+    "maxErrorPixels": 10.985664386649743
+  }
+}

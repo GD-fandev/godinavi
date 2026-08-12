@@ -1,0 +1,79 @@
+{
+  "id": "reible",
+  "names": {
+    "ko": [
+      "레이블평원"
+    ],
+    "ja": [
+      "レイブル平原"
+    ],
+    "en": [
+      "Rabbel Plains"
+    ]
+  },
+  "image": "maps/field/reible.jpg",
+  "images": {
+    "ko": "maps/field/ko/reible.jpg",
+    "ja": "maps/field/ja/reible.jpg"
+  },
+  "imageSize": {
+    "width": 608,
+    "height": 304
+  },
+  "controlPoints": [
+    {
+      "gameX": 19,
+      "gameY": 12,
+      "imageX": 304,
+      "imageY": 32
+    },
+    {
+      "gameX": 23,
+      "gameY": 70,
+      "imageX": 196,
+      "imageY": 93
+    },
+    {
+      "gameX": 38,
+      "gameY": 110,
+      "imageX": 145,
+      "imageY": 147
+    },
+    {
+      "gameX": 52,
+      "gameY": 124,
+      "imageX": 145,
+      "imageY": 176
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.9735373314075038,
+      "gameY": -2.0029207360254753,
+      "offset": 290.60400620956494
+    },
+    "imageY": {
+      "gameX": 1.0561741558872852,
+      "gameY": 0.9718789134861981,
+      "offset": 0.36781869030995057
+    },
+    "rmsePixels": 0.33703208280140906,
+    "maxErrorPixels": 0.49415130037382304,
+    "pointErrorsPixels": [
+      0.11797609490505803,
+      0.3728044598999387,
+      0.49415130037382304,
+      0.23932293537885335
+    ],
+    "leaveOneOutErrorsPixels": [
+      3.851309875238074,
+      1.2187689478600843,
+      0.9194805295588984,
+      1.8985330370887095
+    ]
+  },
+  "worldMapPosition": {
+    "x": 237,
+    "y": 508
+  }
+}

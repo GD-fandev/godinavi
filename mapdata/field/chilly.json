@@ -1,0 +1,87 @@
+{
+  "id": "chilly",
+  "names": {
+    "ko": [
+      "칠리해안"
+    ],
+    "ja": [
+      "チリ海岸"
+    ],
+    "en": [
+      "Chili Coast"
+    ]
+  },
+  "image": "maps/field/chilly.jpg",
+  "images": {
+    "ko": "maps/field/ko/chilly.jpg",
+    "ja": "maps/field/ja/chilly.jpg"
+  },
+  "imageSize": {
+    "width": 1088,
+    "height": 544
+  },
+  "controlPoints": [
+    {
+      "gameX": 13,
+      "gameY": 170,
+      "imageX": 268,
+      "imageY": 182
+    },
+    {
+      "gameX": 7,
+      "gameY": 147,
+      "imageX": 296,
+      "imageY": 155
+    },
+    {
+      "gameX": 1,
+      "gameY": 106,
+      "imageX": 368,
+      "imageY": 107
+    },
+    {
+      "gameX": 22,
+      "gameY": 101,
+      "imageX": 423,
+      "imageY": 123
+    },
+    {
+      "gameX": 95,
+      "gameY": 112,
+      "imageX": 544,
+      "imageY": 207
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.9973912589671752,
+      "gameY": -1.9862183721384885,
+      "offset": 577.3189781885213
+    },
+    "imageY": {
+      "gameX": 0.9972987138669166,
+      "gameY": 0.9925817222048526,
+      "offset": 1.0181604328156528
+    },
+    "rmsePixels": 2.235801799003456,
+    "maxErrorPixels": 3.5010242356114816,
+    "pointErrorsPixels": [
+      2.4794868035346793,
+      3.5010242356114816,
+      0.8102905603139381,
+      2.3558022989752287,
+      0.6185852010055112
+    ],
+    "leaveOneOutErrorsPixels": [
+      8.565810280000349,
+      5.314550079496822,
+      1.7833828193609171,
+      4.170403111887772,
+      19.014217894051253
+    ]
+  },
+  "worldMapPosition": {
+    "x": 1070,
+    "y": 453
+  }
+}

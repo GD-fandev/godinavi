@@ -1,0 +1,83 @@
+{
+  "id": "wback1f",
+  "names": {
+    "ko": [
+      "서부등뼈동굴1"
+    ],
+    "ja": [
+      "西部背骨洞窟1"
+    ],
+    "en": [
+      "west spine cave 1"
+    ]
+  },
+  "image": "maps/wbackbone/wback1F.jpg",
+  "images": {
+    "ko": "maps/wbackbone/ko/wback1F.jpg",
+    "ja": "maps/wbackbone/ja/wback1F.jpg"
+  },
+  "imageSize": {
+    "width": 556,
+    "height": 282
+  },
+  "controlPoints": [
+    {
+      "gameX": 211,
+      "gameY": 211,
+      "imageX": 280,
+      "imageY": 264
+    },
+    {
+      "gameX": 174,
+      "gameY": 145,
+      "imageX": 316,
+      "imageY": 199
+    },
+    {
+      "gameX": 167,
+      "gameY": 94,
+      "imageX": 368,
+      "imageY": 164
+    },
+    {
+      "gameX": 117,
+      "gameY": 29,
+      "imageX": 386,
+      "imageY": 93
+    },
+    {
+      "gameX": 52,
+      "gameY": 20,
+      "imageX": 318,
+      "imageY": 48
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.2121278522095065,
+      "gameY": -1.2062691228022402,
+      "offset": 279.1968221670759
+    },
+    "imageY": {
+      "gameX": 0.6060491558319065,
+      "gameY": 0.6243103622661299,
+      "offset": 3.901537574879725
+    },
+    "rmsePixels": 0.62769990894663,
+    "maxErrorPixels": 1.1899309532469953,
+    "pointErrorsPixels": [
+      0.6558658340194871,
+      1.1899309532469953,
+      0.30898612642305723,
+      0.09219930483958463,
+      0.14130489939782506
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.3372266639971713,
+      1.6527998288357184,
+      0.5843128982569237,
+      0.21683712194756138,
+      3.1103186222114316
+    ]
+  }
+}

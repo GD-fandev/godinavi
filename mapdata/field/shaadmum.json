@@ -1,0 +1,80 @@
+{
+  "id": "shaadmum",
+  "names": {
+    "ko": [
+      "샤드뮴숲",
+      "샤드뮤숲"
+    ],
+    "ja": [
+      "シャドミューの森"
+    ],
+    "en": [
+      "Shadmum Forest"
+    ]
+  },
+  "image": "maps/field/shaadmum.jpg",
+  "images": {
+    "ko": "maps/field/ko/shaadmum.jpg",
+    "ja": "maps/field/ja/shaadmum.jpg"
+  },
+  "imageSize": {
+    "width": 1024,
+    "height": 512
+  },
+  "controlPoints": [
+    {
+      "gameX": 182,
+      "gameY": 126,
+      "imageX": 621,
+      "imageY": 306
+    },
+    {
+      "gameX": 162,
+      "gameY": 128,
+      "imageX": 579,
+      "imageY": 291
+    },
+    {
+      "gameX": 141,
+      "gameY": 123,
+      "imageX": 550,
+      "imageY": 263
+    },
+    {
+      "gameX": 127,
+      "gameY": 168,
+      "imageX": 434,
+      "imageY": 297
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.8762758895797813,
+      "gameY": -1.991837572593465,
+      "offset": 530.3176581601526
+    },
+    "imageY": {
+      "gameX": 0.977940567544146,
+      "gameY": 1.0487210680750492,
+      "offset": -3.263152359479975
+    },
+    "rmsePixels": 0.980774705960742,
+    "maxErrorPixels": 1.6319927474212834,
+    "pointErrorsPixels": [
+      0.8778339367421261,
+      1.6319927474212834,
+      0.6313485456370997,
+      0.12281026504161066
+    ],
+    "leaveOneOutErrorsPixels": [
+      4.383148035594389,
+      2.357655143682097,
+      6.094377063189279,
+      31.3302482825461
+    ]
+  },
+  "worldMapPosition": {
+    "x": 198,
+    "y": 376
+  }
+}

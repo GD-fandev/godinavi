@@ -1,0 +1,83 @@
+{
+  "id": "eback2f",
+  "names": {
+    "ko": [
+      "동부등뼈동굴2"
+    ],
+    "ja": [
+      "東部背骨洞窟2"
+    ],
+    "en": [
+      "East spine cave 2"
+    ]
+  },
+  "image": "maps/ebackbone/eback2F.jpg",
+  "images": {
+    "ko": "maps/ebackbone/ko/eback2F.jpg",
+    "ja": "maps/ebackbone/ja/eback2F.jpg"
+  },
+  "imageSize": {
+    "width": 549,
+    "height": 274
+  },
+  "controlPoints": [
+    {
+      "gameX": 130,
+      "gameY": 220,
+      "imageX": 138,
+      "imageY": 209
+    },
+    {
+      "gameX": 134,
+      "gameY": 209,
+      "imageX": 155,
+      "imageY": 205
+    },
+    {
+      "gameX": 171,
+      "gameY": 220,
+      "imageX": 191,
+      "imageY": 235
+    },
+    {
+      "gameX": 188,
+      "gameY": 218,
+      "imageX": 214,
+      "imageY": 245
+    },
+    {
+      "gameX": 210,
+      "gameY": 192,
+      "imageX": 272,
+      "imageY": 242
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.2839604413916648,
+      "gameY": -1.1176780359865564,
+      "offset": 216.81639848610035
+    },
+    "imageY": {
+      "gameX": 0.6339212580998516,
+      "gameY": 0.6360837631547711,
+      "offset": -13.133822635615768
+    },
+    "rmsePixels": 0.431919817208543,
+    "maxErrorPixels": 0.6194230989485019,
+    "pointErrorsPixels": [
+      0.2662521414948731,
+      0.367612392214962,
+      0.5548493829058297,
+      0.6194230989485019,
+      0.18762130877047864
+    ],
+    "leaveOneOutErrorsPixels": [
+      0.5173509170232293,
+      0.9728989637721895,
+      0.9347973679913346,
+      1.3963436499390114,
+      2.667037629864468
+    ]
+  }
+}

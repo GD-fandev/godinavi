@@ -1,0 +1,72 @@
+{
+  "id": "luc3f",
+  "names": {
+    "ko": [
+      "루크레시아지하로3",
+      "람파스지하로3"
+    ],
+    "ja": [
+      "ルクレシア地下道3",
+      "ランパス地下道3"
+    ],
+    "en": [
+      "Lucreshia B Ro3",
+      "Rampas B Ro3"
+    ]
+  },
+  "image": "maps/lucreshia/luc3F.png",
+  "images": {
+    "ko": "maps/lucreshia/ko/luc3F.png",
+    "ja": "maps/lucreshia/ja/luc3F.png"
+  },
+  "imageSize": {
+    "width": 590,
+    "height": 295
+  },
+  "controlPoints": [
+    {
+      "gameX": 166,
+      "gameY": 102,
+      "imageX": 377,
+      "imageY": 261
+    },
+    {
+      "gameX": 162,
+      "gameY": 102,
+      "imageX": 369,
+      "imageY": 257
+    },
+    {
+      "gameX": 147,
+      "gameY": 96,
+      "imageX": 352,
+      "imageY": 236
+    },
+    {
+      "gameX": 128,
+      "gameY": 77,
+      "imageX": 350,
+      "imageY": 199
+    },
+    {
+      "gameX": 140,
+      "gameY": 125,
+      "imageX": 281,
+      "imageY": 257
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.9808030421518408,
+      "gameY": -1.936736692299901,
+      "offset": 245.90103184314677
+    },
+    "imageY": {
+      "gameX": 1.0014848307407167,
+      "gameY": 0.9588130796074902,
+      "offset": -3.085479040662352
+    },
+    "rmsePixels": 0.4383703295188501,
+    "maxErrorPixels": 0.8663056730514053
+  }
+}

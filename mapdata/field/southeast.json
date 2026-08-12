@@ -1,0 +1,79 @@
+{
+  "id": "southeast",
+  "names": {
+    "ko": [
+      "동남부반도"
+    ],
+    "ja": [
+      "東南部半島"
+    ],
+    "en": [
+      "Southeast Peninsula"
+    ]
+  },
+  "image": "maps/field/southeast.jpg",
+  "images": {
+    "ko": "maps/field/ko/southeast.jpg",
+    "ja": "maps/field/ja/southeast.jpg"
+  },
+  "imageSize": {
+    "width": 1056,
+    "height": 528
+  },
+  "controlPoints": [
+    {
+      "gameX": 21,
+      "gameY": 170,
+      "imageX": 86,
+      "imageY": 287
+    },
+    {
+      "gameX": 33,
+      "gameY": 155,
+      "imageX": 164,
+      "imageY": 284
+    },
+    {
+      "gameX": 52,
+      "gameY": 138,
+      "imageX": 272,
+      "imageY": 286
+    },
+    {
+      "gameX": 70,
+      "gameY": 116,
+      "imageX": 394,
+      "imageY": 278
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.9823793194407457,
+      "gameY": -3.005011870218993,
+      "offset": 532.7507781588066
+    },
+    "imageY": {
+      "gameX": 1.4211026114481982,
+      "gameY": 1.4610920601424724,
+      "offset": 9.72840939065654
+    },
+    "rmsePixels": 1.5256965406181842,
+    "maxErrorPixels": 1.7552512364213588,
+    "pointErrorsPixels": [
+      1.7552512364213588,
+      1.6612199201840498,
+      1.363454085434193,
+      1.269422769196684
+    ],
+    "leaveOneOutErrorsPixels": [
+      5.304653569256247,
+      5.604916978833729,
+      6.828979307544751,
+      7.334829626620523
+    ]
+  },
+  "worldMapPosition": {
+    "x": 426,
+    "y": 659
+  }
+}

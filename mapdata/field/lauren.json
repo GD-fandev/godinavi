@@ -1,0 +1,87 @@
+{
+  "id": "lauren",
+  "names": {
+    "ko": [
+      "로렌산맥"
+    ],
+    "ja": [
+      "ローレン山脈"
+    ],
+    "en": [
+      "Loren Mountains"
+    ]
+  },
+  "image": "maps/field/lauren.jpg",
+  "images": {
+    "ko": "maps/field/ko/lauren.jpg",
+    "ja": "maps/field/ja/lauren.jpg"
+  },
+  "imageSize": {
+    "width": 1280,
+    "height": 640
+  },
+  "controlPoints": [
+    {
+      "gameX": 11,
+      "gameY": 53,
+      "imageX": 557,
+      "imageY": 65
+    },
+    {
+      "gameX": 14,
+      "gameY": 33,
+      "imageX": 601,
+      "imageY": 45
+    },
+    {
+      "gameX": 37,
+      "gameY": 81,
+      "imageX": 554,
+      "imageY": 118
+    },
+    {
+      "gameX": 59,
+      "gameY": 94,
+      "imageX": 572,
+      "imageY": 153
+    },
+    {
+      "gameX": 63,
+      "gameY": 216,
+      "imageX": 328,
+      "imageY": 278
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.1083395219146506,
+      "gameY": -2.065858730579852,
+      "offset": 641.8960284908593
+    },
+    "imageY": {
+      "gameX": 1.0051289805643027,
+      "gameY": 0.9967161113642322,
+      "offset": -0.27546350891399596
+    },
+    "rmsePixels": 1.6964918529935449,
+    "maxErrorPixels": 2.804347321737982,
+    "pointErrorsPixels": [
+      1.9769694388763266,
+      2.804347321737982,
+      1.4725783588527526,
+      0.29789144595638384,
+      0.6003537595800809
+    ],
+    "leaveOneOutErrorsPixels": [
+      4.242845808291168,
+      4.911191121906566,
+      1.9167085681915432,
+      1.7705541933622162,
+      22.652988761135823
+    ]
+  },
+  "worldMapPosition": {
+    "x": 694,
+    "y": 264
+  }
+}

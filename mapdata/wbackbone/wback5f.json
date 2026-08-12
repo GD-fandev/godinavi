@@ -1,0 +1,25 @@
+{
+  "id": "wback5f",
+  "names": {
+    "ko": [
+      "서부등뼈동굴5"
+    ],
+    "ja": [
+      "西部背骨洞窟5"
+    ],
+    "en": [
+      "west spine cave 5"
+    ]
+  },
+  "image": "maps/wbackbone/wback5F.jpg",
+  "images": {
+    "ko": "maps/wbackbone/ko/wback5F.jpg",
+    "ja": "maps/wbackbone/ja/wback5F.jpg"
+  },
+  "imageSize": {
+    "width": 549,
+    "height": 282
+  },
+  "controlPoints": [],
+  "transform": null
+}

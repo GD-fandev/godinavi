@@ -1,0 +1,83 @@
+{
+  "id": "saiefe3f",
+  "names": {
+    "ko": [
+      "사에프동굴3"
+    ],
+    "ja": [
+      "サエフ洞窟3"
+    ],
+    "en": [
+      "Saiefe Cave 3"
+    ]
+  },
+  "image": "maps/saiefe/saiefe3F.jpg",
+  "images": {
+    "ko": "maps/saiefe/ko/saiefe3F.jpg",
+    "ja": "maps/saiefe/ja/saiefe3F.jpg"
+  },
+  "imageSize": {
+    "width": 464,
+    "height": 225
+  },
+  "controlPoints": [
+    {
+      "gameX": 72,
+      "gameY": 8,
+      "imageX": 419,
+      "imageY": 59
+    },
+    {
+      "gameX": 56,
+      "gameY": 16,
+      "imageX": 351,
+      "imageY": 48
+    },
+    {
+      "gameX": 52,
+      "gameY": 20,
+      "imageX": 328,
+      "imageY": 49
+    },
+    {
+      "gameX": 48,
+      "gameY": 28,
+      "imageX": 294,
+      "imageY": 53
+    },
+    {
+      "gameX": 44,
+      "gameY": 119,
+      "imageX": 24,
+      "imageY": 178
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.8405209066227086,
+      "gameY": -2.8423510724167316,
+      "offset": 237.25347364604409
+    },
+    "imageY": {
+      "gameX": 1.4095438398086944,
+      "gameY": 1.425861739031596,
+      "offset": -53.747103316599976
+    },
+    "rmsePixels": 0.5711744828279728,
+    "maxErrorPixels": 0.9404676245169354,
+    "pointErrorsPixels": [
+      0.1504272914022894,
+      0.15497693128695006,
+      0.9404676245169354,
+      0.8352254452151657,
+      0.04974266619173243
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.3714972019026876,
+      0.21278948972959744,
+      1.4298401989834526,
+      1.524696119843488,
+      18.311492645095683
+    ]
+  }
+}

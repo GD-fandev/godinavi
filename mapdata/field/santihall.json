@@ -1,0 +1,79 @@
+{
+  "id": "santihall",
+  "names": {
+    "ko": [
+      "싼티홀분지"
+    ],
+    "ja": [
+      "サンティホル盆地"
+    ],
+    "en": [
+      "Santihol Basin"
+    ]
+  },
+  "image": "maps/field/santihall.jpg",
+  "images": {
+    "ko": "maps/field/ko/santihall.jpg",
+    "ja": "maps/field/ja/santihall.jpg"
+  },
+  "imageSize": {
+    "width": 1280,
+    "height": 640
+  },
+  "controlPoints": [
+    {
+      "gameX": 56,
+      "gameY": 234,
+      "imageX": 126,
+      "imageY": 290
+    },
+    {
+      "gameX": 38,
+      "gameY": 193,
+      "imageX": 172,
+      "imageY": 231
+    },
+    {
+      "gameX": 216,
+      "gameY": 223,
+      "imageX": 469,
+      "imageY": 440
+    },
+    {
+      "gameX": 262,
+      "gameY": 200,
+      "imageX": 608,
+      "imageY": 462
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.008035700234837,
+      "gameY": -2.0091330740057183,
+      "offset": 483.5416730926322
+    },
+    "imageY": {
+      "gameX": 1.0020665381950355,
+      "gameY": 1.0104816923156907,
+      "offset": -2.272874578974236
+    },
+    "rmsePixels": 0.389728301625813,
+    "maxErrorPixels": 0.5451099215960169,
+    "pointErrorsPixels": [
+      0.3294250067172106,
+      0.19101113834299804,
+      0.5451099215960169,
+      0.4066960532245487
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.8442819578642433,
+      3.1807181592243476,
+      1.1145506113276666,
+      1.4938738439590937
+    ]
+  },
+  "worldMapPosition": {
+    "x": 862,
+    "y": 365
+  }
+}

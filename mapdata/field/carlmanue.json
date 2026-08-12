@@ -1,0 +1,87 @@
+{
+  "id": "carlmanue",
+  "names": {
+    "ko": [
+      "카를마뉴해안"
+    ],
+    "ja": [
+      "カールマーニュ海岸"
+    ],
+    "en": [
+      "Karlmannu Coast"
+    ]
+  },
+  "image": "maps/field/carlmanue.jpg",
+  "images": {
+    "ko": "maps/field/ko/carlmanue.jpg",
+    "ja": "maps/field/ja/carlmanue.jpg"
+  },
+  "imageSize": {
+    "width": 1056,
+    "height": 528
+  },
+  "controlPoints": [
+    {
+      "gameX": 118,
+      "gameY": 213,
+      "imageX": 609,
+      "imageY": 332
+    },
+    {
+      "gameX": 110,
+      "gameY": 224,
+      "imageX": 573,
+      "imageY": 334
+    },
+    {
+      "gameX": 95,
+      "gameY": 218,
+      "imageX": 556,
+      "imageY": 313
+    },
+    {
+      "gameX": 93,
+      "gameY": 334,
+      "imageX": 319,
+      "imageY": 424
+    },
+    {
+      "gameX": 108,
+      "gameY": 398,
+      "imageX": 223,
+      "imageY": 506
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.9509937265772692,
+      "gameY": -1.9904494960914418,
+      "offset": 803.6865476704676
+    },
+    "imageY": {
+      "gameX": 1.0987870414120073,
+      "gameY": 0.9946085670648686,
+      "offset": -9.257298443772934
+    },
+    "rmsePixels": 1.2255205205929702,
+    "maxErrorPixels": 1.7361787471984893,
+    "pointErrorsPixels": [
+      0.9711155965912002,
+      0.6930447678600339,
+      1.3728990333906572,
+      1.7361787471984893,
+      1.0894759206438458
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.7718732234653722,
+      1.0377299298755969,
+      3.812043295271061,
+      3.9171577424637403,
+      6.105736414558785
+    ]
+  },
+  "worldMapPosition": {
+    "x": 503,
+    "y": 79
+  }
+}

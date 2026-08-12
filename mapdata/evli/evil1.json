@@ -1,0 +1,90 @@
+{
+  "id": "evil1",
+  "names": {
+    "ko": [
+      "에블린동굴1"
+    ],
+    "ja": [
+      "エブリン洞窟1F"
+    ],
+    "en": [
+      "Evelyn Cave 1F"
+    ]
+  },
+  "image": "maps/evli/evil1.jpg",
+  "imageSize": {
+    "width": 589,
+    "height": 299
+  },
+  "controlPoints": [
+    {
+      "gameX": 116,
+      "gameY": 121,
+      "imageX": 348,
+      "imageY": 280
+    },
+    {
+      "gameX": 44,
+      "gameY": 11,
+      "imageX": 521,
+      "imageY": 67
+    },
+    {
+      "gameX": 114,
+      "gameY": 89,
+      "imageX": 486,
+      "imageY": 240
+    },
+    {
+      "gameX": 61,
+      "gameY": 43,
+      "imageX": 453,
+      "imageY": 123
+    },
+    {
+      "gameX": 26,
+      "gameY": 96,
+      "imageX": 58,
+      "imageY": 146
+    },
+    {
+      "gameX": 10,
+      "gameY": 34,
+      "imageX": 267,
+      "imageY": 54
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 4.481824699990433,
+      "gameY": -4.503904385230481,
+      "offset": 374.1302273473933
+    },
+    "imageY": {
+      "gameX": 1.161621700506264,
+      "gameY": 1.181142837589419,
+      "offset": 2.2780118503241744
+    },
+    "rmsePixels": 1.1851497545338974,
+    "maxErrorPixels": 1.7978239896741723,
+    "pointErrorsPixels": [
+      1.0509330732932285,
+      1.0011297809806927,
+      1.7978239896741723,
+      1.259496060118141,
+      0.31133955809200403,
+      1.1854639333984571
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.4017659487934044,
+      2.1951414207795867,
+      3.2608579688160164,
+      1.6865092433555346,
+      1.2680834423285212,
+      2.106719618519117
+    ]
+  },
+  "contributors": [
+    "狐"
+  ]
+}

@@ -1,0 +1,56 @@
+# Python environments and generated caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated local output
+build/
+dist/
+output/
+vendor/gh/
+assets/sample.png
+assets/icons/calicon.ico
+
+# Local development tests and documentation
+tests/
+docs/
+
+# Local map-authoring and map-update utilities
+source/map_calibrator.py
+source/contributor_editor.py
+source/build_map_update.py
+source/map_updater.py
+source/publish_map_update.py
+packaging/GODINAVI_CALIBRATOR.spec
+tools/build_godinavi_calibrator.bat
+tools/run_map_calibrator.bat
+tools/run_contributor_editor.bat
+tools/publish_map_update.bat
+tools/map_marker_editor.html
+tools/setup_github_cli.ps1
+map-version.json
+update/
+
+# Locally generated GitHub Release assets
+release/
+
+# Temporary updater/test working directories
+godinavi-update-test-*/
+godinavi-update-stage-*/
+godinavi-update-backup-*/
+
+# Common editor and OS clutter
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+*.tmp
+*.bak
+
+# Other build systems
+**/bin/
+**/obj/

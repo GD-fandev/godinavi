@@ -1,0 +1,80 @@
+{
+  "id": "luc1f",
+  "names": {
+    "ko": [
+      "루크레시아지하로1",
+      "루크레시아지하뢰",
+      "람파스지하로1",
+      "람파스지하뢰"
+    ],
+    "ja": [
+      "ルクレシア地下道1",
+      "ランパス地下道1"
+    ],
+    "en": [
+      "Lucreshia B Ro1",
+      "Rampas B Ro1"
+    ]
+  },
+  "image": "maps/lucreshia/luc1F.png",
+  "images": {
+    "ko": "maps/lucreshia/ko/luc1F.png",
+    "ja": "maps/lucreshia/ja/luc1F.png"
+  },
+  "imageSize": {
+    "width": 587,
+    "height": 294
+  },
+  "controlPoints": [
+    {
+      "gameX": 159,
+      "gameY": 122,
+      "imageX": 324,
+      "imageY": 268
+    },
+    {
+      "gameX": 144,
+      "gameY": 76,
+      "imageX": 383,
+      "imageY": 213
+    },
+    {
+      "gameX": 144,
+      "gameY": 43,
+      "imageX": 448,
+      "imageY": 179
+    },
+    {
+      "gameX": 159,
+      "gameY": 54,
+      "imageX": 455,
+      "imageY": 206
+    },
+    {
+      "gameX": 173,
+      "gameY": 20,
+      "imageX": 544,
+      "imageY": 183
+    },
+    {
+      "gameX": 8,
+      "gameY": 80,
+      "imageX": 114,
+      "imageY": 83
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.921551471861804,
+      "gameY": -1.9067510346929941,
+      "offset": 251.48427505808027
+    },
+    "imageY": {
+      "gameX": 0.9653808910132626,
+      "gameY": 0.9617373329082716,
+      "offset": -1.2735012877009384
+    },
+    "rmsePixels": 1.9237109380238,
+    "maxErrorPixels": 2.655071708408033
+  }
+}

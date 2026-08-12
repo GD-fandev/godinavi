@@ -1,0 +1,115 @@
+{
+  "id": "rege7f",
+  "names": {
+    "ko": [
+      "레게지하동굴7층"
+    ],
+    "ja": [
+      "レゲ地下洞窟7F"
+    ],
+    "en": [
+      "Rege B Cave 7F"
+    ]
+  },
+  "image": "maps/rege/rege7f.jpg",
+  "images": {
+    "ko": "maps/rege/ko/rege7f.jpg",
+    "ja": "maps/rege/ja/rege7f.jpg"
+  },
+  "imageSize": {
+    "width": 496,
+    "height": 213
+  },
+  "controlPoints": [
+    {
+      "gameX": 118,
+      "gameY": 391,
+      "imageX": 42,
+      "imageY": 116
+    },
+    {
+      "gameX": 134,
+      "gameY": 387,
+      "imageX": 59,
+      "imageY": 121
+    },
+    {
+      "gameX": 114,
+      "gameY": 380,
+      "imageX": 48,
+      "imageY": 110
+    },
+    {
+      "gameX": 81,
+      "gameY": 357,
+      "imageX": 42,
+      "imageY": 105
+    },
+    {
+      "gameX": 92,
+      "gameY": 301,
+      "imageX": 91,
+      "imageY": 72
+    },
+    {
+      "gameX": 108,
+      "gameY": 269,
+      "imageX": 127,
+      "imageY": 64
+    },
+    {
+      "gameX": 112,
+      "gameY": 250,
+      "imageX": 147,
+      "imageY": 59
+    },
+    {
+      "gameX": 146,
+      "gameY": 222,
+      "imageX": 195,
+      "imageY": 61
+    },
+    {
+      "gameX": 192,
+      "gameY": 162,
+      "imageX": 276,
+      "imageY": 57
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.7769315801877248,
+      "gameY": -0.7665820977606416,
+      "offset": 251.00475337169453
+    },
+    "imageY": {
+      "gameX": 0.31071705850943604,
+      "gameY": 0.3845104395341633,
+      "offset": -69.03783314202688
+    },
+    "rmsePixels": 4.778265012433768,
+    "maxErrorPixels": 11.72835575778298,
+    "pointErrorsPixels": [
+      2.1870246954242947,
+      0.6852865121483923,
+      2.512835012999994,
+      11.72835575778298,
+      3.368350963290566,
+      4.304069572778091,
+      2.956775693182927,
+      1.0138086151394834,
+      4.089480657551378
+    ],
+    "leaveOneOutErrorsPixels": [
+      3.179958971501583,
+      1.214709960944383,
+      3.325412226679665,
+      16.93252779505352,
+      4.657887845627064,
+      5.504284474520389,
+      3.954905246899843,
+      1.3240793676127103,
+      14.532590530867289
+    ]
+  }
+}

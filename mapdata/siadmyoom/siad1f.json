@@ -1,0 +1,63 @@
+{
+  "id": "siad1f",
+  "names": {
+    "ko": [
+      "샤드뮴동굴1"
+    ],
+    "ja": [
+      "シャドミュム洞窟1"
+    ],
+    "en": [
+      "Shadmum Cave 1"
+    ]
+  },
+  "image": "maps/siadmyoom/siad1F.jpg",
+  "images": {
+    "ko": "maps/siadmyoom/ko/siad1F.jpg",
+    "ja": "maps/siadmyoom/ja/siad1F.jpg"
+  },
+  "imageSize": {
+    "width": 584,
+    "height": 284
+  },
+  "controlPoints": [
+    {
+      "gameX": 96,
+      "gameY": 134,
+      "imageX": 262,
+      "imageY": 153
+    },
+    {
+      "gameX": 88,
+      "gameY": 164,
+      "imageX": 208,
+      "imageY": 167
+    },
+    {
+      "gameX": 106,
+      "gameY": 177,
+      "imageX": 218,
+      "imageY": 191
+    },
+    {
+      "gameX": 12,
+      "gameY": 200,
+      "imageX": 50,
+      "imageY": 139
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.450135602435154,
+      "gameY": -1.3626268309489646,
+      "offset": 304.9580397387836
+    },
+    "imageY": {
+      "gameX": 0.7237917475329199,
+      "gameY": 0.7131493270452571,
+      "offset": -12.490225877622608
+    },
+    "rmsePixels": 0.9409316703600669,
+    "maxErrorPixels": 1.5980097726528153
+  }
+}

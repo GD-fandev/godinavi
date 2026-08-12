@@ -1,0 +1,82 @@
+{
+  "id": "echil1",
+  "names": {
+    "ko": [
+      "에칠린동굴1층"
+    ],
+    "ja": [
+      "エチリン洞窟1F"
+    ],
+    "en": [
+      "echilin cave 1F"
+    ]
+  },
+  "image": "maps/echil/echil1.jpg",
+  "imageSize": {
+    "width": 586,
+    "height": 294
+  },
+  "controlPoints": [
+    {
+      "gameX": 109,
+      "gameY": 119,
+      "imageX": 239,
+      "imageY": 267
+    },
+    {
+      "gameX": 74,
+      "gameY": 114,
+      "imageX": 138,
+      "imageY": 222
+    },
+    {
+      "gameX": 10,
+      "gameY": 86,
+      "imageX": 20,
+      "imageY": 116
+    },
+    {
+      "gameX": 12,
+      "gameY": 2,
+      "imageX": 309,
+      "imageY": 23
+    },
+    {
+      "gameX": 109,
+      "gameY": 20,
+      "imageX": 571,
+      "imageY": 155
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 3.3276661823618814,
+      "gameY": -3.3613439582365645,
+      "offset": 275.6662216994076
+    },
+    "imageY": {
+      "gameX": 1.1490707911643065,
+      "gameY": 1.1358718932076122,
+      "offset": 6.971891198122322
+    },
+    "rmsePixels": 0.5279784957551972,
+    "maxErrorPixels": 0.8811207905314555,
+    "pointErrorsPixels": [
+      0.7305103163958876,
+      0.8811207905314555,
+      0.19846634007523767,
+      0.12864107928038698,
+      0.16688281700260227
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.593350082958165,
+      1.419647009813599,
+      0.4903341928564513,
+      0.4285118439346822,
+      0.7729559421451976
+    ]
+  },
+  "contributors": [
+    "狐"
+  ]
+}

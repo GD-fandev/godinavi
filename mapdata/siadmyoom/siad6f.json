@@ -1,0 +1,25 @@
+{
+  "id": "siad6f",
+  "names": {
+    "ko": [
+      "샤드뮴동굴6"
+    ],
+    "ja": [
+      "シャドミュム洞窟6"
+    ],
+    "en": [
+      "Shadmum Cave 6"
+    ]
+  },
+  "image": "maps/siadmyoom/siad6F.jpg",
+  "images": {
+    "ko": "maps/siadmyoom/ko/siad6F.jpg",
+    "ja": "maps/siadmyoom/ja/siad6F.jpg"
+  },
+  "imageSize": {
+    "width": 482,
+    "height": 246
+  },
+  "controlPoints": [],
+  "transform": null
+}

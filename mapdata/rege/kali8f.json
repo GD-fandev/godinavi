@@ -1,0 +1,25 @@
+{
+  "id": "kali8f",
+  "names": {
+    "ko": [
+      "칼리지하동굴8층"
+    ],
+    "ja": [
+      "カリ地下洞窟8F"
+    ],
+    "en": [
+      "Kali B Cave 8F"
+    ]
+  },
+  "image": "maps/rege/kali8f.jpg",
+  "images": {
+    "ko": "maps/rege/ko/kali8f.jpg",
+    "ja": "maps/rege/ja/kali8f.jpg"
+  },
+  "imageSize": {
+    "width": 251,
+    "height": 213
+  },
+  "controlPoints": [],
+  "transform": null
+}

@@ -1,0 +1,94 @@
+{
+  "id": "rege2f",
+  "names": {
+    "ko": [
+      "레게지하동굴2층",
+      "칼리지하동굴2층"
+    ],
+    "ja": [
+      "レゲ地下洞窟2F",
+      "カリ地下洞窟2F"
+    ],
+    "en": [
+      "Rege B Cave 2F",
+      "Kali B Cave 2F"
+    ]
+  },
+  "image": "maps/rege/rege2f.jpg",
+  "images": {
+    "ko": "maps/rege/ko/rege2f.jpg",
+    "ja": "maps/rege/ja/rege2f.jpg"
+  },
+  "imageSize": {
+    "width": 490,
+    "height": 249
+  },
+  "controlPoints": [
+    {
+      "gameX": 13,
+      "gameY": 270,
+      "imageX": 32,
+      "imageY": 72
+    },
+    {
+      "gameX": 56,
+      "gameY": 256,
+      "imageX": 75,
+      "imageY": 83
+    },
+    {
+      "gameX": 148,
+      "gameY": 89,
+      "imageX": 271,
+      "imageY": 54
+    },
+    {
+      "gameX": 175,
+      "gameY": 71,
+      "imageX": 304,
+      "imageY": 58
+    },
+    {
+      "gameX": 274,
+      "gameY": 352,
+      "imageX": 166,
+      "imageY": 202
+    },
+    {
+      "gameX": 307,
+      "gameY": 305,
+      "imageX": 228,
+      "imageY": 197
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.7541795093418936,
+      "gameY": -0.7560313520205694,
+      "offset": 226.25557386232708
+    },
+    "imageY": {
+      "gameX": 0.37946371617661523,
+      "gameY": 0.38034759978084043,
+      "offset": -35.67083705758588
+    },
+    "rmsePixels": 0.5755466597191227,
+    "maxErrorPixels": 0.8186107082927696,
+    "pointErrorsPixels": [
+      0.08143918044725129,
+      0.07517458895186993,
+      0.5351408550723512,
+      0.6162943215637032,
+      0.7993261342257069,
+      0.8186107082927696
+    ],
+    "leaveOneOutErrorsPixels": [
+      0.2032960738316579,
+      0.12216324811430963,
+      0.9551900029208815,
+      1.3643312424506506,
+      1.647765039352376,
+      1.680985184347313
+    ]
+  }
+}

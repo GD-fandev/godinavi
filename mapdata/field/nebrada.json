@@ -1,0 +1,87 @@
+{
+  "id": "nebrada",
+  "names": {
+    "ko": [
+      "네브라다사막"
+    ],
+    "ja": [
+      "ネブラダ砂漠"
+    ],
+    "en": [
+      "Nebrada Desert"
+    ]
+  },
+  "image": "maps/field/nebrada.jpg",
+  "images": {
+    "ko": "maps/field/ko/nebrada.jpg",
+    "ja": "maps/field/ja/nebrada.jpg"
+  },
+  "imageSize": {
+    "width": 1120,
+    "height": 560
+  },
+  "controlPoints": [
+    {
+      "gameX": 232,
+      "gameY": 237,
+      "imageX": 630,
+      "imageY": 468
+    },
+    {
+      "gameX": 205,
+      "gameY": 241,
+      "imageX": 570,
+      "imageY": 446
+    },
+    {
+      "gameX": 16,
+      "gameY": 154,
+      "imageX": 368,
+      "imageY": 171
+    },
+    {
+      "gameX": 32,
+      "gameY": 141,
+      "imageX": 424,
+      "imageY": 172
+    },
+    {
+      "gameX": 32,
+      "gameY": 100,
+      "imageX": 511,
+      "imageY": 131
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.009387955785458,
+      "gameY": -2.0497430345322103,
+      "offset": 650.7144192011078
+    },
+    "imageY": {
+      "gameX": 0.9823986398262639,
+      "gameY": 1.0293658553075802,
+      "offset": -3.70729769473903
+    },
+    "rmsePixels": 1.3976524878092285,
+    "maxErrorPixels": 2.1820270449273553,
+    "pointErrorsPixels": [
+      1.1161778832778506,
+      1.3700237616615565,
+      0.9224932192368368,
+      2.1820270449273553,
+      1.01592738147388
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.759326224433237,
+      2.672282720410002,
+      3.0560571515974493,
+      3.2390784000060804,
+      9.46848168353298
+    ]
+  },
+  "worldMapPosition": {
+    "x": 521,
+    "y": 206
+  }
+}

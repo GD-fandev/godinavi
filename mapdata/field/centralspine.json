@@ -1,0 +1,87 @@
+{
+  "id": "centralspine",
+  "names": {
+    "ko": [
+      "중부등뼈산맥"
+    ],
+    "ja": [
+      "中部背骨山脈"
+    ],
+    "en": [
+      "Central Spine Mountains"
+    ]
+  },
+  "image": "maps/field/centralspine.jpg",
+  "images": {
+    "ko": "maps/field/ko/centralspine.jpg",
+    "ja": "maps/field/ja/centralspine.jpg"
+  },
+  "imageSize": {
+    "width": 1440,
+    "height": 720
+  },
+  "controlPoints": [
+    {
+      "gameX": 395,
+      "gameY": 167,
+      "imageX": 1099,
+      "imageY": 562
+    },
+    {
+      "gameX": 376,
+      "gameY": 146,
+      "imageX": 1100,
+      "imageY": 521
+    },
+    {
+      "gameX": 360,
+      "gameY": 118,
+      "imageX": 1125,
+      "imageY": 479
+    },
+    {
+      "gameX": 356,
+      "gameY": 140,
+      "imageX": 1074,
+      "imageY": 495
+    },
+    {
+      "gameX": 9,
+      "gameY": 113,
+      "imageX": 434,
+      "imageY": 122
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.9954149724956967,
+      "gameY": -1.9614049177215669,
+      "offset": 637.6920329735981
+    },
+    "imageY": {
+      "gameX": 1.0013874747311684,
+      "gameY": 0.9769339195536872,
+      "offset": 2.540307365489871
+    },
+    "rmsePixels": 1.0636308260646024,
+    "maxErrorPixels": 1.7468696636702719,
+    "pointErrorsPixels": [
+      1.0183502376593798,
+      1.7468696636702719,
+      0.7928604556348273,
+      0.9676306730466518,
+      0.055000189561075497
+    ],
+    "leaveOneOutErrorsPixels": [
+      3.6694264223288062,
+      2.362141731256535,
+      3.6969902424374683,
+      1.2628420638132467,
+      24.384665614025618
+    ]
+  },
+  "worldMapPosition": {
+    "x": 890,
+    "y": 178
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "echil4",
+  "names": {
+    "ko": [
+      "에칠린동굴4층"
+    ],
+    "ja": [
+      "エチリン洞窟4F"
+    ],
+    "en": [
+      "echilin cave 4F"
+    ]
+  },
+  "image": "maps/echil/echil4.jpg",
+  "images": {
+    "ko": "maps/echil/ko/echil4.jpg",
+    "ja": "maps/echil/ja/echil4.jpg"
+  },
+  "imageSize": {
+    "width": 545,
+    "height": 286
+  },
+  "controlPoints": [],
+  "transform": null
+}

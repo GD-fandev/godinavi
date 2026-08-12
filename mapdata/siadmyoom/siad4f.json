@@ -1,0 +1,86 @@
+{
+  "id": "siad4f",
+  "names": {
+    "ko": [
+      "샤드뮴동굴4"
+    ],
+    "ja": [
+      "シャドミュム洞窟4"
+    ],
+    "en": [
+      "Shadmum Cave 4"
+    ]
+  },
+  "image": "maps/siadmyoom/siad4F.jpg",
+  "images": {
+    "ko": "maps/siadmyoom/ko/siad4F.jpg",
+    "ja": "maps/siadmyoom/ja/siad4F.jpg"
+  },
+  "imageSize": {
+    "width": 469,
+    "height": 280
+  },
+  "controlPoints": [
+    {
+      "gameX": 75,
+      "gameY": 12,
+      "imageX": 446,
+      "imageY": 126
+    },
+    {
+      "gameX": 56,
+      "gameY": 4,
+      "imageX": 413,
+      "imageY": 87
+    },
+    {
+      "gameX": 9,
+      "gameY": 9,
+      "imageX": 264,
+      "imageY": 28
+    },
+    {
+      "gameX": 67,
+      "gameY": 119,
+      "imageX": 122,
+      "imageY": 268
+    },
+    {
+      "gameX": 36,
+      "gameY": 120,
+      "imageX": 32,
+      "imageY": 221
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.870418607631443,
+      "gameY": -2.7991960776202838,
+      "offset": 263.69520856746294
+    },
+    "imageY": {
+      "gameX": 1.4425567701419164,
+      "gameY": 1.4140639112585291,
+      "offset": 1.2291664566525817
+    },
+    "rmsePixels": 1.4620435679741817,
+    "maxErrorPixels": 2.057565686216161,
+    "pointErrorsPixels": [
+      0.727012223745622,
+      0.7110041517247359,
+      1.11323139118323,
+      2.057565686216161,
+      2.044730449868168
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.8083911402034538,
+      1.1718012024990978,
+      6.837509821566678,
+      4.90177724034305,
+      5.003681910847089
+    ]
+  },
+  "contributors": [
+    "狐"
+  ]
+}

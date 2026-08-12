@@ -1,0 +1,45 @@
+GODIMAP ASSET AND DATA NOTICE
+
+The MIT License in LICENSE.txt applies to original GODIMAP source code owned by
+GD-fandev. It does not automatically apply to every file in this repository or
+distribution.
+
+The following materials are excluded from the GODIMAP MIT license unless their
+respective rights holders expressly state otherwise:
+
+  - Godius names, trademarks, images, map artwork, icons, and other
+    game-related material;
+  - map images and other material derived from or based on official game
+    website content;
+  - third-party icons, fonts, and visual assets;
+  - OCR models and third-party software components.
+
+Rights in game-related material remain with their respective rights holders.
+Third-party software and OCR models are governed by their own licenses. See
+THIRD_PARTY_NOTICES.txt and the third_party directory for details. In the
+end-user distribution, those license files are placed in third_party_licenses.
+
+The presence of game-related material does not imply official endorsement,
+authorization, or affiliation.
+
+-------------------------------------------------------------------------------
+
+GODIMAP 素材・データに関する注意
+
+LICENSE.txtのMIT Licenseは、GD-fandevが権利を有するGODIMAP独自のソース
+コードに適用されます。リポジトリおよび配布物に含まれるすべてのファイルへ
+自動的に適用されるものではありません。
+
+各権利者が別途明示しない限り、次の素材はGODIMAPのMIT License対象外です。
+
+  - Godiusに関する名称、商標、画像、地図、アイコン等のゲーム関連素材
+  - ゲーム公式サイトの内容を基にした地図画像その他の素材
+  - 第三者が権利を有するアイコン、フォント、画像素材
+  - OCRモデルおよび第三者ソフトウェア
+
+ゲーム関連素材の権利は、それぞれの権利者に帰属します。第三者ソフトウェアと
+OCRモデルには各ライセンスが適用されます。詳細はTHIRD_PARTY_NOTICES.txtと
+third_partyをご確認ください。エンドユーザー向け配布物では、同じライセンス文を
+third_party_licensesに収録しています。
+
+ゲーム関連素材の収録は、公式な承認、許可、提携を意味するものではありません。

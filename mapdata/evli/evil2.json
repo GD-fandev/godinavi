@@ -1,0 +1,25 @@
+{
+  "id": "evil2",
+  "names": {
+    "ko": [
+      "에블린동굴2"
+    ],
+    "ja": [
+      "エブリン洞窟2F"
+    ],
+    "en": [
+      "Evelyn Cave 2F"
+    ]
+  },
+  "image": "maps/evli/evil2.jpg",
+  "images": {
+    "ko": "maps/evli/ko/evil2.jpg",
+    "ja": "maps/evli/ja/evil2.jpg"
+  },
+  "imageSize": {
+    "width": 583,
+    "height": 292
+  },
+  "controlPoints": [],
+  "transform": null
+}

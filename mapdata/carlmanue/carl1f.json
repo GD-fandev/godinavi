@@ -1,0 +1,25 @@
+{
+  "id": "carl1f",
+  "names": {
+    "ko": [
+      "카를마뉴동굴1"
+    ],
+    "ja": [
+      "カールマーニュ洞窟1"
+    ],
+    "en": [
+      "Karlmannu Cave 1"
+    ]
+  },
+  "image": "maps/carlmanue/carl1F.jpg",
+  "images": {
+    "ko": "maps/carlmanue/ko/carl1F.jpg",
+    "ja": "maps/carlmanue/ja/carl1F.jpg"
+  },
+  "imageSize": {
+    "width": 525,
+    "height": 288
+  },
+  "controlPoints": [],
+  "transform": null
+}

@@ -1,0 +1,15 @@
+Pillow>=12.0
+dxcam>=0.3
+opencv-python>=4.9
+numpy>=2.0
+rapidocr==3.9.2
+onnxruntime>=1.28
+pyinstaller>=6.0
+pystray>=0.19
+winrt-runtime>=3.2
+winrt-Windows.Foundation>=3.2
+winrt-Windows.Foundation.Collections>=3.2
+winrt-Windows.Globalization>=3.2
+winrt-Windows.Graphics.Imaging>=3.2
+winrt-Windows.Media.Ocr>=3.2
+winrt-Windows.Storage.Streams>=3.2

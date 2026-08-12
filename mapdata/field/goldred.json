@@ -1,0 +1,103 @@
+{
+  "id": "goldred",
+  "names": {
+    "ko": [
+      "골드레드반도"
+    ],
+    "ja": [
+      "ゴールドレッド半島"
+    ],
+    "en": [
+      "Goldred Peninsula"
+    ]
+  },
+  "image": "maps/field/goldred.jpg",
+  "images": {
+    "ko": "maps/field/ko/goldred.jpg",
+    "ja": "maps/field/ja/goldred.jpg"
+  },
+  "imageSize": {
+    "width": 1920,
+    "height": 960
+  },
+  "controlPoints": [
+    {
+      "gameX": 395,
+      "gameY": 386,
+      "imageX": 1141,
+      "imageY": 779
+    },
+    {
+      "gameX": 393,
+      "gameY": 364,
+      "imageX": 1183,
+      "imageY": 758
+    },
+    {
+      "gameX": 389,
+      "gameY": 298,
+      "imageX": 1302,
+      "imageY": 687
+    },
+    {
+      "gameX": 332,
+      "gameY": 264,
+      "imageX": 1252,
+      "imageY": 604
+    },
+    {
+      "gameX": 344,
+      "gameY": 261,
+      "imageX": 1287,
+      "imageY": 606
+    },
+    {
+      "gameX": 242,
+      "gameY": 252,
+      "imageX": 1101,
+      "imageY": 495
+    },
+    {
+      "gameX": 363,
+      "gameY": 468,
+      "imageX": 913,
+      "imageY": 831
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.000671763560896,
+      "gameY": -1.9777056271658315,
+      "offset": 1113.7468297512241
+    },
+    "imageY": {
+      "gameX": 0.996258254935703,
+      "gameY": 0.9828791069230877,
+      "offset": 8.207916741914415
+    },
+    "rmsePixels": 3.2748459448687743,
+    "maxErrorPixels": 6.761301934711405,
+    "pointErrorsPixels": [
+      2.155418538419069,
+      2.9162627149689935,
+      1.7744278005033856,
+      6.761301934711405,
+      1.885924334479296,
+      2.473856877984193,
+      1.8388632684957669
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.952737815862677,
+      3.8505241353896005,
+      2.7717013052131647,
+      8.974780070485568,
+      2.618692566032921,
+      14.433444650159895,
+      8.08210903703073
+    ]
+  },
+  "worldMapPosition": {
+    "x": 206,
+    "y": 95
+  }
+}

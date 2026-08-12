@@ -1,0 +1,107 @@
+{
+  "id": "eback3f",
+  "names": {
+    "ko": [
+      "동부등뼈동굴3"
+    ],
+    "ja": [
+      "東部背骨洞窟3"
+    ],
+    "en": [
+      "East spine cave 3"
+    ]
+  },
+  "image": "maps/ebackbone/eback3F.jpg",
+  "images": {
+    "ko": "maps/ebackbone/ko/eback3F.jpg",
+    "ja": "maps/ebackbone/ja/eback3F.jpg"
+  },
+  "imageSize": {
+    "width": 533,
+    "height": 295
+  },
+  "controlPoints": [
+    {
+      "gameX": 218,
+      "gameY": 195,
+      "imageX": 279,
+      "imageY": 250
+    },
+    {
+      "gameX": 196,
+      "gameY": 156,
+      "imageX": 299,
+      "imageY": 214
+    },
+    {
+      "gameX": 183,
+      "gameY": 126,
+      "imageX": 319,
+      "imageY": 189
+    },
+    {
+      "gameX": 179,
+      "gameY": 72,
+      "imageX": 380,
+      "imageY": 151
+    },
+    {
+      "gameX": 205,
+      "gameY": 22,
+      "imageX": 474,
+      "imageY": 137
+    },
+    {
+      "gameX": 223,
+      "gameY": 132,
+      "imageX": 362,
+      "imageY": 216
+    },
+    {
+      "gameX": 121,
+      "gameY": 5,
+      "imageX": 390,
+      "imageY": 74
+    },
+    {
+      "gameX": 44,
+      "gameY": 20,
+      "imageX": 277,
+      "imageY": 36
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.2384332334958479,
+      "gameY": -1.2195123757910626,
+      "offset": 246.5487391150126
+    },
+    "imageY": {
+      "gameX": 0.6194424745540128,
+      "gameY": 0.6146005136024373,
+      "offset": -3.555740195877136
+    },
+    "rmsePixels": 0.9044202782927715,
+    "maxErrorPixels": 1.8343764130167692,
+    "pointErrorsPixels": [
+      1.3585113928852957,
+      0.2699833396034123,
+      1.8343764130167692,
+      0.7146293258784147,
+      0.4046760900738647,
+      0.38911870668346143,
+      0.5582789387631363,
+      0.3505434819849825
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.4198636185315654,
+      0.36153128564023695,
+      2.193304907138722,
+      0.8497189895215207,
+      1.0773713809904806,
+      0.5056249651734886,
+      0.8377165815162693,
+      1.7282769110186553
+    ]
+  }
+}

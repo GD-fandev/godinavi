@@ -1,0 +1,25 @@
+{
+  "id": "hell7f",
+  "names": {
+    "ko": [
+      "헬 7층"
+    ],
+    "ja": [
+      "ヘル7F"
+    ],
+    "en": [
+      "hell 7F"
+    ]
+  },
+  "image": "maps/hell/hell7F.jpg",
+  "images": {
+    "ko": "maps/hell/ko/hell7F.jpg",
+    "ja": "maps/hell/ja/hell7F.jpg"
+  },
+  "imageSize": {
+    "width": 548,
+    "height": 292
+  },
+  "controlPoints": [],
+  "transform": null
+}

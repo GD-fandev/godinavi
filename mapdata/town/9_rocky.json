@@ -1,0 +1,83 @@
+{
+  "id": "9_rocky",
+  "names": {
+    "ko": [
+      "록키"
+    ],
+    "ja": [
+      "ロッキー"
+    ],
+    "en": [
+      "rocky"
+    ]
+  },
+  "image": "maps/town/9_rocky.png",
+  "images": {
+    "ko": "maps/town/ko/9_rocky.png",
+    "ja": "maps/town/ja/9_rocky.png"
+  },
+  "imageSize": {
+    "width": 640,
+    "height": 320
+  },
+  "controlPoints": [
+    {
+      "gameX": 26,
+      "gameY": 28,
+      "imageX": 313,
+      "imageY": 110
+    },
+    {
+      "gameX": 19,
+      "gameY": 40,
+      "imageX": 239,
+      "imageY": 119
+    },
+    {
+      "gameX": 13,
+      "gameY": 47,
+      "imageX": 187,
+      "imageY": 121
+    },
+    {
+      "gameX": 7,
+      "gameY": 54,
+      "imageX": 136,
+      "imageY": 123
+    },
+    {
+      "gameX": 58,
+      "gameY": 24,
+      "imageX": 459,
+      "imageY": 167
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 4.080121412766765,
+      "gameY": -3.8315322771735674,
+      "offset": 314.32615914483733
+    },
+    "imageY": {
+      "gameX": 2.034810221633366,
+      "gameY": 1.9855025547408736,
+      "offset": 1.303269934821512
+    },
+    "rmsePixels": 0.3217150068874762,
+    "maxErrorPixels": 0.5643311933025809,
+    "pointErrorsPixels": [
+      0.23456966085307654,
+      0.5643311933025809,
+      0.295254062062712,
+      0.23644463668313764,
+      0.03048080338917049
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.4956583061118387,
+      0.7412167684568189,
+      0.42857794997807347,
+      0.6058883072808922,
+      11.510066094861614
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "id": "rege1f",
+  "names": {
+    "ko": [
+      "레게지하동굴1층",
+      "칼리지하동굴1층"
+    ],
+    "ja": [
+      "レゲ地下洞窟1F",
+      "カリ地下洞窟1F"
+    ],
+    "en": [
+      "Rege B Cave 1F",
+      "Kali B Cave 1F"
+    ]
+  },
+  "image": "maps/rege/rege1f.jpg",
+  "images": {
+    "ko": "maps/rege/ko/rege1f.jpg",
+    "ja": "maps/rege/ja/rege1f.jpg"
+  },
+  "imageSize": {
+    "width": 463,
+    "height": 240
+  },
+  "controlPoints": [
+    {
+      "gameX": 104,
+      "gameY": 326,
+      "imageX": 55,
+      "imageY": 165
+    },
+    {
+      "gameX": 115,
+      "gameY": 297,
+      "imageX": 94,
+      "imageY": 155
+    },
+    {
+      "gameX": 158,
+      "gameY": 30,
+      "imageX": 380,
+      "imageY": 53
+    },
+    {
+      "gameX": 189,
+      "gameY": 75,
+      "imageX": 370,
+      "imageY": 86
+    },
+    {
+      "gameX": 223,
+      "gameY": 80,
+      "imageX": 393,
+      "imageY": 107
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.9204154408959018,
+      "gameY": -0.9301021681005734,
+      "offset": 263.46295379167947
+    },
+    "imageY": {
+      "gameX": 0.4703158934131046,
+      "gameY": 0.4637091814396398,
+      "offset": -35.95125170123365
+    },
+    "rmsePixels": 1.7814130089315499,
+    "maxErrorPixels": 2.8990759725332684
+  }
+}

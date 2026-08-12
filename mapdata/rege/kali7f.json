@@ -1,0 +1,25 @@
+{
+  "id": "kali7f",
+  "names": {
+    "ko": [
+      "칼리지하동굴7층"
+    ],
+    "ja": [
+      "カリ地下洞窟7F"
+    ],
+    "en": [
+      "Kali B Cave 7F"
+    ]
+  },
+  "image": "maps/rege/kali7f.jpg",
+  "images": {
+    "ko": "maps/rege/ko/kali7f.jpg",
+    "ja": "maps/rege/ja/kali7f.jpg"
+  },
+  "imageSize": {
+    "width": 251,
+    "height": 213
+  },
+  "controlPoints": [],
+  "transform": null
+}
