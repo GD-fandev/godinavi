@@ -246,17 +246,23 @@ class OverlayDock:
             self.button_frame.pack(fill="both", expand=True, side="top")
 
     def _item_state(self, item: DockItem):
+        alert = None
+        if item.alert is not None:
+            try:
+                alert = str(item.alert() or "")
+            except Exception:
+                alert = ""
         if item.badge is not None:
             try:
-                return str(item.badge())
+                return str(item.badge()), alert
             except Exception:
-                return ""
+                return "", alert
         if item.state is None:
-            return None
+            return None, alert
         try:
-            return bool(item.state())
+            return bool(item.state()), alert
         except Exception:
-            return False
+            return False, alert
 
     def _load_icon(self, item: DockItem, state=None):
         if not item.icon_path:
@@ -269,8 +275,11 @@ class OverlayDock:
         try:
             with Image.open(item.icon_path) as source:
                 normal = source.convert("RGB").resize((icon_width, icon_height), Image.Resampling.LANCZOS)
-            if state is not None:
-                self._draw_state_badge(normal, state)
+            base_state, alert = state if isinstance(state, tuple) else (state, "")
+            if base_state is not None:
+                self._draw_state_badge(normal, base_state)
+            if alert:
+                self._draw_alert_badge(normal, alert)
             hover = ImageEnhance.Brightness(normal).enhance(1.16)
             images = ImageTk.PhotoImage(normal), ImageTk.PhotoImage(hover)
             self.icon_cache[cache_key] = images
@@ -309,6 +318,23 @@ class OverlayDock:
         draw.rounded_rectangle((left, top, right, bottom), radius=3, fill=fill, outline=outline, width=1)
         draw.text((left + pad_x, top + pad_y - text_box[1]), label, font=font, fill="#ffffff")
 
+    def _draw_alert_badge(self, image: Image.Image, label: str):
+        draw = ImageDraw.Draw(image)
+        size = max(15, round(18 * self.icon_scale))
+        right = image.width - max(2, round(3 * self.icon_scale))
+        top = max(2, round(3 * self.icon_scale))
+        left = right - size
+        bottom = top + size
+        try:
+            font = ImageFont.truetype("arialbd.ttf", max(10, round(12 * self.icon_scale)))
+        except OSError:
+            font = ImageFont.load_default()
+        draw.ellipse((left, top, right, bottom), fill="#a52d33", outline="#ffd1d1", width=1)
+        box = draw.textbbox((0, 0), label, font=font)
+        x = left + (size - (box[2] - box[0])) / 2
+        y = top + (size - (box[3] - box[1])) / 2 - box[1]
+        draw.text((x, y), label, font=font, fill="#ffffff")
+
     def _invoke_primary(self, item: DockItem):
         item.primary()
         self.root.after_idle(lambda: self._refresh_state_badges(schedule_next=False))
@@ -316,7 +342,7 @@ class OverlayDock:
     def _refresh_state_badges(self, schedule_next=True):
         try:
             for item in self.items:
-                if item.state is None and item.badge is None:
+                if item.state is None and item.badge is None and item.alert is None:
                     continue
                 button = self.item_buttons.get(item.key)
                 if button is None:
@@ -508,7 +534,7 @@ class OverlayDock:
         actions = list(item.quick_actions)
         resolved_labels = [
             action.label() if callable(action.label) else action.label
-            for action in actions[:FLYOUT_ROWS]
+            for action in actions
         ]
         label_font = tkfont.Font(family="Malgun Gothic", size=9)
         header_font = tkfont.Font(family="Malgun Gothic", size=9, weight="bold")
@@ -519,7 +545,7 @@ class OverlayDock:
         # Keep the compact Korean baseline, but let longer localized labels
         # determine the actual menu width instead of clipping them.
         panel_width = max(FLYOUT_WIDTH, widest_text + 42)
-        visible_rows = FLYOUT_ROWS if actions else 0
+        visible_rows = len(actions)
         panel_height = FLYOUT_HEADER_HEIGHT + FLYOUT_ROW_HEIGHT * visible_rows + 16
         panel = tk.Frame(flyout, bg=BG, width=panel_width, height=panel_height, padx=5, pady=5)
         panel.pack(padx=1, pady=1)
@@ -530,7 +556,7 @@ class OverlayDock:
             panel, text=item.label, bg=BG, fg=GOLD,
             anchor="center", font=("Malgun Gothic", 9, "bold"),
         ).grid(row=0, column=0, sticky="nsew")
-        displayed_actions = actions[:FLYOUT_ROWS] + [None] * max(0, FLYOUT_ROWS - len(actions)) if actions else []
+        displayed_actions = actions
         for row, action in enumerate(displayed_actions, start=1):
             panel.grid_rowconfigure(row, minsize=FLYOUT_ROW_HEIGHT)
             if action is None:

@@ -21,7 +21,6 @@ docs/
 source/map_calibrator.py
 source/contributor_editor.py
 source/build_map_update.py
-source/map_updater.py
 source/publish_map_update.py
 packaging/GODINAVI_CALIBRATOR.spec
 tools/build_godinavi_calibrator.bat
@@ -30,8 +29,6 @@ tools/run_contributor_editor.bat
 tools/publish_map_update.bat
 tools/map_marker_editor.html
 tools/setup_github_cli.ps1
-map-version.json
-update/
 
 # Locally generated GitHub Release assets
 release/

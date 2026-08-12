@@ -24,3 +24,4 @@ class DockItem:
     state: Callable[[], bool] | None = None
     secondary: Action | None = None
     badge: Callable[[], str] | None = None
+    alert: Callable[[], str] | None = None

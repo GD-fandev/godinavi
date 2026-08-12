@@ -10,12 +10,13 @@ try:
 except ImportError:
     pystray = None
 
-from map_engine import CONFIG_PATH, MapEngine, save_config
+from map_engine import CONFIG_PATH, RESOURCE_DIR, MapEngine, save_config
 
 from .actions import DockItem, QuickAction
 from .buff_timer_engine import BuffTimerApp, default_buff_config
 from .dock import OverlayDock
 from .durability_monitor import DurabilityMonitor, default_durability_config
+from .map_update_ui import MapUpdateUI
 from .window_attachment import attach_above, client_screen_rect, find_godius_window, is_minimized
 
 
@@ -40,6 +41,7 @@ DOCK_TEXTS = {
         "buff": "버프 타이머", "buff_region": "버프 인식 영역 편집", "buff_toggle": "타이머 표시/숨김", "buff_size": "버프 창 조정",
         "durability": "내구도 감시", "durability_settings": "내구도 감시 설정", "durability_toggle": "내구도 감시 On/Off",
         "settings": "기타 설정", "button_ui": "버튼 UI 설정", "orientation": "가로/세로 전환", "quit": "종료",
+        "map_update": "지도 데이터 업데이트", "map_update_available": "지도 업데이트 가능 ↓",
     },
     "JP": {
         "map": "地図", "map_adjust": "地図の位置・サイズ調整", "ocr_edit": "OCR領域を編集", "world_map": "ワールドマップを開く (F10)",
@@ -47,6 +49,7 @@ DOCK_TEXTS = {
         "buff": "バフタイマー", "buff_region": "バフ認識領域を編集", "buff_toggle": "タイマー 表示/非表示", "buff_size": "バフ画面調整",
         "durability": "耐久度監視", "durability_settings": "耐久度監視設定", "durability_toggle": "耐久度監視 On/Off",
         "settings": "設定", "button_ui": "ボタンUI設定", "orientation": "横/縦を切替", "quit": "終了",
+        "map_update": "マップデータ更新", "map_update_available": "マップ更新あり ↓",
     },
     "EN": {
         "map": "Map", "map_adjust": "Adjust map position/size", "ocr_edit": "Edit OCR region", "world_map": "Open world map (F10)",
@@ -54,6 +57,7 @@ DOCK_TEXTS = {
         "buff": "Buff Timer", "buff_region": "Edit buff detection region", "buff_toggle": "Show/hide timer", "buff_size": "Adjust buff window",
         "durability": "Durability Monitor", "durability_settings": "Durability settings", "durability_toggle": "Durability monitor On/Off",
         "settings": "Settings", "button_ui": "Button UI settings", "orientation": "Switch horizontal/vertical", "quit": "Quit",
+        "map_update": "Map data update", "map_update_available": "Map update available ↓",
     },
 }
 
@@ -64,6 +68,7 @@ class PrototypeApp:
         self.root.withdraw()
         self.tray_icon = None
         self.dock: OverlayDock | None = None
+        self.map_update_ui: MapUpdateUI | None = None
         new_install = not CONFIG_PATH.exists()
         self.map_engine: MapEngine | None = MapEngine(
             master=self.root,
@@ -127,8 +132,16 @@ class PrototypeApp:
             initial_collapsed=self.map_engine.config.get("dock_collapsed", False),
             initial_ui_language=self.map_engine.ui_language,
         )
+        self.map_update_ui = MapUpdateUI(
+            self.root,
+            RESOURCE_DIR,
+            lambda: self.map_engine.ui_language if self.map_engine else "EN",
+            self._map_update_state_changed,
+            self._map_update_installed,
+        )
         self._start_tray_icon()
         self.root.after(100, self._follow_godius)
+        self.root.after(3000, lambda: self.map_update_ui.check(False) if self.map_update_ui else None)
 
     def _start_tray_icon(self):
         if pystray is None:
@@ -156,6 +169,21 @@ class PrototypeApp:
     def message(self, text: str, duration: int = 1600):
         if self.dock:
             self.dock.set_message(text, duration)
+
+    def open_map_update(self):
+        if self.map_update_ui:
+            self.map_update_ui.open()
+            if self.map_update_ui.state in ("idle", "latest", "installed", "error"):
+                self.map_update_ui.check(False)
+
+    def _map_update_state_changed(self):
+        if self.dock:
+            self.items = self._create_items()
+            self.dock.set_items(self.items)
+
+    def _map_update_installed(self):
+        if self.map_engine:
+            self.map_engine.reload_map_database_if_changed()
 
     def placeholder(self, feature: str):
         return lambda: self.message(f"{feature} · 기존 엔진 연결 예정")
@@ -356,12 +384,21 @@ class PrototypeApp:
 
     def _create_items(self) -> list[DockItem]:
         texts = DOCK_TEXTS[self.map_engine.ui_language if self.map_engine else "KR"]
+        update_available = bool(self.map_update_ui and self.map_update_ui.update_available)
+        map_actions = [
+            QuickAction(texts["map_adjust"], self.toggle_map_adjustment),
+            QuickAction(texts["ocr_edit"], self.toggle_map_calibration),
+            QuickAction(texts["world_map"], self.toggle_world_map),
+        ]
+        if update_available:
+            map_actions.append(QuickAction(texts["map_update_available"], self.open_map_update))
         return [
             DockItem(
                 "map", "🗺", texts["map"], self.toggle_minimap,
-                (QuickAction(texts["map_adjust"], self.toggle_map_adjustment), QuickAction(texts["ocr_edit"], self.toggle_map_calibration), QuickAction(texts["world_map"], self.toggle_world_map)),
+                tuple(map_actions),
                 str(ICON_DIR / "map.jpg"),
                 state=lambda: bool(self.map_engine and self.map_engine.minimap_enabled),
+                alert=lambda: "↓" if self.map_update_ui and self.map_update_ui.update_available else "",
             ),
             DockItem(
                 "portal", "◈", texts["portal"], self.toggle_portal_bar,
@@ -392,6 +429,7 @@ class PrototypeApp:
                     QuickAction(self.current_language_name, self.cycle_language),
                     QuickAction(texts["button_ui"], lambda: self.dock.toggle_lock() if self.dock else None),
                     QuickAction(texts["orientation"], lambda: self.dock.toggle_orientation() if self.dock else None),
+                    QuickAction(texts["map_update"], self.open_map_update),
                 ),
                 str(ICON_DIR / "settings.jpg"),
                 badge=lambda: self.map_engine.ui_language if self.map_engine else "KR",
