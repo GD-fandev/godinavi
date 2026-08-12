@@ -10,7 +10,7 @@ try:
 except ImportError:
     pystray = None
 
-from map_engine import CONFIG_PATH, RESOURCE_DIR, MapEngine, save_config
+from map_engine import BUNDLE_DIR, CONFIG_PATH, RESOURCE_DIR, MapEngine, save_config
 
 from .actions import DockItem, QuickAction
 from .app_update_ui import AppUpdateUI
@@ -21,7 +21,7 @@ from .map_update_ui import MapUpdateUI
 from .window_attachment import attach_above, client_screen_rect, find_godius_window, is_minimized
 
 
-ICON_DIR = Path(__file__).resolve().parents[2] / "assets" / "icons" / "godinavi"
+ICON_DIR = BUNDLE_DIR / "assets" / "icons" / "godinavi"
 
 try:
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("GD-fandev.GodiNavi")
