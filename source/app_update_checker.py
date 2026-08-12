@@ -9,6 +9,9 @@ import certifi
 APP_VERSION = "1.1.0"
 LATEST_RELEASE_API = "https://api.github.com/repos/GD-fandev/godinavi/releases/latest"
 USER_AGENT = "GodiNavi-VersionChecker/1.0"
+RELEASE_DOWNLOAD_PREFIX = "https://github.com/GD-fandev/godinavi/releases/download/"
+EXE_ASSET_NAME = "GodiNavi.exe"
+CHECKSUM_ASSET_NAME = "GodiNavi.exe.sha256"
 
 
 def version_tuple(value):
@@ -33,8 +36,38 @@ def fetch_latest_release(timeout=15):
         raise ValueError("Invalid release version.")
     if not url.startswith("https://github.com/GD-fandev/godinavi/releases/"):
         raise ValueError("Invalid release URL.")
-    return {"version": tag.lstrip("v"), "url": url}
+    assets = {str(item.get("name", "")): item for item in data.get("assets", []) if isinstance(item, dict)}
+    exe = assets.get(EXE_ASSET_NAME, {})
+    checksum = assets.get(CHECKSUM_ASSET_NAME, {})
+    exe_url = str(exe.get("browser_download_url", ""))
+    checksum_url = str(checksum.get("browser_download_url", ""))
+    if exe_url and not exe_url.startswith(RELEASE_DOWNLOAD_PREFIX):
+        raise ValueError("Invalid executable download URL.")
+    if checksum_url and not checksum_url.startswith(RELEASE_DOWNLOAD_PREFIX):
+        raise ValueError("Invalid checksum download URL.")
+    return {
+        "version": tag.lstrip("v"),
+        "url": url,
+        "body": str(data.get("body", "")),
+        "exe_url": exe_url,
+        "checksum_url": checksum_url,
+        "size": int(exe.get("size", 0) or 0),
+    }
 
 
 def is_newer_version(latest, current=APP_VERSION):
     return version_tuple(latest) > version_tuple(current)
+
+
+def extract_patch_notes(body, language):
+    text = str(body or "").replace("\r\n", "\n")
+    code = language if language in ("KR", "JP", "EN") else "EN"
+    sections = {}
+    marker = re.compile(r"<!--\s*(KR|JP|EN)\s*-->", re.IGNORECASE)
+    matches = list(marker.finditer(text))
+    for index, match in enumerate(matches):
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+        sections[match.group(1).upper()] = text[match.end():end].strip()
+    if sections:
+        return sections.get(code) or sections.get("EN") or next(iter(sections.values()))
+    return text.strip()

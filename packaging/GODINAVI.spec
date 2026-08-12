@@ -59,5 +59,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=[os.path.join(ASSET_DIR, 'Godius_104.ico')],
+    icon=[os.path.join(ASSET_DIR, 'Godius_104.png')],
 )

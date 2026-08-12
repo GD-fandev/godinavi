@@ -12,6 +12,11 @@ if not exist ".venv\Scripts\python.exe" (
 if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 call ".venv\Scripts\python.exe" -m PyInstaller --noconfirm --clean --distpath "%OUTPUT_DIR%" "packaging\GODINAVI.spec"
 if errorlevel 1 goto :failed
+call ".venv\Scripts\python.exe" -m PyInstaller --noconfirm --clean --distpath "%OUTPUT_DIR%" "packaging\GODINAVI_UPDATER.spec"
+if errorlevel 1 goto :failed
+
+for /f %%H in ('powershell -NoProfile -Command "(Get-FileHash -Algorithm SHA256 '%OUTPUT_DIR%\GodiNavi.exe').Hash.ToLower()"') do echo %%H  GodiNavi.exe>"%OUTPUT_DIR%\GodiNavi.exe.sha256"
+if not exist "%OUTPUT_DIR%\GodiNavi.exe.sha256" goto :failed
 
 for %%D in (maps mapdata ocr_models) do (
   if exist "%OUTPUT_DIR%\%%D" rmdir /s /q "%OUTPUT_DIR%\%%D"

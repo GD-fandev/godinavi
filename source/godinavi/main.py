@@ -13,6 +13,7 @@ except ImportError:
 from map_engine import CONFIG_PATH, RESOURCE_DIR, MapEngine, save_config
 
 from .actions import DockItem, QuickAction
+from .app_update_ui import AppUpdateUI
 from .buff_timer_engine import BuffTimerApp, default_buff_config
 from .dock import OverlayDock
 from .durability_monitor import DurabilityMonitor, default_durability_config
@@ -21,6 +22,11 @@ from .window_attachment import attach_above, client_screen_rect, find_godius_win
 
 
 ICON_DIR = Path(__file__).resolve().parents[2] / "assets" / "icons" / "godinavi"
+
+try:
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("GD-fandev.GodiNavi")
+except Exception:
+    pass
 
 
 def onboarding_required(config_exists: bool, config: dict) -> bool:
@@ -42,6 +48,7 @@ DOCK_TEXTS = {
         "durability": "내구도 감시", "durability_settings": "내구도 감시 설정", "durability_toggle": "내구도 감시 On/Off",
         "settings": "기타 설정", "button_ui": "버튼 UI 설정", "orientation": "가로/세로 전환", "quit": "종료",
         "map_update": "지도 데이터 업데이트", "map_update_available": "지도 업데이트 가능 ↓",
+        "app_update": "GodiNavi 업데이트", "app_update_available": "GodiNavi 업데이트 가능 ↓",
     },
     "JP": {
         "map": "地図", "map_adjust": "地図の位置・サイズ調整", "ocr_edit": "OCR領域を編集", "world_map": "ワールドマップを開く (F10)",
@@ -50,6 +57,7 @@ DOCK_TEXTS = {
         "durability": "耐久度監視", "durability_settings": "耐久度監視設定", "durability_toggle": "耐久度監視 On/Off",
         "settings": "設定", "button_ui": "ボタンUI設定", "orientation": "横/縦を切替", "quit": "終了",
         "map_update": "マップデータ更新", "map_update_available": "マップ更新あり ↓",
+        "app_update": "GodiNaviアップデート", "app_update_available": "GodiNavi更新あり ↓",
     },
     "EN": {
         "map": "Map", "map_adjust": "Adjust map position/size", "ocr_edit": "Edit OCR region", "world_map": "Open world map (F10)",
@@ -58,6 +66,7 @@ DOCK_TEXTS = {
         "durability": "Durability Monitor", "durability_settings": "Durability settings", "durability_toggle": "Durability monitor On/Off",
         "settings": "Settings", "button_ui": "Button UI settings", "orientation": "Switch horizontal/vertical", "quit": "Quit",
         "map_update": "Map data update", "map_update_available": "Map update available ↓",
+        "app_update": "GodiNavi update", "app_update_available": "GodiNavi update available ↓",
     },
 }
 
@@ -69,6 +78,7 @@ class PrototypeApp:
         self.tray_icon = None
         self.dock: OverlayDock | None = None
         self.map_update_ui: MapUpdateUI | None = None
+        self.app_update_ui: AppUpdateUI | None = None
         new_install = not CONFIG_PATH.exists()
         self.map_engine: MapEngine | None = MapEngine(
             master=self.root,
@@ -139,9 +149,17 @@ class PrototypeApp:
             self._map_update_state_changed,
             self._map_update_installed,
         )
+        self.app_update_ui = AppUpdateUI(
+            self.root,
+            RESOURCE_DIR,
+            lambda: self.map_engine.ui_language if self.map_engine else "EN",
+            self._app_update_state_changed,
+            self.shutdown,
+        )
         self._start_tray_icon()
         self.root.after(100, self._follow_godius)
         self.root.after(3000, lambda: self.map_update_ui.check(False) if self.map_update_ui else None)
+        self.root.after(4500, lambda: self.app_update_ui.check(False) if self.app_update_ui else None)
 
     def _start_tray_icon(self):
         if pystray is None:
@@ -184,6 +202,17 @@ class PrototypeApp:
     def _map_update_installed(self):
         if self.map_engine:
             self.map_engine.reload_map_database_if_changed()
+
+    def open_app_update(self):
+        if self.app_update_ui:
+            self.app_update_ui.open()
+            if self.app_update_ui.state in ("idle", "latest", "error", "missing"):
+                self.app_update_ui.check(False)
+
+    def _app_update_state_changed(self):
+        if self.dock:
+            self.items = self._create_items()
+            self.dock.set_items(self.items)
 
     def placeholder(self, feature: str):
         return lambda: self.message(f"{feature} · 기존 엔진 연결 예정")
@@ -430,9 +459,14 @@ class PrototypeApp:
                     QuickAction(texts["button_ui"], lambda: self.dock.toggle_lock() if self.dock else None),
                     QuickAction(texts["orientation"], lambda: self.dock.toggle_orientation() if self.dock else None),
                     QuickAction(texts["map_update"], self.open_map_update),
+                    QuickAction(
+                        texts["app_update_available"] if self.app_update_ui and self.app_update_ui.update_available else texts["app_update"],
+                        self.open_app_update,
+                    ),
                 ),
                 str(ICON_DIR / "settings.jpg"),
                 badge=lambda: self.map_engine.ui_language if self.map_engine else "KR",
+                alert=lambda: "↓" if self.app_update_ui and self.app_update_ui.update_available else "",
             ),
             DockItem(
                 "quit", "🚪", texts["quit"], self.shutdown,
