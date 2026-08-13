@@ -200,7 +200,7 @@ class AppUpdateUI:
         win.overrideredirect(True)
         win.configure(bg="#17130f")
         win.geometry("560x560")
-        win.minsize(500, 460)
+        win.minsize(500, 420)
         win.transient(self.root)
         frame = tk.Frame(win, bg="#17130f", padx=10, pady=10, highlightbackground="#d8b15a", highlightthickness=1)
         frame.pack(fill="both", expand=True)
@@ -220,6 +220,19 @@ class AppUpdateUI:
             self.labels[key].pack(side="left", fill="x", expand=True)
         self.labels["status"] = tk.Label(frame, bg="#17130f", fg="#f1e5c7", anchor="w", justify="left", pady=9, font=("Malgun Gothic", 9))
         self.labels["status"].pack(fill="x")
+        # Reserve the action area before the expandable patch-note body.  Tk's
+        # packer may otherwise clip widgets packed after an expanding Text when
+        # the game client is shorter than the requested dialog height.
+        buttons = tk.Frame(frame, bg="#17130f")
+        buttons.pack(side="bottom", fill="x")
+        self.labels["release"] = tk.Label(buttons, bg="#17130f", fg="#72b7e8", cursor="hand2", font=("Malgun Gothic", 8, "underline"))
+        self.labels["release"].pack(side="left"); self.labels["release"].bind("<Button-1>", lambda _e: self._open_release())
+        self.primary_button = tk.Button(buttons, relief="flat", bg="#6b5537", fg="#fff1c9", activebackground="#806846", activeforeground="#ffffff", padx=14, pady=6, font=("Malgun Gothic", 9, "bold"))
+        self.primary_button.pack(side="right")
+        self.secondary_button = tk.Button(buttons, command=self.close, relief="flat", bg="#2a2118", fg="#f1e5c7", activebackground="#443422", activeforeground="#ffffff", padx=14, pady=6, font=("Malgun Gothic", 9))
+        self.secondary_button.pack(side="right", padx=(0, 7))
+        self.progress_canvas = tk.Canvas(frame, height=14, bg="#2a2118", highlightthickness=1, highlightbackground="#5a4932")
+        self.progress_canvas.pack(side="bottom", fill="x", pady=(10, 8))
         self.labels["notes_name"] = tk.Label(frame, bg="#17130f", fg="#e9bd55", anchor="w", font=("Malgun Gothic", 10, "bold"))
         self.labels["notes_name"].pack(fill="x", pady=(2, 5))
         notes_frame = tk.Frame(frame, bg="#2a2118")
@@ -229,15 +242,6 @@ class AppUpdateUI:
         self.notes = tk.Text(notes_frame, bg="#211a14", fg="#f1e5c7", insertbackground="#f1e5c7", relief="flat", wrap="word", padx=10, pady=8, font=("Malgun Gothic", 9), yscrollcommand=scroll.set)
         self.notes.pack(fill="both", expand=True); scroll.configure(command=self.notes.yview)
         self.notes.configure(state="disabled")
-        self.progress_canvas = tk.Canvas(frame, height=14, bg="#2a2118", highlightthickness=1, highlightbackground="#5a4932")
-        self.progress_canvas.pack(fill="x", pady=(10, 8))
-        buttons = tk.Frame(frame, bg="#17130f"); buttons.pack(fill="x")
-        self.labels["release"] = tk.Label(buttons, bg="#17130f", fg="#72b7e8", cursor="hand2", font=("Malgun Gothic", 8, "underline"))
-        self.labels["release"].pack(side="left"); self.labels["release"].bind("<Button-1>", lambda _e: self._open_release())
-        self.primary_button = tk.Button(buttons, relief="flat", bg="#6b5537", fg="#fff1c9", activebackground="#806846", activeforeground="#ffffff", padx=14, pady=6, font=("Malgun Gothic", 9, "bold"))
-        self.primary_button.pack(side="right")
-        self.secondary_button = tk.Button(buttons, command=self.close, relief="flat", bg="#2a2118", fg="#f1e5c7", activebackground="#443422", activeforeground="#ffffff", padx=14, pady=6, font=("Malgun Gothic", 9))
-        self.secondary_button.pack(side="right", padx=(0, 7))
         self._center_window()
         self._refresh()
 
@@ -247,6 +251,8 @@ class AppUpdateUI:
         rect = self.target_rect_provider() if self.target_rect_provider else None
         if rect:
             left, top, right, bottom = rect
+            width = min(width, max(500, right - left - 24))
+            height = min(height, max(420, bottom - top - 24))
             x, y = left + (right - left - width) // 2, top + (bottom - top - height) // 2
         else:
             x, y = (self.window.winfo_screenwidth() - width) // 2, (self.window.winfo_screenheight() - height) // 2
