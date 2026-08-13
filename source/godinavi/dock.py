@@ -547,7 +547,10 @@ class OverlayDock:
         # determine the actual menu width instead of clipping them.
         panel_width = max(FLYOUT_WIDTH, widest_text + 42)
         visible_rows = len(actions)
-        panel_height = FLYOUT_HEADER_HEIGHT + FLYOUT_ROW_HEIGHT * visible_rows + 16
+        # Each grid row also has one pixel of vertical padding on both sides.
+        # Include it in the fixed panel height so menus with four or more
+        # actions do not clip their final row at the bottom border.
+        panel_height = FLYOUT_HEADER_HEIGHT + (FLYOUT_ROW_HEIGHT + 2) * visible_rows + 16
         panel = tk.Frame(flyout, bg=BG, width=panel_width, height=panel_height, padx=5, pady=5)
         panel.pack(padx=1, pady=1)
         panel.grid_propagate(False)
