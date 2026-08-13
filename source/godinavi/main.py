@@ -10,7 +10,9 @@ try:
 except ImportError:
     pystray = None
 
-from map_engine import BUNDLE_DIR, CONFIG_PATH, RESOURCE_DIR, MapEngine, save_config
+from app_update_checker import APP_VERSION
+from map_engine import BUNDLE_DIR, CONFIG_PATH, RESOURCE_DIR, MapEngine, load_config, save_config
+from map_updater import load_local_version
 
 from .actions import DockItem, QuickAction
 from .app_update_ui import AppUpdateUI
@@ -70,12 +72,46 @@ DOCK_TEXTS = {
     },
 }
 
+SYSTEM_TEXTS = {
+    "KR": {
+        "exit": "종료",
+        "map_version": "지도 버전: {version}",
+        "client_version": "클라이언트 버전: {version}",
+        "missing_title": "가디우스 연결 안내",
+        "missing_message": "가디우스 윈도우를 찾을 수 없습니다.",
+        "already_running": "이미 가디내비가 실행 중입니다.",
+    },
+    "JP": {
+        "exit": "終了",
+        "map_version": "マップバージョン: {version}",
+        "client_version": "クライアントバージョン: {version}",
+        "missing_title": "ガディウス接続案内",
+        "missing_message": "ガディウスのウィンドウが見つかりません。",
+        "already_running": "ガディナビはすでに実行中です。",
+    },
+    "EN": {
+        "exit": "Exit",
+        "map_version": "Map version: {version}",
+        "client_version": "Client version: {version}",
+        "missing_title": "Godius connection",
+        "missing_message": "The Godius window could not be found.",
+        "already_running": "GodiNavi is already running.",
+    },
+}
+
+
+def system_texts(language: str) -> dict:
+    return SYSTEM_TEXTS.get(language, SYSTEM_TEXTS["EN"])
+
 
 class PrototypeApp:
     def __init__(self):
         self.root = tk.Tk()
         self.root.withdraw()
         self.tray_icon = None
+        self.missing_client_window = None
+        self.missing_client_labels = {}
+        self.missing_client_drag_origin = None
         self.dock: OverlayDock | None = None
         self.map_update_ui: MapUpdateUI | None = None
         self.app_update_ui: AppUpdateUI | None = None
@@ -174,7 +210,8 @@ class PrototypeApp:
         except OSError:
             return
         language = self.map_engine.ui_language if self.map_engine else "KR"
-        exit_label = {"KR": "종료", "JP": "終了", "EN": "Exit"}.get(language, "Exit")
+        texts = system_texts(language)
+        map_version = load_local_version(RESOURCE_DIR)
 
         def request_exit(_icon=None, _item=None):
             try:
@@ -184,9 +221,93 @@ class PrototypeApp:
 
         self.tray_icon = pystray.Icon(
             "GodiNavi", image, "GodiNavi",
-            menu=pystray.Menu(pystray.MenuItem(exit_label, request_exit)),
+            menu=pystray.Menu(
+                pystray.MenuItem(texts["map_version"].format(version=map_version), None, enabled=False),
+                pystray.MenuItem(texts["client_version"].format(version=APP_VERSION), None, enabled=False),
+                pystray.Menu.SEPARATOR,
+                pystray.MenuItem(texts["exit"], request_exit),
+            ),
         )
         self.tray_icon.run_detached()
+
+    def _restart_tray_icon(self):
+        if self.tray_icon is not None:
+            self.tray_icon.stop()
+            self.tray_icon = None
+        self._start_tray_icon()
+
+    def _show_missing_client(self):
+        language = self.map_engine.ui_language if self.map_engine else "EN"
+        texts = system_texts(language)
+        if self.missing_client_window and self.missing_client_window.winfo_exists():
+            self.missing_client_labels["title"].configure(text=texts["missing_title"])
+            self.missing_client_labels["message"].configure(text=texts["missing_message"])
+            self.missing_client_labels["exit"].configure(text=texts["exit"])
+            if not self.missing_client_window.winfo_viewable():
+                self.missing_client_window.deiconify()
+            return
+
+        win = tk.Toplevel(self.root)
+        self.missing_client_window = win
+        win.overrideredirect(True)
+        win.configure(bg="#17130f")
+        win.attributes("-topmost", True)
+        frame = tk.Frame(
+            win,
+            bg="#17130f",
+            padx=12,
+            pady=12,
+            highlightbackground="#d8b15a",
+            highlightthickness=1,
+        )
+        frame.pack(fill="both", expand=True)
+        header = tk.Frame(frame, bg="#5a4932")
+        header.pack(fill="x", pady=(0, 12))
+        title = tk.Label(
+            header, text=texts["missing_title"], bg="#5a4932", fg="#ffe09a",
+            anchor="w", padx=12, pady=9, font=("Malgun Gothic", 13, "bold"),
+        )
+        title.pack(fill="x")
+        message = tk.Label(
+            frame, text=texts["missing_message"], bg="#17130f", fg="#f1e5c7",
+            anchor="center", justify="center", padx=24, pady=22,
+            font=("Malgun Gothic", 11),
+        )
+        message.pack(fill="both", expand=True)
+        exit_button = tk.Button(
+            frame, text=texts["exit"], command=self.shutdown, relief="flat",
+            bg="#6b5537", fg="#fff1c9", activebackground="#806846",
+            activeforeground="#ffffff", pady=8, font=("Malgun Gothic", 10, "bold"),
+        )
+        exit_button.pack(fill="x")
+        self.missing_client_labels = {"title": title, "message": message, "exit": exit_button}
+
+        def start_drag(event):
+            self.missing_client_drag_origin = (
+                event.x_root, event.y_root, win.winfo_x(), win.winfo_y()
+            )
+
+        def drag(event):
+            if not self.missing_client_drag_origin:
+                return
+            sx, sy, wx, wy = self.missing_client_drag_origin
+            win.geometry(f"+{wx + event.x_root - sx}+{wy + event.y_root - sy}")
+
+        for widget in (header, title):
+            widget.bind("<ButtonPress-1>", start_drag)
+            widget.bind("<B1-Motion>", drag)
+        win.update_idletasks()
+        width = max(420, win.winfo_reqwidth())
+        height = max(210, win.winfo_reqheight())
+        x = max(0, (win.winfo_screenwidth() - width) // 2)
+        y = max(0, (win.winfo_screenheight() - height) // 2)
+        win.geometry(f"{width}x{height}+{x}+{y}")
+        win.lift()
+        win.after(250, lambda: win.attributes("-topmost", False) if win.winfo_exists() else None)
+
+    def _hide_missing_client(self):
+        if self.missing_client_window and self.missing_client_window.winfo_exists():
+            self.missing_client_window.withdraw()
 
     def message(self, text: str, duration: int = 1600):
         if self.dock:
@@ -206,6 +327,7 @@ class PrototypeApp:
     def _map_update_installed(self):
         if self.map_engine:
             self.map_engine.reload_map_database_if_changed()
+        self._restart_tray_icon()
 
     def open_app_update(self):
         if self.app_update_ui:
@@ -283,10 +405,7 @@ class PrototypeApp:
             self.dock.set_ui_language(self.map_engine.ui_language)
             self.items = self._create_items()
             self.dock.set_items(self.items)
-        if self.tray_icon is not None:
-            self.tray_icon.stop()
-            self.tray_icon = None
-            self._start_tray_icon()
+        self._restart_tray_icon()
         language_name = {"KR": "한국어", "JP": "日本語", "EN": "English"}[self.map_engine.ui_language]
         self.message(f"언어: {language_name}")
 
@@ -523,10 +642,16 @@ class PrototypeApp:
             self.client_rect = None
 
         rect = client_screen_rect(self.target_hwnd)
-        if not rect or is_minimized(self.target_hwnd):
+        if self.target_hwnd is None or not rect:
+            self._show_missing_client()
+            if self.root.winfo_viewable():
+                self.root.withdraw()
+        elif is_minimized(self.target_hwnd):
+            self._hide_missing_client()
             if self.root.winfo_viewable():
                 self.root.withdraw()
         else:
+            self._hide_missing_client()
             self.client_rect = rect
             self.root.update_idletasks()
             left, top, right, bottom = rect
@@ -563,7 +688,10 @@ def main():
     kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
     mutex = kernel32.CreateMutexW(None, False, "Local\\GodiNavi.SingleInstance")
     if not mutex or ctypes.get_last_error() == 183:
-        ctypes.windll.user32.MessageBoxW(None, "GodiNavi is already running.", "GodiNavi", 0x40)
+        language = load_config().get("ui_language", "EN")
+        ctypes.windll.user32.MessageBoxW(
+            None, system_texts(language)["already_running"], "GodiNavi", 0x40
+        )
         return
     try:
         PrototypeApp().run()
