@@ -29,11 +29,75 @@ DOCK_EDIT_TEXTS = {
     "EN": "⠿  Move area · Drag  |  Mouse wheel · Resize",
 }
 
+DOCK_EDIT_COLLAPSED_TEXTS = {
+    "KR": "⠿  이동 영역 · 드래그\n마우스 휠 · 크기 조절",
+    "JP": "⠿  移動エリア · ドラッグ\nマウスホイール · サイズ調整",
+    "EN": "⠿  Move area · Drag\nMouse wheel · Resize",
+}
+
+DOCK_EDIT_COLLAPSED_VERTICAL_TEXTS = {
+    "KR": "이  크\n동  기\n·  ·\n드  휠\n래    \n그    ",
+    "JP": "移  サ\n動  イ\n·  ズ\nド  ·\nラ  ホ\nッ  イ\nグ  ｜\n    ル",
+    "EN": "M  S\nO  I\nV  Z\nE  E\n·  ·\nD  W\nR  H\nA  E\nG  E\n   L",
+}
+
 DOCK_EDIT_VERTICAL_TEXTS = {
     "KR": "⠿\n이\n동\n·\n드\n래\n그\n\n크\n기\n·\n휠",
-    "JP": "⠿\n移\n動\n・\nド\nラ\nッ\nグ\n\nサ\nイ\nズ\n・\nホ\nイ\nー\nル",
+    "JP": "⠿\n移\n動\n・\nド\nラ\nッ\nグ\n\nサ\nイ\nズ\n・\nホ\nイ\n｜\nル",
     "EN": "⠿\nM\nO\nV\nE\n\nS\nI\nZ\nE\n·\nW\nH\nE\nE\nL",
 }
+
+
+def collapse_edge_for_position(
+    orientation: str,
+    client_rect: tuple[int, int, int, int],
+    bar_rect: tuple[int, int, int, int],
+    current_edge: str,
+) -> str:
+    left, top, right, bottom = client_rect
+    bar_left, bar_top, bar_right, bar_bottom = bar_rect
+    if orientation == "horizontal":
+        center = (left + right) / 2
+        bar_center = (bar_left + bar_right) / 2
+        dead_zone = max(1, (right - left) * 0.05)
+        return "right" if bar_center < center - dead_zone else "left" if bar_center > center + dead_zone else current_edge
+    center = (top + bottom) / 2
+    bar_center = (bar_top + bar_bottom) / 2
+    dead_zone = max(1, (bottom - top) * 0.05)
+    return "bottom" if bar_center < center - dead_zone else "top" if bar_center > center + dead_zone else current_edge
+
+
+def vertical_flyout_position(
+    owner_rect: tuple[int, int, int, int],
+    flyout_size: tuple[int, int],
+    client_rect: tuple[int, int, int, int],
+    gap: int = 6,
+) -> tuple[int, int]:
+    owner_left, owner_top, owner_right, owner_bottom = owner_rect
+    flyout_width, flyout_height = flyout_size
+    client_left, client_top, client_right, client_bottom = client_rect
+    owner_center = (owner_left + owner_right) / 2
+    client_center = (client_left + client_right) / 2
+    left_x = owner_left - flyout_width - gap
+    right_x = owner_right + gap
+    prefer_right = owner_center <= client_center
+    preferred = right_x if prefer_right else left_x
+    alternate = left_x if prefer_right else right_x
+    preferred_fits = client_left <= preferred and preferred + flyout_width <= client_right
+    alternate_fits = client_left <= alternate and alternate + flyout_width <= client_right
+    x = preferred if preferred_fits or not alternate_fits else alternate
+    x = (
+        client_left
+        if flyout_width >= client_right - client_left
+        else max(client_left, min(x, client_right - flyout_width))
+    )
+    y = owner_top + ((owner_bottom - owner_top) - flyout_height) // 2
+    y = (
+        client_top
+        if flyout_height >= client_bottom - client_top
+        else max(client_top, min(y, client_bottom - flyout_height))
+    )
+    return round(x), round(y)
 
 
 class OverlayDock:
@@ -47,9 +111,11 @@ class OverlayDock:
         on_moved: Callable[[int, int], None] | None = None,
         on_scale_changed: Callable[[float], None] | None = None,
         on_collapsed_changed: Callable[[bool], None] | None = None,
+        client_rect_provider: Callable[[], tuple[int, int, int, int] | None] | None = None,
         initial_orientation: str = "horizontal",
         initial_icon_scale: float = 1.0,
         initial_collapsed: bool = False,
+        initial_collapse_edge: str | None = None,
         initial_ui_language: str = "KR",
     ):
         self.root = root
@@ -58,10 +124,13 @@ class OverlayDock:
         self.on_moved = on_moved
         self.on_scale_changed = on_scale_changed
         self.on_collapsed_changed = on_collapsed_changed
+        self.client_rect_provider = client_rect_provider
         self.orientation = initial_orientation if initial_orientation in ("horizontal", "vertical") else "horizontal"
         self.icon_scale = max(MIN_ICON_SCALE, min(MAX_ICON_SCALE, float(initial_icon_scale)))
         self.locked = True
         self.collapsed = bool(initial_collapsed)
+        valid_edges = ("left", "right") if self.orientation == "horizontal" else ("top", "bottom")
+        self.collapse_edge = initial_collapse_edge if initial_collapse_edge in valid_edges else valid_edges[0]
         self.ui_language = initial_ui_language if initial_ui_language in DOCK_EDIT_TEXTS else "KR"
         self.drag_origin: tuple[int, int, int, int] | None = None
         self.hide_job: str | None = None
@@ -70,6 +139,7 @@ class OverlayDock:
         self.icon_cache: dict[tuple[str, int, int, bool | str | None], tuple[ImageTk.PhotoImage, ImageTk.PhotoImage]] = {}
         self.item_buttons: dict[str, tk.Button] = {}
         self.collapse_handle: tk.Canvas | None = None
+        self.restoring_anchor = False
 
         root.title("GodiNavi")
         root.overrideredirect(True)
@@ -127,7 +197,9 @@ class OverlayDock:
         self.item_buttons.clear()
         side = "left" if self.orientation == "horizontal" else "top"
         icon_width, icon_height = self.icon_size()
-        self._build_collapse_handle(side, icon_width, icon_height)
+        handle_first = self.collapse_edge in ("left", "top")
+        if handle_first:
+            self._build_collapse_handle(side, icon_width, icon_height)
         for item in self._visible_items():
             state = self._item_state(item)
             normal_icon, hover_icon = self._load_icon(item, state)
@@ -159,6 +231,8 @@ class OverlayDock:
             button.bind("<Leave>", lambda event, owner=button: self._button_leave(event, owner))
             button.bind("<Button-3>", lambda _event, current=item: self._run_settings(current))
             button.bind("<MouseWheel>", self._mousewheel_scale)
+        if not handle_first:
+            self._build_collapse_handle(side, icon_width, icon_height)
 
     def _visible_items(self):
         if not self.collapsed:
@@ -190,31 +264,46 @@ class OverlayDock:
         width = int(handle.cget("width"))
         height = int(handle.cget("height"))
         if self.orientation == "horizontal":
-            if self.collapsed:
-                points = (width * 0.65, height * 0.38, width * 0.65, height * 0.62, width * 0.28, height * 0.50)
-            else:
+            points_right = self.collapsed != (self.collapse_edge == "left")
+            if points_right:
                 points = (width * 0.35, height * 0.38, width * 0.35, height * 0.62, width * 0.72, height * 0.50)
-        else:
-            if self.collapsed:
-                points = (width * 0.38, height * 0.65, width * 0.62, height * 0.65, width * 0.50, height * 0.28)
             else:
+                points = (width * 0.65, height * 0.38, width * 0.65, height * 0.62, width * 0.28, height * 0.50)
+        else:
+            points_down = self.collapsed != (self.collapse_edge == "top")
+            if points_down:
                 points = (width * 0.38, height * 0.35, width * 0.62, height * 0.35, width * 0.50, height * 0.72)
+            else:
+                points = (width * 0.38, height * 0.65, width * 0.62, height * 0.65, width * 0.50, height * 0.28)
         handle.create_polygon(*points, fill=TEXT, outline=GOLD)
 
     def toggle_collapsed(self):
-        quit_button = self.item_buttons.get("quit")
         self.root.update_idletasks()
-        anchor = (
-            (quit_button.winfo_rootx(), quit_button.winfo_rooty())
-            if quit_button is not None
-            else self._button_anchor()
-        )
+        anchor = self._outer_anchor()
         self.collapsed = not self.collapsed
         self._destroy_flyout()
         self._build_buttons()
-        self._restore_widget_anchor(anchor, self.item_buttons.get("quit"))
+        if not self.locked:
+            self._layout_unlocked()
+        self._restore_outer_anchor(anchor)
         if self.on_collapsed_changed:
             self.on_collapsed_changed(self.collapsed)
+
+    def update_collapse_edge(self, client_rect: tuple[int, int, int, int] | None):
+        """Put the fold handle toward the game center and keep edge changes stable."""
+        if not client_rect:
+            return
+        desired = collapse_edge_for_position(
+            self.orientation, client_rect, self.button_bar_screen_rect(), self.collapse_edge
+        )
+        if desired == self.collapse_edge:
+            return
+        anchor = self._outer_anchor()
+        self.collapse_edge = desired
+        self._build_buttons()
+        if not self.locked:
+            self._layout_unlocked()
+        self._restore_outer_anchor(anchor)
 
     def set_items(self, items: list[DockItem]):
         self._destroy_flyout()
@@ -227,11 +316,22 @@ class OverlayDock:
 
     def _configure_drag_handle(self):
         vertical = self.orientation == "vertical"
+        collapsed_horizontal = self.collapsed and not vertical
+        collapsed_vertical = self.collapsed and vertical
         self.drag_handle.configure(
-            text=(DOCK_EDIT_VERTICAL_TEXTS if vertical else DOCK_EDIT_TEXTS)[self.ui_language],
-            padx=6 if vertical else 16,
-            pady=8,
+            text=(
+                DOCK_EDIT_COLLAPSED_VERTICAL_TEXTS[self.ui_language]
+                if collapsed_vertical
+                else DOCK_EDIT_VERTICAL_TEXTS[self.ui_language]
+                if vertical
+                else DOCK_EDIT_COLLAPSED_TEXTS[self.ui_language]
+                if collapsed_horizontal
+                else DOCK_EDIT_TEXTS[self.ui_language]
+            ),
+            padx=5 if collapsed_vertical else 6 if vertical else 8 if collapsed_horizontal else 16,
+            pady=5 if self.collapsed else 8,
             justify="center",
+            font=("MS Gothic", 9, "bold") if collapsed_vertical else ("Malgun Gothic", 9, "bold"),
         )
 
     def _layout_unlocked(self):
@@ -400,6 +500,7 @@ class OverlayDock:
     def toggle_orientation(self):
         anchor = self._button_anchor()
         self.orientation = "vertical" if self.orientation == "horizontal" else "horizontal"
+        self.collapse_edge = "top" if self.orientation == "vertical" else "left"
         self._build_buttons()
         if not self.locked:
             self._layout_unlocked()
@@ -504,6 +605,32 @@ class OverlayDock:
         self.root.update_idletasks()
         if self.on_moved:
             self.on_moved(new_x, new_y)
+
+    def _outer_anchor(self) -> tuple[str, int]:
+        left, top, right, bottom = self.button_bar_screen_rect()
+        if self.orientation == "horizontal":
+            return ("left", left) if self.collapse_edge == "right" else ("right", right)
+        return ("top", top) if self.collapse_edge == "bottom" else ("bottom", bottom)
+
+    def _restore_outer_anchor(self, anchor: tuple[str, int]):
+        self.root.update_idletasks()
+        left, top, right, bottom = self.button_bar_screen_rect()
+        edge, position = anchor
+        current = {"left": left, "right": right, "top": top, "bottom": bottom}[edge]
+        delta = position - current
+        x = self.root.winfo_x() + (delta if edge in ("left", "right") else 0)
+        y = self.root.winfo_y() + (delta if edge in ("top", "bottom") else 0)
+        self.restoring_anchor = True
+        try:
+            self.root.geometry(f"+{x}+{y}")
+            self.root.update_idletasks()
+        finally:
+            self.restoring_anchor = False
+        # Collapsing changes the bar's top-left coordinate even though its
+        # outer edge stays fixed. Persist that adjusted coordinate before the
+        # client-follow loop can restore the pre-collapse offset.
+        if self.on_moved:
+            self.on_moved(x, y)
 
     def _button_enter(self, item: DockItem, button: tk.Button):
         button.configure(bg=PANEL_HOVER, fg="#fff7df")
@@ -610,10 +737,21 @@ class OverlayDock:
             below_y = owner.winfo_rooty() + owner.winfo_height() + 6
             y = above_y if above_y >= 4 else below_y
         else:
-            left_x = owner.winfo_rootx() - flyout_width - 6
-            right_x = owner.winfo_rootx() + owner.winfo_width() + 6
-            x = left_x if left_x >= 4 else right_x
-            y = owner.winfo_rooty() + (owner.winfo_height() - flyout_height) // 2
+            owner_rect = (
+                owner.winfo_rootx(), owner.winfo_rooty(),
+                owner.winfo_rootx() + owner.winfo_width(),
+                owner.winfo_rooty() + owner.winfo_height(),
+            )
+            client_rect = self.client_rect_provider() if self.client_rect_provider else None
+            if client_rect:
+                x, y = vertical_flyout_position(
+                    owner_rect, (flyout_width, flyout_height), client_rect
+                )
+            else:
+                left_x = owner.winfo_rootx() - flyout_width - 6
+                right_x = owner.winfo_rootx() + owner.winfo_width() + 6
+                x = left_x if left_x >= 4 else right_x
+                y = owner.winfo_rooty() + (owner.winfo_height() - flyout_height) // 2
         x = max(4, min(x, screen_width - flyout_width - 4))
         y = max(4, min(y, screen_height - flyout_height - 4))
         flyout.geometry(f"+{x}+{y}")

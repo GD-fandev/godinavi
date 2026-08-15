@@ -565,15 +565,19 @@ def keep_topmost(window):
     user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW)
 
 
-def show_above_owner(window, owner_hwnd):
+def show_above_owner(window, owner_hwnd, x=None, y=None):
     if not window.winfo_viewable():
         window.deiconify()
     hwnd = user32.GetAncestor(window.winfo_id(), GA_ROOT) or window.winfo_id()
     if owner_hwnd:
         user32.SetWindowLongPtrW(hwnd, GWLP_HWNDPARENT, owner_hwnd)
     user32.ShowWindow(hwnd, SW_SHOWNOACTIVATE)
-    user32.SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW)
-    user32.SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW)
+    flags = SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW
+    if x is None or y is None:
+        x = y = 0
+        flags |= SWP_NOMOVE
+    user32.SetWindowPos(hwnd, HWND_NOTOPMOST, int(x), int(y), 0, 0, flags)
+    user32.SetWindowPos(hwnd, HWND_TOP, int(x), int(y), 0, 0, flags)
 
 
 def show_interactive_above_owner(window, owner_hwnd):
@@ -584,7 +588,8 @@ def show_interactive_above_owner(window, owner_hwnd):
     hwnd = user32.GetAncestor(window.winfo_id(), GA_ROOT) or window.winfo_id()
     if owner_hwnd:
         user32.SetWindowLongPtrW(hwnd, GWLP_HWNDPARENT, owner_hwnd)
-    user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW)
+    user32.SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW)
+    user32.SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW)
     window.lift()
     window.focus_force()
     user32.SetForegroundWindow(hwnd)
@@ -1143,6 +1148,10 @@ class MapEngine:
         if hasattr(self, "favorite_dialog") and self.favorite_dialog.winfo_exists():
             target = self.find_target()
             if target:
+                client = self.get_stable_client_rect()
+                offset = getattr(self, "favorite_dialog_offset", None)
+                if client and offset:
+                    self.favorite_dialog.geometry(f"+{client[0] + offset[0]}+{client[1] + offset[1]}")
                 show_interactive_above_owner(self.favorite_dialog, target)
             return
         texts = FAVORITE_TEXTS[self.ui_language]
@@ -1496,6 +1505,7 @@ class MapEngine:
         dialog_drag = {"start": None, "origin": None}
 
         def start_dialog_drag(event):
+            self.favorite_dialog_dragging = True
             dialog_drag["start"] = (event.x_root, event.y_root)
             dialog_drag["origin"] = (window.winfo_x(), window.winfo_y())
 
@@ -1516,12 +1526,20 @@ class MapEngine:
         def stop_dialog_drag(_event):
             dialog_drag["start"] = None
             dialog_drag["origin"] = None
+            self.favorite_dialog_dragging = False
+            current_client = self.get_stable_client_rect()
+            if current_client:
+                self.favorite_dialog_offset = (
+                    window.winfo_x() - current_client[0], window.winfo_y() - current_client[1]
+                )
 
         for drag_widget in (header, title_label):
             drag_widget.bind("<ButtonPress-1>", start_dialog_drag)
             drag_widget.bind("<B1-Motion>", move_dialog)
             drag_widget.bind("<ButtonRelease-1>", stop_dialog_drag)
         show_interactive_above_owner(window, target)
+        self.favorite_dialog_offset = (x - left, y - top)
+        self.favorite_dialog_dragging = False
 
     def create_favorite_overlay(self):
         win = tk.Toplevel(self.root)
@@ -2643,7 +2661,7 @@ class MapEngine:
     def create_region_window(self, kind):
         win = tk.Toplevel(self.root)
         win.overrideredirect(True)
-        win.attributes("-topmost", True)
+        win.attributes("-topmost", False)
         win.attributes("-alpha", 0.62)
         win.configure(bg="#ff00ff")
         win.wm_attributes("-transparentcolor", "#ff00ff")
@@ -2673,7 +2691,7 @@ class MapEngine:
     def create_ocr_guide_window(self):
         win = tk.Toplevel(self.root)
         win.overrideredirect(True)
-        win.attributes("-topmost", True)
+        win.attributes("-topmost", False)
         win.configure(bg="#d8b15a")
         panel = tk.Frame(win, bg="#2a2118")
         panel.pack(fill="both", expand=True, padx=2, pady=2)
@@ -2745,8 +2763,10 @@ class MapEngine:
         if not self.ocr_guide_drag_origin:
             return
         self.ocr_guide_drag_origin = None
-        self.config["ocr_guide_x"] = self.ocr_guide_window.winfo_x()
-        self.config["ocr_guide_y"] = self.ocr_guide_window.winfo_y()
+        client = self.get_stable_client_rect()
+        if client:
+            self.config["ocr_guide_offset_x"] = self.ocr_guide_window.winfo_x() - client[0]
+            self.config["ocr_guide_offset_y"] = self.ocr_guide_window.winfo_y() - client[1]
         save_config(self.config)
 
     def show_ocr_guide(self):
@@ -2755,13 +2775,19 @@ class MapEngine:
         win = self.ocr_guide_window
         self.ocr_guide_text_label.configure(text=self.ocr_guide_text())
         win.update_idletasks()
-        x = self.config.get("ocr_guide_x")
-        y = self.config.get("ocr_guide_y")
-        if x is None or y is None:
-            x = max(0, (win.winfo_screenwidth() - win.winfo_reqwidth()) // 2)
-            y = max(0, (win.winfo_screenheight() - win.winfo_reqheight()) // 3)
+        client = self.get_stable_client_rect()
+        if not client or not self.target_hwnd:
+            win.withdraw()
+            return
+        left, top, right, bottom = client
+        offset_x = self.config.get("ocr_guide_offset_x")
+        offset_y = self.config.get("ocr_guide_offset_y")
+        if offset_x is None or offset_y is None:
+            offset_x = max(0, (right - left - win.winfo_reqwidth()) // 2)
+            offset_y = max(0, (bottom - top - win.winfo_reqheight()) // 3)
+        x, y = left + int(offset_x), top + int(offset_y)
         win.geometry(f"+{int(x)}+{int(y)}")
-        keep_topmost(win)
+        show_above_owner(win, self.target_hwnd, x, y)
 
     def hide_ocr_guide(self):
         if self.ocr_guide_window:
@@ -2836,6 +2862,11 @@ class MapEngine:
         raw = get_client_screen_rect(self.target_hwnd)
         if not raw:
             return self.stable_client_rect
+        if self.calibration_mode:
+            self.stable_client_rect = raw
+            self.pending_client_rect = None
+            self.pending_client_rect_hits = 0
+            return raw
         if self.stable_client_rect is None:
             self.stable_client_rect = raw
             return raw
@@ -2939,7 +2970,7 @@ class MapEngine:
             self.update_region_windows()
 
     def update_region_windows(self):
-        if self.calibration_mode and self.ocr_guide_window and not self.ocr_guide_window.winfo_viewable():
+        if self.calibration_mode and self.ocr_guide_window and not self.ocr_guide_drag_origin:
             self.show_ocr_guide()
         self.update_region_window("name", self.region_window)
         self.update_region_window("coordinates", self.coordinate_region_window)
@@ -2963,8 +2994,7 @@ class MapEngine:
         x = width - handle - 2
         y = height - handle - 2
         canvas.create_oval(x, y, x + handle, y + handle, fill="white", outline=color, width=2)
-        region_window.deiconify()
-        keep_topmost(region_window)
+        show_above_owner(region_window, self.target_hwnd, left, top)
 
     def region_press(self, event, kind):
         region_window = self.coordinate_region_window if kind == "coordinates" else self.region_window
@@ -3297,6 +3327,20 @@ class MapEngine:
                 show_above_owner(self.favorite_window, self.target_hwnd)
         elif self.favorite_window.winfo_viewable():
             self.favorite_window.withdraw()
+
+        if (
+            hasattr(self, "favorite_dialog")
+            and self.favorite_dialog.winfo_exists()
+            and self.favorite_dialog.winfo_viewable()
+            and self.target_hwnd
+            and not getattr(self, "favorite_dialog_dragging", False)
+        ):
+            client = self.get_stable_client_rect()
+            offset = getattr(self, "favorite_dialog_offset", None)
+            if client and offset:
+                x, y = client[0] + offset[0], client[1] + offset[1]
+                self.favorite_dialog.geometry(f"+{x}+{y}")
+                show_above_owner(self.favorite_dialog, self.target_hwnd)
 
         if self.calibration_mode:
             self.update_region_windows()

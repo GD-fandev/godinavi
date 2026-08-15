@@ -34,7 +34,7 @@ def calibration_ping_expansions(now: float) -> tuple[int, int, int]:
     phase = int(now * 24) % 24
     return tuple((phase + offset) % 24 for offset in (0, 8, 16))
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.1"
 DEFAULT_BUFF_CONFIG_JSON = r'''{
   "process_name": "Godius.exe",
   "window_title": "Godius Client",
@@ -387,8 +387,11 @@ class BuffTimerApp:
         self.calibration_ping_until = 0.0
         self.calibration_guide_window = None
         self.calibration_guide_image = None
+        self.calibration_bad_guide_images = []
         self.calibration_guide_text_label = None
         self.calibration_guide_confirm_button = None
+        self.calibration_correct_title = None
+        self.calibration_wrong_title = None
         self.calibration_guide_drag_origin = None
         self.timer_resize_mode = False
         self.timer_resize_drag_origin = None
@@ -499,10 +502,18 @@ class BuffTimerApp:
 
     def calibration_guide_text(self):
         return {
-            "KR": "빨간 박스를 예시 이미지처럼 맞춰주세요.\n넘패드 + -로 크기조절이 가능합니다.\n세팅이 완료되면 아래 버튼으로 확정해주세요.\n버프 창의 위치·크기 조절은 좌측 하단 메인 아이콘에서 할 수 있습니다.",
-            "JP": "赤い枠を見本画像のように合わせてください。\nテンキーの＋／－でサイズを調整できます。\n設定が完了したら下のボタンで確定してください。\nバフ画面の位置・サイズ調整は左下のメインアイコンから行えます。",
-            "EN": "Align the red box as shown in the example.\nUse Numpad + / - to resize it.\nWhen finished, use the button below to confirm.\nAdjust the buff window's position and size from the main icon at the bottom left.",
+            "KR": "빨간 박스 안에 버프 슬롯 전체가 들어오도록 맞춰주세요.\n위 − / + 버튼이나 넘패드 − / +로 크기를 조절할 수 있습니다.\n버프 창의 위치·크기는 좌측 하단 메인 아이콘에서 조절할 수 있습니다.",
+            "JP": "赤い枠の中にバフスロット全体が入るように合わせてください。\n上の－／＋ボタンまたはテンキーの－／＋でサイズを調整できます。\nバフ画面の位置・サイズは左下のメインアイコンから調整できます。",
+            "EN": "Fit the entire buff slot inside the red box.\nResize it with the − / + buttons above or Numpad − / +.\nAdjust the buff window position and size from the main icon at the bottom left.",
         }.get(self.config.get("ui_language", "KR"), "빨간 박스를 예시 이미지처럼 맞춰주세요.")
+
+    def calibration_example_text(self, correct=True):
+        texts = {
+            "KR": ("✓ 올바른 예시", "✕ 잘못된 예시"),
+            "JP": ("✓ 正しい例", "✕ 間違った例"),
+            "EN": ("✓ Correct example", "✕ Incorrect examples"),
+        }
+        return texts.get(self.config.get("ui_language", "KR"), texts["KR"])[0 if correct else 1]
 
     def calibration_confirm_text(self):
         return {"KR": "확정 및 닫기", "JP": "確定して閉じる", "EN": "Confirm and close"}.get(
@@ -512,17 +523,57 @@ class BuffTimerApp:
     def create_calibration_guide_window(self):
         win = tk.Toplevel(self.root)
         win.overrideredirect(True)
-        win.attributes("-topmost", True)
+        win.attributes("-topmost", False)
         win.configure(bg="#d8b15a")
         panel = tk.Frame(win, bg="#2a2118")
         panel.pack(fill="both", expand=True, padx=2, pady=2)
 
         image_path = BUFF_ASSET_DIR / "calibration_example.png"
+        image_label = None
+        correct_title = tk.Label(
+            panel, text=self.calibration_example_text(True), bg="#2a2118", fg="#83d68a",
+            anchor="w", font=("Malgun Gothic", 9, "bold"),
+        )
+        correct_title.pack(fill="x", padx=12, pady=(10, 4))
+        self.calibration_correct_title = correct_title
         if image_path.exists():
             with Image.open(image_path) as source:
                 self.calibration_guide_image = ImageTk.PhotoImage(source.convert("RGB"))
             image_label = tk.Label(panel, image=self.calibration_guide_image, bg="#17130f", bd=0)
-            image_label.pack(padx=10, pady=(10, 7))
+            image_label.pack(padx=12, pady=(0, 8))
+
+        wrong_title = tk.Label(
+            panel, text=self.calibration_example_text(False), bg="#2a2118", fg="#ff7770",
+            anchor="w", font=("Malgun Gothic", 9, "bold"),
+        )
+        wrong_title.pack(fill="x", padx=12, pady=(0, 4))
+        self.calibration_wrong_title = wrong_title
+        wrong_row = tk.Frame(panel, bg="#17130f")
+        wrong_row.pack(fill="x", padx=12, pady=(0, 9))
+        self.calibration_bad_guide_images = []
+        wrong_labels = []
+        for index, name in enumerate(("calibration_bad_example_1.png", "calibration_bad_example_2.png")):
+            path = BUFF_ASSET_DIR / name
+            if not path.exists():
+                continue
+            with Image.open(path) as source:
+                preview = source.convert("RGB")
+                preview.thumbnail((180, 100), Image.Resampling.LANCZOS)
+                photo = ImageTk.PhotoImage(preview)
+            self.calibration_bad_guide_images.append(photo)
+            label = tk.Label(wrong_row, image=photo, bg="#17130f", bd=0)
+            label.pack(side="left", expand=True, padx=(0 if index == 0 else 5, 5 if index == 0 else 0), pady=6)
+            wrong_labels.append(label)
+
+        controls = tk.Frame(panel, bg="#2a2118")
+        controls.pack(fill="x", padx=12, pady=(0, 7))
+        for symbol, delta in (("−", -2), ("+", 2)):
+            button = tk.Button(
+                controls, text=symbol, command=lambda amount=delta: self.resize_detect_region(amount),
+                bg="#5a4932", fg="#fff1c9", activebackground="#806846", activeforeground="#ffffff",
+                relief="flat", bd=0, cursor="hand2", font=("Malgun Gothic", 12, "bold"),
+            )
+            button.pack(side="left", fill="x", expand=True, padx=(0, 4) if delta < 0 else (4, 0), ipady=0)
 
         self.calibration_guide_text_label = tk.Label(
             panel,
@@ -535,14 +586,17 @@ class BuffTimerApp:
             pady=9,
             font=("Malgun Gothic", 9),
         )
-        self.calibration_guide_text_label.pack(fill="x")
+        self.calibration_guide_text_label.pack(fill="x", padx=2, pady=(0, 3))
         self.calibration_guide_confirm_button = tk.Button(
             panel, text=self.calibration_confirm_text(), command=self.confirm_calibration,
             bg="#5a4932", fg="#fff1c9", activebackground="#756044", activeforeground="#ffffff",
             relief="flat", bd=0, cursor="hand2", font=("Malgun Gothic", 9, "bold"),
         )
         self.calibration_guide_confirm_button.pack(fill="x", padx=10, pady=(0, 10), ipady=5)
-        for widget in (win, panel, self.calibration_guide_text_label, *([image_label] if image_path.exists() else [])):
+        drag_widgets = [win, panel, correct_title, wrong_title, self.calibration_guide_text_label, *wrong_labels]
+        if image_label is not None:
+            drag_widgets.append(image_label)
+        for widget in drag_widgets:
             widget.configure(cursor="fleur")
             widget.bind("<ButtonPress-1>", self.begin_calibration_guide_drag)
             widget.bind("<B1-Motion>", self.calibration_guide_drag)
@@ -582,8 +636,10 @@ class BuffTimerApp:
         if not self.calibration_guide_drag_origin:
             return
         self.calibration_guide_drag_origin = None
-        self.config["calibration_guide_x"] = self.calibration_guide_window.winfo_x()
-        self.config["calibration_guide_y"] = self.calibration_guide_window.winfo_y()
+        client = get_client_screen_rect(self.target_hwnd) if self.target_hwnd else None
+        if client:
+            self.config["calibration_guide_offset_x"] = self.calibration_guide_window.winfo_x() - client[0]
+            self.config["calibration_guide_offset_y"] = self.calibration_guide_window.winfo_y() - client[1]
         self.save_config()
 
     def show_calibration_guide(self):
@@ -591,14 +647,19 @@ class BuffTimerApp:
         if not win:
             return
         win.update_idletasks()
-        x = self.config.get("calibration_guide_x")
-        y = self.config.get("calibration_guide_y")
-        if x is None or y is None:
-            x = max(0, (win.winfo_screenwidth() - win.winfo_reqwidth()) // 2)
-            y = max(0, (win.winfo_screenheight() - win.winfo_reqheight()) // 3)
+        client = get_client_screen_rect(self.target_hwnd) if self.target_hwnd else None
+        if not client or not self.target_hwnd:
+            win.withdraw()
+            return
+        left, top, right, bottom = client
+        offset_x = self.config.get("calibration_guide_offset_x")
+        offset_y = self.config.get("calibration_guide_offset_y")
+        if offset_x is None or offset_y is None:
+            offset_x = max(0, (right - left - win.winfo_reqwidth()) // 2)
+            offset_y = max(0, (bottom - top - win.winfo_reqheight()) // 3)
+        x, y = left + int(offset_x), top + int(offset_y)
         win.geometry(f"+{int(x)}+{int(y)}")
-        win.deiconify()
-        win.lift()
+        attach_above(win, self.target_hwnd, x, y)
 
     def resize_instruction(self):
         return {
@@ -617,7 +678,7 @@ class BuffTimerApp:
     def create_resize_window(self):
         win = tk.Toplevel(self.root)
         win.overrideredirect(True)
-        win.attributes("-topmost", True)
+        win.attributes("-topmost", False)
         win.configure(bg=self.transparent_key)
         win.wm_attributes("-transparentcolor", self.transparent_key)
         panel = tk.Frame(win, bg=self.transparent_key, highlightthickness=2, highlightbackground="#d8b15a")
@@ -778,6 +839,10 @@ class BuffTimerApp:
         self.config["ui_language"] = language
         if self.calibration_guide_text_label:
             self.calibration_guide_text_label.configure(text=self.calibration_guide_text())
+        if self.calibration_correct_title:
+            self.calibration_correct_title.configure(text=self.calibration_example_text(True))
+        if self.calibration_wrong_title:
+            self.calibration_wrong_title.configure(text=self.calibration_example_text(False))
         if self.calibration_guide_confirm_button:
             self.calibration_guide_confirm_button.configure(text=self.calibration_confirm_text())
         if hasattr(self, "resize_tooltip_label"):
@@ -902,7 +967,7 @@ class BuffTimerApp:
     def create_box_window(self, color, alpha):
         win = tk.Toplevel(self.root)
         win.overrideredirect(True)
-        win.attributes("-topmost", True)
+        win.attributes("-topmost", False)
         win.attributes("-alpha", alpha)
         win.configure(bg="#ff00ff")
         win.wm_attributes("-transparentcolor", "#ff00ff")
@@ -1812,7 +1877,7 @@ class BuffTimerApp:
         if not self.region_window:
             return
         if self.calibration_mode:
-            if self.calibration_guide_window and not self.calibration_guide_window.winfo_viewable():
+            if self.calibration_guide_window and not self.calibration_guide_drag_origin:
                 self.show_calibration_guide()
             self.last_capture_bbox = self.current_detection_bbox()
         if not self.calibration_mode or not self.last_capture_bbox:
@@ -1850,8 +1915,7 @@ class BuffTimerApp:
             fill="#ff3030",
             width=3,
         )
-        self.region_window.deiconify()
-        self.region_window.lift()
+        attach_above(self.region_window, self.target_hwnd, left - padding, top - padding)
 
     def handle_auto_detect(self):
         if not self.config.get("auto_detect", False):

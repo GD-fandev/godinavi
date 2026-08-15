@@ -173,9 +173,11 @@ class PrototypeApp:
             on_moved=self._remember_position,
             on_scale_changed=self._scale_changed,
             on_collapsed_changed=self._collapsed_changed,
+            client_rect_provider=lambda: self.client_rect,
             initial_orientation=self.map_engine.config.get("dock_orientation", "horizontal"),
             initial_icon_scale=self.map_engine.config.get("dock_icon_scale", 1.0),
             initial_collapsed=self.map_engine.config.get("dock_collapsed", False),
+            initial_collapse_edge=self.map_engine.config.get("dock_collapse_edge"),
             initial_ui_language=self.map_engine.ui_language,
         )
         self.map_update_ui = MapUpdateUI(
@@ -605,6 +607,9 @@ class PrototypeApp:
     def _remember_position(self, _window_x: int, _window_y: int):
         if not self.client_rect or not self.dock:
             return
+        if self.dock.restoring_anchor:
+            return
+        self.dock.update_collapse_edge(self.client_rect)
         left, top, right, bottom = self.client_rect
         bar_left, bar_top, bar_right, bar_bottom = self.dock.button_bar_screen_rect()
         bar_width = bar_right - bar_left
@@ -616,13 +621,18 @@ class PrototypeApp:
         self.dock_offset = offset_x, offset_y
         self.map_engine.config["dock_offset_x"] = offset_x
         self.map_engine.config["dock_offset_y"] = offset_y
+        self.map_engine.config["dock_collapse_edge"] = self.dock.collapse_edge
         save_config(self.map_engine.config)
 
     def _orientation_changed(self, orientation: str):
         if not self.map_engine:
             return
         self.map_engine.config["dock_orientation"] = orientation
+        if self.dock:
+            self.map_engine.config["dock_collapse_edge"] = self.dock.collapse_edge
         save_config(self.map_engine.config)
+        if self.dock and self.client_rect:
+            self.root.after_idle(lambda: self.dock.update_collapse_edge(self.client_rect))
 
     def _scale_changed(self, scale: float):
         if not self.map_engine:

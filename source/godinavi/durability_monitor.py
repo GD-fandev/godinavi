@@ -149,7 +149,7 @@ class EditableRegion:
         self.mode = None
         self.window = tk.Toplevel(master)
         self.window.overrideredirect(True)
-        self.window.attributes("-topmost", True)
+        self.window.attributes("-topmost", False)
         self.transparent_key = "#010101"
         self.window.configure(bg=self.transparent_key)
         self.window.wm_attributes("-transparentcolor", self.transparent_key)
@@ -255,6 +255,8 @@ class DurabilityMonitor:
         self.closed = False
         self.editing = False
         self.dialog = None
+        self.dialog_offset = None
+        self.dialog_dragging = False
         self.enabled_vars = {}
         self.threshold_vars = {}
         self.preview_labels = {}
@@ -419,7 +421,9 @@ class DurabilityMonitor:
 
     def open_settings(self):
         if self.dialog and self.dialog.winfo_exists():
-            self.dialog.lift()
+            hwnd, rect = self._client_rect()
+            if hwnd and rect:
+                self._sync_edit_windows(hwnd, rect)
             return
         hwnd, rect = self._client_rect()
         if not hwnd or not rect:
@@ -436,15 +440,23 @@ class DurabilityMonitor:
         header.pack(fill="x", pady=(0, 8))
         drag_origin = {"value": None}
         def begin_dialog_drag(event):
+            self.dialog_dragging = True
             drag_origin["value"] = (event.x_root, event.y_root, win.winfo_x(), win.winfo_y())
         def dialog_drag(event):
             if not drag_origin["value"]:
                 return
             sx, sy, wx, wy = drag_origin["value"]
             win.geometry(f"+{wx + event.x_root - sx}+{wy + event.y_root - sy}")
+        def end_dialog_drag(_event):
+            drag_origin["value"] = None
+            self.dialog_dragging = False
+            current = self._client_rect()[1]
+            if current:
+                self.dialog_offset = (win.winfo_x() - current[0], win.winfo_y() - current[1])
         header.configure(cursor="fleur")
         header.bind("<ButtonPress-1>", begin_dialog_drag)
         header.bind("<B1-Motion>", dialog_drag)
+        header.bind("<ButtonRelease-1>", end_dialog_drag)
         grid = tk.Frame(panel, bg=BG)
         grid.pack(fill="x")
         for column, label in enumerate((texts["enabled"], "", texts["threshold"], texts["preview"])):
@@ -461,12 +473,18 @@ class DurabilityMonitor:
             preview.grid(row=row, column=3, padx=6)
             self.preview_labels[part] = preview
         tk.Label(panel, text=texts["hint"], bg=BG, fg=MUTED, wraplength=520, justify="left", anchor="w").pack(fill="x", pady=(10, 4))
+        help_ping_outer = tk.Frame(panel, bg=BG, padx=2, pady=2)
+        help_ping_middle = tk.Frame(help_ping_outer, bg=BG, padx=2, pady=2)
+        help_ping_inner = tk.Frame(help_ping_middle, bg=BG, padx=2, pady=2)
+        help_ping_inner.pack(fill="x")
+        help_ping_middle.pack(fill="x")
         help_button = tk.Button(
-            panel, text=texts["help_show"], bg=PANEL, fg=TEXT,
+            help_ping_inner, text=texts["help_show"], bg=PANEL, fg=TEXT,
             activebackground=PANEL_HOVER, activeforeground="#ffffff",
             relief="flat", bd=0, pady=6, cursor="hand2",
         )
-        help_button.pack(fill="x", pady=(4, 2))
+        help_button.pack(fill="x")
+        help_ping_outer.pack(fill="x", pady=(4, 2))
         help_slot = tk.Frame(panel, bg=BG)
         help_content = tk.Frame(help_slot, bg=PANEL, padx=12, pady=10)
         example_path = resource_path("assets/durability/setup_example.png")
@@ -501,7 +519,7 @@ class DurabilityMonitor:
         def toggle_help():
             help_open["value"] = not help_open["value"]
             if help_open["value"]:
-                help_slot.pack(fill="x", after=help_button)
+                help_slot.pack(fill="x", after=help_ping_outer)
                 help_content.pack(fill="x", pady=(4, 6))
                 help_button.configure(text=texts["help_hide"])
             else:
@@ -517,6 +535,27 @@ class DurabilityMonitor:
                 win.geometry(f"{width}x{height}+{win.winfo_x()}+{win.winfo_y()}")
 
         help_button.configure(command=toggle_help)
+
+        ping_started = time.monotonic()
+        ping_rings = (help_ping_inner, help_ping_middle, help_ping_outer)
+
+        def animate_help_ping():
+            if not self.dialog or not self.dialog.winfo_exists():
+                return
+            elapsed = time.monotonic() - ping_started
+            if elapsed >= 3.0:
+                for ring in ping_rings:
+                    ring.configure(bg=BG)
+                return
+            phase = int(elapsed / 0.16)
+            for index, ring in enumerate(ping_rings):
+                distance = (phase - index) % 6
+                ring.configure(
+                    bg="#ff3030" if distance == 0 else "#b51f1f" if distance in (1, 2) else BG
+                )
+            win.after(80, animate_help_ping)
+
+        win.after(120, animate_help_ping)
         tk.Label(panel, text=texts["warning1"], bg=BG, fg="#ffcf66", wraplength=520, justify="left", anchor="w").pack(fill="x", pady=2)
         tk.Label(panel, text=texts["warning2"], bg=BG, fg="#ff7777", font=("Malgun Gothic", 10, "bold"), anchor="w").pack(fill="x", pady=(2, 10))
         tk.Button(panel, text=texts["save"], command=self.close_settings, bg=PANEL_HOVER, fg=TEXT, activebackground=GOLD, relief="flat", bd=0, pady=7).pack(fill="x")
@@ -525,12 +564,23 @@ class DurabilityMonitor:
         left, top, right, bottom = rect
         x, y = left + (right-left-width)//2, top + (bottom-top-height)//2
         win.geometry(f"{width}x{height}+{x}+{y}")
+        self.dialog_offset = (x - left, y - top)
         collapsed_size["width"], collapsed_size["height"] = width, height
         attach_above(win, hwnd, x, y)
         defaults = self._default_regions(rect)
         for part, region_window in self.region_windows.items():
             region_window.show(self._part_bbox(part, rect), hwnd)
         self.warning_editor.show(self._warning_bbox(rect), hwnd)
+
+    def _sync_edit_windows(self, hwnd, rect):
+        if self.dialog and self.dialog.winfo_exists() and not self.dialog_dragging:
+            offset_x, offset_y = self.dialog_offset or (16, 16)
+            attach_above(self.dialog, hwnd, rect[0] + offset_x, rect[1] + offset_y)
+        for part, region_window in self.region_windows.items():
+            if not region_window.drag:
+                region_window.show(self._part_bbox(part, rect), hwnd)
+        if not self.warning_editor.drag:
+            self.warning_editor.show(self._warning_bbox(rect), hwnd)
 
     def close_settings(self, save=True):
         if not self.dialog:
@@ -549,6 +599,8 @@ class DurabilityMonitor:
         self.warning_editor.hide()
         self.dialog.destroy()
         self.dialog = None
+        self.dialog_offset = None
+        self.dialog_dragging = False
         self.enabled_vars.clear()
         self.threshold_vars.clear()
         self.preview_labels.clear()
@@ -820,6 +872,8 @@ class DurabilityMonitor:
             self.warning_window.withdraw()
             self.warning_visible = False
         else:
+            if self.editing:
+                self._sync_edit_windows(hwnd, rect)
             if self.ocr_future and self.ocr_future.done():
                 try:
                     self._accept_results(self.ocr_future.result(), now)
