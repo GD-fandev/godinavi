@@ -1,6 +1,6 @@
 # GodiNavi / ガディナビ / 가디내비
 
-> ### [⬇ GodiNavi 1.0.0 Download](https://github.com/GD-fandev/godinavi/releases/tag/v1.0.0)
+> ### [⬇ GodiNavi 1.0.1 Download](https://github.com/GD-fandev/godinavi/releases/tag/v1.0.1)
 
 ## 目次 / 목차 / Table of Contents
 
@@ -102,7 +102,7 @@ GODIMAPには、まだ測量が完了していない未調査地域がありま�
 
 ### 해설 영상
 
-- 한국어판: 준비 중
+- [한국어판 해설영상](https://youtu.be/eCkEvMEkAuc)
 
 ---
 
