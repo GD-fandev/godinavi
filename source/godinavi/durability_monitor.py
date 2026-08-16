@@ -1,4 +1,5 @@
 import concurrent.futures
+from collections import Counter
 import re
 import sys
 import time
@@ -6,7 +7,7 @@ import tkinter as tk
 from ctypes import wintypes
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageTk
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont, ImageOps, ImageTk
 
 from paddle_ocr_backend import PaddleOcrBackend
 
@@ -30,6 +31,8 @@ GA_ROOT = 2
 OCR_VALUE_HOLD_SECONDS = 5.0
 OCR_VALUE_CONFIRMATIONS = 3
 MAX_DURABILITY_CHANGE_PER_READING = 10
+EDITOR_BORDER_WIDTH = 4
+EDITOR_RESIZE_GRIP_SIZE = 16
 
 user32.GetForegroundWindow.restype = wintypes.HWND
 user32.GetWindow.argtypes = [wintypes.HWND, wintypes.UINT]
@@ -617,6 +620,33 @@ class DurabilityMonitor:
             self.save_callback(self.config)
 
     def _prepare_capture_variants(self, image):
+        def white_digit_mask(core_min, candidate_min, core_chroma, candidate_chroma):
+            rgb = image.convert("RGB")
+            red, green, blue = rgb.split()
+            minimum = ImageChops.darker(ImageChops.darker(red, green), blue)
+            maximum = ImageChops.lighter(ImageChops.lighter(red, green), blue)
+            chroma = ImageChops.subtract(maximum, minimum)
+            core = ImageChops.multiply(
+                minimum.point(lambda value: 255 if value >= core_min else 0),
+                chroma.point(lambda value: 255 if value <= core_chroma else 0),
+            )
+            candidates = ImageChops.multiply(
+                minimum.point(lambda value: 255 if value >= candidate_min else 0),
+                chroma.point(lambda value: 255 if value <= candidate_chroma else 0),
+            )
+            connected = core
+            # Preserve only anti-aliased gray pixels immediately connected to
+            # a genuinely white digit core. Colored scenery behind the game's
+            # translucent black panel therefore never grows into the glyph.
+            for _ in range(3):
+                connected = ImageChops.multiply(candidates, connected.filter(ImageFilter.MaxFilter(3)))
+            enlarged = connected.resize(
+                (connected.width * max(4, min(7, 210 // max(1, connected.height))),
+                 connected.height * max(4, min(7, 210 // max(1, connected.height)))),
+                Image.Resampling.NEAREST,
+            )
+            return enlarged.convert("RGB")
+
         gray = ImageOps.grayscale(image)
         scale = max(3, min(6, 180 // max(1, gray.height)))
         enlarged = ImageOps.autocontrast(
@@ -624,21 +654,60 @@ class DurabilityMonitor:
         )
         threshold = enlarged.point(lambda value: 255 if value >= 145 else 0)
         return (
+            white_digit_mask(215, 145, 35, 55),
+            white_digit_mask(235, 175, 22, 42),
             enlarged.convert("RGB"),
             threshold.convert("RGB"),
             ImageOps.invert(threshold).convert("RGB"),
         )
 
+    @staticmethod
+    def _needs_digit_validation(value, baseline):
+        digits = str(value)
+        baseline_digits = "" if baseline is None else str(baseline)
+        ambiguous = "1" in digits or "7" in digits or "1" in baseline_digits or "7" in baseline_digits
+        if baseline is None:
+            return ambiguous
+        return value != baseline and (ambiguous or abs(value - baseline) > MAX_DURABILITY_CHANGE_PER_READING)
+
+    @staticmethod
+    def _consensus_value(values):
+        values = [value for value in values if value is not None]
+        if not values:
+            return None
+        value, hits = Counter(values).most_common(1)[0]
+        return value if hits >= 2 else None
+
     def _recognize_images(self, images):
         results = {}
         for part, image in images.items():
             try:
-                results[part] = None
-                for prepared in self._prepare_capture_variants(image):
-                    value = recognized_integer(self.ocr.recognize(prepared, "en"))
-                    if value is not None:
-                        results[part] = value
-                        break
+                variants = self._prepare_capture_variants(image)
+                primary = recognized_integer(self.ocr.recognize(variants[0], "en"))
+                baseline = getattr(self, "last_values", {}).get(part)
+                needs_validation = primary is None or self._needs_digit_validation(primary, baseline)
+                if primary is not None and not needs_validation:
+                    results[part] = primary
+                    continue
+                readings = [primary]
+                for prepared in variants[1:]:
+                    readings.append(recognized_integer(self.ocr.recognize(prepared, "en")))
+                if needs_validation:
+                    final = self._consensus_value(readings)
+                else:
+                    final = primary
+                if final is None and primary is None:
+                    final = next(
+                        (
+                            value for value in readings[1:]
+                            if value is not None and not self._needs_digit_validation(value, baseline)
+                        ),
+                        None,
+                    )
+                # An ambiguous disagreement is safer as a temporary miss; the
+                # existing five-second hold keeps the last valid durability on
+                # screen instead of accepting scenery-dependent garbage.
+                results[part] = final
             except Exception:
                 results[part] = None
         return results
@@ -667,12 +736,41 @@ class DurabilityMonitor:
                     min(client_capture.height, bottom - client_top),
                 )
                 if crop_box[2] > crop_box[0] and crop_box[3] > crop_box[1]:
-                    images[part] = client_capture.crop(crop_box)
+                    image = client_capture.crop(crop_box)
+                    # During calibration Desktop Duplication also captures our
+                    # own colored guide border and bottom-right resize grip.
+                    # Remove only that known editor chrome so the debug input
+                    # matches the unobstructed image used during normal play.
+                    if self.editing:
+                        image = self._without_editor_chrome(image)
+                    images[part] = image
             except Exception:
                 images[part] = None
         images = {part: image for part, image in images.items() if image is not None}
         if images:
             self.ocr_future = self.executor.submit(self._recognize_images, images)
+
+    @staticmethod
+    def _without_editor_chrome(image):
+        image = image.convert("RGB")
+        width, height = image.size
+        if width <= EDITOR_BORDER_WIDTH * 2 or height <= EDITOR_BORDER_WIDTH * 2:
+            return image
+
+        cleaned = image.copy()
+        draw = ImageDraw.Draw(cleaned)
+        border = EDITOR_BORDER_WIDTH
+        draw.rectangle((0, 0, width - 1, border - 1), fill="black")
+        draw.rectangle((0, height - border, width - 1, height - 1), fill="black")
+        draw.rectangle((0, 0, border - 1, height - 1), fill="black")
+        draw.rectangle((width - border, 0, width - 1, height - 1), fill="black")
+
+        grip = min(EDITOR_RESIZE_GRIP_SIZE, width, height)
+        draw.polygon(
+            ((width - grip, height - 1), (width - 1, height - grip), (width - 1, height - 1)),
+            fill="black",
+        )
+        return cleaned
 
     def _accept_results(self, results, now):
         texts = TEXTS[self.language]
