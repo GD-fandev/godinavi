@@ -1,20 +1,20 @@
 {
-  "id": "rege4f",
+  "id": "kali4f",
   "names": {
     "ko": [
-      "레게지하동굴4층"
+      "칼리지하동굴4층"
     ],
     "ja": [
-      "レゲ地下洞窟4F"
+      "カリ地下洞窟4F"
     ],
     "en": [
-      "Rege B Cave 4F"
+      "Kali B Cave 4F"
     ]
   },
-  "image": "maps/rege/rege4f.jpg",
+  "image": "maps/kali/kali4f.jpg",
   "images": {
-    "ko": "maps/rege/ko/rege4f.jpg",
-    "ja": "maps/rege/ja/rege4f.jpg"
+    "ko": "maps/kali/ko/kali4f.jpg",
+    "ja": "maps/kali/ja/kali4f.jpg"
   },
   "imageSize": {
     "width": 520,

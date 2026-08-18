@@ -10,12 +10,16 @@ if not exist ".venv\Scripts\python.exe" (
 )
 
 if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
+call ".venv\Scripts\python.exe" "tools\verify_public_release.py"
+if errorlevel 1 goto :failed
 call ".venv\Scripts\python.exe" -m PyInstaller --noconfirm --clean --distpath "%OUTPUT_DIR%" "packaging\GODINAVI.spec"
 if errorlevel 1 goto :failed
 call ".venv\Scripts\python.exe" -m PyInstaller --noconfirm --clean --distpath "%OUTPUT_DIR%" "packaging\GODINAVI_UPDATER.spec"
 if errorlevel 1 goto :failed
 
-for /f %%H in ('powershell -NoProfile -Command "(Get-FileHash -Algorithm SHA256 '%OUTPUT_DIR%\GodiNavi.exe').Hash.ToLower()"') do echo %%H  GodiNavi.exe>"%OUTPUT_DIR%\GodiNavi.exe.sha256"
+if exist "%OUTPUT_DIR%\GodiNavi.exe.sha256" del /q "%OUTPUT_DIR%\GodiNavi.exe.sha256"
+"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -Command "$stream=[IO.File]::OpenRead('%OUTPUT_DIR%\GodiNavi.exe'); try{$bytes=[Security.Cryptography.SHA256]::Create().ComputeHash($stream)}finally{$stream.Dispose()}; $hash=([BitConverter]::ToString($bytes)).Replace('-','').ToLower(); [IO.File]::WriteAllText('%OUTPUT_DIR%\GodiNavi.exe.sha256', $hash + '  GodiNavi.exe' + [Environment]::NewLine, [Text.Encoding]::ASCII); if($hash.Length -ne 64){exit 1}"
+if errorlevel 1 goto :failed
 if not exist "%OUTPUT_DIR%\GodiNavi.exe.sha256" goto :failed
 
 for %%D in (maps mapdata ocr_models) do (

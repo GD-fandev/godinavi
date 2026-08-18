@@ -34,7 +34,7 @@ def calibration_ping_expansions(now: float) -> tuple[int, int, int]:
     phase = int(now * 24) % 24
     return tuple((phase + offset) % 24 for offset in (0, 8, 16))
 
-APP_VERSION = "1.0.2"
+APP_VERSION = "1.2.1"
 DEFAULT_BUFF_CONFIG_JSON = r'''{
   "process_name": "Godius.exe",
   "window_title": "Godius Client",
@@ -405,6 +405,12 @@ class BuffTimerApp:
         self.detect_hits = {}
         self.absent_hits = 0
         self.missing_hits = 0
+        # Party presence reporting is an observer only. It deliberately does not
+        # read or change the personal timer's duration, visibility, or end time.
+        self.party_presence_callback = None
+        self.party_observed_buff = None
+        self.party_detect_hits = {}
+        self.party_absent_hits = 0
         self.last_detect_at = 0.0
         self.last_absent_score = None
         self.last_capture_bbox = None
@@ -860,7 +866,11 @@ class BuffTimerApp:
             self.resize_window.geometry(frame_geometry)
         if not self.resize_window.winfo_viewable():
             self.resize_window.deiconify()
-            self.resize_window.lift()
+        user32.SetWindowPos(
+            root_hwnd(self.resize_window), HWND_TOPMOST,
+            frame_x, timer_y - 6, 0, 0,
+            SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW,
+        )
         self.resize_lock_window.withdraw()
 
     def create_text_window(self):
@@ -1939,6 +1949,7 @@ class BuffTimerApp:
         absent_detected = False
         if self.last_absent_score is not None:
             absent_detected = self.last_absent_score >= float(self.config.get("absent_threshold", 0.82))
+        self._observe_party_buff_presence(detected_buff, absent_detected)
         if not detected_buff:
             self.detect_hits = {}
             self.expired_buff_lock = None
@@ -1993,6 +2004,34 @@ class BuffTimerApp:
         if self.detect_hits[detected_buff] >= required_hits:
             if self.end_time is None or self.active_buff != detected_buff:
                 self.start_timer(detected_buff)
+
+    def _observe_party_buff_presence(self, detected_buff, absent_detected):
+        required_hits = max(1, int(self.config.get("detect_required_hits", 2)))
+        required_absent = max(1, int(self.config.get("absent_required_hits", 2)))
+        if detected_buff:
+            self.party_absent_hits = 0
+            for key in list(self.party_detect_hits):
+                if key != detected_buff:
+                    self.party_detect_hits[key] = 0
+            self.party_detect_hits[detected_buff] = self.party_detect_hits.get(detected_buff, 0) + 1
+            if self.party_detect_hits[detected_buff] >= required_hits:
+                self._emit_party_buff_presence(detected_buff)
+            return
+        self.party_detect_hits = {}
+        if not absent_detected:
+            self.party_absent_hits = 0
+            return
+        self.party_absent_hits += 1
+        if self.party_absent_hits >= required_absent:
+            self._emit_party_buff_presence(None)
+
+    def _emit_party_buff_presence(self, buff_key):
+        if buff_key == self.party_observed_buff:
+            return
+        self.party_observed_buff = buff_key
+        callback = self.party_presence_callback
+        if callback:
+            callback(buff_key)
 
     def update_display(self):
         if self.end_time is None:

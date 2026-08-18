@@ -11,10 +11,10 @@
       "Kali B Cave 8F"
     ]
   },
-  "image": "maps/rege/kali8f.jpg",
+  "image": "maps/kali/kali8f.jpg",
   "images": {
-    "ko": "maps/rege/ko/kali8f.jpg",
-    "ja": "maps/rege/ja/kali8f.jpg"
+    "ko": "maps/kali/ko/kali8f.jpg",
+    "ja": "maps/kali/ja/kali8f.jpg"
   },
   "imageSize": {
     "width": 251,

@@ -1,20 +1,20 @@
 {
-  "id": "rege5f",
+  "id": "kali5f",
   "names": {
     "ko": [
-      "레게지하동굴5층"
+      "칼리지하동굴5층"
     ],
     "ja": [
-      "レゲ地下洞窟5F"
+      "カリ地下洞窟5F"
     ],
     "en": [
-      "Rege B Cave 5F"
+      "Kali B Cave 5F"
     ]
   },
-  "image": "maps/rege/rege5f.jpg",
+  "image": "maps/kali/kali5f.jpg",
   "images": {
-    "ko": "maps/rege/ko/rege5f.jpg",
-    "ja": "maps/rege/ja/rege5f.jpg"
+    "ko": "maps/kali/ko/kali5f.jpg",
+    "ja": "maps/kali/ja/kali5f.jpg"
   },
   "imageSize": {
     "width": 426,

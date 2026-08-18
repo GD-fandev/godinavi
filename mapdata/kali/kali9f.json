@@ -1,20 +1,20 @@
 {
-  "id": "rege9f",
+  "id": "kali9f",
   "names": {
     "ko": [
-      "레게지하동굴9층"
+      "칼리지하동굴9층"
     ],
     "ja": [
-      "レゲ地下洞窟9F"
+      "カリ地下洞窟9F"
     ],
     "en": [
-      "Rege B Cave 9F"
+      "Kali B Cave 9F"
     ]
   },
-  "image": "maps/rege/rege9f.jpg",
+  "image": "maps/kali/kali9f.jpg",
   "images": {
-    "ko": "maps/rege/ko/rege9f.jpg",
-    "ja": "maps/rege/ja/rege9f.jpg"
+    "ko": "maps/kali/ko/kali9f.jpg",
+    "ja": "maps/kali/ja/kali9f.jpg"
   },
   "imageSize": {
     "width": 487,

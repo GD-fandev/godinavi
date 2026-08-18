@@ -1,4 +1,5 @@
 import ctypes
+import secrets
 import tkinter as tk
 from ctypes import wintypes
 from pathlib import Path
@@ -20,6 +21,8 @@ from .buff_timer_engine import BuffTimerApp, default_buff_config
 from .dock import OverlayDock
 from .durability_monitor import DurabilityMonitor, default_durability_config
 from .map_update_ui import MapUpdateUI
+from .party_ui import PartyUI
+from .party_client import PartyClient
 from .window_attachment import attach_above, client_screen_rect, find_godius_window, is_minimized
 
 
@@ -44,28 +47,31 @@ def default_dock_offset(client_width: int, client_height: int, bar_width: int, b
 
 DOCK_TEXTS = {
     "KR": {
-        "map": "지도", "map_adjust": "지도 위치·크기 조절", "ocr_edit": "OCR 영역 편집", "world_map": "월드맵 열기 (F10)",
+        "map": "지도", "map_adjust": "지도 위치·크기 조절", "ocr_edit": "OCR 영역 편집", "world_map": "월드맵 열기 (F10)", "map_boundary_on": "영역제한 ON", "map_boundary_off": "영역제한 OFF",
         "portal": "포탈", "portal_edit": "포탈 장소 편집", "preset": "프리셋 전환", "portal_bar": "포탈 바 표시/숨김",
         "buff": "버프 타이머", "buff_region": "버프 인식 영역 편집", "buff_toggle": "타이머 표시/숨김", "buff_size": "버프 창 조정",
         "durability": "내구도 감시", "durability_settings": "내구도 감시 설정", "durability_toggle": "내구도 감시 On/Off",
+        "party": "파티룸", "party_create": "파티룸 생성", "party_join": "파티룸 입실", "party_leave": "파티룸 퇴실", "party_settings": "파티룸 확인", "party_buff_adjust": "버프 확인창 조정", "party_personal_timer": "개인 버프 타이머",
         "settings": "기타 설정", "button_ui": "버튼 UI 설정", "orientation": "가로/세로 전환", "quit": "종료",
         "map_update": "지도 데이터 업데이트", "map_update_available": "지도 업데이트 가능 ↓",
         "app_update": "GodiNavi 업데이트", "app_update_available": "GodiNavi 업데이트 가능 ↓",
     },
     "JP": {
-        "map": "地図", "map_adjust": "地図の位置・サイズ調整", "ocr_edit": "OCR領域を編集", "world_map": "ワールドマップを開く (F10)",
+        "map": "地図", "map_adjust": "地図の位置・サイズ調整", "ocr_edit": "OCR領域を編集", "world_map": "ワールドマップを開く (F10)", "map_boundary_on": "領域制限 ON", "map_boundary_off": "領域制限 OFF",
         "portal": "ポータル", "portal_edit": "ポータル地点を編集", "preset": "プリセット切替", "portal_bar": "ポータルバー 表示/非表示",
         "buff": "バフタイマー", "buff_region": "バフ認識領域を編集", "buff_toggle": "タイマー 表示/非表示", "buff_size": "バフ画面調整",
         "durability": "耐久度監視", "durability_settings": "耐久度監視設定", "durability_toggle": "耐久度監視 On/Off",
+        "party": "パーティールーム", "party_create": "パーティールーム作成", "party_join": "パーティールーム入室", "party_leave": "パーティールーム退出", "party_settings": "パーティールーム確認", "party_buff_adjust": "バフ確認画面の調整", "party_personal_timer": "個人バフタイマー",
         "settings": "設定", "button_ui": "ボタンUI設定", "orientation": "横/縦を切替", "quit": "終了",
         "map_update": "マップデータ更新", "map_update_available": "マップ更新あり ↓",
         "app_update": "GodiNaviアップデート", "app_update_available": "GodiNavi更新あり ↓",
     },
     "EN": {
-        "map": "Map", "map_adjust": "Adjust map position/size", "ocr_edit": "Edit OCR region", "world_map": "Open world map (F10)",
+        "map": "Map", "map_adjust": "Adjust map position/size", "ocr_edit": "Edit OCR region", "world_map": "Open world map (F10)", "map_boundary_on": "Boundary lock ON", "map_boundary_off": "Boundary lock OFF",
         "portal": "Portal", "portal_edit": "Edit portal locations", "preset": "Switch preset", "portal_bar": "Show/hide portal bar",
         "buff": "Buff Timer", "buff_region": "Edit buff detection region", "buff_toggle": "Show/hide timer", "buff_size": "Adjust buff window",
         "durability": "Durability Monitor", "durability_settings": "Durability settings", "durability_toggle": "Durability monitor On/Off",
+        "party": "Party Room", "party_create": "Create party room", "party_join": "Join party room", "party_leave": "Leave party room", "party_settings": "Party room overview", "party_buff_adjust": "Adjust party buff window", "party_personal_timer": "Personal buff timer",
         "settings": "Settings", "button_ui": "Button UI settings", "orientation": "Switch horizontal/vertical", "quit": "Quit",
         "map_update": "Map data update", "map_update_available": "Map update available ↓",
         "app_update": "GodiNavi update", "app_update_available": "GodiNavi update available ↓",
@@ -115,6 +121,7 @@ class PrototypeApp:
         self.dock: OverlayDock | None = None
         self.map_update_ui: MapUpdateUI | None = None
         self.app_update_ui: AppUpdateUI | None = None
+        self.pending_party_entry_action = None
         new_install = not CONFIG_PATH.exists()
         self.map_engine: MapEngine | None = MapEngine(
             master=self.root,
@@ -160,6 +167,27 @@ class PrototypeApp:
             self.buff_timer.capture_client_frame,
             self.map_engine.ui_language,
         )
+        installation_id = str(self.map_engine.config.get("party_installation_id", ""))
+        if len(installation_id) < 16:
+            installation_id = secrets.token_urlsafe(24)
+            self.map_engine.config["party_installation_id"] = installation_id
+            save_config(self.map_engine.config)
+        self.party_client = PartyClient(
+            installation_id,
+            lambda callback: self.root.after(0, callback),
+        )
+        self.party_ui = PartyUI(
+            self.root,
+            self.map_engine.config,
+            lambda: save_config(self.map_engine.config),
+            lambda: self.map_engine.ui_language if self.map_engine else "KR",
+            lambda: self.client_rect,
+            lambda: self.target_hwnd,
+            self.party_client,
+            self.message,
+            self.map_engine,
+        )
+        self.buff_timer.party_presence_callback = self.party_ui.update_local_buff_presence
         saved_x = self.map_engine.config.get("dock_offset_x")
         saved_y = self.map_engine.config.get("dock_offset_y")
         self.dock_offset: tuple[int, int] | None = (
@@ -341,6 +369,15 @@ class PrototypeApp:
         if self.dock:
             self.items = self._create_items()
             self.dock.set_items(self.items)
+        if (
+            self.pending_party_entry_action is not None
+            and self.app_update_ui
+            and not self.app_update_ui.busy
+            and self.app_update_ui.state != "checking"
+        ):
+            action = self.pending_party_entry_action
+            self.pending_party_entry_action = None
+            self.root.after_idle(lambda: self._continue_party_entry_action(action))
 
     def placeholder(self, feature: str):
         return lambda: self.message(f"{feature} · 기존 엔진 연결 예정")
@@ -372,9 +409,47 @@ class PrototypeApp:
         if self.map_engine:
             self.map_engine.toggle_map_resize_mode()
 
+    def toggle_map_boundary_restriction(self):
+        if self.map_engine:
+            self.map_engine.toggle_minimap_boundary_restriction()
+
     def toggle_map_calibration(self):
         if self.map_engine:
             self.map_engine.toggle_calibration()
+
+    def _run_party_entry_action(self, action):
+        self.party_ui.show_experimental_notice()
+        if self.app_update_ui and self.app_update_ui.state in {"idle", "checking"}:
+            self.pending_party_entry_action = action
+            if self.app_update_ui.state == "idle":
+                self.app_update_ui.check(False)
+            return
+        self._continue_party_entry_action(action)
+
+    def _continue_party_entry_action(self, action):
+        latest_version = None
+        if self.app_update_ui and self.app_update_ui.update_available and self.app_update_ui.release:
+            latest_version = self.app_update_ui.release.get("version")
+        self.party_ui.show_outdated_notice(latest_version)
+        action()
+
+    def toggle_party_overview(self):
+        if self.party_ui.overview_open:
+            self.party_ui.toggle_settings()
+            return
+        self._run_party_entry_action(self.party_ui.toggle_settings)
+
+    def create_party_room(self):
+        self._run_party_entry_action(self.party_ui.create_room)
+
+    def join_or_leave_party_room(self):
+        if self.party_ui.joined:
+            self.party_ui.join_or_leave()
+            return
+        self._run_party_entry_action(self.party_ui.join_or_leave)
+
+    def open_party_overview(self):
+        self._run_party_entry_action(self.party_ui.open_settings)
 
     def open_portal_editor(self):
         if self.map_engine:
@@ -407,6 +482,7 @@ class PrototypeApp:
             self.dock.set_ui_language(self.map_engine.ui_language)
             self.items = self._create_items()
             self.dock.set_items(self.items)
+        self.party_ui.refresh_language()
         self._restart_tray_icon()
         language_name = {"KR": "한국어", "JP": "日本語", "EN": "English"}[self.map_engine.ui_language]
         self.message(f"언어: {language_name}")
@@ -415,6 +491,8 @@ class PrototypeApp:
         return "🌐 LANGUAGE"
 
     def shutdown(self):
+        if hasattr(self, "party_client"):
+            self.party_client.close()
         if self.tray_icon is not None:
             try:
                 self.tray_icon.stop()
@@ -541,6 +619,10 @@ class PrototypeApp:
         update_available = bool(self.map_update_ui and self.map_update_ui.update_available)
         map_actions = [
             QuickAction(texts["map_adjust"], self.toggle_map_adjustment),
+            QuickAction(
+                lambda: texts["map_boundary_off"] if self.map_engine.minimap_boundary_restricted else texts["map_boundary_on"],
+                self.toggle_map_boundary_restriction,
+            ),
             QuickAction(texts["ocr_edit"], self.toggle_map_calibration),
             QuickAction(texts["world_map"], self.toggle_world_map),
         ]
@@ -576,6 +658,27 @@ class PrototypeApp:
                 ),
                 str(ICON_DIR / "dura.jpg"),
                 state=lambda: self.durability_monitor.monitoring_enabled,
+            ),
+            DockItem(
+                "party", "", texts["party"], self.toggle_party_overview,
+                (
+                    QuickAction(texts["party_create"], self.create_party_room, enabled=lambda: not self.party_ui.joined),
+                    QuickAction(
+                        lambda: texts["party_leave"] if self.party_ui.joined else texts["party_join"],
+                        self.join_or_leave_party_room,
+                    ),
+                    QuickAction(texts["party_settings"], self.open_party_overview),
+                    QuickAction(texts["party_buff_adjust"], self.party_ui.toggle_buff_bar_adjustment),
+                    QuickAction(texts["party_personal_timer"], self.party_ui.open_personal_buff_timer),
+                    QuickAction(
+                        lambda: self.party_ui.texts()["disband"],
+                        self.party_ui.disband_room,
+                        enabled=self.party_ui.can_disband,
+                    ),
+                ),
+                str(ICON_DIR / "party.jpg"),
+                secondary=self.party_ui.toggle_buff_bar_adjustment,
+                icon_bottom_text="BETA",
             ),
             DockItem(
                 "settings", "⚙", texts["settings"], lambda: self.dock.toggle_lock() if self.dock else None,
@@ -688,6 +791,8 @@ class PrototypeApp:
             if self.onboarding_pending and not self.onboarding_started:
                 self.onboarding_started = True
                 self.root.after(250, self._start_onboarding)
+            self.party_ui.follow_owner(rect, self.target_hwnd)
+            self.party_ui.sync_position()
 
         self.root.after(100, self._follow_godius)
 

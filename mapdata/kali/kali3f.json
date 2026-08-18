@@ -1,20 +1,20 @@
 {
-  "id": "rege3f",
+  "id": "kali3f",
   "names": {
     "ko": [
-      "레게지하동굴3층"
+      "칼리지하동굴3층"
     ],
     "ja": [
-      "レゲ地下洞窟3F"
+      "カリ地下洞窟3F"
     ],
     "en": [
-      "Rege B Cave 3F"
+      "Kali B Cave 3F"
     ]
   },
-  "image": "maps/rege/rege3f.jpg",
+  "image": "maps/kali/kali3f.jpg",
   "images": {
-    "ko": "maps/rege/ko/rege3f.jpg",
-    "ja": "maps/rege/ja/rege3f.jpg"
+    "ko": "maps/kali/ko/kali3f.jpg",
+    "ja": "maps/kali/ja/kali3f.jpg"
   },
   "imageSize": {
     "width": 525,

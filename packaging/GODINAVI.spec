@@ -6,6 +6,10 @@ from PyInstaller.utils.hooks import collect_all
 PROJECT_ROOT = os.path.abspath(os.path.join(SPECPATH, os.pardir))
 SOURCE_DIR = os.path.join(PROJECT_ROOT, 'source')
 ASSET_DIR = os.path.join(PROJECT_ROOT, 'assets', 'icons')
+PARTY_ENDPOINT = os.path.join(PROJECT_ROOT, 'private', 'party-endpoint.json')
+
+if not os.path.isfile(PARTY_ENDPOINT):
+    raise FileNotFoundError('Missing private/party-endpoint.json. Copy the example and set the private endpoint before building.')
 
 datas = [
     (os.path.join(ASSET_DIR, 'Godius_104.png'), 'assets/icons'),
@@ -13,6 +17,7 @@ datas = [
     (os.path.join(PROJECT_ROOT, 'assets', 'buff_timer'), 'assets/buff_timer'),
     (os.path.join(PROJECT_ROOT, 'assets', 'durability'), 'assets/durability'),
     (os.path.join(PROJECT_ROOT, 'assets', 'map_ocr'), 'assets/map_ocr'),
+    (PARTY_ENDPOINT, 'config'),
 ]
 binaries = []
 hiddenimports = ['paddle_ocr_backend', 'windows_ocr_backend', 'pystray', 'pystray._win32']
@@ -22,6 +27,8 @@ datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 tmp_ret = collect_all('onnxruntime')
 datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 tmp_ret = collect_all('dxcam')
+datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
+tmp_ret = collect_all('websockets')
 datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 
 

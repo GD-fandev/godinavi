@@ -5,6 +5,17 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 
+# Private party service and local endpoint configuration
+party-server/
+private/*
+!private/party-endpoint.example.json
+tools/party_debug_participants.py
+tools/run_party_debug_participants.bat
+run_party_debug.bat
+**/.env
+**/.env.*
+!**/.env.example
+
 # Generated local output
 build/
 dist/

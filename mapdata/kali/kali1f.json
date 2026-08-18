@@ -1,20 +1,20 @@
 {
-  "id": "rege1f",
+  "id": "kali1f",
   "names": {
     "ko": [
-      "레게지하동굴1층"
+      "칼리지하동굴1층"
     ],
     "ja": [
-      "レゲ地下洞窟1F"
+      "カリ地下洞窟1F"
     ],
     "en": [
-      "Rege B Cave 1F"
+      "Kali B Cave 1F"
     ]
   },
-  "image": "maps/rege/rege1f.jpg",
+  "image": "maps/kali/kali1f.jpg",
   "images": {
-    "ko": "maps/rege/ko/rege1f.jpg",
-    "ja": "maps/rege/ja/rege1f.jpg"
+    "ko": "maps/kali/ko/kali1f.jpg",
+    "ja": "maps/kali/ja/kali1f.jpg"
   },
   "imageSize": {
     "width": 463,

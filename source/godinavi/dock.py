@@ -5,6 +5,7 @@ from collections.abc import Callable
 from PIL import Image, ImageDraw, ImageEnhance, ImageFont, ImageTk
 
 from .actions import DockItem
+from .window_attachment import make_noactivate_toolwindow
 
 
 BG = "#17130f"
@@ -188,6 +189,8 @@ class OverlayDock:
         self.status.pack(padx=1, pady=1)
         self.status_window.withdraw()
         self._build_buttons()
+        make_noactivate_toolwindow(self.root)
+        make_noactivate_toolwindow(self.status_window)
         self.root.after(150, self._refresh_state_badges)
 
     def _build_buttons(self):
@@ -368,13 +371,17 @@ class OverlayDock:
         if not item.icon_path:
             return None, None
         icon_width, icon_height = self.icon_size()
-        cache_key = (item.icon_path, icon_width, icon_height, state)
+        cache_key = (item.icon_path, icon_width, icon_height, state, item.icon_text, item.icon_bottom_text)
         cached = self.icon_cache.get(cache_key)
         if cached:
             return cached
         try:
             with Image.open(item.icon_path) as source:
                 normal = source.convert("RGB").resize((icon_width, icon_height), Image.Resampling.LANCZOS)
+            if item.icon_text:
+                self._draw_icon_text(normal, item.icon_text)
+            if item.icon_bottom_text:
+                self._draw_icon_bottom_text(normal, item.icon_bottom_text)
             base_state, alert = state if isinstance(state, tuple) else (state, "")
             if base_state is not None:
                 self._draw_state_badge(normal, base_state)
@@ -386,6 +393,38 @@ class OverlayDock:
             return images
         except (OSError, ValueError, tk.TclError):
             return None, None
+
+    def _draw_icon_text(self, image: Image.Image, label: str):
+        draw = ImageDraw.Draw(image)
+        font_size = max(9, round(12 * self.icon_scale))
+        try:
+            font = ImageFont.truetype("arialbd.ttf", font_size)
+        except OSError:
+            font = ImageFont.load_default()
+        box = draw.textbbox((0, 0), label, font=font)
+        width = box[2] - box[0]
+        height = box[3] - box[1]
+        x = (image.width - width) // 2
+        y = (image.height - height) // 2 - box[1]
+        draw.text((x + 1, y + 1), label, font=font, fill="#17130f")
+        draw.text((x, y), label, font=font, fill="#f1e5c7")
+
+    def _draw_icon_bottom_text(self, image: Image.Image, label: str):
+        draw = ImageDraw.Draw(image)
+        font_size = max(7, round(9 * self.icon_scale))
+        try:
+            font = ImageFont.truetype("arialbd.ttf", font_size)
+        except OSError:
+            font = ImageFont.load_default()
+        box = draw.textbbox((0, 0), label, font=font, stroke_width=2)
+        width = box[2] - box[0]
+        height = box[3] - box[1]
+        x = (image.width - width) // 2 - box[0]
+        y = image.height - height - max(2, round(3 * self.icon_scale)) - box[1]
+        draw.text(
+            (x, y), label, font=font, fill="#ffffff",
+            stroke_width=max(1, round(2 * self.icon_scale)), stroke_fill="#000000",
+        )
 
     def _draw_state_badge(self, image: Image.Image, state: bool | str):
         draw = ImageDraw.Draw(image)
@@ -653,8 +692,8 @@ class OverlayDock:
         self._destroy_flyout()
         flyout = tk.Toplevel(self.root)
         self.flyout = flyout
+        flyout.withdraw()
         flyout.overrideredirect(True)
-        flyout.attributes("-topmost", True)
         flyout.configure(bg=GOLD)
         flyout.bind("<Enter>", lambda _event: self._cancel_hide())
         flyout.bind("<Leave>", self._schedule_hide)
@@ -755,6 +794,8 @@ class OverlayDock:
         x = max(4, min(x, screen_width - flyout_width - 4))
         y = max(4, min(y, screen_height - flyout_height - 4))
         flyout.geometry(f"+{x}+{y}")
+        make_noactivate_toolwindow(flyout, topmost=True)
+        flyout.deiconify()
 
     def _invoke_quick_action(self, callback: Callable[[], None]):
         self._destroy_flyout()

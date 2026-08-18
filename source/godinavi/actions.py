@@ -25,3 +25,5 @@ class DockItem:
     secondary: Action | None = None
     badge: Callable[[], str] | None = None
     alert: Callable[[], str] | None = None
+    icon_text: str | None = None
+    icon_bottom_text: str | None = None

@@ -14,7 +14,7 @@ from pathlib import Path
 from tkinter import messagebox, ttk
 
 import dxcam
-from PIL import Image, ImageDraw, ImageEnhance, ImageGrab, ImageOps, ImageTk
+from PIL import Image, ImageDraw, ImageEnhance, ImageFont, ImageGrab, ImageOps, ImageTk
 from map_store import MapStore
 from app_update_checker import APP_VERSION, fetch_latest_release, is_newer_version
 
@@ -49,6 +49,7 @@ HWND_NOTOPMOST = wintypes.HWND(-2)
 SW_SHOWNOACTIVATE = 4
 SWP_NOSIZE = 0x0001
 SWP_NOMOVE = 0x0002
+SWP_NOZORDER = 0x0004
 SWP_NOACTIVATE = 0x0010
 SWP_FRAMECHANGED = 0x0020
 SWP_SHOWWINDOW = 0x0040
@@ -114,6 +115,8 @@ DEFAULT_CONFIG = {
     "map_y": 80,
     "map_offset_x": None,
     "map_offset_y": None,
+    "map_unrestricted_x": None,
+    "map_unrestricted_y": None,
     "map_size_scale": 1.0,
     "map_opacity_percent": 100,
     "world_map_size_scale": 1.0,
@@ -137,6 +140,7 @@ DEFAULT_CONFIG = {
     "favorite_overlay_offset_y": None,
     "favorite_overlay_scale": 1.0,
     "minimap_enabled": True,
+    "minimap_boundary_restricted": True,
 }
 
 
@@ -601,6 +605,7 @@ class MapEngine:
         self.on_calibration_confirmed = on_calibration_confirmed
         self.config = load_config()
         self.ui_language = self.config.get("ui_language", "EN")
+        self._party_marker_font = None
         favorites = self.config.get("favorites")
         if not isinstance(favorites, dict):
             favorites = {}
@@ -645,6 +650,7 @@ class MapEngine:
         self.last_no_map_animation_at = 0.0
         self.last_coordinate_at = 0.0
         self.current_game_coordinate = None
+        self.party_positions = []
         self.credit_map_id = None
         self.credit_started_at = None
         self.credit_visible_until = 0.0
@@ -663,6 +669,7 @@ class MapEngine:
         self.pending_client_rect_hits = 0
         self.map_dragging = False
         self.minimap_enabled = bool(self.config.get("minimap_enabled", True))
+        self.minimap_boundary_restricted = bool(self.config.get("minimap_boundary_restricted", True))
         self.map_resize_mode = False
         self.map_resizing = False
         self.map_resize_corner = None
@@ -1195,7 +1202,6 @@ class MapEngine:
             header, text="×", bg="#2a2118", fg="#f1e5c7", activebackground="#6a3028",
             activeforeground="white", relief="flat", bd=0, width=4, font=("Segoe UI", 12, "bold"),
         )
-        close_button.pack(side="right", fill="y")
 
         def portal_button(parent, text, command=None):
             return tk.Button(
@@ -1485,7 +1491,9 @@ class MapEngine:
             window.destroy()
 
         close_button.configure(command=close)
-        portal_button(body, texts["close"], close).grid(row=5, column=0, columnspan=2, sticky="e", pady=(12, 0))
+        footer_close_button = portal_button(body, texts["close"], close)
+        footer_close_button.configure(bg="#3b3022", padx=14, pady=7)
+        footer_close_button.grid(row=5, column=0, columnspan=2, sticky="e", pady=(12, 0))
         window.protocol("WM_DELETE_WINDOW", close)
 
         target = self.find_target()
@@ -2285,6 +2293,28 @@ class MapEngine:
                     draw.ellipse((px - radius, py - radius, px + radius, py + radius), fill="#ffe500", outline="#000000", width=2)
             except (KeyError, TypeError, ValueError):
                 pass
+        if self.active_map and has_location_data:
+            tx = transform.get("imageX", {})
+            ty = transform.get("imageY", {})
+            active_id = str(self.active_map.get("id", ""))
+            draw = ImageDraw.Draw(image)
+            for member in self.party_positions:
+                if member.get("map_id") != active_id:
+                    continue
+                try:
+                    game_x, game_y = int(member["x"]), int(member["y"])
+                    image_x = tx["gameX"] * game_x + tx["gameY"] * game_y + tx["offset"]
+                    image_y = ty["gameX"] * game_x + ty["gameY"] * game_y + ty["offset"]
+                    px, py = round(image_x * self.map_scale), round(image_y * self.map_scale)
+                    if -10 <= px <= image.width + 10 and -10 <= py <= image.height + 10:
+                        radius = 6
+                        draw.ellipse((px - radius, py - radius, px + radius, py + radius),
+                                     fill=member.get("color", "#39d6ff"), outline="#001820", width=2)
+                        draw.text((px + 9, py - 8), str(member.get("display_name", "?"))[:8],
+                                  fill=member.get("color", "#39d6ff"), font=self._get_party_marker_font(),
+                                  stroke_width=2, stroke_fill="#001820")
+                except (KeyError, TypeError, ValueError):
+                    continue
         self.map_photo = ImageTk.PhotoImage(image)
         self.map_canvas.delete("all")
         self.map_canvas.create_image(0, 0, image=self.map_photo, anchor="nw")
@@ -2316,6 +2346,30 @@ class MapEngine:
         self.draw_resize_handles()
         self.draw_minimap_edit_lock()
         self.draw_adjustment_indicators()
+
+    def set_party_positions(self, positions):
+        self.party_positions = list(positions or [])
+        if self.active_map and not self.world_map_mode:
+            self.render_map()
+
+    def _get_party_marker_font(self):
+        if self._party_marker_font is not None:
+            return self._party_marker_font
+        fonts_dir = Path(os.environ.get("WINDIR", "C:/Windows")) / "Fonts"
+        preferred = {
+            "KR": ("malgun.ttf", "malgunbd.ttf"),
+            "JP": ("YuGothM.ttc", "msgothic.ttc"),
+            "EN": ("segoeui.ttf", "arial.ttf"),
+        }
+        candidates = preferred.get(self.ui_language, preferred["EN"]) + ("malgun.ttf", "YuGothM.ttc", "segoeui.ttf")
+        for filename in candidates:
+            try:
+                self._party_marker_font = ImageFont.truetype(str(fonts_dir / filename), 13)
+                return self._party_marker_font
+            except (OSError, ValueError):
+                continue
+        self._party_marker_font = ImageFont.load_default()
+        return self._party_marker_font
 
     def draw_minimap_edit_lock(self):
         self.map_canvas.delete("minimap_edit_lock")
@@ -2607,7 +2661,7 @@ class MapEngine:
                 y = anchor_y - self.map_height
             else:
                 y = anchor_y
-            self.map_window.geometry(f"{self.map_width}x{self.map_height}+{round(x)}+{round(y)}")
+            self._set_map_window_geometry(x, y, self.map_width, self.map_height)
             percent = round(self.config[scale_key] * 100)
             self.set_status("size", "#ffe27a", percent=percent)
             return
@@ -2618,7 +2672,7 @@ class MapEngine:
         x = self.map_drag_origin[0] + dx
         y = self.map_drag_origin[1] + dy
         client = self.get_stable_client_rect()
-        if client:
+        if client and (self.world_map_mode or getattr(self, "minimap_boundary_restricted", True)):
             left, top, right, bottom = client
             minimum_x = min(left, right - self.map_width)
             maximum_x = max(left, right - self.map_width)
@@ -2629,7 +2683,7 @@ class MapEngine:
         # During a move, change only the position. Reapplying the requested
         # size on every mouse event can make Tk temporarily clip a large world
         # map to its 40% minimum render until the button is released.
-        self.map_window.geometry(f"+{round(x)}+{round(y)}")
+        self._set_map_window_geometry(x, y)
         self.map_window.update_idletasks()
 
     def map_release(self, _event):
@@ -2655,8 +2709,43 @@ class MapEngine:
         client = self.get_stable_client_rect()
         if client:
             prefix = "world_map" if self.world_map_mode else "map"
+            if not self.world_map_mode and not self.minimap_boundary_restricted:
+                self.config["map_unrestricted_x"] = self.map_window.winfo_x()
+                self.config["map_unrestricted_y"] = self.map_window.winfo_y()
+                return
             self.config[f"{prefix}_offset_x"] = self.map_window.winfo_x() - client[0]
             self.config[f"{prefix}_offset_y"] = self.map_window.winfo_y() - client[1]
+
+    def _set_map_window_geometry(self, x, y, width=None, height=None):
+        """Position the minimap using absolute virtual-screen coordinates.
+
+        Tk interprets a negative geometry coordinate as a distance from the
+        right/bottom edge, which sends a window meant for a left-hand monitor
+        to the far side of the right-hand monitor. Win32 accepts the intended
+        signed virtual-screen coordinate directly. SWP_NOZORDER deliberately
+        preserves the minimap's existing owner/Z-order behavior.
+        """
+        x, y = round(x), round(y)
+        if x >= 0 and y >= 0:
+            size = f"{int(width)}x{int(height)}" if width is not None and height is not None else ""
+            self.map_window.geometry(f"{size}{x:+d}{y:+d}")
+            return
+        if not hasattr(self.map_window, "winfo_id") or not hasattr(self.map_window, "update_idletasks"):
+            size = f"{int(width)}x{int(height)}" if width is not None and height is not None else ""
+            self.map_window.geometry(f"{size}{x:+d}{y:+d}")
+            return
+        try:
+            if width is not None and height is not None:
+                self.map_window.geometry(f"{int(width)}x{int(height)}")
+            self.map_window.update_idletasks()
+            hwnd = user32.GetAncestor(self.map_window.winfo_id(), GA_ROOT) or self.map_window.winfo_id()
+            user32.SetWindowPos(
+                hwnd, 0, x, y, 0, 0,
+                SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE,
+            )
+        except (AttributeError, tk.TclError):
+            size = f"{int(width)}x{int(height)}" if width is not None and height is not None else ""
+            self.map_window.geometry(f"{size}{x:+d}{y:+d}")
 
     def create_region_window(self, kind):
         win = tk.Toplevel(self.root)
@@ -3243,15 +3332,28 @@ class MapEngine:
         left, top, right, bottom = client
         offset_x = self.config.get("map_offset_x")
         offset_y = self.config.get("map_offset_y")
-        if offset_x is None or offset_y is None:
+        absolute_x = self.config.get("map_unrestricted_x")
+        absolute_y = self.config.get("map_unrestricted_y")
+        boundary_restricted = getattr(self, "minimap_boundary_restricted", True)
+        if (
+            not boundary_restricted
+            and isinstance(absolute_x, (int, float))
+            and isinstance(absolute_y, (int, float))
+        ):
+            x, y = int(absolute_x), int(absolute_y)
+        elif offset_x is None or offset_y is None:
             x = left + max(0, ((right - left) - self.map_width) // 2)
             y = top + max(0, ((bottom - top) - self.map_height) // 2)
         else:
             x = left + int(offset_x)
             y = top + int(offset_y)
-        x = max(left, min(x, right - self.map_width))
-        y = max(top, min(y, bottom - self.map_height))
-        self.map_window.geometry(f"{self.map_width}x{self.map_height}+{round(x)}+{round(y)}")
+        if not boundary_restricted and (absolute_x is None or absolute_y is None):
+            self.config["map_unrestricted_x"] = x
+            self.config["map_unrestricted_y"] = y
+        if boundary_restricted:
+            x = max(left, min(x, right - self.map_width))
+            y = max(top, min(y, bottom - self.map_height))
+        self._set_map_window_geometry(x, y, self.map_width, self.map_height)
 
     def show_map(self):
         if self.world_map_mode:
@@ -3286,6 +3388,23 @@ class MapEngine:
             self.set_status("finding_map")
             self.request_immediate_ocr()
         return True
+
+    def toggle_minimap_boundary_restriction(self):
+        enabling = not self.minimap_boundary_restricted
+        client = self.get_stable_client_rect()
+        if enabling:
+            if client:
+                self.config["map_offset_x"] = self.map_window.winfo_x() - client[0]
+                self.config["map_offset_y"] = self.map_window.winfo_y() - client[1]
+        else:
+            self.config["map_unrestricted_x"] = self.map_window.winfo_x()
+            self.config["map_unrestricted_y"] = self.map_window.winfo_y()
+        self.minimap_boundary_restricted = enabling
+        self.config["minimap_boundary_restricted"] = self.minimap_boundary_restricted
+        save_config(self.config)
+        if self.minimap_boundary_restricted and not self.world_map_mode:
+            self.position_map()
+        return self.minimap_boundary_restricted
 
     def request_immediate_ocr(self):
         """Run one OCR pass as soon as Tk is idle instead of waiting for tick()."""
