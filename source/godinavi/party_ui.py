@@ -2,12 +2,11 @@ import tkinter as tk
 import time
 import unicodedata
 from collections.abc import Callable
-from pathlib import Path
 from tkinter import ttk
 
 from PIL import Image, ImageTk
 
-from map_engine import show_interactive_above_owner
+from map_engine import BUNDLE_DIR, show_interactive_above_owner
 from godinavi.window_attachment import attach_above, make_noactivate_toolwindow
 
 
@@ -16,7 +15,7 @@ FIELD = "#3b3022"
 HEADER = "#5a4932"
 GOLD = "#d8b15a"
 TEXT = "#f1e5c7"
-RESOURCE_DIR = Path(__file__).resolve().parents[2]
+RESOURCE_DIR = BUNDLE_DIR
 PARTY_MEMBER_COLORS = (
     "#80FF44",  # lime
     "#FF5CCF",  # magenta
