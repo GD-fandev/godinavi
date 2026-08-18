@@ -772,6 +772,7 @@ class PartyUI:
 
     def _control_all_buff_tracking(self):
         own_id = self.party_client.member_id
+        self._initialize_member_tracking()
         eligible = [
             member for member in self.members.values()
             if member.get("member_id") != own_id and member.get("job") not in NON_BUFF_SHARING_JOBS
@@ -1252,6 +1253,15 @@ class PartyUI:
 
     def _initialize_member_tracking(self):
         own_id = self.party_client.member_id
+        current_ids = {
+            member_id for member_id in self.members
+            if member_id and member_id != own_id
+        }
+        # The current room snapshot is the source of truth. Preferences left by a
+        # previous room/member incarnation must never replace current members.
+        for member_id in list(self.tracking_preferences):
+            if member_id not in current_ids:
+                self.tracking_preferences.pop(member_id, None)
         for member_id, member in self.members.items():
             if member_id == own_id:
                 continue
@@ -1260,6 +1270,7 @@ class PartyUI:
             )
             if member.get("job") in NON_BUFF_SHARING_JOBS:
                 preferences["buff"] = False
+        self.save_config()
 
     def _clear_session_log(self):
         self.session_logs.clear()
