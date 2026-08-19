@@ -17,6 +17,7 @@ datas = [
     (os.path.join(PROJECT_ROOT, 'assets', 'buff_timer'), 'assets/buff_timer'),
     (os.path.join(PROJECT_ROOT, 'assets', 'durability'), 'assets/durability'),
     (os.path.join(PROJECT_ROOT, 'assets', 'map_ocr'), 'assets/map_ocr'),
+    (os.path.join(PROJECT_ROOT, 'assets', 'chat.mp3'), 'assets'),
     (PARTY_ENDPOINT, 'config'),
 ]
 binaries = []

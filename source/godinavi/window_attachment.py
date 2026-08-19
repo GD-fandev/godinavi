@@ -43,6 +43,8 @@ user32.SetWindowLongW.argtypes = [wintypes.HWND, ctypes.c_int, ctypes.c_long]
 user32.SetWindowLongW.restype = ctypes.c_long
 user32.ShowWindow.argtypes = [wintypes.HWND, ctypes.c_int]
 user32.SetWindowPos.argtypes = [wintypes.HWND, wintypes.HWND, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_uint]
+user32.SetForegroundWindow.argtypes = [wintypes.HWND]
+user32.SetForegroundWindow.restype = wintypes.BOOL
 kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
 kernel32.OpenProcess.restype = wintypes.HANDLE
 kernel32.QueryFullProcessImageNameW.argtypes = [wintypes.HANDLE, wintypes.DWORD, wintypes.LPWSTR, ctypes.POINTER(wintypes.DWORD)]
@@ -134,6 +136,25 @@ def make_noactivate_toolwindow(window, topmost=False):
         hwnd, HWND_TOPMOST if topmost else HWND_TOP, 0, 0, 0, 0,
         SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_FRAMECHANGED,
     )
+
+
+def make_activatable_toolwindow(window, topmost=False):
+    """Temporarily allow an overlay input control to receive keyboard focus."""
+    window.update_idletasks()
+    hwnd = user32.GetAncestor(window.winfo_id(), GA_ROOT) or window.winfo_id()
+    style = user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
+    style = (style | WS_EX_TOOLWINDOW) & ~WS_EX_NOACTIVATE
+    user32.SetWindowLongW(hwnd, GWL_EXSTYLE, style)
+    user32.SetWindowPos(
+        hwnd, HWND_TOPMOST if topmost else HWND_TOP, 0, 0, 0, 0,
+        SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED | SWP_SHOWWINDOW,
+    )
+    user32.SetForegroundWindow(hwnd)
+
+
+def focus_native_window(hwnd):
+    if hwnd:
+        user32.SetForegroundWindow(hwnd)
 
 
 def is_minimized(hwnd) -> bool:

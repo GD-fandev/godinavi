@@ -65,14 +65,19 @@ class PartyClient:
         self.room_id = None
         self.member_id = None
         self.member_token = None
-        self.expires_at = None
         self.connected = False
         self.desired = False
+        self.leaving = False
         self.socket = None
         self.socket_thread = None
         self.outgoing = queue.Queue(maxsize=100)
         self.lock = threading.RLock()
         self.send_lock = threading.Lock()
+        self.service_status = "checking"
+        self.service_accepting_rooms = True
+        self.last_status_check = 0.0
+        self.status_monitor_started = False
+        self.status_failures = 0
 
     @property
     def has_session(self):
@@ -82,14 +87,44 @@ class PartyClient:
     def create_room(self, profile, on_success, on_error):
         self._request_async("/api/v1/rooms", profile, on_success, on_error)
 
+    def start_status_monitor(self):
+        with self.lock:
+            if self.status_monitor_started:
+                return
+            self.status_monitor_started = True
+
+        def monitor():
+            while True:
+                self.check_server_status(force=True)
+                time.sleep(60)
+
+        threading.Thread(target=monitor, name="godinavi-party-health", daemon=True).start()
+
+    def check_server_status(self, force=False):
+        if not self.server_url or (not force and time.time() - self.last_status_check < 12):
+            return
+        self.last_status_check = time.time()
+        try:
+            request = urllib.request.Request(f"{self.server_url}/health", headers={"User-Agent": "GodiNavi-Party/0.1"})
+            with urllib.request.urlopen(request, timeout=5, context=ssl.create_default_context()) as response:
+                result = json.loads(response.read().decode("utf-8"))
+            if result.get("status") != "ok":
+                raise ValueError("service unavailable")
+            self.status_failures = 0
+            self.service_status = "online"
+            self.service_accepting_rooms = result.get("accepting_rooms") is not False
+        except (OSError, ValueError, urllib.error.URLError):
+            self.status_failures += 1
+            if self.status_failures >= 2:
+                self.service_status = "offline"
+        self._emit_state("service", self.service_status)
+
     def join_room(self, room_id, profile, on_success, on_error):
         self._request_async("/api/v1/rooms/join", {**profile, "room_id": room_id}, on_success, on_error)
 
     def resume_session(self, session):
-        required = ("room_id", "member_id", "member_token", "expires_at")
+        required = ("room_id", "member_id", "member_token")
         if not isinstance(session, dict) or any(not session.get(key) for key in required):
-            return False
-        if float(session["expires_at"]) <= time.time():
             return False
         self._start_session(session)
         return True
@@ -136,8 +171,8 @@ class PartyClient:
             self.room_id = str(result["room_id"])
             self.member_id = str(result["member_id"])
             self.member_token = str(result["member_token"])
-            self.expires_at = float(result["expires_at"])
             self.desired = True
+            self.leaving = False
             self.connected = False
         self._emit_state("connecting", self.room_id)
         if not self.socket_thread or not self.socket_thread.is_alive():
@@ -147,10 +182,6 @@ class PartyClient:
     def _socket_worker(self):
         retry_delay = 1.0
         while self.has_session:
-            if self.expires_at and time.time() >= self.expires_at:
-                self._clear_session()
-                self._emit_state("expired", "")
-                break
             if websocket_connect is None:
                 self._emit_state("error", "WebSocket 모듈을 불러올 수 없습니다.")
                 return
@@ -183,7 +214,12 @@ class PartyClient:
                         if event.get("type") == "room_snapshot":
                             with self.lock:
                                 self.connected = True
+                                self.service_status = "online"
+                                self.status_failures = 0
                             self._emit_state("connected", self.room_id or "")
+                        elif event.get("type") == "leave_ack":
+                            self._finish_leave()
+                            break
                         elif event.get("type") == "room_closed":
                             self._clear_session()
                             self._emit_state("closed", str(event.get("reason", "")))
@@ -193,6 +229,10 @@ class PartyClient:
                 with self.lock:
                     self.connected = False
                     self.socket = None
+                    leaving = self.leaving
+                if leaving:
+                    self._finish_leave()
+                    break
                 if not self.has_session:
                     break
                 if getattr(error, "code", None) in {4003, 4004, 4005, 4006}:
@@ -232,11 +272,27 @@ class PartyClient:
     def leave(self):
         with self.lock:
             socket = self.socket
+            if self.leaving:
+                return
+            self.leaving = True
         if socket:
             try:
                 self._send(socket, {"type": "leave_room"})
             except Exception:
-                pass
+                self._finish_leave()
+                return
+            timer = threading.Timer(2.0, self._finish_leave)
+            timer.daemon = True
+            timer.start()
+            return
+        self._finish_leave()
+
+    def _finish_leave(self):
+        with self.lock:
+            if not self.leaving:
+                return
+            socket = self.socket
+            self.leaving = False
         self._clear_session()
         if socket:
             try:
@@ -258,11 +314,11 @@ class PartyClient:
     def _clear_session(self):
         with self.lock:
             self.desired = False
+            self.leaving = False
             self.connected = False
             self.room_id = None
             self.member_id = None
             self.member_token = None
-            self.expires_at = None
             self.socket = None
         while True:
             try:

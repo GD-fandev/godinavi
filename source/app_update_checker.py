@@ -6,7 +6,7 @@ import urllib.request
 import certifi
 
 
-APP_VERSION = "1.2.3"
+APP_VERSION = "1.3.0"
 LATEST_RELEASE_API = "https://api.github.com/repos/GD-fandev/godinavi/releases/latest"
 USER_AGENT = "GodiNavi-VersionChecker/1.0"
 RELEASE_DOWNLOAD_PREFIX = "https://github.com/GD-fandev/godinavi/releases/download/"

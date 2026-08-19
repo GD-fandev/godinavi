@@ -1,13 +1,19 @@
 import tkinter as tk
+import ctypes
+import re
+import threading
 import time
 import unicodedata
+import uuid
 from collections.abc import Callable
 from tkinter import ttk
 
 from PIL import Image, ImageTk
 
 from map_engine import BUNDLE_DIR, show_interactive_above_owner
-from godinavi.window_attachment import attach_above, make_noactivate_toolwindow
+from godinavi.window_attachment import (
+    attach_above, focus_native_window, make_activatable_toolwindow, make_noactivate_toolwindow,
+)
 
 
 BG = "#2a2118"
@@ -15,6 +21,32 @@ FIELD = "#3b3022"
 HEADER = "#5a4932"
 GOLD = "#d8b15a"
 TEXT = "#f1e5c7"
+SAFETY_NOTICE_MARKER = "[[PARTY_SAFETY_NOTICE]]"
+SAFETY_NOTICE_COLOR = "#e1b85a"
+LOG_MARKER_PREFIX = "[[PARTY_LOG:"
+CHAT_MARKER_PREFIX = "[[PARTY_CHAT:"
+CHAT_CONSENT_VERSION = 1
+LOG_COLORS = {
+    "chat": "#d7c59d",
+    "positive": "#72e6a4",
+    "departure": "#d9a35f",
+    "profile": "#72c7e6",
+    "leadership": "#f0c96a",
+    "moderation": "#e89252",
+    "danger": "#ef7770",
+    "notice": SAFETY_NOTICE_COLOR,
+}
+LOG_STYLE_BY_KEY = {
+    "log_room_created": "leadership",
+    "log_joined": "positive",
+    "log_reconnected": "positive",
+    "log_left": "departure",
+    "log_disconnected": "departure",
+    "log_profile_updated": "profile",
+    "log_transferred": "leadership",
+    "log_removed": "moderation",
+    "log_banned": "danger",
+}
 RESOURCE_DIR = BUNDLE_DIR
 PARTY_MEMBER_COLORS = (
     "#80FF44",  # lime
@@ -82,6 +114,7 @@ PARTY_TEXTS = {
         "log_room_created": "방 생성: {room_id}", "log_joined": "입실: {name}", "log_left": "퇴실: {name}",
         "log_removed": "파티장 퇴실 처리: {name}", "log_banned": "파티장 강퇴 처리: {name}",
         "log_transferred": "파티장 위임: {name}",
+        "chat_safety_notice": "[안내] 본 채팅에 중요한 개인정보 및 계정정보를 절대로 공유하지 말아주세요. 민감한 정보를 공유하여 발생한 피해에 대해서는 제작자가 책임을 질 수 없습니다.",
         "buff_control": "버프창 제어", "leave_short": "퇴실",
         "party_buff_adjusting": "헤더 드래그로 이동 · 우하단 핸들로 크기 조절 · 휠로 투명도 조절",
         "party_buff_saved": "버프 확인창 위치·크기 저장 완료",
@@ -131,6 +164,7 @@ PARTY_TEXTS = {
         "log_room_created": "部屋を作成: {room_id}", "log_joined": "入室: {name}", "log_left": "退出: {name}",
         "log_removed": "リーダーによる退出処理: {name}", "log_banned": "リーダーによる追放処理: {name}",
         "log_transferred": "リーダー委任: {name}",
+        "chat_safety_notice": "【ご注意】このチャットでは、重要な個人情報やアカウント情報を絶対に共有しないでください。機密情報の共有によって生じた損害について、製作者は責任を負いかねます。",
         "buff_control": "バフ画面制御", "leave_short": "退出",
         "party_buff_adjusting": "ヘッダーで移動・右下ハンドルでサイズ調整・ホイールで透明度調整",
         "party_buff_saved": "バフ確認画面の位置とサイズを保存しました",
@@ -180,6 +214,7 @@ PARTY_TEXTS = {
         "log_room_created": "Room created: {room_id}", "log_joined": "Joined: {name}", "log_left": "Left: {name}",
         "log_removed": "Removed by leader: {name}", "log_banned": "Banned by leader: {name}",
         "log_transferred": "Leadership transferred: {name}",
+        "chat_safety_notice": "[Notice] Never share important personal or account information in this chat. The developer cannot accept responsibility for harm resulting from sharing sensitive information.",
         "buff_control": "Buff Check", "leave_short": "Leave",
         "party_buff_adjusting": "Drag the header to move · Bottom-right handle resizes · Wheel adjusts opacity",
         "party_buff_saved": "Party buff window position and size saved",
@@ -200,6 +235,58 @@ PARTY_TEXTS = {
         "clear": "Clear",
     },
 }
+
+PARTY_TEXTS["KR"].update({
+    "profile_manage": "프로필 관리", "profile_apply": "적용", "profile_add": "추가",
+    "profile_delete": "삭제", "profile_edit": "수정", "profile_save": "저장", "ban_manage": "추방 관리", "ban_date": "추방일시",
+    "ban_memo": "메모", "ban_empty": "추방된 사용자가 없습니다.",
+    "log_chat": "채팅", "chat_placeholder": "메시지 입력…", "send": "전송", "chat_overlay_adjust": "오버레이 조정", "chat_sound": "효과음", "chat_time": "시간표시", "chat_overlay": "오버레이",
+    "log_profile_updated": "{old} → {new} 프로필 변경",
+    "log_disconnected": "{name} 연결 끊김",
+    "log_reconnected": "{name} 재접속",
+    "chat_consent_title": "채팅 기능 이용 안내", "chat_consent_accept": "동의하고 채팅 이용",
+    "chat_consent_decline": "거절", "chat_report": "신고하기", "chat_report_title": "대화 신고",
+    "chat_report_reason": "신고 사유 (선택)", "chat_report_send": "신고 자료 전송",
+    "chat_report_done_title": "신고 접수 완료",
+    "chat_report_done": "신고 자료가 정상적으로 접수되었습니다.\n\n접수번호: {id}",
+    "chat_consent_notice": "가디내비의 채팅은 파티룸 이용자 간의 원활한 소통을 돕기 위한 보조 기능입니다.\n\n불법 거래, 사기, 개인정보나 계정의 거래 등 법령에 위반되는 목적으로 사용하지 말아주세요. 채팅 이용으로 발생한 이용자 간의 거래나 분쟁에 대해 제작자는 책임을 지거나 중재하지 않습니다.\n\n일반 채팅 기록은 서버에 저장되지 않으며, 제작자에게도 평상시 대화를 열람하는 기능은 제공되지 않습니다. 다만 신고 기능을 이용하면 신고한 메시지를 포함한 직전 대화 최대 20건이 서버로 전송되며, 적법한 수사기관의 요청이 있을 경우 관련 자료로 제공될 수 있습니다.\n\n위 내용에 동의하시는 경우에만 채팅을 이용해 주세요. 동의하지 않으셔도 파티원의 입실·퇴실 및 연결 상태 등의 시스템 알림은 계속 받아보실 수 있으니 부담 없이 거절하셔도 됩니다.",
+    "chat_report_notice": "이 대화를 신고하시겠습니까?\n\n신고하면 선택한 메시지를 포함하여 그 이전 대화가 최대 20건까지 서버로 전송됩니다.\n\n본 기능은 적법한 수사기관 요청에 대응하기 위한 자료 제출 기능이며, 제작자가 이용자 간 분쟁을 중재하는 기능이 아닙니다. 법령 위반 또는 중대한 서비스 악용이 확인되면 방 강제 폐쇄나 이용 제한 조치가 이루어질 수 있습니다.\n\n단순한 이용자 간 다툼에 대한 신고는 자제해 주세요. 불법행위가 의심되면 자료 제출 후 직접 수사기관에 신고해 주세요.",
+})
+PARTY_TEXTS["JP"].update({
+    "profile_manage": "プロフィール管理", "profile_apply": "適用", "profile_add": "追加",
+    "profile_delete": "削除", "profile_edit": "編集", "profile_save": "保存", "ban_manage": "追放管理", "ban_date": "追放日時",
+    "ban_memo": "メモ", "ban_empty": "追放したユーザーはいません。",
+    "log_chat": "チャット", "chat_placeholder": "メッセージを入力…", "send": "送信", "chat_overlay_adjust": "オーバーレイ調整", "chat_sound": "効果音", "chat_time": "時刻表示", "chat_overlay": "オーバーレイ",
+    "log_profile_updated": "{old}がプロフィールを{new}に変更",
+    "log_disconnected": "{name}の接続が切断されました",
+    "log_reconnected": "{name}が再接続しました",
+    "chat_consent_title": "チャット機能の利用案内", "chat_consent_accept": "同意してチャットを利用",
+    "chat_consent_decline": "拒否", "chat_report": "通報する", "chat_report_title": "会話を通報",
+    "chat_report_reason": "通報理由（任意）", "chat_report_send": "通報データを送信",
+    "chat_report_done_title": "通報受付完了",
+    "chat_report_done": "通報データが正常に受け付けられました。\n\n受付番号: {id}",
+    "chat_consent_notice": "ガディナビのチャットは、パーティールーム利用者間の円滑なコミュニケーションを補助する機能です。\n\n違法取引、詐欺、個人情報やアカウントの売買など、法令に違反する目的では利用しないでください。チャットの利用によって生じた利用者間の取引や紛争について、製作者は責任を負わず、仲裁も行いません。\n\n通常のチャット履歴はサーバーに保存されず、製作者が普段の会話を閲覧する機能もありません。ただし、通報機能を利用すると、通報したメッセージを含む直前の会話が最大20件サーバーへ送信され、適法な捜査機関から要請があった場合に資料として提供されることがあります。\n\n上記に同意いただける場合のみチャットをご利用ください。同意しない場合でも、メンバーの入退室や接続状態などのシステム通知は引き続き表示されますので、無理に同意する必要はありません。",
+    "chat_report_notice": "この会話を通報しますか？\n\n通報すると、選択したメッセージを含む直前の会話が最大20件サーバーへ送信されます。\n\n本機能は、適法な捜査機関からの要請に対応するための資料提出機能であり、製作者が利用者間の紛争を仲裁する機能ではありません。法令違反または重大なサービス悪用が確認された場合、ルームの強制閉鎖や利用制限を行うことがあります。\n\n単なる利用者間の口論についての通報はお控えください。違法行為が疑われる場合は、資料を送信した後、ご自身で捜査機関へ届け出てください。",
+})
+PARTY_TEXTS["EN"].update({
+    "profile_manage": "Manage profiles", "profile_apply": "Apply", "profile_add": "Add",
+    "profile_delete": "Delete", "profile_edit": "Edit", "profile_save": "Save", "ban_manage": "Manage bans", "ban_date": "Banned at",
+    "ban_memo": "Memo", "ban_empty": "No banned users.",
+    "log_chat": "Chat", "chat_placeholder": "Enter a message…", "send": "Send", "chat_overlay_adjust": "Adjust overlay", "chat_sound": "Sound", "chat_time": "Timestamps", "chat_overlay": "Overlay",
+    "log_profile_updated": "{old} changed profile to {new}",
+    "log_disconnected": "{name} disconnected",
+    "log_reconnected": "{name} reconnected",
+    "chat_consent_title": "Chat feature notice", "chat_consent_accept": "Agree and use chat",
+    "chat_consent_decline": "Decline", "chat_report": "Report", "chat_report_title": "Report conversation",
+    "chat_report_reason": "Reason (optional)", "chat_report_send": "Submit report data",
+    "chat_report_done_title": "Report received",
+    "chat_report_done": "Your report data was received successfully.\n\nReport ID: {id}",
+    "chat_consent_notice": "GodiNavi Chat is an optional feature intended to help Party Room members communicate.\n\nDo not use it for illegal transactions, fraud, trading personal information or accounts, or any unlawful purpose. The developer does not accept responsibility for or mediate transactions and disputes between users arising from chat use.\n\nOrdinary chat history is not stored on the server, and the developer has no feature for viewing ordinary conversations. If you use the report feature, up to 20 messages ending with the reported message are submitted to the server and may be provided in response to a lawful request from investigative authorities.\n\nPlease use chat only if you agree to the above. If you decline, you will still receive system notices such as member joins, leaves, and connection status, so you do not need to agree in order to use those notices.",
+    "chat_report_notice": "Report this conversation?\n\nUp to 20 messages ending with the selected message will be submitted to the server.\n\nThis feature submits material for possible lawful requests from investigative authorities. It is not a developer mediation service. Confirmed unlawful or serious abuse may result in room closure or service restrictions.\n\nPlease do not report ordinary personal disputes. If you suspect illegal activity, submit the material and then contact the appropriate authorities yourself.",
+})
+PARTY_TEXTS["KR"]["party_privacy_notice"] = "가디내비의 파티룸 기능 이용 시 캐릭터명·직업·부직업과\n실시간 위치 및 불/얼음 버프 상태가 암호화되어 공유됩니다.\n연결이 끊기면 위치와 버프 정보는 즉시 삭제되며, 재접속을 위해\n프로필과 멤버 자격은 퇴실·해산 또는 전원 미접속 240시간까지 보존됩니다.\n위 내용에 동의하시는 경우에만 이용 부탁드립니다."
+PARTY_TEXTS["JP"]["party_privacy_notice"] = "パーティールーム機能では、キャラ名・職業・副職業と\nリアルタイムの位置・氷/炎バフ状態が暗号化され共有されます。\n切断時に位置とバフ情報は直ちに削除され、再接続のためプロフィールと\nメンバー資格は退出・解散または全員未接続240時間まで保存されます。\n上記に同意いただける場合のみご利用ください。"
+PARTY_TEXTS["EN"]["party_privacy_notice"] = "Party Rooms share your encrypted character name, class, sub-class,\nreal-time location, and Fire/Ice buff status with room members.\nLocation and buff data are deleted on disconnect. Your profile and membership\nare retained for reconnection until you leave, the room is disbanded, or all\nmembers remain offline for 240 hours. Use this feature only if you agree."
 
 
 def normalize_player_id(value: str) -> str:
@@ -249,9 +336,34 @@ class PartyUI:
         self.member_count_label = None
         self.expiration_label = None
         self.session_logs = []
+        self.recent_chat_records = []
+        self.rendered_chat_lines = {}
+        self.safety_notice_pending = False
         self.log_panel = None
         self.log_text = None
         self.log_visible = False
+        self.chat_overlay_window = None
+        self.chat_overlay_label = None
+        self.chat_overlay_header = None
+        self.chat_overlay_grip = None
+        self.chat_overlay_lock_button = None
+        self.chat_overlay_minus_button = None
+        self.chat_overlay_plus_button = None
+        self.chat_overlay_chat_button = None
+        self.chat_overlay_input_frame = None
+        self.chat_overlay_input_entry = None
+        self.chat_overlay_input_var = None
+        self.chat_overlay_input_active = False
+        self.chat_overlay_locked = bool(self.config.get("party_chat_overlay_locked", True))
+        self.chat_overlay_font_scale = max(
+            1.0, min(1.5, float(self.config.get("party_chat_overlay_font_scale", 1.0)))
+        )
+        self.chat_overlay_enabled = bool(self.config.get("party_chat_overlay_enabled", False))
+        self.chat_timestamps_enabled = bool(self.config.get("party_chat_timestamps_enabled", True))
+        self.chat_sound_enabled = bool(self.config.get("party_chat_sound_enabled", False))
+        self.chat_sound_volume = max(0, min(100, int(self.config.get("party_chat_sound_volume", 60))))
+        self.chat_sound_lock = threading.Lock()
+        self.chat_volume_scale = None
         self.settings_main_panel = None
         self.buff_bar_window = None
         self.buff_bar_images = []
@@ -281,10 +393,16 @@ class PartyUI:
         self.create_window: tk.Toplevel | None = None
         self.room_window: tk.Toplevel | None = None
         self.settings_window: tk.Toplevel | None = None
+        self.profile_window: tk.Toplevel | None = None
+        self.create_profile_selector = None
+        self.join_profile_selector = None
+        self.ban_window: tk.Toplevel | None = None
+        self.ban_records = []
         self.notice_windows: list[tk.Toplevel] = []
         self.party_client.on_state = self._on_client_state
         self.party_client.on_event = self._on_client_event
         self.root.after(0, self._restore_session)
+        self.root.after(0, self.party_client.start_status_monitor)
         self.root.after(500, self._tick_remote_buff_timers)
 
     @property
@@ -303,12 +421,16 @@ class PartyUI:
         return texts["leave"] if self.joined else texts["join"]
 
     def create_room(self):
+        if not self.server_available:
+            return
         if self.joined:
             self.message_callback(self.texts()["already_joined"], 2400)
             return
         self.open_create_dialog()
 
     def join_or_leave(self):
+        if not self.server_available and not self.joined:
+            return
         if self.joined:
             if self._is_leader() and len(self.members) > 1:
                 if not self._confirm(
@@ -330,6 +452,7 @@ class PartyUI:
                 self.log_visible = False
                 self._cancel_member_marquees()
                 self.settings_window.destroy()
+                self._sync_chat_overlay()
             except tk.TclError:
                 pass
             return
@@ -342,8 +465,7 @@ class PartyUI:
         if self._show_existing(self.create_window):
             return
         texts = self.texts()
-        profile = self._saved_profile()
-        window, _content, body, close = self._create_dialog(texts["create"], 450, 500)
+        window, _content, body, close = self._create_dialog(texts["create"], 450, 450)
         self.create_window = window
         self._configure_form_style(window)
         body.configure(style="Party.TFrame")
@@ -352,12 +474,7 @@ class PartyUI:
         form.pack(side="top", fill="x")
         footer.pack(side="top", fill="both", expand=True, padx=16, pady=(2, 6))
         form.columnconfigure(0, weight=1)
-        player_var = tk.StringVar(value=normalize_player_id(profile.get("player_id", "")))
-        job_var = tk.StringVar(value=self._job_label(profile.get("job") if profile.get("job") in JOBS else JOBS[0]))
-        sub_job_var = tk.StringVar(value=self._sub_job_label(profile.get("sub_job") if profile.get("sub_job") in SUB_JOBS else SUB_JOBS[0]))
-        player_entry = self._add_field(form, 0, texts["player_id"], player_var, texts["player_hint"])
-        self._add_compact_job_fields(form, 3, job_var, sub_job_var)
-        player_var.trace_add("write", lambda *_args: self._limit_player_var(player_var))
+        profile_box = self._add_profile_selector(form, 0, "create", window)
         buttons = tk.Frame(footer, bg=BG)
         buttons.pack(side="bottom", anchor="e", pady=(4, 0))
 
@@ -365,36 +482,38 @@ class PartyUI:
             self._remember_session(result, "leader")
             self._start_session_log()
             self._append_session_log("log_room_created", room_id=result["room_id"])
+            self._append_safety_notice()
             if self._window_exists(window):
                 close()
             self._show_room_dialog(result["room_id"])
             self.message_callback(texts["created"], 2200)
 
         def failure(error):
+            self.safety_notice_pending = False
             if not self._window_exists(window):
                 return
             create_button.configure(state="normal")
             self._alert(texts["create"], self._localized_error(error))
 
         def create():
-            current = self._save_profile(player_var, job_var, sub_job_var, window)
+            current = self._selected_profile(self.create_profile_selector)
             if current is None:
                 return
             create_button.configure(state="disabled")
+            self.safety_notice_pending = True
             self.party_client.create_room(current, success, failure)
 
         create_button = self._button(buttons, texts["create"], create)
         create_button.pack(side="left", padx=(0, 6))
         self._button(buttons, texts["close"], close).pack(side="left")
         window.bind("<Return>", lambda _event: create())
-        window.after_idle(player_entry.focus_set)
+        window.after_idle(profile_box.focus_set)
 
     def open_join_dialog(self):
         if self._show_existing(self.join_window):
             return
         texts = self.texts()
-        profile = self._saved_profile()
-        window, content, body, close = self._create_dialog(texts["join"], 450, 600)
+        window, content, body, close = self._create_dialog(texts["join"], 450, 550)
         self.join_window = window
 
         self._configure_form_style(window)
@@ -405,30 +524,21 @@ class PartyUI:
         form.pack(side="top", fill="x")
         footer.pack(side="top", fill="both", expand=True, padx=16, pady=(2, 12))
         form.columnconfigure(0, weight=1)
-        player_var = tk.StringVar(value=normalize_player_id(profile.get("player_id", "")))
-        job_var = tk.StringVar(value=self._job_label(profile.get("job") if profile.get("job") in JOBS else JOBS[0]))
-        sub_job_var = tk.StringVar(value=self._sub_job_label(profile.get("sub_job") if profile.get("sub_job") in SUB_JOBS else SUB_JOBS[0]))
         saved_room = str(self.config.get("party_last_room_id", ""))
         compact_room = "".join(ch for ch in saved_room.upper() if ch.isalnum())[:8]
         room_left_var = tk.StringVar(value=compact_room[:4])
         room_right_var = tk.StringVar(value=compact_room[4:8])
 
-        player_entry = self._add_field(form, 0, texts["player_id"], player_var, texts["player_hint"])
-        self._add_compact_job_fields(form, 3, job_var, sub_job_var)
+        self._add_profile_selector(form, 0, "join", window)
         room_left_entry, room_right_entry = self._add_room_code_field(
-            form, 7, texts["room_id"], room_left_var, room_right_var, texts["room_hint"]
+            form, 4, texts["room_id"], room_left_var, room_right_var, texts["room_hint"]
         )
-
-        def limit_player(*_args):
-            self._limit_player_var(player_var)
-
-        player_var.trace_add("write", limit_player)
 
         buttons = tk.Frame(footer, bg=BG)
         buttons.pack(side="bottom", anchor="e", pady=(4, 0))
 
         def join():
-            current = self._save_profile(player_var, job_var, sub_job_var, window)
+            current = self._selected_profile(self.join_profile_selector)
             if current is None:
                 return
             room_id = f"{room_left_var.get()}-{room_right_var.get()}"
@@ -436,6 +546,7 @@ class PartyUI:
                 self._alert(texts["join"], texts["invalid_room"])
                 return
             join_button.configure(state="disabled")
+            self.safety_notice_pending = True
             self.party_client.join_room(room_id, current, success, failure)
 
         def success(result):
@@ -443,12 +554,14 @@ class PartyUI:
             self._remember_session(result, "member")
             self._start_session_log()
             self._append_session_log("log_joined", name=self._saved_profile().get("player_id", "?"))
+            self._append_safety_notice()
             if self._window_exists(window):
                 close()
             self.message_callback(texts["joined"].format(room_id=result["room_id"]), 2400)
             self.root.after_idle(self.open_settings)
 
         def failure(error):
+            self.safety_notice_pending = False
             if not self._window_exists(window):
                 return
             join_button.configure(state="normal")
@@ -461,9 +574,11 @@ class PartyUI:
         close_button.configure(pady=10)
         close_button.pack(side="left")
         window.bind("<Return>", lambda _event: join())
-        window.after_idle((room_left_entry if profile.get("player_id") else player_entry).focus_set)
+        window.after_idle(room_left_entry.focus_set)
 
     def open_settings(self):
+        if not self.server_available:
+            return
         if not self.joined:
             self.open_join_dialog()
             return
@@ -490,17 +605,44 @@ class PartyUI:
         self.log_panel = tk.Frame(body, bg="#17130f", width=290, highlightthickness=1,
                                   highlightbackground="#6f5c3e")
         self.log_panel.pack_propagate(False)
+        log_header = tk.Frame(self.log_panel, bg=HEADER)
+        log_header.pack(fill="x")
         tk.Label(
-            self.log_panel, text=texts["session_log"], bg=HEADER, fg="#ffe3a1",
+            log_header, text=texts["log_chat"], bg=HEADER, fg="#ffe3a1",
             font=("Malgun Gothic", 10, "bold"), anchor="w", padx=12, pady=8,
-        ).pack(fill="x")
+        ).pack(side="left", fill="x", expand=True)
+        volume = tk.Scale(
+            log_header, from_=0, to=100, orient="horizontal", showvalue=False,
+            variable=tk.IntVar(value=self.chat_sound_volume), length=80,
+            bg=HEADER, fg=TEXT, troughcolor=FIELD, activebackground=GOLD,
+            highlightthickness=0, bd=0, sliderlength=12,
+        )
+        self.chat_volume_scale = volume
+        volume.bind("<ButtonRelease-1>", self._save_chat_volume)
+        if self.chat_sound_enabled:
+            volume.pack(side="left", padx=(2, 4))
+        settings_button = tk.Button(
+            log_header, text="⚙", command=lambda: self._show_chat_settings_menu(settings_button),
+            bg=HEADER, fg="#ffe3a1", activebackground=FIELD, activeforeground="#fff4d2",
+            relief="flat", bd=0, padx=9, pady=5, font=("Malgun Gothic", 11), cursor="hand2",
+        )
+        settings_button.pack(side="right")
         self.log_text = tk.Text(
             self.log_panel, bg="#17130f", fg="#d7c59d", insertbackground="#d7c59d",
             relief="flat", bd=0, padx=10, pady=8, wrap="word", state="disabled",
             font=("Consolas", 9), cursor="arrow",
         )
+        chat_footer = tk.Frame(self.log_panel, bg=BG, padx=6, pady=6)
+        chat_footer.pack(side="bottom", fill="x")
+        self.chat_var = tk.StringVar()
+        chat_entry = tk.Entry(chat_footer, textvariable=self.chat_var, bg=FIELD, fg=TEXT,
+                              insertbackground=TEXT, relief="flat", bd=0)
+        chat_entry.pack(side="left", fill="x", expand=True, ipady=5)
+        self._button(chat_footer, texts["send"], self._send_chat_message).pack(side="right", padx=(6, 0))
+        chat_entry.bind("<Return>", lambda _event: self._send_chat_message())
         self.log_text.pack(fill="both", expand=True)
         self.log_text.bind("<MouseWheel>", self._scroll_session_log)
+        self.log_text.bind("<Button-3>", self._show_chat_report_menu)
         self.log_text.bind("<Prior>", lambda _event: self._scroll_session_log_page(-1))
         self.log_text.bind("<Next>", lambda _event: self._scroll_session_log_page(1))
         self._render_session_log()
@@ -511,12 +653,6 @@ class PartyUI:
                  font=("Consolas", 12, "bold"), anchor="w").pack(side="left", fill="x", expand=True)
         copy_button = self._button(room_header, texts["copy"], lambda: self._copy_room_id(room_id, copy_button))
         copy_button.pack(side="right")
-        self.expiration_label = tk.Label(
-            main_panel, text="", bg=BG, fg="#cbb584", anchor="w", padx=18,
-            font=("Malgun Gothic", 9, "bold"),
-        )
-        self.expiration_label.pack(side="top", fill="x", pady=(0, 4))
-        self._update_expiration_label()
         footer = tk.Frame(main_panel, bg=BG)
         footer.pack(side="bottom", fill="x", padx=12, pady=(2, 8))
 
@@ -526,7 +662,7 @@ class PartyUI:
             self._cancel_member_marquees()
             close()
 
-        self._button(footer, texts["log"], lambda: self._toggle_log_panel(main_panel)).pack(side="left")
+        self._button(footer, texts["log_chat"], lambda: self._toggle_log_panel(main_panel)).pack(side="left")
         bulk_button = self._button(footer, texts["buff_control"], self._control_all_buff_tracking)
         bulk_button.pack(side="left", padx=(6, 0))
         self._button(footer, texts["close"], close_overview).pack(side="right")
@@ -585,6 +721,118 @@ class PartyUI:
     def _saved_profile(self):
         profile = self.config.get("party_profile", {})
         return profile if isinstance(profile, dict) else {}
+
+    def _profiles(self):
+        profiles = self.config.get("party_profiles")
+        if not isinstance(profiles, list) or not profiles:
+            current = self._saved_profile()
+            seed = {
+                "player_id": normalize_player_id(current.get("player_id", "")),
+                "job": current.get("job") if current.get("job") in JOBS else JOBS[0],
+                "sub_job": current.get("sub_job") if current.get("sub_job") in SUB_JOBS else SUB_JOBS[0],
+            }
+            profiles = [{"profile_id": uuid.uuid4().hex, **seed}]
+            self.config["party_profiles"] = profiles
+            self.config["party_active_profile_id"] = profiles[0]["profile_id"]
+            self.save_config()
+        return profiles
+
+    def _profile_label(self, profile):
+        name = normalize_player_id(profile.get("player_id", "")) or "-"
+        job = profile.get("job") if profile.get("job") in JOBS else JOBS[0]
+        sub_job = profile.get("sub_job") if profile.get("sub_job") in SUB_JOBS else SUB_JOBS[0]
+        return f"{name} ({self._job_label(job)} / {self._sub_job_label(sub_job)})"
+
+    def _refresh_profile_selector(self, selector):
+        if not selector:
+            return
+        box, variable = selector
+        try:
+            if not box.winfo_exists():
+                return
+        except tk.TclError:
+            return
+        profiles = self._profiles()
+        labels = tuple(self._profile_label(item) for item in profiles)
+        box.configure(values=labels)
+        active_id = self.config.get("party_active_profile_id")
+        index = next((i for i, item in enumerate(profiles) if item.get("profile_id") == active_id), 0)
+        index = max(0, min(index, len(profiles) - 1))
+        variable.set(labels[index])
+        box.current(index)
+
+    def _refresh_open_profile_selectors(self):
+        self._refresh_profile_selector(self.create_profile_selector)
+        self._refresh_profile_selector(self.join_profile_selector)
+
+    def _add_profile_selector(self, body, row, target, parent_window):
+        texts = self.texts()
+        ttk.Label(body, text=texts["player_id"], style="Party.TLabel").grid(row=row, column=0, sticky="w")
+        variable = tk.StringVar()
+        box = ttk.Combobox(body, textvariable=variable, state="readonly", style="Party.TCombobox")
+        box.grid(row=row + 1, column=0, sticky="ew", pady=(4, 4))
+        button_row = tk.Frame(body, bg=BG)
+        button_row.grid(row=row + 2, column=0, sticky="e", pady=(0, 10))
+        self._button(
+            button_row, texts["profile_manage"],
+            lambda: self._open_profile_manager_from_form(parent_window),
+        ).pack(side="right")
+        selector = (box, variable)
+        if target == "create":
+            self.create_profile_selector = selector
+        else:
+            self.join_profile_selector = selector
+        self._refresh_profile_selector(selector)
+        return box
+
+    def _open_profile_manager_from_form(self, parent_window):
+        try:
+            parent_window.grab_release()
+        except tk.TclError:
+            pass
+        self.open_profile_manager()
+        manager = self.profile_window
+        if not self._window_exists(manager):
+            return
+        try:
+            manager.grab_set()
+        except tk.TclError:
+            return
+
+        def restore_parent_grab(event):
+            if event.widget is manager and self._window_exists(parent_window):
+                try:
+                    parent_window.grab_set()
+                except tk.TclError:
+                    pass
+
+        manager.bind("<Destroy>", restore_parent_grab, add="+")
+
+    def _selected_profile(self, selector):
+        if not selector:
+            return None
+        box, _variable = selector
+        profiles = self._profiles()
+        try:
+            index = box.current()
+        except tk.TclError:
+            return None
+        if not 0 <= index < len(profiles):
+            return None
+        item = profiles[index]
+        player_id = normalize_player_id(item.get("player_id", ""))
+        if not player_id:
+            self._alert(self.texts()["party"], self.texts()["invalid_player"])
+            return None
+        profile = {
+            "player_id": player_id,
+            "job": item.get("job") if item.get("job") in JOBS else JOBS[0],
+            "sub_job": item.get("sub_job") if item.get("sub_job") in SUB_JOBS else SUB_JOBS[0],
+        }
+        self.config["party_profile"] = dict(profile)
+        self.config["party_active_profile_id"] = item.get("profile_id")
+        self.save_config()
+        return {"display_name": player_id, "job": profile["job"], "sub_job": profile["sub_job"]}
 
     def _save_profile(self, player_var, job_var, sub_job_var, window):
         player_id = normalize_player_id(player_var.get())
@@ -645,14 +893,17 @@ class PartyUI:
         holder.columnconfigure((0, 1), weight=1, uniform="party_job")
         ttk.Label(holder, text=texts["job"], style="Party.TLabel").grid(row=0, column=0, sticky="w")
         ttk.Label(holder, text=texts["sub_job"], style="Party.TLabel").grid(row=0, column=1, sticky="w", padx=(8, 0))
-        ttk.Combobox(
+        job_box = ttk.Combobox(
             holder, textvariable=job_var, values=tuple(self._job_label(job) for job in JOBS),
             state="readonly", style="Party.TCombobox",
-        ).grid(row=1, column=0, sticky="ew", pady=(4, 0))
-        ttk.Combobox(
+        )
+        job_box.grid(row=1, column=0, sticky="ew", pady=(4, 0))
+        sub_job_box = ttk.Combobox(
             holder, textvariable=sub_job_var, values=tuple(self._sub_job_label(job) for job in SUB_JOBS),
             state="readonly", style="Party.TCombobox",
-        ).grid(row=1, column=1, sticky="ew", padx=(8, 0), pady=(4, 0))
+        )
+        sub_job_box.grid(row=1, column=1, sticky="ew", padx=(8, 0), pady=(4, 0))
+        return job_box, sub_job_box
 
     def _add_room_code_field(self, body, row, label, left_var, right_var, hint):
         ttk.Label(body, text=label, style="Party.TLabel").grid(row=row, column=0, sticky="w")
@@ -704,6 +955,328 @@ class PartyUI:
             button.configure(text="COPY")
             self.root.after(900, lambda: button.winfo_exists() and button.configure(text=original))
 
+    def _open_profile_manager_legacy(self):
+        if self._show_existing(self.profile_window):
+            return
+        texts = self.texts()
+        window, _content, body, close = self._create_dialog(texts["profile_manage"], 470, 410, modal=False)
+        self.profile_window = window
+        self._configure_form_style(window)
+        body.configure(style="Party.TFrame")
+        holder = tk.Frame(body, bg=BG)
+        holder.pack(fill="both", expand=True)
+        profiles = self._profiles()
+        profile_list = tk.Listbox(holder, bg=FIELD, fg=TEXT, selectbackground=HEADER,
+                                  relief="flat", width=18, exportselection=False)
+        profile_list.pack(side="left", fill="y", padx=(0, 12))
+        form = ttk.Frame(holder, style="Party.TFrame")
+        form.pack(side="left", fill="both", expand=True)
+        form.columnconfigure(0, weight=1)
+        name_var, job_var, sub_job_var = tk.StringVar(), tk.StringVar(), tk.StringVar()
+        self._add_field(form, 0, texts["player_id"], name_var)
+        self._add_compact_job_fields(form, 3, job_var, sub_job_var)
+
+        def refresh(select=None):
+            profile_list.delete(0, "end")
+            for item in profiles:
+                profile_list.insert("end", item.get("player_id", "?"))
+            if profiles:
+                index = max(0, min(len(profiles) - 1, 0 if select is None else select))
+                profile_list.selection_set(index)
+                load(index)
+
+        def load(index=None):
+            selection = profile_list.curselection()
+            index = selection[0] if index is None and selection else index
+            if index is None or not 0 <= index < len(profiles):
+                return
+            item = profiles[index]
+            name_var.set(item.get("player_id", ""))
+            job_var.set(self._job_label(item.get("job") if item.get("job") in JOBS else JOBS[0]))
+            sub_job_var.set(self._sub_job_label(item.get("sub_job") if item.get("sub_job") in SUB_JOBS else SUB_JOBS[0]))
+
+        def values():
+            name = normalize_player_id(name_var.get())
+            if not name:
+                self._alert(texts["profile_manage"], texts["invalid_player"])
+                return None
+            return {"player_id": name, "job": self._canonical_job(job_var.get()),
+                    "sub_job": self._canonical_sub_job(sub_job_var.get())}
+
+        def apply():
+            selection = profile_list.curselection()
+            value = values()
+            if not selection or not value:
+                return
+            index = selection[0]
+            profiles[index].update(value)
+            self.config["party_profile"] = dict(value)
+            self.config["party_active_profile_id"] = profiles[index]["profile_id"]
+            self.save_config()
+            self.party_client.send({"type": "update_profile", "display_name": value["player_id"],
+                                    "job": value["job"], "sub_job": value["sub_job"]})
+            refresh(index)
+
+        def add():
+            value = values()
+            if not value:
+                return
+            profiles.append({"profile_id": uuid.uuid4().hex, **value})
+            self.save_config()
+            refresh(len(profiles) - 1)
+
+        def delete():
+            selection = profile_list.curselection()
+            if not selection or len(profiles) <= 1:
+                return
+            index = selection[0]
+            if profiles[index].get("profile_id") == self.config.get("party_active_profile_id"):
+                return
+            del profiles[index]
+            self.save_config()
+            refresh(max(0, index - 1))
+
+        profile_list.bind("<<ListboxSelect>>", lambda _event: load())
+        buttons = tk.Frame(body, bg=BG)
+        buttons.pack(fill="x", pady=(10, 0))
+        self._button(buttons, texts["profile_apply"], apply).pack(side="left")
+        self._button(buttons, texts["profile_add"], add).pack(side="left", padx=6)
+        self._button(buttons, texts["profile_delete"], delete).pack(side="left")
+        self._button(buttons, texts["close"], close).pack(side="right")
+        refresh()
+
+    def open_profile_manager(self):
+        if self._show_existing(self.profile_window):
+            return
+        texts = self.texts()
+        window, _content, body, close = self._create_dialog(
+            texts["profile_manage"], 510, 455, show_header_close=False, modal=False,
+        )
+        self.profile_window = window
+        self._configure_form_style(window)
+        body.configure(style="Party.TFrame")
+        content = tk.Frame(body, bg=BG, padx=14, pady=12)
+        content.pack(fill="both", expand=True)
+        holder = tk.Frame(content, bg=BG)
+        holder.pack(fill="both", expand=True)
+        profiles = self._profiles()
+        current = self._saved_profile()
+        active_id = self.config.get("party_active_profile_id")
+        if not any(item.get("profile_id") == active_id for item in profiles):
+            active = next((item for item in profiles if all(item.get(key) == current.get(key) for key in ("player_id", "job", "sub_job"))), profiles[0])
+            self.config["party_active_profile_id"] = active["profile_id"]
+            self.save_config()
+
+        profile_list = tk.Listbox(
+            holder, bg=FIELD, fg=TEXT, selectbackground=HEADER,
+            relief="flat", width=18, exportselection=False,
+        )
+        profile_list.pack(side="left", fill="y", padx=(0, 14))
+        form = ttk.Frame(holder, style="Party.TFrame")
+        form.pack(side="left", fill="both", expand=True)
+        form.columnconfigure(0, weight=1)
+        name_var, job_var, sub_job_var = tk.StringVar(), tk.StringVar(), tk.StringVar()
+        name_entry = self._add_field(form, 0, texts["player_id"], name_var)
+        job_box, sub_job_box = self._add_compact_job_fields(form, 3, job_var, sub_job_var)
+        edit_row = tk.Frame(form, bg=BG)
+        edit_row.grid(row=4, column=0, sticky="e", pady=(10, 0))
+        editing = {"value": False}
+
+        def selected_index():
+            selection = profile_list.curselection()
+            return selection[0] if selection else None
+
+        def profile_values():
+            name = normalize_player_id(name_var.get())
+            if not name:
+                self._alert(texts["profile_manage"], texts["invalid_player"])
+                return None
+            return {"player_id": name, "job": self._canonical_job(job_var.get()),
+                    "sub_job": self._canonical_sub_job(sub_job_var.get())}
+
+        def load(index=None):
+            if index is None:
+                index = selected_index()
+            if index is None or not 0 <= index < len(profiles):
+                return
+            item = profiles[index]
+            name_var.set(item.get("player_id", ""))
+            job_var.set(self._job_label(item.get("job") if item.get("job") in JOBS else JOBS[0]))
+            sub_job_var.set(self._sub_job_label(item.get("sub_job") if item.get("sub_job") in SUB_JOBS else SUB_JOBS[0]))
+
+        def set_editing(enabled):
+            editing["value"] = enabled
+            name_entry.configure(state="normal" if enabled else "disabled")
+            job_box.configure(state="readonly" if enabled else "disabled")
+            sub_job_box.configure(state="readonly" if enabled else "disabled")
+            profile_list.configure(state="disabled" if enabled else "normal")
+            add_button.configure(state="disabled" if enabled else "normal")
+            apply_button.configure(state="disabled" if enabled else "normal")
+            delete_button.configure(state="disabled" if enabled or len(profiles) <= 1 else "normal")
+            edit_button.configure(text=texts["profile_save"] if enabled else texts["profile_edit"])
+
+        def refresh(index=None):
+            profile_list.configure(state="normal")
+            profile_list.delete(0, "end")
+            for item in profiles:
+                profile_list.insert("end", item.get("player_id", "?"))
+            if index is None:
+                active = self.config.get("party_active_profile_id")
+                index = next((position for position, item in enumerate(profiles) if item.get("profile_id") == active), 0)
+            index = max(0, min(len(profiles) - 1, index))
+            profile_list.selection_set(index)
+            load(index)
+            set_editing(False)
+            self._refresh_open_profile_selectors()
+
+        def apply_index(index):
+            if index is None or not 0 <= index < len(profiles):
+                return
+            item = profiles[index]
+            value = {key: item[key] for key in ("player_id", "job", "sub_job")}
+            self.config["party_profile"] = dict(value)
+            self.config["party_active_profile_id"] = item["profile_id"]
+            self.save_config()
+            self.party_client.send({"type": "update_profile", "display_name": value["player_id"],
+                                    "job": value["job"], "sub_job": value["sub_job"]})
+            refresh(index)
+
+        def edit_or_save():
+            index = selected_index()
+            if index is None:
+                return
+            if not editing["value"]:
+                set_editing(True)
+                name_entry.focus_set()
+                return
+            value = profile_values()
+            if not value:
+                return
+            active = profiles[index].get("profile_id") == self.config.get("party_active_profile_id")
+            profiles[index].update(value)
+            self.save_config()
+            if active:
+                apply_index(index)
+            else:
+                refresh(index)
+
+        def delete_selected():
+            index = selected_index()
+            if index is None or len(profiles) <= 1:
+                return
+            active = profiles[index].get("profile_id") == self.config.get("party_active_profile_id")
+            del profiles[index]
+            self.save_config()
+            if active:
+                apply_index(0)
+            else:
+                refresh(min(index, len(profiles) - 1))
+
+        def open_add_dialog():
+            add_window, _add_content, add_body, add_close = self._create_dialog(
+                texts["profile_add"], 440, 345, show_header_close=False,
+            )
+            self._configure_form_style(add_window)
+            add_body.configure(style="Party.TFrame", padding=(18, 16, 18, 14))
+            add_body.columnconfigure(0, weight=1)
+            add_name = tk.StringVar()
+            add_job = tk.StringVar(value=self._job_label(JOBS[0]))
+            add_sub = tk.StringVar(value=self._sub_job_label(SUB_JOBS[0]))
+            self._add_field(add_body, 0, texts["player_id"], add_name)
+            self._add_compact_job_fields(add_body, 3, add_job, add_sub)
+            footer = tk.Frame(add_body, bg=BG)
+            footer.grid(row=5, column=0, sticky="e", pady=(18, 0))
+
+            def save_new():
+                name = normalize_player_id(add_name.get())
+                if not name:
+                    self._alert(texts["profile_add"], texts["invalid_player"])
+                    return
+                profiles.append({"profile_id": uuid.uuid4().hex, "player_id": name,
+                                 "job": self._canonical_job(add_job.get()),
+                                 "sub_job": self._canonical_sub_job(add_sub.get())})
+                self.save_config()
+                add_close()
+                refresh(len(profiles) - 1)
+
+            self._button(footer, texts["profile_save"], save_new).pack(side="left", padx=(0, 6))
+            self._button(footer, texts["cancel"], add_close).pack(side="left")
+
+        add_button = self._button(edit_row, texts["profile_add"], open_add_dialog)
+        add_button.pack(side="left", padx=(0, 6))
+        edit_button = self._button(edit_row, texts["profile_edit"], edit_or_save)
+        edit_button.pack(side="left")
+        profile_list.bind("<<ListboxSelect>>", lambda _event: load())
+        buttons = tk.Frame(content, bg=BG)
+        buttons.pack(fill="x", pady=(14, 2))
+        apply_button = self._button(buttons, texts["profile_apply"], lambda: apply_index(selected_index()))
+        apply_button.pack(side="left")
+        delete_button = self._button(buttons, texts["profile_delete"], delete_selected)
+        delete_button.pack(side="left", padx=6)
+        self._button(buttons, texts["close"], close).pack(side="right")
+        refresh()
+
+    def open_ban_manager(self):
+        if self._show_existing(self.ban_window):
+            self.party_client.send({"type": "ban_list"})
+            return
+        texts = self.texts()
+        window, _content, body, close = self._create_dialog(texts["ban_manage"], 570, 410, modal=False)
+        self.ban_window = window
+        columns = ("name", "date", "memo")
+        tree = ttk.Treeview(body, columns=columns, show="headings", selectmode="browse")
+        tree.heading("name", text=texts["player_id"])
+        tree.heading("date", text=texts["ban_date"])
+        tree.heading("memo", text=texts["ban_memo"])
+        tree.column("name", width=120); tree.column("date", width=145); tree.column("memo", width=230)
+        tree.pack(fill="both", expand=True)
+        memo_var = tk.StringVar()
+        memo = ttk.Entry(body, textvariable=memo_var, style="Party.TEntry")
+        memo.pack(fill="x", pady=(8, 0))
+
+        def selected_record():
+            selection = tree.selection()
+            if not selection:
+                return None
+            index = int(selection[0])
+            return self.ban_records[index] if index < len(self.ban_records) else None
+
+        def select(_event=None):
+            record = selected_record()
+            memo_var.set(record.get("memo", "") if record else "")
+
+        def save_memo(_event=None):
+            record = selected_record()
+            if record and memo_var.get() != record.get("memo", ""):
+                record["memo"] = memo_var.get()[:200]
+                self.party_client.send({"type": "ban_memo", "ban_id": record["ban_id"], "memo": record["memo"]})
+
+        def remove():
+            record = selected_record()
+            if record:
+                self.party_client.send({"type": "ban_remove", "ban_id": record["ban_id"]})
+                self.root.after(150, lambda: self.party_client.send({"type": "ban_list"}))
+
+        tree.bind("<<TreeviewSelect>>", select)
+        memo.bind("<FocusOut>", save_memo)
+        window._ban_tree = tree
+        buttons = tk.Frame(body, bg=BG); buttons.pack(fill="x", pady=(10, 0))
+        self._button(buttons, texts["profile_delete"], remove).pack(side="left")
+        self._button(buttons, texts["close"], lambda: (save_memo(), close())).pack(side="right")
+        self.party_client.send({"type": "ban_list"})
+
+    def _render_ban_records(self):
+        if not self._window_exists(self.ban_window):
+            return
+        tree = getattr(self.ban_window, "_ban_tree", None)
+        if not tree:
+            return
+        for item in tree.get_children():
+            tree.delete(item)
+        for index, record in enumerate(self.ban_records):
+            stamp = time.strftime("%Y-%m-%d %H:%M", time.localtime(float(record.get("created_at", 0))))
+            tree.insert("", "end", iid=str(index), values=(record.get("display_name", "?"), stamp, record.get("memo", "")))
+
     def _show_member_menu(self, event, member):
         texts = self.texts()
         member_id = member.get("member_id")
@@ -714,6 +1287,13 @@ class PartyUI:
         if buff_blocked:
             preferences["buff"] = False
         menu = tk.Menu(self.root, tearoff=False, bg=FIELD, fg=TEXT, activebackground=HEADER, activeforeground="#fff4d2")
+        own_id = self.party_client.member_id
+        if member_id == own_id:
+            menu.add_command(label=texts["profile_manage"], command=self.open_profile_manager)
+            if member.get("role") == "leader":
+                menu.add_command(label=texts["ban_manage"], command=self.open_ban_manager)
+            menu.tk_popup(event.x_root, event.y_root)
+            return
         for key, label_key in (("position", "track_position"), ("buff", "track_buff")):
             status = texts["enabled"] if preferences.get(key, True) else texts["disabled"]
             menu.add_command(
@@ -724,7 +1304,7 @@ class PartyUI:
         state = member.get("state") or {}
         menu.add_command(label=texts["portal_copy"], state="normal" if state.get("map_id") else "disabled",
                          command=lambda: self._copy_portal_command(member))
-        own = self.members.get(self.party_client.member_id) or {}
+        own = self.members.get(own_id) or {}
         if own.get("role") == "leader":
             menu.add_separator()
             menu.add_command(label=texts["transfer"], command=lambda: self._transfer_leader(member))
@@ -844,6 +1424,8 @@ class PartyUI:
 
     def _on_client_state(self, state, detail):
         texts = self.texts()
+        if state == "service":
+            return
         if state == "reconnecting":
             self.message_callback(texts["reconnecting"], 2200)
         elif state == "closed":
@@ -870,10 +1452,26 @@ class PartyUI:
             self.last_sent_buff_presence = object()
             self._refresh_buff_bar()
 
+    @property
+    def server_available(self):
+        return self.party_client.service_status != "offline"
+
+    def server_status_text(self):
+        self.party_client.check_server_status(force=False)
+        labels = {
+            "KR": "서버 현황", "JP": "サーバー状態", "EN": "Server Status",
+        }
+        status = "OFF" if self.party_client.service_status == "offline" else "ON" if self.party_client.service_status == "online" else "…"
+        return f"{labels.get(self.language(), labels['EN'])} : {status}"
+
     def _on_client_event(self, event):
         event_type = event.get("type")
         if event_type == "room_snapshot":
-            self._restore_server_session_logs(event.get("session_logs"))
+            self._restore_server_session_logs(
+                event.get("session_logs"),
+                bool(event.get("show_chat_safety_notice")) or self.safety_notice_pending,
+            )
+            self.safety_notice_pending = False
             self.members = {
                 member["member_id"]: member for member in event.get("members", [])
                 if isinstance(member, dict) and member.get("member_id")
@@ -889,6 +1487,63 @@ class PartyUI:
                 self._assign_party_member_color(member)
                 if is_new_member and member["member_id"] != self.party_client.member_id:
                     self._append_session_log("log_joined", name=member.get("display_name", "?"))
+        elif event_type == "member_connection_lost":
+            self._append_session_log("log_disconnected", name=event.get("name", "?"))
+        elif event_type == "member_reconnected":
+            member = event.get("member")
+            if isinstance(member, dict) and member.get("member_id"):
+                old = self.members.get(member["member_id"], {})
+                member["state"] = member.get("state") or old.get("state", {})
+                self.members[member["member_id"]] = member
+                self._append_session_log("log_reconnected", name=member.get("display_name", "?"))
+        elif event_type == "member_profile_updated":
+            member = event.get("member")
+            if isinstance(member, dict) and member.get("member_id") in self.members:
+                member_id = member["member_id"]
+                old = self.members[member_id]
+                old_name = old.get("display_name", "?")
+                member["state"] = member.get("state") or old.get("state", {})
+                self.members[member_id] = member
+                self._append_session_log(
+                    "log_profile_updated", old=old_name,
+                    new=member.get("display_name", "?"),
+                )
+                if member.get("job") in NON_BUFF_SHARING_JOBS:
+                    preferences = self.tracking_preferences.setdefault(member_id, {"position": True, "buff": False})
+                    preferences["buff"] = False
+                    self.remote_buff_timers.pop(member_id, None)
+                elif member_id != self.party_client.member_id:
+                    preferences = self.tracking_preferences.setdefault(
+                        member_id, {"position": True, "buff": self._default_buff_tracking(member)},
+                    )
+                    if self._saved_profile().get("job") == "마법사":
+                        preferences["buff"] = True
+                if member_id == self.party_client.member_id:
+                    self.config["party_profile"] = {
+                        "player_id": member.get("display_name", ""),
+                        "job": member.get("job"), "sub_job": member.get("sub_job"),
+                    }
+                    self.save_config()
+                    if member.get("job") == "마법사":
+                        for target_id, target in self.members.items():
+                            if target_id != member_id and target.get("job") not in NON_BUFF_SHARING_JOBS:
+                                self.tracking_preferences.setdefault(target_id, {"position": True, "buff": True})["buff"] = True
+                    self._send_local_buff_presence(force=True)
+        elif event_type == "ban_list":
+            records = event.get("records")
+            self.ban_records = records if isinstance(records, list) else []
+            self._render_ban_records()
+        elif event_type == "chat_message":
+            record = event.get("record")
+            if (isinstance(record, dict)
+                    and int(self.config.get("party_chat_consent_version", 0) or 0) >= CHAT_CONSENT_VERSION):
+                self._append_chat_record(record)
+        elif event_type == "chat_report_received":
+            texts = self.texts()
+            self._alert(
+                texts["chat_report_done_title"],
+                texts["chat_report_done"].format(id=event.get("report_id", "?")),
+            )
         elif event_type in {"member_disconnected", "member_left", "member_removed"}:
             member_id = event.get("member_id")
             member = self.members.get(member_id) or {}
@@ -903,6 +1558,11 @@ class PartyUI:
                     self._append_session_log(key, name=name)
             elif member_id in self.members:
                 self.members[member_id]["connected"] = False
+                self.members[member_id]["state"] = {
+                    "map_id": None, "x": None, "y": None,
+                    "buff": None, "buff_present": False,
+                }
+                self.remote_buff_timers.pop(member_id, None)
         elif event_type == "position_update":
             member = self.members.get(event.get("member_id"))
             if member is not None:
@@ -1080,7 +1740,7 @@ class PartyUI:
             self._update_member_row(member_id)
             row.columnconfigure(1, weight=1)
             own_card = member.get("member_id") == self.party_client.member_id
-            cursor = "arrow" if own_card else "hand2"
+            cursor = "hand2"
             widgets = (
                 row, crown, name_label, job_label, location_frame, indicator_label,
                 map_canvas, coordinate_label,
@@ -1089,8 +1749,7 @@ class PartyUI:
                 widget.configure(cursor=cursor)
                 widget.bind("<Enter>", lambda _event, card=row, children=widgets: self._schedule_member_card_hover(card, children))
                 widget.bind("<Leave>", lambda _event, card=row, children=widgets: self._schedule_member_card_hover(card, children))
-                if not own_card:
-                    widget.bind("<Button-1>", lambda event, current=member: self._show_member_menu(event, current))
+                widget.bind("<Button-1>", lambda event, current=member: self._show_member_menu(event, current))
 
     def _schedule_member_card_hover(self, card, widgets):
         try:
@@ -1230,21 +1889,10 @@ class PartyUI:
             self._cancel_member_marquee(member_id)
             self.member_row_widgets.pop(member_id, None)
 
-    def _update_expiration_label(self):
-        label = self.expiration_label
-        if not label or not self._window_exists(self.settings_window):
-            return
-        try:
-            remaining = max(0.0, float(self.party_client.expires_at or 0) - time.time())
-            total_minutes = int((remaining + 59) // 60)
-            hours, minutes = divmod(total_minutes, 60)
-            label.configure(text=self.texts()["expires_in"].format(hours=hours, minutes=minutes))
-            self.settings_window.after(1000, self._update_expiration_label)
-        except (tk.TclError, TypeError, ValueError):
-            return
-
     def _start_session_log(self):
         self.session_logs.clear()
+        self.recent_chat_records.clear()
+        self.rendered_chat_lines.clear()
         self.log_visible = False
         self.tracking_preferences.clear()
         self.save_config()
@@ -1273,6 +1921,9 @@ class PartyUI:
 
     def _clear_session_log(self):
         self.session_logs.clear()
+        self.recent_chat_records.clear()
+        self.rendered_chat_lines.clear()
+        self.safety_notice_pending = False
         self.log_visible = False
         panel = self.log_panel
         if panel and self._window_exists(self.settings_window):
@@ -1300,11 +1951,133 @@ class PartyUI:
             message = template.format(**values)
         except (KeyError, ValueError):
             message = template
-        self.session_logs.append(f"[{time.strftime('%H:%M:%S')}] {message}")
+        style = LOG_STYLE_BY_KEY.get(key, "chat")
+        marker = f"{LOG_MARKER_PREFIX}{style}]]" if style != "chat" else ""
+        self.session_logs.append(f"{marker}[{time.strftime('%H:%M:%S')}] {message}")
+        del self.session_logs[:-200]
+        self._notify_timeline_event()
+        self._render_session_log()
+
+    def _append_safety_notice(self, timestamp=None):
+        if any(line.startswith(SAFETY_NOTICE_MARKER) for line in self.session_logs):
+            return
+        timestamp = timestamp or time.strftime("%H:%M:%S")
+        self.session_logs.append(
+            f"{SAFETY_NOTICE_MARKER}[{timestamp}] {self.texts()['chat_safety_notice']}"
+        )
         del self.session_logs[:-200]
         self._render_session_log()
 
-    def _restore_server_session_logs(self, records):
+    def _append_chat_record(self, record):
+        try:
+            timestamp = time.strftime("%H:%M:%S", time.localtime(float(record.get("timestamp", time.time()))))
+        except (TypeError, ValueError, OverflowError, OSError):
+            timestamp = time.strftime("%H:%M:%S")
+        name = str(record.get("name", "?"))[:64]
+        message = str(record.get("message", ""))[:200]
+        message_id = str(record.get("id", ""))
+        if not message_id:
+            return
+        stored_record = dict(record)
+        stored_record.update({"name": name, "message": message})
+        self.recent_chat_records.append(stored_record)
+        del self.recent_chat_records[:-20]
+        self.session_logs.append(f"{CHAT_MARKER_PREFIX}{message_id}]] [{timestamp}] {name}: {message}")
+        del self.session_logs[:-200]
+        is_own_message = str(record.get("member_id", "")) == str(self.party_client.member_id or "")
+        self._notify_timeline_event(play_sound=not is_own_message)
+        self._render_session_log()
+
+    def _timeline_lines(self, count=None):
+        lines = self.session_logs[-count:] if count else self.session_logs
+        return [self._format_timeline_line(line)[0] for line in lines]
+
+    def _format_timeline_line(self, line):
+        style = "chat"
+        if line.startswith(CHAT_MARKER_PREFIX):
+            marker_end = line.find("]]", len(CHAT_MARKER_PREFIX))
+            if marker_end >= 0:
+                line = line[marker_end + 2:].lstrip()
+        elif line.startswith(SAFETY_NOTICE_MARKER):
+            line = line[len(SAFETY_NOTICE_MARKER):]
+            style = "notice"
+        elif line.startswith(LOG_MARKER_PREFIX):
+            marker_end = line.find("]]", len(LOG_MARKER_PREFIX))
+            if marker_end >= 0:
+                candidate = line[len(LOG_MARKER_PREFIX):marker_end]
+                if candidate in LOG_COLORS:
+                    style = candidate
+                line = line[marker_end + 2:]
+        if not self.chat_timestamps_enabled:
+            line = re.sub(r"^\[\d{2}:\d{2}:\d{2}\]\s*", "", line)
+        return line, style
+
+    def _notify_timeline_event(self, play_sound=True):
+        if play_sound and self.chat_sound_enabled:
+            self._play_chat_sound()
+        self._sync_chat_overlay()
+
+    def _play_chat_sound(self):
+        sound_path = RESOURCE_DIR / "assets" / "chat.mp3"
+        if not sound_path.is_file():
+            return
+        volume = self.chat_sound_volume
+
+        def play():
+            with self.chat_sound_lock:
+                try:
+                    send = ctypes.windll.winmm.mciSendStringW
+                    send("close godinavi_chat", None, 0, None)
+                    send(f'open "{sound_path}" type mpegvideo alias godinavi_chat', None, 0, None)
+                    send(f"setaudio godinavi_chat volume to {volume * 10}", None, 0, None)
+                    send("play godinavi_chat from 0", None, 0, None)
+                except (AttributeError, OSError):
+                    return
+
+        threading.Thread(target=play, name="godinavi-chat-sound", daemon=True).start()
+
+    def _save_chat_volume(self, _event=None):
+        if self.chat_volume_scale:
+            self.chat_sound_volume = int(self.chat_volume_scale.get())
+            self.config["party_chat_sound_volume"] = self.chat_sound_volume
+            self.save_config()
+            self._play_chat_sound()
+
+    def _show_chat_settings_menu(self, button):
+        texts = self.texts()
+        menu = tk.Menu(self.root, tearoff=False, bg=FIELD, fg=TEXT,
+                       activebackground=HEADER, activeforeground="#fff4d2")
+        status = lambda enabled: "ON" if enabled else "OFF"
+        menu.add_command(label=f"{texts['chat_sound']} : {status(self.chat_sound_enabled)}", command=self._toggle_chat_sound)
+        menu.add_command(label=f"{texts['chat_time']} : {status(self.chat_timestamps_enabled)}", command=self._toggle_chat_timestamps)
+        menu.add_command(label=f"{texts['chat_overlay']} : {status(self.chat_overlay_enabled)}", command=self.toggle_chat_overlay)
+        menu.tk_popup(button.winfo_rootx(), button.winfo_rooty() + button.winfo_height())
+
+    def _toggle_chat_sound(self):
+        self.chat_sound_enabled = not self.chat_sound_enabled
+        self.config["party_chat_sound_enabled"] = self.chat_sound_enabled
+        self.save_config()
+        if self.chat_volume_scale and self.chat_volume_scale.winfo_exists():
+            if self.chat_sound_enabled:
+                self.chat_volume_scale.pack(side="left", padx=(2, 4), before=self.chat_volume_scale.master.winfo_children()[-1])
+                self._play_chat_sound()
+            else:
+                self.chat_volume_scale.pack_forget()
+
+    def _toggle_chat_timestamps(self):
+        self.chat_timestamps_enabled = not self.chat_timestamps_enabled
+        self.config["party_chat_timestamps_enabled"] = self.chat_timestamps_enabled
+        self.save_config()
+        self._render_session_log()
+
+    def _send_chat_message(self):
+        variable = getattr(self, "chat_var", None)
+        if not variable:
+            return
+        if self._submit_chat_text(variable.get()):
+            variable.set("")
+
+    def _restore_server_session_logs(self, records, show_safety_notice=False):
         if not isinstance(records, list):
             return
         key_by_event = {
@@ -1314,23 +2087,54 @@ class PartyUI:
             "removed": "log_removed",
             "banned": "log_banned",
             "transferred": "log_transferred",
+            "profile_updated": "log_profile_updated",
+            "disconnected": "log_disconnected",
+            "reconnected": "log_reconnected",
         }
         restored = []
+        notice_timestamp = time.strftime("%H:%M:%S")
+        for record in records:
+            if isinstance(record, dict) and record.get("event") == "room_created":
+                try:
+                    notice_timestamp = time.strftime(
+                        "%H:%M:%S", time.localtime(float(record.get("timestamp", 0)))
+                    )
+                except (ValueError, TypeError, OverflowError, OSError):
+                    pass
+                break
+        if show_safety_notice:
+            restored.append(
+                f"{SAFETY_NOTICE_MARKER}[{notice_timestamp}] {self.texts()['chat_safety_notice']}"
+            )
         for record in records[-200:]:
             if not isinstance(record, dict):
+                continue
+            if record.get("event") == "chat":
+                try:
+                    timestamp = time.strftime("%H:%M:%S", time.localtime(float(record.get("timestamp", 0))))
+                except (ValueError, TypeError, OverflowError, OSError):
+                    continue
+                restored.append(f"[{timestamp}] {str(record.get('name', '?'))[:64]}: {str(record.get('message', ''))[:200]}")
                 continue
             key = key_by_event.get(record.get("event"))
             template = self.texts().get(key or "")
             if not template:
                 continue
             name = str(record.get("name", "?"))[:64]
-            values = {"room_id": name} if record.get("event") == "room_created" else {"name": name}
+            if record.get("event") == "room_created":
+                values = {"room_id": name}
+            elif record.get("event") == "profile_updated":
+                values = {"old": str(record.get("old_name", "?"))[:64], "new": name}
+            else:
+                values = {"name": name}
             try:
                 message = template.format(**values)
                 timestamp = time.strftime("%H:%M:%S", time.localtime(float(record.get("timestamp", 0))))
             except (KeyError, ValueError, TypeError, OverflowError, OSError):
                 continue
-            restored.append(f"[{timestamp}] {message}")
+            style = LOG_STYLE_BY_KEY.get(key, "chat")
+            marker = f"{LOG_MARKER_PREFIX}{style}]]" if style != "chat" else ""
+            restored.append(f"{marker}[{timestamp}] {message}")
         self.session_logs[:] = restored
         self._render_session_log()
 
@@ -1343,11 +2147,359 @@ class PartyUI:
                 return
             widget.configure(state="normal")
             widget.delete("1.0", "end")
-            widget.insert("end", "\n".join(self.session_logs) if self.session_logs else self.texts()["no_log"])
+            self.rendered_chat_lines.clear()
+            records_by_id = {str(item.get("id", "")): item for item in self.recent_chat_records}
+            for style, color in LOG_COLORS.items():
+                widget.tag_configure(style, foreground=color)
+            if self.session_logs:
+                for index, raw_line in enumerate(self.session_logs):
+                    if raw_line.startswith(CHAT_MARKER_PREFIX):
+                        marker_end = raw_line.find("]]", len(CHAT_MARKER_PREFIX))
+                        message_id = raw_line[len(CHAT_MARKER_PREFIX):marker_end] if marker_end >= 0 else ""
+                        if message_id in records_by_id:
+                            self.rendered_chat_lines[index + 1] = records_by_id[message_id]
+                    line, style = self._format_timeline_line(raw_line)
+                    if index:
+                        widget.insert("end", "\n")
+                    widget.insert("end", line, style)
+            else:
+                widget.insert("end", self.texts()["no_log"])
             widget.configure(state="disabled")
             widget.see("end")
         except tk.TclError:
             return
+        finally:
+            self._sync_chat_overlay()
+
+    def toggle_chat_overlay(self):
+        if self.chat_overlay_enabled and self.chat_overlay_input_active:
+            self._cancel_chat_overlay_input()
+        self.chat_overlay_enabled = not self.chat_overlay_enabled
+        self.config["party_chat_overlay_enabled"] = self.chat_overlay_enabled
+        self.save_config()
+        self._sync_chat_overlay()
+
+    def chat_overlay_action_text(self):
+        base = self.texts()["log_chat"]
+        return f"{base} Overlay: {'ON' if self.chat_overlay_enabled else 'OFF'}"
+
+    def _ensure_chat_overlay(self):
+        if self._window_exists(self.chat_overlay_window):
+            return
+        window = tk.Toplevel(self.root)
+        self.chat_overlay_window = window
+        window.overrideredirect(True)
+        window.configure(bg="#17130f")
+        width = max(240, int(self.config.get("party_chat_overlay_width", 360)))
+        height = max(100, int(self.config.get("party_chat_overlay_height", 170)))
+        x, y = self.config.get("party_chat_overlay_position", [100, 100])
+        rect = self.client_rect()
+        if rect:
+            left, top, right, bottom = rect
+            width = min(width, max(240, right - left))
+            height = min(height, max(100, bottom - top))
+            x = max(left, min(int(x), right - width))
+            y = max(top, min(int(y), bottom - height))
+            window._party_offset = (int(x) - rect[0], int(y) - rect[1])
+        window.geometry(f"{width}x{height}+{int(x)}+{int(y)}")
+        window.attributes("-alpha", max(0.5, min(1.0, float(self.config.get("party_chat_overlay_opacity", .85)))))
+        header = tk.Frame(window, bg=HEADER, height=30, cursor="arrow")
+        header.pack(side="top", fill="x")
+        header.pack_propagate(False)
+        title = tk.Label(
+            header, text=f"::  {self.texts()['log_chat']}", bg=HEADER, fg=TEXT,
+            anchor="w", padx=8, cursor="arrow",
+        )
+        title.pack(side="left", fill="both", expand=True)
+        self.chat_overlay_header = header
+        control_style = {
+            "bg": HEADER, "fg": TEXT, "activebackground": FIELD, "activeforeground": "#fff4d2",
+            "relief": "flat", "bd": 0, "padx": 5, "pady": 1, "font": ("Segoe UI", 8, "bold"),
+        }
+        minus_button = tk.Button(header, text="−", command=lambda: self._adjust_chat_overlay_font(-0.1), **control_style)
+        minus_button.pack(side="left", padx=(1, 0), pady=3)
+        plus_button = tk.Button(header, text="+", command=lambda: self._adjust_chat_overlay_font(0.1), **control_style)
+        plus_button.pack(side="left", padx=(1, 0), pady=3)
+        lock_button = tk.Button(header, command=self._toggle_chat_overlay_lock, **control_style)
+        lock_button.configure(font=("Segoe UI Symbol", 8))
+        lock_button.pack(side="right", padx=(2, 4), pady=3)
+        self.chat_overlay_minus_button = minus_button
+        self.chat_overlay_plus_button = plus_button
+        self.chat_overlay_lock_button = lock_button
+        footer = tk.Frame(window, bg="#17130f", height=30)
+        footer.pack(side="bottom", fill="x")
+        footer.pack_propagate(False)
+        chat_button = tk.Button(
+            footer, text="💬", command=self._toggle_chat_overlay_input,
+            bg="#17130f", fg=TEXT, activebackground=FIELD, activeforeground="#fff4d2",
+            disabledforeground="#6f6658", relief="flat", bd=0, padx=7, pady=1,
+            font=("Segoe UI Emoji", 9), cursor="hand2",
+        )
+        chat_button.pack(side="left", fill="y", padx=(2, 0))
+        input_frame = tk.Frame(footer, bg="#17130f")
+        input_var = tk.StringVar()
+        input_entry = tk.Entry(
+            input_frame, textvariable=input_var, bg=FIELD, fg=TEXT, insertbackground=TEXT,
+            relief="flat", bd=0, font=("Malgun Gothic", 9),
+        )
+        input_entry.pack(fill="both", expand=True, padx=(4, 5), pady=3)
+        input_entry.bind("<Return>", self._send_chat_overlay_message)
+        input_entry.bind("<Escape>", lambda _event: self._cancel_chat_overlay_input())
+        self.chat_overlay_chat_button = chat_button
+        self.chat_overlay_input_frame = input_frame
+        self.chat_overlay_input_entry = input_entry
+        self.chat_overlay_input_var = input_var
+        label = tk.Text(
+            window, bg="#17130f", fg=LOG_COLORS["chat"], wrap="word", state="disabled",
+            relief="flat", bd=0, padx=8, pady=6,
+            font=("Malgun Gothic", self._chat_overlay_font_size()), cursor="arrow",
+        )
+        label.pack(fill="both", expand=True)
+        self.chat_overlay_label = label
+        grip = tk.Label(window, text="◢", bg="#17130f", fg=GOLD, cursor="sizing")
+        self.chat_overlay_grip = grip
+        for drag_widget in (header, title):
+            drag_widget.bind("<ButtonPress-1>", self._chat_overlay_drag_start)
+            drag_widget.bind("<B1-Motion>", self._chat_overlay_drag)
+            drag_widget.bind("<ButtonRelease-1>", lambda _event: self._save_chat_overlay_geometry())
+        grip.bind("<ButtonPress-1>", self._chat_overlay_resize_start)
+        grip.bind("<B1-Motion>", self._chat_overlay_resize)
+        grip.bind("<ButtonRelease-1>", lambda _event: self._save_chat_overlay_geometry())
+        for widget in (window, label, header):
+            widget.bind("<MouseWheel>", self._chat_overlay_wheel)
+        self._apply_chat_overlay_lock_state(save=False)
+        make_noactivate_toolwindow(window)
+
+    def _sync_chat_overlay(self):
+        should_show = self.joined and self.chat_overlay_enabled
+        if not should_show:
+            if self.chat_overlay_input_active:
+                self._cancel_chat_overlay_input()
+            if self._window_exists(self.chat_overlay_window):
+                self.chat_overlay_window.withdraw()
+            return
+        self._ensure_chat_overlay()
+        raw_lines = self.session_logs
+        widget = self.chat_overlay_label
+        try:
+            widget.configure(state="normal")
+            widget.delete("1.0", "end")
+            for style, color in LOG_COLORS.items():
+                widget.tag_configure(style, foreground=color)
+            if raw_lines:
+                for index, raw_line in enumerate(raw_lines):
+                    line, style = self._format_timeline_line(raw_line)
+                    if index:
+                        widget.insert("end", "\n")
+                    widget.insert("end", line, style)
+            else:
+                widget.insert("end", self.texts()["no_log"], "chat")
+            widget.configure(state="disabled")
+            widget.see("end")
+        except tk.TclError:
+            return
+        self.chat_overlay_window.deiconify()
+        owner = self.owner_hwnd()
+        if owner:
+            attach_above(self.chat_overlay_window, owner, self.chat_overlay_window.winfo_x(), self.chat_overlay_window.winfo_y())
+
+    def _chat_overlay_font_size(self):
+        return max(9, min(14, round(9 * self.chat_overlay_font_scale)))
+
+    def _toggle_chat_overlay_input(self):
+        if not self.chat_overlay_locked:
+            return
+        if self.chat_overlay_input_active:
+            self._cancel_chat_overlay_input()
+            return
+        if not self._window_exists(self.chat_overlay_window):
+            return
+        self.chat_overlay_input_active = True
+        self.chat_overlay_input_frame.pack(side="left", fill="both", expand=True)
+        make_activatable_toolwindow(self.chat_overlay_window)
+        self.chat_overlay_window.deiconify()
+        self.chat_overlay_window.lift()
+        self.chat_overlay_window.after_idle(self.chat_overlay_input_entry.focus_force)
+
+    def _cancel_chat_overlay_input(self, clear=True):
+        if not self.chat_overlay_input_active:
+            return "break"
+        self.chat_overlay_input_active = False
+        if clear and self.chat_overlay_input_var is not None:
+            self.chat_overlay_input_var.set("")
+        if self.chat_overlay_input_frame and self._window_exists(self.chat_overlay_input_frame):
+            self.chat_overlay_input_frame.pack_forget()
+        if self._window_exists(self.chat_overlay_window):
+            make_noactivate_toolwindow(self.chat_overlay_window)
+            owner = self.owner_hwnd()
+            if owner:
+                attach_above(
+                    self.chat_overlay_window, owner,
+                    self.chat_overlay_window.winfo_x(), self.chat_overlay_window.winfo_y(),
+                )
+                focus_native_window(owner)
+        return "break"
+
+    def _submit_chat_text(self, raw_message):
+        message = " ".join(str(raw_message).replace("\r", " ").replace("\n", " ").split()).strip()
+        if not message or not self._ensure_chat_consent():
+            return False
+        return bool(self.party_client.send({"type": "chat_message", "message": message[:200]}))
+
+    def _ensure_chat_consent(self):
+        if int(self.config.get("party_chat_consent_version", 0) or 0) >= CHAT_CONSENT_VERSION:
+            return True
+        texts = self.texts()
+        accepted = self._confirm(
+            texts["chat_consent_title"], texts["chat_consent_notice"],
+            confirm_text=texts["chat_consent_accept"], cancel_text=texts["chat_consent_decline"],
+            width=620, height=460, font_size=9,
+        )
+        if accepted:
+            self.config["party_chat_consent_version"] = CHAT_CONSENT_VERSION
+            self.save_config()
+        return accepted
+
+    def _show_chat_report_menu(self, event):
+        try:
+            line_number = int(self.log_text.index(f"@{event.x},{event.y}").split(".")[0])
+        except (AttributeError, tk.TclError, ValueError):
+            return "break"
+        record = self.rendered_chat_lines.get(line_number)
+        if not record or str(record.get("member_id", "")) == str(self.party_client.member_id or ""):
+            return "break"
+        menu = tk.Menu(self.root, tearoff=False, bg=FIELD, fg=TEXT,
+                       activebackground=HEADER, activeforeground="#fff4d2")
+        menu.add_command(label=self.texts()["chat_report"], command=lambda: self._confirm_chat_report(record))
+        menu.tk_popup(event.x_root, event.y_root)
+        return "break"
+
+    def _confirm_chat_report(self, target):
+        texts = self.texts()
+        if not self._confirm(
+            texts["chat_report_title"], texts["chat_report_notice"],
+            confirm_text=texts["chat_report_send"], cancel_text=texts["cancel"],
+            width=620, height=510, font_size=9,
+        ):
+            return
+        target_id = str(target.get("id", ""))
+        records = []
+        for record in self.recent_chat_records:
+            records.append(dict(record))
+            if str(record.get("id", "")) == target_id:
+                break
+        if target_id and records:
+            self.party_client.send({
+                "type": "chat_report", "target_message_id": target_id,
+                "reason": "", "messages": records[-20:],
+            })
+
+    def _send_chat_overlay_message(self, _event=None):
+        if self.chat_overlay_input_var is not None and self._submit_chat_text(self.chat_overlay_input_var.get()):
+            self._cancel_chat_overlay_input(clear=True)
+        return "break"
+
+    def _adjust_chat_overlay_font(self, delta):
+        self.chat_overlay_font_scale = max(1.0, min(1.5, round(self.chat_overlay_font_scale + delta, 1)))
+        self.config["party_chat_overlay_font_scale"] = self.chat_overlay_font_scale
+        self.save_config()
+        if self._window_exists(self.chat_overlay_label):
+            self.chat_overlay_label.configure(font=("Malgun Gothic", self._chat_overlay_font_size()))
+        self._apply_chat_overlay_lock_state(save=False)
+
+    def _toggle_chat_overlay_lock(self):
+        if self.chat_overlay_input_active:
+            self._cancel_chat_overlay_input()
+        self.chat_overlay_locked = not self.chat_overlay_locked
+        self._apply_chat_overlay_lock_state(save=True)
+
+    def _apply_chat_overlay_lock_state(self, save=False):
+        if self.chat_overlay_lock_button and self._window_exists(self.chat_overlay_lock_button):
+            self.chat_overlay_lock_button.configure(text="🔒" if self.chat_overlay_locked else "🔓")
+        if self.chat_overlay_minus_button and self._window_exists(self.chat_overlay_minus_button):
+            self.chat_overlay_minus_button.configure(
+                state="disabled" if self.chat_overlay_font_scale <= 1.0 else "normal"
+            )
+        if self.chat_overlay_plus_button and self._window_exists(self.chat_overlay_plus_button):
+            self.chat_overlay_plus_button.configure(
+                state="disabled" if self.chat_overlay_font_scale >= 1.5 else "normal"
+            )
+        if self.chat_overlay_chat_button and self._window_exists(self.chat_overlay_chat_button):
+            self.chat_overlay_chat_button.configure(
+                state="normal" if self.chat_overlay_locked else "disabled",
+                cursor="hand2" if self.chat_overlay_locked else "arrow",
+            )
+        if self.chat_overlay_grip and self._window_exists(self.chat_overlay_grip):
+            if self.chat_overlay_locked:
+                self.chat_overlay_grip.place_forget()
+            else:
+                self.chat_overlay_grip.place(relx=1, rely=1, anchor="se")
+        if save:
+            self.config["party_chat_overlay_locked"] = self.chat_overlay_locked
+            if self.chat_overlay_locked:
+                self._save_chat_overlay_geometry()
+            self.save_config()
+
+    def _chat_overlay_drag_start(self, event):
+        if self.chat_overlay_locked:
+            return
+        self._chat_drag = (event.x_root, event.y_root, self.chat_overlay_window.winfo_x(), self.chat_overlay_window.winfo_y())
+
+    def _chat_overlay_drag(self, event):
+        if self.chat_overlay_locked or not getattr(self, "_chat_drag", None):
+            return
+        sx, sy, x, y = self._chat_drag
+        target_x, target_y = x + event.x_root - sx, y + event.y_root - sy
+        rect = self.client_rect()
+        if rect:
+            left, top, right, bottom = rect
+            target_x = max(left, min(target_x, right - self.chat_overlay_window.winfo_width()))
+            target_y = max(top, min(target_y, bottom - self.chat_overlay_window.winfo_height()))
+            self.chat_overlay_window._party_offset = (target_x - rect[0], target_y - rect[1])
+        self.chat_overlay_window.geometry(f"+{target_x}+{target_y}")
+
+    def _chat_overlay_resize_start(self, event):
+        if self.chat_overlay_locked:
+            return
+        self._chat_resize = (event.x_root, event.y_root, self.chat_overlay_window.winfo_width(), self.chat_overlay_window.winfo_height())
+
+    def _chat_overlay_resize(self, event):
+        if self.chat_overlay_locked or not getattr(self, "_chat_resize", None):
+            return
+        sx, sy, width, height = self._chat_resize
+        target_width = max(240, width + event.x_root - sx)
+        target_height = max(100, height + event.y_root - sy)
+        rect = self.client_rect()
+        if rect:
+            target_width = min(target_width, rect[2] - self.chat_overlay_window.winfo_x())
+            target_height = min(target_height, rect[3] - self.chat_overlay_window.winfo_y())
+        self.chat_overlay_window.geometry(f"{target_width}x{target_height}")
+
+    def _chat_overlay_wheel(self, event):
+        if self.chat_overlay_locked:
+            try:
+                self.chat_overlay_label.yview_scroll(-3 if event.delta > 0 else 3, "units")
+            except tk.TclError:
+                pass
+            return "break"
+        opacity = float(self.chat_overlay_window.attributes("-alpha"))
+        opacity = max(.5, min(1.0, opacity + (.05 if event.delta > 0 else -.05)))
+        self.chat_overlay_window.attributes("-alpha", opacity)
+        self.config["party_chat_overlay_opacity"] = opacity
+        self.save_config()
+        return "break"
+
+    def _save_chat_overlay_geometry(self):
+        if not self._window_exists(self.chat_overlay_window):
+            return
+        window = self.chat_overlay_window
+        self.config["party_chat_overlay_position"] = [window.winfo_x(), window.winfo_y()]
+        rect = self.client_rect()
+        if rect:
+            window._party_offset = (window.winfo_x() - rect[0], window.winfo_y() - rect[1])
+        self.config["party_chat_overlay_width"] = window.winfo_width()
+        self.config["party_chat_overlay_height"] = window.winfo_height()
+        self.save_config()
 
     def _scroll_session_log(self, event):
         widget = self.log_text
@@ -1384,6 +2536,7 @@ class PartyUI:
             else:
                 panel.pack_forget()
                 target_width = 460
+            self._sync_chat_overlay()
             window.update_idletasks()
             rect = self.client_rect()
             # Keep the party member panel anchored and grow/collapse the log toward the left.
@@ -1949,7 +3102,7 @@ class PartyUI:
         self.config["party_session"] = {
             "role": role, "room_id": str(result["room_id"]),
             "member_id": str(result["member_id"]), "member_token": str(result["member_token"]),
-            "started_at": time.time(), "expires_at": float(result["expires_at"]),
+            "started_at": time.time(),
         }
         self.save_config()
 
@@ -1962,13 +3115,6 @@ class PartyUI:
     def _restore_session(self):
         session = self.config.get("party_session") or self.config.get("party_leader_session")
         if not isinstance(session, dict) or session.get("role") not in {"leader", "member"}:
-            return
-        try:
-            valid = float(session.get("expires_at", 0)) > time.time()
-        except (TypeError, ValueError):
-            valid = False
-        if not valid:
-            self._forget_session()
             return
         if self.party_client.resume_session(session):
             key = "restoring" if session.get("role") == "leader" else "restoring_member"
@@ -1983,7 +3129,9 @@ class PartyUI:
         for window in (
             self.join_window, self.create_window, self.room_window, self.settings_window,
             self.personal_timer_window,
+            self.profile_window, self.ban_window,
             self.buff_bar_window,
+            self.chat_overlay_window,
             *tuple(self.notice_windows),
         ):
             if not window or not window.winfo_exists() or not window.winfo_viewable():
@@ -2022,27 +3170,68 @@ class PartyUI:
         except tk.TclError:
             return False
 
-    def _confirm(self, title, message, show_header_close=True):
+    def _confirm(self, title, message, show_header_close=True, confirm_text=None, cancel_text=None,
+                 width=440, height=235, font_size=10):
         texts = self.texts()
         window, _content, body, close = self._create_dialog(
-            title, 440, 235, show_header_close=show_header_close,
+            title, width, height, show_header_close=show_header_close,
         )
         self._track_follow_window(window)
         body.configure(style="Party.TFrame", padding=18)
         result = {"value": False}
-        tk.Label(
-            body, text=message, bg=BG, fg="#f1e5c7", justify="left", anchor="w",
-            wraplength=390, font=("Malgun Gothic", 10), padx=8, pady=18,
-        ).pack(fill="both", expand=True)
         buttons = tk.Frame(body, bg=BG)
         buttons.pack(side="bottom", anchor="e")
+
+        message_area = tk.Frame(body, bg=BG)
+        message_area.pack(side="top", fill="both", expand=True)
+        message_canvas = tk.Canvas(message_area, bg=BG, highlightthickness=0, bd=0)
+        message_canvas.pack(side="left", fill="both", expand=True)
+        message_label = tk.Label(
+            message_canvas, text=message, bg=BG, fg="#f1e5c7", justify="left", anchor="nw",
+            font=("Malgun Gothic", font_size), padx=8, pady=12,
+        )
+        message_item = message_canvas.create_window(0, 0, anchor="nw", window=message_label)
 
         def finish(value):
             result["value"] = value
             close()
 
-        self._button(buttons, texts["confirm"], lambda: finish(True)).pack(side="left", padx=(0, 6))
-        self._button(buttons, texts["cancel"], lambda: finish(False)).pack(side="left")
+        self._button(buttons, confirm_text or texts["confirm"], lambda: finish(True)).pack(side="left", padx=(0, 6))
+        self._button(buttons, cancel_text or texts["cancel"], lambda: finish(False)).pack(side="left")
+
+        # _create_dialog may clamp the requested width to the attached game
+        # window. Measure against that real width, then grow vertically to the
+        # actual requested text height instead of guessing a fixed size.
+        window.update_idletasks()
+        actual_width = max(320, window.winfo_width())
+        message_width = max(260, actual_width - 54)
+        message_label.configure(wraplength=message_width)
+        message_canvas.itemconfigure(message_item, width=message_width + 16)
+        window.update_idletasks()
+        desired_height = (
+            40 + message_label.winfo_reqheight() + buttons.winfo_reqheight() + 36 + 2
+        )
+        rect = self.client_rect()
+        max_height = (rect[3] - rect[1] - 24) if rect else (window.winfo_screenheight() - 48)
+        target_height = min(max(height, desired_height), max_height)
+        if target_height != window.winfo_height():
+            x = window.winfo_x()
+            y = window.winfo_y()
+            if rect:
+                y = max(rect[1], min(y, rect[3] - target_height))
+            else:
+                y = max(0, min(y, window.winfo_screenheight() - target_height))
+            window.geometry(f"{actual_width}x{target_height}+{x}+{y}")
+        window.update_idletasks()
+        message_canvas.configure(scrollregion=message_canvas.bbox("all"))
+        if desired_height > max_height:
+            scrollbar = tk.Scrollbar(message_area, orient="vertical", command=message_canvas.yview)
+            scrollbar.pack(side="right", fill="y")
+            message_canvas.configure(yscrollcommand=scrollbar.set)
+            message_canvas.bind(
+                "<MouseWheel>",
+                lambda event: message_canvas.yview_scroll(-3 if event.delta > 0 else 3, "units"),
+            )
         window.bind("<Return>", lambda _event: finish(True))
         window.bind("<Escape>", lambda _event: finish(False))
         window.wait_window()

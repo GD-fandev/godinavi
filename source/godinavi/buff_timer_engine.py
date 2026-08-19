@@ -34,7 +34,7 @@ def calibration_ping_expansions(now: float) -> tuple[int, int, int]:
     phase = int(now * 24) % 24
     return tuple((phase + offset) % 24 for offset in (0, 8, 16))
 
-APP_VERSION = "1.2.3"
+APP_VERSION = "1.3.0"
 DEFAULT_BUFF_CONFIG_JSON = r'''{
   "process_name": "Godius.exe",
   "window_title": "Godius Client",
@@ -1855,6 +1855,12 @@ class BuffTimerApp:
             & (cap_spread >= 35)
             & ((tmpl_luma <= 105) | (color_delta >= 75))
         )
+        # The crystal itself occupies the center of the slot. At small client
+        # sizes, resampling shifts its bright fire pixels by one or two pixels;
+        # treating those pixels as tooltip glyphs can saturate this score at
+        # 1.0. Tooltip panels and labels still leave unexpected pixels around
+        # the outer part of the slot, so score only that area here.
+        unexpected &= ~self.create_center_mask(capture.size)
         height, width = unexpected.shape
         unexpected_ratio = float(np.count_nonzero(unexpected)) / max(1, width * height)
         row_span = 0.0

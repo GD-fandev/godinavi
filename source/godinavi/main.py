@@ -662,12 +662,16 @@ class PrototypeApp:
             DockItem(
                 "party", "", texts["party"], self.toggle_party_overview,
                 (
-                    QuickAction(texts["party_create"], self.create_party_room, enabled=lambda: not self.party_ui.joined),
+                    QuickAction(self.party_ui.server_status_text, lambda: None, enabled=lambda: False),
+                    QuickAction(texts["party_create"], self.create_party_room,
+                                enabled=lambda: self.party_ui.server_available and self.party_ui.party_client.service_accepting_rooms and not self.party_ui.joined),
                     QuickAction(
                         lambda: texts["party_leave"] if self.party_ui.joined else texts["party_join"],
                         self.join_or_leave_party_room,
+                        enabled=lambda: self.party_ui.server_available,
                     ),
-                    QuickAction(texts["party_settings"], self.open_party_overview),
+                    QuickAction(texts["party_settings"], self.open_party_overview,
+                                enabled=lambda: self.party_ui.server_available),
                     QuickAction(texts["party_buff_adjust"], self.party_ui.toggle_buff_bar_adjustment),
                     QuickAction(texts["party_personal_timer"], self.party_ui.open_personal_buff_timer),
                     QuickAction(
