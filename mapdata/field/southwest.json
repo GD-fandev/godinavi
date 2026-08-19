@@ -5,17 +5,14 @@
       "서남부반도"
     ],
     "ja": [
-      "西南部半島"
+      "西南部半島",
+      "西南部牟島一"
     ],
     "en": [
       "Southwest Peninsula"
     ]
   },
   "image": "maps/field/southwest.jpg",
-  "images": {
-    "ko": "maps/field/ko/southwest.jpg",
-    "ja": "maps/field/ja/southwest.jpg"
-  },
   "imageSize": {
     "width": 1184,
     "height": 592
