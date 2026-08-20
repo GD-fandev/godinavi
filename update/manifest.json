@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "version": "2026.08.19.1",
-  "asset_url": "https://github.com/GD-fandev/godinavi/releases/download/maps-2026.08.19.1/godinavi-mapdata.zip",
-  "sha256": "46c3987cc08055db679cdf0e6c7e08a91645f0fcd4fbf8830f0b3c6b3a70baff",
-  "size": 22257595
+  "version": "2026.08.20.1",
+  "asset_url": "https://github.com/GD-fandev/godinavi/releases/download/maps-2026.08.20.1/godinavi-mapdata.zip",
+  "sha256": "961777b8ff39667c3cb3424be2c7060471e841d097aa50ac10b8e8c71dd8ea2b",
+  "size": 22420506
 }
