@@ -47,7 +47,7 @@ def default_dock_offset(client_width: int, client_height: int, bar_width: int, b
 
 DOCK_TEXTS = {
     "KR": {
-        "map": "지도", "map_adjust": "지도 위치·크기 조절", "ocr_edit": "OCR 영역 편집", "world_map": "월드맵 열기 (F10)", "map_boundary_on": "영역제한 ON", "map_boundary_off": "영역제한 OFF",
+        "map": "지도", "map_adjust": "지도 위치·크기 조절", "ocr_edit": "OCR 영역 편집", "world_map": "월드맵 열기 (F10)", "map_boundary_on": "영역제한 ON", "map_boundary_off": "영역제한 OFF", "maze_mode_on": "미궁 지도 모드 ON", "maze_mode_off": "미궁 지도 모드 OFF",
         "portal": "포탈", "portal_edit": "포탈 장소 편집", "preset": "프리셋 전환", "portal_bar": "포탈 바 표시/숨김",
         "buff": "버프 타이머", "buff_region": "버프 인식 영역 편집", "buff_toggle": "타이머 표시/숨김", "buff_size": "버프 창 조정",
         "durability": "내구도 감시", "durability_settings": "내구도 감시 설정", "durability_toggle": "내구도 감시 On/Off",
@@ -57,7 +57,7 @@ DOCK_TEXTS = {
         "app_update": "GodiNavi 업데이트", "app_update_available": "GodiNavi 업데이트 가능 ↓",
     },
     "JP": {
-        "map": "地図", "map_adjust": "地図の位置・サイズ調整", "ocr_edit": "OCR領域を編集", "world_map": "ワールドマップを開く (F10)", "map_boundary_on": "領域制限 ON", "map_boundary_off": "領域制限 OFF",
+        "map": "地図", "map_adjust": "地図の位置・サイズ調整", "ocr_edit": "OCR領域を編集", "world_map": "ワールドマップを開く (F10)", "map_boundary_on": "領域制限 ON", "map_boundary_off": "領域制限 OFF", "maze_mode_on": "迷宮マップモード ON", "maze_mode_off": "迷宮マップモード OFF",
         "portal": "ポータル", "portal_edit": "ポータル地点を編集", "preset": "プリセット切替", "portal_bar": "ポータルバー 表示/非表示",
         "buff": "バフタイマー", "buff_region": "バフ認識領域を編集", "buff_toggle": "タイマー 表示/非表示", "buff_size": "バフ画面調整",
         "durability": "耐久度監視", "durability_settings": "耐久度監視設定", "durability_toggle": "耐久度監視 On/Off",
@@ -67,7 +67,7 @@ DOCK_TEXTS = {
         "app_update": "GodiNaviアップデート", "app_update_available": "GodiNavi更新あり ↓",
     },
     "EN": {
-        "map": "Map", "map_adjust": "Adjust map position/size", "ocr_edit": "Edit OCR region", "world_map": "Open world map (F10)", "map_boundary_on": "Boundary lock ON", "map_boundary_off": "Boundary lock OFF",
+        "map": "Map", "map_adjust": "Adjust map position/size", "ocr_edit": "Edit OCR region", "world_map": "Open world map (F10)", "map_boundary_on": "Boundary lock ON", "map_boundary_off": "Boundary lock OFF", "maze_mode_on": "Labyrinth Map Mode ON", "maze_mode_off": "Labyrinth Map Mode OFF",
         "portal": "Portal", "portal_edit": "Edit portal locations", "preset": "Switch preset", "portal_bar": "Show/hide portal bar",
         "buff": "Buff Timer", "buff_region": "Edit buff detection region", "buff_toggle": "Show/hide timer", "buff_size": "Adjust buff window",
         "durability": "Durability Monitor", "durability_settings": "Durability settings", "durability_toggle": "Durability monitor On/Off",
@@ -405,6 +405,17 @@ class PrototypeApp:
         if self.map_engine:
             self.map_engine.toggle_world_map()
 
+    def toggle_labyrinth_map_mode(self):
+        if not self.map_engine:
+            return
+        enabled = self.map_engine.toggle_labyrinth_map_mode()
+        text = {
+            "KR": f"미궁 지도 모드 {'ON' if enabled else 'OFF'}",
+            "JP": f"迷宮マップモード {'ON' if enabled else 'OFF'}",
+            "EN": f"Labyrinth Map Mode {'ON' if enabled else 'OFF'}",
+        }[self.map_engine.ui_language]
+        self.message(text, 1800)
+
     def toggle_map_adjustment(self):
         if self.map_engine:
             self.map_engine.toggle_map_resize_mode()
@@ -625,6 +636,10 @@ class PrototypeApp:
             ),
             QuickAction(texts["ocr_edit"], self.toggle_map_calibration),
             QuickAction(texts["world_map"], self.toggle_world_map),
+            QuickAction(
+                lambda: texts["maze_mode_off"] if self.map_engine.labyrinth_map_mode else texts["maze_mode_on"],
+                self.toggle_labyrinth_map_mode,
+            ),
         ]
         if update_available:
             map_actions.append(QuickAction(texts["map_update_available"], self.open_map_update))

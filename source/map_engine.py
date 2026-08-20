@@ -193,6 +193,12 @@ def contributors_for_map(map_record):
     return clean_names[:5]
 
 
+def contributor_credit_prefix(map_record):
+    if isinstance(map_record, dict) and str(map_record.get("credit_type", "")).strip().lower() == "supported":
+        return "Supported by "
+    return "Charted by "
+
+
 STATUS_TEXTS = {
     "searching": {"KR": "Godius Client 탐색 중", "JP": "Godius Clientを検索中", "EN": "Searching for Godius Client"},
     "no_map_resize": {"KR": "표시 중인 미니맵이 없어 크기를 조절할 수 없습니다.", "JP": "表示中のミニマップがないため、サイズを変更できません。", "EN": "No minimap is available to resize."},
@@ -634,6 +640,9 @@ class MapEngine:
         self.synchronize_favorite_locales()
         self.map_database_state = map_database_signature()
         self.active_map = None
+        # This is deliberately session-only. Forgetting to turn the override
+        # off must not leave the next launch stuck on the labyrinth map.
+        self.labyrinth_map_mode = False
         self.pending_map_id = None
         self.pending_map_hits = 0
         self.target_hwnd = None
@@ -2201,6 +2210,37 @@ class MapEngine:
         if self.world_map_mode:
             self.render_world_map()
 
+    def toggle_labyrinth_map_mode(self):
+        enabling = not self.labyrinth_map_mode
+        if enabling:
+            maze_map = next((record for record in self.maps if str(record.get("id", "")) == "maze1"), None)
+            if not maze_map:
+                return False
+            self.labyrinth_map_mode = True
+            self.pending_map_id = None
+            self.pending_map_hits = 0
+            self.map_miss_started_at = None
+            self.set_active_map(maze_map)
+            if self.minimap_enabled and not self.world_map_mode:
+                self.show_map()
+            return True
+
+        self.labyrinth_map_mode = False
+        self.pending_map_id = None
+        self.pending_map_hits = 0
+        self.map_miss_started_at = None
+        if self.active_map and str(self.active_map.get("id", "")) == "maze1":
+            self.active_map = None
+            self.active_map_image_path = None
+            self.map_original_image = None
+            self.map_base_image = None
+            if not self.world_map_mode:
+                self.hide_map()
+        if self.minimap_enabled:
+            self.set_status("finding_map")
+            self.request_immediate_ocr()
+        return False
+
     def apply_map_size(self):
         if self.map_original_image is None:
             return
@@ -2408,7 +2448,7 @@ class MapEngine:
         names = contributors_for_map(self.active_map)
         if not names or self.credit_started_at is None:
             return
-        credit = "Charted by " + ", ".join(names)
+        credit = contributor_credit_prefix(self.active_map) + ", ".join(names)
         label = self.map_canvas.create_text(
             7,
             height - 6,
@@ -3262,6 +3302,18 @@ class MapEngine:
             self.ocr_result_labels[language_key].configure(text=display_text or "(No data)")
         self.ocr_result_labels["coordinates"].configure(text=coordinate_text or "(No data)")
 
+        if self.labyrinth_map_mode:
+            maze_map = next((record for record in self.maps if str(record.get("id", "")) == "maze1"), None)
+            if maze_map and (not self.active_map or str(self.active_map.get("id", "")) != "maze1"):
+                self.set_active_map(maze_map)
+            self.pending_map_id = None
+            self.pending_map_hits = 0
+            self.map_miss_started_at = None
+            if self.active_map and self.minimap_enabled and not self.world_map_mode:
+                self.show_map()
+            self._accept_coordinate_text(coordinate_text)
+            return
+
         if matched_map:
             self.map_miss_started_at = None
             matched_id = matched_map.get("id")
@@ -3314,7 +3366,10 @@ class MapEngine:
             else:
                 self.set_status("finding_map")
 
-        numbers = re.findall(r"-?\d+", coordinate_text.replace(",", " ").replace(":", " "))
+        self._accept_coordinate_text(coordinate_text)
+
+    def _accept_coordinate_text(self, coordinate_text):
+        numbers = re.findall(r"-?\d+", str(coordinate_text or "").replace(",", " ").replace(":", " "))
         if len(numbers) >= 2:
             self.current_game_coordinate = (int(numbers[0]), int(numbers[1]))
             self.last_coordinate_at = time.monotonic()
