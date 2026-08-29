@@ -1,0 +1,91 @@
+{
+  "id": "kali8f",
+  "names": {
+    "ko": [
+      "칼리지하동굴8층"
+    ],
+    "ja": [
+      "カリ地下洞窟8F"
+    ],
+    "en": [
+      "Kali B Cave 8F"
+    ]
+  },
+  "image": "maps/kali/kali8f.jpg",
+  "imageSize": {
+    "width": 385,
+    "height": 197
+  },
+  "controlPoints": [
+    {
+      "gameX": 68,
+      "gameY": 338,
+      "imageX": 47,
+      "imageY": 124
+    },
+    {
+      "gameX": 209,
+      "gameY": 195,
+      "imageX": 243,
+      "imageY": 124
+    },
+    {
+      "gameX": 203,
+      "gameY": 111,
+      "imageX": 296,
+      "imageY": 93
+    },
+    {
+      "gameX": 131,
+      "gameY": 11,
+      "imageX": 316,
+      "imageY": 34
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.6879069450308293,
+      "gameY": -0.6894457313881522,
+      "offset": 233.31895266135083
+    },
+    "imageY": {
+      "gameX": 0.3462462172218096,
+      "gameY": 0.3420922097761629,
+      "offset": -15.156709031478048
+    },
+    "rmsePixels": 0.2991632243400075,
+    "maxErrorPixels": 0.44771577964584003,
+    "pointErrorsPixels": [
+      0.0657489775055933,
+      0.3601711609180771,
+      0.44771577964584003,
+      0.15329359623301264
+    ],
+    "leaveOneOutErrorsPixels": [
+      5.444868540481728,
+      0.993956701800636,
+      0.7996022375475383,
+      2.335352212876388
+    ]
+  },
+  "levelRange": {
+    "min": 71,
+    "max": 85
+  },
+  "monsterZones": [],
+  "images": {
+    "ko": "maps/kali/ko/kali8f.jpg",
+    "ja": "maps/kali/ja/kali8f.jpg"
+  },
+  "monsterIds": [
+    "cockatrice",
+    "naga-lady",
+    "skeleton",
+    "naga-lady-mage",
+    "hellmaden",
+    "gskeleton",
+    "ice-salamander",
+    "fire-hellhound",
+    "arclich"
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "id": "dark-side",
+  "names": {
+    "ko": "다크 사이드",
+    "ja": "ダークサイド",
+    "en": "DARK SIDE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/118_darkside.jpg",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [
+    "mithrill"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": true,
+  "mapIds": [
+    "hell10f",
+    "hell8f",
+    "hell9f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-3.jpg",
+        "section": "카를마뉴/중부등뼈동굴2 3층Lv105~ Lv119",
+        "ocrConfidence": 0.9977
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "헬8층 Lv113~ Lv119",
+        "ocrConfidence": 0.9807
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "에칠린/에블린동굴5층Lv113~Lv119",
+        "ocrConfidence": 0.9546
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "헬9층/툼스톤동굴좌/우측1층[v116~ Lv119",
+        "ocrConfidence": 0.9279
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "툼스톤동굴좌/우측2층Lv116~ Lv119",
+        "ocrConfidence": 0.9811
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "헬10층/툼스톤동굴좌/우측3층Lv118~ Lv119",
+        "ocrConfidence": 0.9641
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 116
+}

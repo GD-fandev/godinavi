@@ -1,0 +1,55 @@
+{
+  "id": "siad2f",
+  "names": {
+    "ko": [
+      "샤드뮴동굴2"
+    ],
+    "ja": [
+      "シャドミュム洞窟2"
+    ],
+    "en": [
+      "Shadmum Cave 2"
+    ]
+  },
+  "image": "maps/siadmyoom/siad2F.jpg",
+  "images": {
+    "ko": "maps/siadmyoom/ko/siad2F.jpg",
+    "ja": "maps/siadmyoom/ja/siad2F.jpg"
+  },
+  "imageSize": {
+    "width": 545,
+    "height": 277
+  },
+  "controlPoints": [
+    {
+      "gameX": 68,
+      "gameY": 64,
+      "imageX": 240,
+      "imageY": 120
+    },
+    {
+      "gameX": 72,
+      "gameY": 49,
+      "imageX": 276,
+      "imageY": 109
+    },
+    {
+      "gameX": 48,
+      "gameY": 36,
+      "imageX": 255,
+      "imageY": 73
+    }
+  ],
+  "transform": null,
+  "levelRange": {
+    "min": 73,
+    "max": 79
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "naga-lady-mage",
+    "skeleton",
+    "hellmaden",
+    "gskeleton"
+  ]
+}

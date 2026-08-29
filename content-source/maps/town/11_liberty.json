@@ -1,0 +1,87 @@
+{
+  "id": "11_liberty",
+  "names": {
+    "ko": [
+      "리버티항구"
+    ],
+    "ja": [
+      "リバティ港"
+    ],
+    "en": [
+      "Liberty Port Gu"
+    ]
+  },
+  "image": "maps/town/11_liberty.png",
+  "images": {
+    "ko": "maps/town/ko/11_liberty.png",
+    "ja": "maps/town/ja/11_liberty.png"
+  },
+  "imageSize": {
+    "width": 1152,
+    "height": 576
+  },
+  "controlPoints": [
+    {
+      "gameX": 46,
+      "gameY": 11,
+      "imageX": 785,
+      "imageY": 115
+    },
+    {
+      "gameX": 44,
+      "gameY": 26,
+      "imageX": 716,
+      "imageY": 142
+    },
+    {
+      "gameX": 63,
+      "gameY": 43,
+      "imageX": 724,
+      "imageY": 213
+    },
+    {
+      "gameX": 54,
+      "gameY": 68,
+      "imageX": 593,
+      "imageY": 247
+    },
+    {
+      "gameX": 22,
+      "gameY": 149,
+      "imageX": 138,
+      "imageY": 342
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 4.055929836599256,
+      "gameY": -3.9744631358652454,
+      "offset": 641.5215237541526
+    },
+    "imageY": {
+      "gameX": 2.03664534876632,
+      "gameY": 1.9981613103109623,
+      "offset": -0.16913880596855
+    },
+    "rmsePixels": 1.8285474675749933,
+    "maxErrorPixels": 3.022918669726797,
+    "pointErrorsPixels": [
+      0.7979398740856005,
+      0.885046046820327,
+      2.3911966080066036,
+      3.022918669726797,
+      0.664873037730856
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.8593803506899906,
+      1.5654403347561139,
+      6.38438678973504,
+      5.086859687983698,
+      18.119846842292194
+    ]
+  },
+  "worldMapPosition": {
+    "x": 139,
+    "y": 561
+  }
+}

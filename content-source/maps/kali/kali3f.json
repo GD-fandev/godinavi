@@ -1,0 +1,87 @@
+{
+  "id": "kali3f",
+  "names": {
+    "ko": [
+      "칼리지하동굴3층"
+    ],
+    "ja": [
+      "カリ地下洞窟3F"
+    ],
+    "en": [
+      "Kali B Cave 3F"
+    ]
+  },
+  "image": "maps/kali/kali3f.jpg",
+  "images": {
+    "ko": "maps/kali/ko/kali3f.jpg",
+    "ja": "maps/kali/ja/kali3f.jpg"
+  },
+  "imageSize": {
+    "width": 525,
+    "height": 224
+  },
+  "controlPoints": [
+    {
+      "gameX": 11,
+      "gameY": 260,
+      "imageX": 43,
+      "imageY": 66
+    },
+    {
+      "gameX": 94,
+      "gameY": 324,
+      "imageX": 60,
+      "imageY": 122
+    },
+    {
+      "gameX": 174,
+      "gameY": 61,
+      "imageX": 323,
+      "imageY": 53
+    },
+    {
+      "gameX": 300,
+      "gameY": 299,
+      "imageX": 238,
+      "imageY": 192
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.7769656770540372,
+      "gameY": -0.7661188761094087,
+      "offset": 234.3382730082486
+    },
+    "imageY": {
+      "gameX": 0.3849202576958408,
+      "gameY": 0.37985621607622827,
+      "offset": -37.11327429546282
+    },
+    "rmsePixels": 0.5940520236030453,
+    "maxErrorPixels": 0.8613624255828233,
+    "pointErrorsPixels": [
+      0.7037040245827998,
+      0.8613624255828233,
+      0.20579209074899013,
+      0.3634504917491479
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.005944513141247,
+      1.6387889523188228,
+      6.859307477996091,
+      3.8838611008454236
+    ]
+  },
+  "levelRange": {
+    "min": 43,
+    "max": 51
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "salamander",
+    "r-griffon",
+    "debleeth",
+    "dungeon-spider",
+    "bloody-bat"
+  ]
+}

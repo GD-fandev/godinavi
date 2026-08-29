@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "entries": [
+    {
+      "id": "client-2.0.0",
+      "kind": "client",
+      "version": "2.0.0",
+      "components": [
+        "launcher",
+        "updater",
+        "core",
+        "runtime",
+        "ocr_models",
+        "ui_assets",
+        "audio_assets",
+        "maps",
+        "monsters",
+        "equipment"
+      ],
+      "publishedAt": "2026-08-29T00:00:00Z",
+      "changes": {
+        "KR": {
+          "summary": "GodiNavi v2.0.0",
+          "details": [
+            "[신규기능]\n- v2용으로 프로그램을 전체 조정하였습니다. 이번 수정으로 인해 추후 컨텐츠 업데이트시 통합된 업데이터로 필요한 파일만 다운받으면 되도록 바뀌었습니다.\n- 장비도감이 추가되었습니다. 모험수첩 항목에서 찾아보실 수 있습니다. 일부 자료를 구하지 못한 의상은 표시대상에서 제외되었습니다. 세트의상의 경우는 추후에 추가 예정이며, 무기 또한 글로벌서버용 DB 구축이 완료되면 업데이트 예정입니다.",
+            "[개선]\n- 장비 내구도 감시기능에 효과음 기능이 추가되었습니다. 필요하실 경우 설정창에서 체크하신 뒤 음량을 조절하여 사용 부탁드립니다.\n- 내구도 경고 아이콘이 표시되는 기준을 보다 알기 쉽도록 입력 숫자 '미만' 에서 '이하' 로 조건을 변경하였습니다.\n- 지도 이름을 갱신하는 간격을 3초에서 1초로 줄여서, 지역 이동시 보다 미니맵이 빠르게 갱신되게 조정하였습니다.",
+            "[버그수정]\n- 듀얼모니터 사용자의 경우 가디우스 윈도우를 다른 모니터로 보낼 때 버프타이머가 정상적으로 표시되지 않던 문제를 수정하였습니다."
+          ]
+        },
+        "JP": {
+          "summary": "GodiNavi v2.0.0",
+          "details": [
+            "[新機能]\n- v2向けにプログラム全体を再構成しました。今後のコンテンツ更新では、統合アップデーターが必要なファイルだけをダウンロードします。\n- 装備図鑑を追加しました。冒険手帳からご利用いただけます。資料を入手できなかった一部の衣装は表示対象外です。セット衣装は今後追加予定で、武器もグローバルサーバー向けDBの構築完了後に更新予定です。",
+            "[改善]\n- 装備耐久度監視に効果音機能を追加しました。必要な場合は設定画面で有効にし、音量を調節してご利用ください。\n- 耐久度警告アイコンの表示条件を分かりやすくするため、入力値の「未満」から「以下」へ変更しました。\n- マップ名の更新間隔を3秒から1秒へ短縮し、エリア移動時にミニマップがより速く更新されるよう調整しました。",
+            "[不具合修正]\n- デュアルモニター環境でGodiusウィンドウを別のモニターへ移動した際、バフタイマーが正常に表示されない問題を修正しました。"
+          ]
+        },
+        "EN": {
+          "summary": "GodiNavi v2.0.0",
+          "details": [
+            "[New Features]\n- The entire program has been reworked for v2. Future content updates can now use the unified updater to download only the files that are needed.\n- An equipment catalog has been added under Adventure Journal. Outfits for which source material could not be obtained are excluded. Outfit sets will be added later, and weapons will be updated after the global-server database is complete.",
+            "[Improvements]\n- A sound alert has been added to equipment durability monitoring. Enable it in Settings and adjust the volume if you wish to use it.\n- To make the durability warning icon easier to understand, its condition has changed from 'below' the entered value to 'at or below' it.\n- The map-name refresh interval has been reduced from 3 seconds to 1 second so the minimap updates faster after changing areas.",
+            "[Bug Fixes]\n- Fixed an issue where the buff timer was not displayed correctly after moving the Godius window to another monitor in a dual-monitor setup."
+          ]
+        }
+      }
+    }
+  ]
+}
+

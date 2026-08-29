@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "hold",
+      "names": {
+        "ko": "홀드",
+        "ja": "ホールド",
+        "en": "Hold"
+      }
+    },
+    {
+      "id": "bind",
+      "names": {
+        "ko": "바인드",
+        "ja": "バインド",
+        "en": "Bind"
+      }
+    },
+    {
+      "id": "igenball",
+      "names": {
+        "ko": "아이겐볼",
+        "ja": "アイゲンボール",
+        "en": "Igen Ball"
+      }
+    },
+    {
+      "id": "igenmissile",
+      "names": {
+        "ko": "아이겐미사일",
+        "ja": "アイゲンミサイル",
+        "en": "Igen Missile"
+      }
+    },
+    {
+      "id": "holyball",
+      "names": {
+        "ko": "홀리볼",
+        "ja": "ホーリーボール",
+        "en": "Holy Ball"
+      }
+    },
+    {
+      "id": "curse",
+      "names": {
+        "ko": "커스",
+        "ja": "カース",
+        "en": "Curse"
+      }
+    },
+    {
+      "id": "holymissile",
+      "names": {
+        "ko": "홀리미사일",
+        "ja": "ホーリーミサイル",
+        "en": "Holy Missile"
+      }
+    },
+    {
+      "id": "pyramissile",
+      "names": {
+        "ko": "피라미사일",
+        "ja": "ピラミサイル",
+        "en": "Pyra Missile"
+      }
+    },
+    {
+      "id": "pyraball",
+      "names": {
+        "ko": "피라볼",
+        "ja": "ピラボール",
+        "en": "Pyra Ball"
+      }
+    },
+    {
+      "id": "acidcloud",
+      "names": {
+        "ko": "에시드클라우드",
+        "ja": "アシッドクラウド",
+        "en": "Ecid Cloud"
+      }
+    }
+  ]
+}

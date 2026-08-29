@@ -1,0 +1,87 @@
+{
+  "id": "3_baldium",
+  "names": {
+    "ko": [
+      "발디움"
+    ],
+    "ja": [
+      "バルディウム"
+    ],
+    "en": [
+      "baldium"
+    ]
+  },
+  "image": "maps/town/3_baldium.png",
+  "images": {
+    "ko": "maps/town/ko/3_baldium.png",
+    "ja": "maps/town/ja/3_baldium.png"
+  },
+  "imageSize": {
+    "width": 1216,
+    "height": 608
+  },
+  "controlPoints": [
+    {
+      "gameX": 22,
+      "gameY": 43,
+      "imageX": 494,
+      "imageY": 129
+    },
+    {
+      "gameX": 49,
+      "gameY": 24,
+      "imageX": 679,
+      "imageY": 147
+    },
+    {
+      "gameX": 57,
+      "gameY": 20,
+      "imageX": 727,
+      "imageY": 154
+    },
+    {
+      "gameX": 66,
+      "gameY": 28,
+      "imageX": 731,
+      "imageY": 190
+    },
+    {
+      "gameX": 76,
+      "gameY": 48,
+      "imageX": 688,
+      "imageY": 249
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 3.9773253442970997,
+      "gameY": -4.0961243071610856,
+      "offset": 582.5580838214081
+    },
+    "imageY": {
+      "gameX": 2.0428223238130294,
+      "gameY": 1.9817826806538288,
+      "offset": -1.11852087521835
+    },
+    "rmsePixels": 0.6970243316845234,
+    "maxErrorPixels": 1.0200694429264883,
+    "pointErrorsPixels": [
+      0.08431765622200255,
+      0.4783990491367369,
+      1.017605323405493,
+      1.0200694429264883,
+      0.3423115756442111
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.12546935995089,
+      0.7273569703087258,
+      1.9110366440485616,
+      1.4916289140186283,
+      3.968555426930371
+    ]
+  },
+  "worldMapPosition": {
+    "x": 310,
+    "y": 462
+  }
+}

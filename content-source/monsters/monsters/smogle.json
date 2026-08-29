@@ -1,0 +1,60 @@
+{
+  "id": "smogle",
+  "names": {
+    "ko": "스모글",
+    "ja": "スモグル",
+    "en": "SMOGLE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/51_smogle.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "demonhorn"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "chilly",
+    "middle",
+    "remria",
+    "southeast",
+    "southwest"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "서남부반도 Lv52~Lv6o",
+        "ocrConfidence": 0.9983
+      },
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "중앙평원 Lv52~Lv68",
+        "ocrConfidence": 0.9983
+      },
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "동남부반도 Lv60~Lv66",
+        "ocrConfidence": 0.9699
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 108
+}

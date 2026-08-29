@@ -1,0 +1,47 @@
+{
+  "id": "r-manticore",
+  "names": {
+    "ko": "R 맨티코아",
+    "ja": "Rマンティコア",
+    "en": "R MANTICORE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/81_rmanti.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "pyramissile",
+    "pyraball"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "santihall"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "싼티홀분지 Lv76~LV83",
+        "ocrConfidence": 0.8652
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 76
+}

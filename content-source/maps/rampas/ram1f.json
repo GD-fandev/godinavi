@@ -1,0 +1,99 @@
+{
+  "id": "ram1f",
+  "names": {
+    "ko": [
+      "람파스지하로1",
+      "람파스지하뢰"
+    ],
+    "ja": [
+      "ランパス地下道1"
+    ],
+    "en": [
+      "Rampas B Ro1"
+    ]
+  },
+  "image": "maps/rampas/ram1F.png",
+  "imageSize": {
+    "width": 587,
+    "height": 294
+  },
+  "controlPoints": [
+    {
+      "gameX": 159,
+      "gameY": 122,
+      "imageX": 324,
+      "imageY": 268
+    },
+    {
+      "gameX": 144,
+      "gameY": 76,
+      "imageX": 383,
+      "imageY": 213
+    },
+    {
+      "gameX": 144,
+      "gameY": 43,
+      "imageX": 448,
+      "imageY": 179
+    },
+    {
+      "gameX": 159,
+      "gameY": 54,
+      "imageX": 455,
+      "imageY": 206
+    },
+    {
+      "gameX": 173,
+      "gameY": 20,
+      "imageX": 544,
+      "imageY": 183
+    },
+    {
+      "gameX": 8,
+      "gameY": 80,
+      "imageX": 114,
+      "imageY": 83
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.921551471861804,
+      "gameY": -1.9067510346929941,
+      "offset": 251.48427505808027
+    },
+    "imageY": {
+      "gameX": 0.9653808910132626,
+      "gameY": 0.9617373329082716,
+      "offset": -1.2735012877009384
+    },
+    "rmsePixels": 1.9237109380238,
+    "maxErrorPixels": 2.655071708408033,
+    "pointErrorsPixels": [
+      1.6015584137278167,
+      2.1839490068983514,
+      1.8051647564513638,
+      2.076087386051401,
+      2.655071708408033,
+      0.5011941857954844
+    ],
+    "leaveOneOutErrorsPixels": [
+      8.990943598387412,
+      2.7289852540708863,
+      2.410418431477425,
+      2.6575064884931674,
+      5.692063217346045,
+      20.029988859316926
+    ]
+  },
+  "levelRange": {
+    "min": 12,
+    "max": 19
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "bandits",
+    "chonchon",
+    "harpy",
+    "bat"
+  ]
+}

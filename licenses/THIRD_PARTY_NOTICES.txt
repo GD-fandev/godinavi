@@ -1,0 +1,75 @@
+GODIMAP THIRD-PARTY SOFTWARE AND MODEL NOTICES
+Generated for the current GODIMAP Windows distribution - 2026
+
+GODIMAP includes or is built with third-party components. Those components are
+licensed by their respective copyright holders under the terms listed below.
+The full license texts shipped with this distribution are collected in the
+third_party directory in the source repository. In the end-user distribution,
+the same files are placed in the third_party_licenses directory.
+
+Core runtime and build components
+
+  Python 3.12.13                         Python Software Foundation License
+  PyInstaller 6.21.0                    GPL-2.0-or-later with Bootloader Exception
+  Pillow 12.3.0                         MIT-CMU
+  NumPy 2.5.1                           BSD-3-Clause and bundled component licenses
+  OpenCV Python 5.0.0.93                Apache-2.0 and third-party notices
+  DXcam 0.3.0                           MIT
+  comtypes 1.4.16                       MIT
+  pywin32-ctypes 0.2.3                  BSD-3-Clause
+  WinRT Runtime and projections 3.2.1   MIT
+  typing-extensions 4.16.0              PSF-2.0
+
+OCR components
+
+  RapidOCR 3.9.2                        Apache-2.0
+  ONNX Runtime 1.28.0                   MIT and included third-party notices
+  Shapely 2.1.2                         BSD-3-Clause; GEOS has separate terms
+  pyclipper 1.4.0                       MIT
+  PyYAML 6.0.3                          MIT
+  six 1.17.0                            MIT
+  OmegaConf 2.3.1                       BSD-3-Clause
+  colorlog 6.12.0                       MIT
+  tqdm 4.70.0                           MPL-2.0 and MIT
+  colorama 0.4.6                        BSD-3-Clause
+
+Networking and serialization dependencies used by bundled components
+
+  Requests 2.34.2                       Apache-2.0
+  charset-normalizer 3.4.9              MIT
+  idna 3.18                             BSD-3-Clause
+  urllib3 2.7.0                         MIT
+  certifi 2026.7.22                     MPL-2.0
+  FlatBuffers 25.12.19                  Apache-2.0
+  protobuf 7.35.1                       BSD-3-Clause
+  packaging 26.2                        Apache-2.0 OR BSD-2-Clause
+
+OCR models
+
+The ONNX OCR model files distributed in ocr_models are based on or converted
+from the RapidOCR/PaddleOCR ecosystem. RapidOCR states that OCR model copyright
+is held by Baidu, while RapidOCR engineering code is Apache-2.0 licensed.
+PaddleOCR is distributed under Apache License 2.0. Upstream projects:
+
+  https://github.com/RapidAI/RapidOCR
+  https://github.com/PaddlePaddle/PaddleOCR
+
+PyInstaller exception
+
+PyInstaller is GPL-licensed with an exception that permits generated executable
+bundles to be distributed under a license chosen by the application developer.
+The exception does not alter the licenses of libraries bundled into the
+executable. See the included PyInstaller COPYING text.
+
+Game-related material
+
+Godius names, trademarks, images, maps, icons, and other game-related material
+are not relicensed by this file. Rights remain with their respective owners.
+
+No endorsement
+
+The names of third-party projects and copyright holders are used only for
+attribution. Their inclusion does not imply endorsement of GODIMAP.
+
+If a required notice has been omitted, please contact the GODIMAP Developer so
+the distribution can be corrected.

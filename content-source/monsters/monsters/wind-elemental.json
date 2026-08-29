@@ -1,0 +1,49 @@
+{
+  "id": "wind-elemental",
+  "names": {
+    "ko": "윈드 엘레멘탈",
+    "ja": "ウィンドエレメンタル",
+    "en": "WIND ELEMENTAL"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/107_wind_ele.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "divine"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "goldred"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "골드레드반도 Lv 99~ Lv119",
+        "ocrConfidence": 0.9802
+      },
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "이스칼드반도 Lv99~ Lv119",
+        "ocrConfidence": 0.9588
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 111
+}

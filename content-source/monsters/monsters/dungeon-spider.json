@@ -1,0 +1,58 @@
+{
+  "id": "dungeon-spider",
+  "names": {
+    "ko": "던전스파이더",
+    "ja": "ダンジョンスパイダー",
+    "en": "DUNGEON SPIDER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/42_dungeon_spider.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali3f",
+    "kali4f",
+    "rege3f",
+    "rege4f",
+    "saiefe1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "레게/칼리지하동굴3층[v43~ Lv51",
+        "ocrConfidence": 0.9802
+      },
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "사에프동굴1 [Lv47~Lv51",
+        "ocrConfidence": 0.9961
+      },
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "레게/칼리지하동굴4층[v49~Lv57",
+        "ocrConfidence": 0.9967
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 228
+}

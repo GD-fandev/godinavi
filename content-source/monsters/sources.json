@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {"id": "monster-guide-001", "files": ["maps/monsters/001-1.jpg", "maps/monsters/001-2.jpg", "maps/monsters/001-3.jpg", "maps/monsters/001-4.jpg", "maps/monsters/001-5.jpg", "maps/monsters/001-6.jpg"], "status": "unreviewed"},
+    {"id": "monster-guide-002", "files": ["maps/monsters/002-1.jpg", "maps/monsters/002-2.jpg", "maps/monsters/002-3.jpg", "maps/monsters/002-4.jpg"], "status": "unreviewed"},
+    {"id": "monster-guide-003", "files": ["maps/monsters/003-1.jpg", "maps/monsters/003-2.jpg", "maps/monsters/003-3.jpg", "maps/monsters/003-4.jpg", "maps/monsters/003-5.jpg", "maps/monsters/003-6.jpg"], "status": "unreviewed"},
+    {"id": "monster-guide-004", "files": ["maps/monsters/004-1.jpg", "maps/monsters/004-2.jpg", "maps/monsters/004-3.jpg", "maps/monsters/004-4.jpg", "maps/monsters/004-5.jpg", "maps/monsters/004-6.jpg", "maps/monsters/004-7.jpg", "maps/monsters/004-8.jpg"], "status": "unreviewed"}
+  ]
+}

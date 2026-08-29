@@ -1,0 +1,56 @@
+{
+  "id": "ice-gagoyle",
+  "no": 66,
+  "names": {
+    "ko": "아이스 가고일",
+    "ja": "アイスガーゴイル",
+    "en": "ICE GAGOYLE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/64_ice_gago.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "centralspine",
+    "lauren",
+    "nebrada"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "로렌산맥 Lv66~Lv74",
+        "ocrConfidence": 0.9967
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "네브라다사막 Lv66~Lv76",
+        "ocrConfidence": 0.9709
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "중부등뼈산맥Lv72~Lv90",
+        "ocrConfidence": 0.9496
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

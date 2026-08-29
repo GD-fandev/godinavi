@@ -1,0 +1,91 @@
+{
+  "id": "ram3f",
+  "names": {
+    "ko": [
+      "람파스지하로3"
+    ],
+    "ja": [
+      "ランパス地下道3"
+    ],
+    "en": [
+      "Rampas B Ro3"
+    ]
+  },
+  "image": "maps/rampas/ram3F.png",
+  "imageSize": {
+    "width": 590,
+    "height": 295
+  },
+  "controlPoints": [
+    {
+      "gameX": 166,
+      "gameY": 102,
+      "imageX": 377,
+      "imageY": 261
+    },
+    {
+      "gameX": 162,
+      "gameY": 102,
+      "imageX": 369,
+      "imageY": 257
+    },
+    {
+      "gameX": 147,
+      "gameY": 96,
+      "imageX": 352,
+      "imageY": 236
+    },
+    {
+      "gameX": 128,
+      "gameY": 77,
+      "imageX": 350,
+      "imageY": 199
+    },
+    {
+      "gameX": 140,
+      "gameY": 125,
+      "imageX": 281,
+      "imageY": 257
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.9808030421518408,
+      "gameY": -1.936736692299901,
+      "offset": 245.90103184314677
+    },
+    "imageY": {
+      "gameX": 1.0014848307407167,
+      "gameY": 0.9588130796074902,
+      "offset": -3.085479040662352
+    },
+    "rmsePixels": 0.4383703295188501,
+    "maxErrorPixels": 0.8663056730514053,
+    "pointErrorsPixels": [
+      0.17192717795243795,
+      0.24828100926917715,
+      0.8663056730514053,
+      0.3221016920001265,
+      0.12411807192960603
+    ],
+    "leaveOneOutErrorsPixels": [
+      0.3614281708570074,
+      0.4071852269312334,
+      1.105836982133694,
+      2.8765527893984792,
+      6.466661600409771
+    ]
+  },
+  "levelRange": {
+    "min": 23,
+    "max": 31
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "gargoyle",
+    "mudman",
+    "poison-slime",
+    "hellhound",
+    "couatl"
+  ]
+}

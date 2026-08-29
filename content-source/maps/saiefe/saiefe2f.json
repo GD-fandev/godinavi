@@ -1,0 +1,86 @@
+{
+  "id": "saiefe2f",
+  "names": {
+    "ko": [
+      "사에프동굴2"
+    ],
+    "ja": [
+      "サエフ洞窟2"
+    ],
+    "en": [
+      "Saiefe Cave 2"
+    ]
+  },
+  "image": "maps/saiefe/saiefe2F.jpg",
+  "images": {
+    "ko": "maps/saiefe/ko/saiefe2F.jpg",
+    "ja": "maps/saiefe/ja/saiefe2F.jpg"
+  },
+  "imageSize": {
+    "width": 545,
+    "height": 191
+  },
+  "controlPoints": [
+    {
+      "gameX": 64,
+      "gameY": 68,
+      "imageX": 210,
+      "imageY": 94
+    },
+    {
+      "gameX": 72,
+      "gameY": 83,
+      "imageX": 195,
+      "imageY": 117
+    },
+    {
+      "gameX": 79,
+      "gameY": 75,
+      "imageX": 224,
+      "imageY": 117
+    },
+    {
+      "gameX": 72,
+      "gameY": 64,
+      "imageX": 232,
+      "imageY": 97
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.842168820190798,
+      "gameY": -1.9524212051684615,
+      "offset": 224.6249245260237
+    },
+    "imageY": {
+      "gameX": 1.0422412752083086,
+      "gameY": 1.0418186209395004,
+      "offset": -44.06266151430991
+    },
+    "rmsePixels": 0.6156323088641785,
+    "maxErrorPixels": 0.7230972532453919,
+    "pointErrorsPixels": [
+      0.5690647022581785,
+      0.4963271087364749,
+      0.6503596597236246,
+      0.7230972532453919
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.6640425119568905,
+      3.0544625352604524,
+      2.3310371979621025,
+      2.0965541662144678
+    ]
+  },
+  "levelRange": {
+    "min": 53,
+    "max": 59
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "g-minotaurs",
+    "teare",
+    "yellow-mummy",
+    "wraith"
+  ]
+}

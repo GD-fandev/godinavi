@@ -1,0 +1,97 @@
+{
+  "id": "southwest",
+  "names": {
+    "ko": [
+      "서남부반도"
+    ],
+    "ja": [
+      "西南部半島",
+      "西南部牟島一"
+    ],
+    "en": [
+      "Southwest Peninsula"
+    ]
+  },
+  "image": "maps/field/southwest.jpg",
+  "imageSize": {
+    "width": 1184,
+    "height": 592
+  },
+  "controlPoints": [
+    {
+      "gameX": 266,
+      "gameY": 1,
+      "imageX": 1108,
+      "imageY": 265
+    },
+    {
+      "gameX": 236,
+      "gameY": 21,
+      "imageX": 1009,
+      "imageY": 255
+    },
+    {
+      "gameX": 244,
+      "gameY": 35,
+      "imageX": 993,
+      "imageY": 277
+    },
+    {
+      "gameX": 235,
+      "gameY": 40,
+      "imageX": 968,
+      "imageY": 275
+    },
+    {
+      "gameX": 65,
+      "gameY": 2,
+      "imageX": 704,
+      "imageY": 67
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.000456602910802,
+      "gameY": -2.0347715772317208,
+      "offset": 578.1929559002485
+    },
+    "imageY": {
+      "gameX": 0.9885634136947662,
+      "gameY": 1.026182572910484,
+      "offset": 0.6741189114273318
+    },
+    "rmsePixels": 1.3897995805013579,
+    "maxErrorPixels": 2.2354083212958415,
+    "pointErrorsPixels": [
+      0.4416412477937483,
+      1.5228191370636783,
+      2.2354083212958415,
+      1.4570231094113708,
+      0.15402126337325872
+    ],
+    "leaveOneOutErrorsPixels": [
+      3.633069147356603,
+      1.9746931444405065,
+      3.5902074045408217,
+      3.0377698670414706,
+      30.83616205966556
+    ]
+  },
+  "levelRange": {
+    "min": 52,
+    "max": 60
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 253,
+    "y": 620
+  },
+  "monsterIds": [
+    "g-minotaurs",
+    "poison-orc-berserker",
+    "golem",
+    "ggriffon",
+    "worm",
+    "smogle"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "splinter",
+  "names": {
+    "ko": "스플린터",
+    "ja": "スプリンター",
+    "en": "SPLINTER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/113_splinter.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "mithrill"
+  ],
+  "magicAttackIds": [
+    "hold",
+    "bind"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "goldred",
+    "hell10f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "골드레드반도 Lv 99~ Lv119",
+        "ocrConfidence": 0.9986
+      },
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "이스칼드반도 Lv99~ Lv119",
+        "ocrConfidence": 0.9969
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "헬10층/툼스톤동굴좌/우측3층Lv118~ Lv119",
+        "ocrConfidence": 0.9991
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 129
+}

@@ -1,0 +1,37 @@
+{
+  "id": "hell9f",
+  "names": {
+    "ko": [
+      "헬 9층"
+    ],
+    "ja": [
+      "ヘル9F"
+    ],
+    "en": [
+      "hell 9F"
+    ]
+  },
+  "image": "maps/hell/hell9F.jpg",
+  "images": {
+    "ko": "maps/hell/ko/hell9F.jpg",
+    "ja": "maps/hell/ja/hell9F.jpg"
+  },
+  "imageSize": {
+    "width": 565,
+    "height": 275
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 116,
+    "max": 119
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "dark-bonyus",
+    "black-floop",
+    "white-bonyus",
+    "gold-panzer",
+    "dark-side"
+  ]
+}

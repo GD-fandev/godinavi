@@ -1,0 +1,54 @@
+{
+  "id": "titan",
+  "no": 39,
+  "names": {
+    "ko": "타이탄",
+    "ja": "タイタン",
+    "en": "TITAN"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/65_titan.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "demonhorn"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "centralspine",
+    "lauren",
+    "nebrada",
+    "remria"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "로렌산맥 Lv66~Lv74",
+        "ocrConfidence": 0.9349
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "네브라다사막 Lv66~Lv76",
+        "ocrConfidence": 0.9792
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

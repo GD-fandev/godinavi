@@ -1,0 +1,37 @@
+{
+  "id": "hell1f",
+  "names": {
+    "ko": [
+      "헬 1층"
+    ],
+    "ja": [
+      "ヘル1F"
+    ],
+    "en": [
+      "hell 1F"
+    ]
+  },
+  "image": "maps/hell/hell1F.jpg",
+  "images": {
+    "ko": "maps/hell/ko/hell1F.jpg",
+    "ja": "maps/hell/ja/hell1F.jpg"
+  },
+  "imageSize": {
+    "width": 563,
+    "height": 279
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 89,
+    "max": 95
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "death-kinght",
+    "ghost",
+    "finofet",
+    "dark-gagoyle",
+    "ancient-worm"
+  ]
+}

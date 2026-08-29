@@ -1,0 +1,85 @@
+{
+  "id": "dark-gagoyle",
+  "names": {
+    "ko": "다크 가고일",
+    "ja": "ダークガーゴイル",
+    "en": "DARK GAGOYLE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/88_dark_gagoyle.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "eback2f",
+    "eback3f",
+    "echil2",
+    "evil2",
+    "hell1f",
+    "hell2f",
+    "hell3f",
+    "kali10f",
+    "siad6f",
+    "wback2f",
+    "wback3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴10층[Lv81~L198",
+        "ocrConfidence": 0.9667
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "샤드뮤동굴6 Lv94~ Lv10o",
+        "ocrConfidence": 0.9988
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "서부등뼈동굴2 Lv91~Lv102",
+        "ocrConfidence": 0.9882
+      },
+      {
+        "file": "maps/monsters/003-6.jpg",
+        "section": "에칠린/에블린동굴2 [Lv94~ L198",
+        "ocrConfidence": 0.9617
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "헬2층 Lv95~Lv100",
+        "ocrConfidence": 0.9844
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "헬2층 Lv95~Lv100",
+        "ocrConfidence": 0.9834
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "서부/동부등뼈동굴3층[v98~ Lv104",
+        "ocrConfidence": 0.9987
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 138
+}

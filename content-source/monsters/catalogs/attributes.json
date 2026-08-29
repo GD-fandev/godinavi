@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "neutral",
+      "names": {
+        "ko": "중성",
+        "ja": "中性",
+        "en": "Neutral"
+      }
+    },
+    {
+      "id": "fire",
+      "names": {
+        "ko": "불",
+        "ja": "炎",
+        "en": "Fire"
+      }
+    },
+    {
+      "id": "ice",
+      "names": {
+        "ko": "얼음",
+        "ja": "氷",
+        "en": "Ice"
+      }
+    },
+    {
+      "id": "poison",
+      "names": {
+        "ko": "독",
+        "ja": "毒",
+        "en": "Poison"
+      }
+    },
+    {
+      "id": "divine",
+      "names": {
+        "ko": "신성",
+        "ja": "神聖",
+        "en": "Divine"
+      }
+    },
+    {
+      "id": "petrify",
+      "names": {
+        "ko": "석화",
+        "ja": "石化",
+        "en": "Petrify"
+      }
+    },
+    {
+      "id": "all_non_neutral",
+      "names": {
+        "ko": "중성 제외 모든 속성",
+        "ja": "中性を除く全属性",
+        "en": "All except Neutral"
+      }
+    },
+    {
+      "id": "disease",
+      "names": {
+        "ko": "질병",
+        "ja": "病気",
+        "en": "disease"
+      }
+    },
+    {
+      "id": "none",
+      "names": {
+        "ko": "없음",
+        "ja": "無し",
+        "en": "none"
+      }
+    }
+  ]
+}

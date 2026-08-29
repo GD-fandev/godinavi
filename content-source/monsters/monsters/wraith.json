@@ -1,0 +1,59 @@
+{
+  "id": "wraith",
+  "no": 57,
+  "names": {
+    "ko": "레이쓰",
+    "ja": "レイス",
+    "en": "WRAITH"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/47_wraith.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali5f",
+    "rege5f",
+    "rege6f",
+    "saiefe2f",
+    "saiefe3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "사에프동굴2 [Lv53~ Lv59",
+        "ocrConfidence": 0.999
+      },
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "레게/칼리지하동굴5층[v55~ Lv63",
+        "ocrConfidence": 0.9992
+      },
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "사에프동굴3 Lv59~Lv65",
+        "ocrConfidence": 0.9796
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

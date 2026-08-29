@@ -1,0 +1,97 @@
+{
+  "id": "siad3f",
+  "names": {
+    "ko": [
+      "샤드뮴동굴3"
+    ],
+    "ja": [
+      "シャドミュム洞窟3"
+    ],
+    "en": [
+      "Shadmum Cave 3"
+    ]
+  },
+  "image": "maps/siadmyoom/siad3F.jpg",
+  "images": {
+    "ko": "maps/siadmyoom/ko/siad3F.jpg",
+    "ja": "maps/siadmyoom/ja/siad3F.jpg"
+  },
+  "imageSize": {
+    "width": 485,
+    "height": 281
+  },
+  "controlPoints": [
+    {
+      "gameX": 48,
+      "gameY": 64,
+      "imageX": 238,
+      "imageY": 153
+    },
+    {
+      "gameX": 71,
+      "gameY": 121,
+      "imageX": 143,
+      "imageY": 267
+    },
+    {
+      "gameX": 8,
+      "gameY": 16,
+      "imageX": 258,
+      "imageY": 29
+    },
+    {
+      "gameX": 33,
+      "gameY": 121,
+      "imageX": 34,
+      "imageY": 215
+    },
+    {
+      "gameX": 75,
+      "gameY": 8,
+      "imageX": 471,
+      "imageY": 113
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.85024224014168,
+      "gameY": -2.806688346860531,
+      "offset": 280.080045606136
+    },
+    "imageY": {
+      "gameX": 1.4099024357868193,
+      "gameY": 1.4237074401008827,
+      "offset": -4.830105528638758
+    },
+    "rmsePixels": 0.8756598174688716,
+    "maxErrorPixels": 1.2118743207204374,
+    "pointErrorsPixels": [
+      1.2118743207204374,
+      0.5652912691037492,
+      0.22980021144845625,
+      1.1619947104982766,
+      0.8016652338063621
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.5163059234641756,
+      1.3657448715177412,
+      1.3056350492363233,
+      2.65125334105449,
+      4.6452555309235395
+    ]
+  },
+  "levelRange": {
+    "min": 77,
+    "max": 85
+  },
+  "monsterZones": [],
+  "contributors": [
+    "狐"
+  ],
+  "monsterIds": [
+    "hellmaden",
+    "gskeleton",
+    "fire-hellhound",
+    "arclich"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "black-dragon",
+  "no": 33,
+  "names": {
+    "ko": "블랙드래곤",
+    "ja": "ブラックドラゴン",
+    "en": "BLACK DRAGON"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/82_black_dragon.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [
+    "dragonscale"
+  ],
+  "magicAttackIds": [
+    "curse",
+    "pyraball",
+    "acidcloud"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "kali10f",
+    "kali9f",
+    "rege10f",
+    "rege9f",
+    "santihall",
+    "siad4f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "싼티홀분지 Lv76~LV83",
+        "ocrConfidence": 0.9657
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "레게지하동굴9층[Lv77~ L185",
+        "ocrConfidence": 0.9971
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴9층Lv77~ Lv89",
+        "ocrConfidence": 0.9029
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "레게지하동굴10층Lv81~ LV87",
+        "ocrConfidence": 0.9092
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "샤드뮤동굴4 [v81~Lv89",
+        "ocrConfidence": 0.8888
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴10층[Lv81~L198",
+        "ocrConfidence": 0.9824
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

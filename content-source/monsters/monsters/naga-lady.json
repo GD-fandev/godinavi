@@ -1,0 +1,69 @@
+{
+  "id": "naga-lady",
+  "no": 45,
+  "names": {
+    "ko": "나가레이디",
+    "ja": "ナーガレディ",
+    "en": "NAGA LADY"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/67_nagalady.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali7f",
+    "kali8f",
+    "rege7f",
+    "rege8f",
+    "saiefe5f",
+    "siad1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "레게지하동굴7층 [Lv67~ Lv73",
+        "ocrConfidence": 0.9934
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "칼리지하동굴7층Lv67~ Lv81",
+        "ocrConfidence": 0.8897
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "샤드뮤동굴1 사에프동굴5 Lv69~Lv73",
+        "ocrConfidence": 0.9946
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "",
+        "ocrConfidence": 0.909
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "칼리지하동굴8층[71~Lv85",
+        "ocrConfidence": 0.9938
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

@@ -1,0 +1,25 @@
+{
+  "id": "maze1",
+  "names": {
+    "ko": [
+      "라비린토스미로"
+    ],
+    "ja": [
+      "ラリビントス迷路"
+    ],
+    "en": [
+      "Laribintos Maze"
+    ]
+  },
+  "image": "maps/other/maze1.jpg",
+  "credit_type": "supported",
+  "imageSize": {
+    "width": 800,
+    "height": 400
+  },
+  "controlPoints": [],
+  "transform": null,
+  "contributors": [
+    "本格炒飯剣士"
+  ]
+}

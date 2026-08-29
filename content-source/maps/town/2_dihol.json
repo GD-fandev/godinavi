@@ -1,0 +1,79 @@
+{
+  "id": "2_dihol",
+  "names": {
+    "ko": [
+      "디홀"
+    ],
+    "ja": [
+      "ディホル"
+    ],
+    "en": [
+      "Dihol"
+    ]
+  },
+  "image": "maps/town/2_dihol.png",
+  "images": {
+    "ko": "maps/town/ko/2_dihol.png",
+    "ja": "maps/town/ja/2_dihol.png"
+  },
+  "imageSize": {
+    "width": 1216,
+    "height": 608
+  },
+  "controlPoints": [
+    {
+      "gameX": 35,
+      "gameY": 104,
+      "imageX": 500,
+      "imageY": 279
+    },
+    {
+      "gameX": 54,
+      "gameY": 118,
+      "imageX": 516,
+      "imageY": 343
+    },
+    {
+      "gameX": 64,
+      "gameY": 95,
+      "imageX": 647,
+      "imageY": 317
+    },
+    {
+      "gameX": 68,
+      "gameY": 95,
+      "imageX": 665,
+      "imageY": 326
+    },
+    {
+      "gameX": 53,
+      "gameY": 80,
+      "imageX": 664,
+      "imageY": 266
+    },
+    {
+      "gameX": 34,
+      "gameY": 65,
+      "imageX": 651,
+      "imageY": 199
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 3.886585186420202,
+      "gameY": -3.9955525063810273,
+      "offset": 778.5757514394679
+    },
+    "imageY": {
+      "gameX": 1.9580797056780022,
+      "gameY": 1.9842746062742718,
+      "offset": 3.61174915940094
+    },
+    "rmsePixels": 1.1110320815536467,
+    "maxErrorPixels": 1.864005548323201
+  },
+  "worldMapPosition": {
+    "x": 451,
+    "y": 347
+  }
+}

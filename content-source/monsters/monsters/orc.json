@@ -1,0 +1,51 @@
+{
+  "id": "orc",
+  "no": 5,
+  "names": {
+    "ko": "오크",
+    "ja": "オーク",
+    "en": "ORC"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/06_orc.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "calbiron",
+    "lampas",
+    "lucre"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "루크레시아소택지Lv3~ Lv14",
+        "ocrConfidence": 0.9228
+      },
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "람파스소택지[v3~Lv18",
+        "ocrConfidence": 0.9205
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

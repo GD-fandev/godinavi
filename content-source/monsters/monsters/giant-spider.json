@@ -1,0 +1,45 @@
+{
+  "id": "giant-spider",
+  "no": 51,
+  "names": {
+    "ko": "자이언트 스파이더",
+    "ja": "ジャイアントスパイダー",
+    "en": "GIANT SPIDER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/39_giant_spider.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "narrow",
+    "reible"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "내로우소택지 레이블평원Lv44~Lv5o",
+        "ocrConfidence": 0.9992
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

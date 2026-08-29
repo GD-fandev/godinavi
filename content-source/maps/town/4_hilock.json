@@ -1,0 +1,79 @@
+{
+  "id": "4_hilock",
+  "names": {
+    "ko": [
+      "힐록"
+    ],
+    "ja": [
+      "ヒルロック"
+    ],
+    "en": [
+      "Hillock"
+    ]
+  },
+  "image": "maps/town/4_hilock.png",
+  "images": {
+    "ko": "maps/town/ko/4_hilock.png",
+    "ja": "maps/town/ja/4_hilock.png"
+  },
+  "imageSize": {
+    "width": 832,
+    "height": 416
+  },
+  "controlPoints": [
+    {
+      "gameX": 34,
+      "gameY": 15,
+      "imageX": 397,
+      "imageY": 100
+    },
+    {
+      "gameX": 45,
+      "gameY": 33,
+      "imageX": 369,
+      "imageY": 157
+    },
+    {
+      "gameX": 55,
+      "gameY": 53,
+      "imageX": 330,
+      "imageY": 218
+    },
+    {
+      "gameX": 70,
+      "gameY": 70,
+      "imageX": 324,
+      "imageY": 281
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 4.261100459539245,
+      "gameY": -4.112298000547799,
+      "offset": 313.48461608691696
+    },
+    "imageY": {
+      "gameX": 1.8047262546029992,
+      "gameY": 2.113941385921665,
+      "offset": 6.5879667670958035
+    },
+    "rmsePixels": 0.4636010089428959,
+    "maxErrorPixels": 0.7703920678443559,
+    "pointErrorsPixels": [
+      0.4701923418767966,
+      0.7703920678443559,
+      0.1555251592362334,
+      0.1446745667314732
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.8284083031627436,
+      1.1159299502874516,
+      5.527746032820132,
+      5.942326985281362
+    ]
+  },
+  "worldMapPosition": {
+    "x": 393,
+    "y": 143
+  }
+}

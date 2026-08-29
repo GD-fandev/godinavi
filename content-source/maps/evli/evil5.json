@@ -1,0 +1,37 @@
+{
+  "id": "evil5",
+  "names": {
+    "ko": [
+      "에블린동굴5"
+    ],
+    "ja": [
+      "エブリン洞窟5F"
+    ],
+    "en": [
+      "Evelyn Cave 5F"
+    ]
+  },
+  "image": "maps/evli/evil5.jpg",
+  "images": {
+    "ko": "maps/evli/ko/evil5.jpg",
+    "ja": "maps/evli/ja/evil5.jpg"
+  },
+  "imageSize": {
+    "width": 585,
+    "height": 293
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 113,
+    "max": 119
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "poison-dragon",
+    "dark-bonyus",
+    "black-floop",
+    "gold-panzer",
+    "white-bonyus"
+  ]
+}

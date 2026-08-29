@@ -1,0 +1,79 @@
+{
+  "id": "8_caswell",
+  "names": {
+    "ko": [
+      "카스웰"
+    ],
+    "ja": [
+      "カスウェル"
+    ],
+    "en": [
+      "caswell"
+    ]
+  },
+  "image": "maps/town/8_caswell.png",
+  "images": {
+    "ko": "maps/town/ko/8_caswell.png",
+    "ja": "maps/town/ja/8_caswell.png"
+  },
+  "imageSize": {
+    "width": 852,
+    "height": 462
+  },
+  "controlPoints": [
+    {
+      "gameX": 40,
+      "gameY": 56,
+      "imageX": 397,
+      "imageY": 176
+    },
+    {
+      "gameX": 59,
+      "gameY": 67,
+      "imageX": 426,
+      "imageY": 236
+    },
+    {
+      "gameX": 72,
+      "gameY": 78,
+      "imageX": 434,
+      "imageY": 285
+    },
+    {
+      "gameX": 80,
+      "gameY": 64,
+      "imageX": 524,
+      "imageY": 273
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 4.015928643172193,
+      "gameY": -4.16093497532643,
+      "offset": 468.91241975632084
+    },
+    "imageY": {
+      "gameX": 2.0272173457356204,
+      "gameY": 2.005338661076905,
+      "offset": -17.56157474125512
+    },
+    "rmsePixels": 0.6787224919987738,
+    "maxErrorPixels": 1.142596652434395,
+    "pointErrorsPixels": [
+      0.49439278230356365,
+      1.142596652434395,
+      0.5273523011236216,
+      0.12085156900751895
+    ],
+    "leaveOneOutErrorsPixels": [
+      3.727111217124842,
+      1.6126923535566728,
+      3.494166766037732,
+      15.247273160958402
+    ]
+  },
+  "worldMapPosition": {
+    "x": 327,
+    "y": 684
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "mudman",
+  "no": 14,
+  "names": {
+    "ko": "머드맨",
+    "ja": "マッドマン",
+    "en": "MUDMAN"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/22_mudman.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "luc3f",
+    "ram3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "루크레시아/람파스지하로3 [v23~Lv31",
+        "ocrConfidence": 0.9995
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

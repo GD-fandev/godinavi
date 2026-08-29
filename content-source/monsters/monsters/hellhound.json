@@ -1,0 +1,47 @@
+{
+  "id": "hellhound",
+  "no": 15,
+  "names": {
+    "ko": "헬하운드",
+    "ja": "ヘルハウンド",
+    "en": "HELLHOUND"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/23_hellhound.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "chilly",
+    "luc3f",
+    "ram3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "루크레시아/람파스지하로3 [v23~Lv31",
+        "ocrConfidence": 0.9768
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

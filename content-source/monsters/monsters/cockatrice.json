@@ -1,0 +1,87 @@
+{
+  "id": "cockatrice",
+  "names": {
+    "ko": "코카트리케",
+    "ja": "コカトリケ",
+    "en": "COCKATRICE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/61_cocatri.png",
+  "attackAttributeIds": [
+    "petrify"
+  ],
+  "weaknessAttributeIds": [],
+  "dropItemIds": [
+    "dragonscale"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali10f",
+    "kali6f",
+    "kali7f",
+    "kali8f",
+    "kali9f",
+    "rege10f",
+    "rege7f",
+    "rege8f",
+    "rege9f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "레게/칼리지하동굴6층 Lv61~ Lv67",
+        "ocrConfidence": 0.9986
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "레게지하동굴7층 [Lv67~ Lv73",
+        "ocrConfidence": 0.9964
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "칼리지하동굴7층Lv67~ Lv81",
+        "ocrConfidence": 0.9752
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "",
+        "ocrConfidence": 0.9946
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "칼리지하동굴8층[71~Lv85",
+        "ocrConfidence": 0.9962
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "레게지하동굴9층[Lv77~ L185",
+        "ocrConfidence": 0.9983
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "레게지하동굴10층Lv81~ LV87",
+        "ocrConfidence": 0.973
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴10층[Lv81~L198",
+        "ocrConfidence": 0.9579
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 272
+}

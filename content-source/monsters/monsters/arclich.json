@@ -1,0 +1,91 @@
+{
+  "id": "arclich",
+  "no": 37,
+  "names": {
+    "ko": "아크리치",
+    "ja": "アークリッチ",
+    "en": "ARCLICH"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/75_arclich.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "holyball",
+    "curse",
+    "holymissile"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "kali10f",
+    "kali8f",
+    "kali9f",
+    "rege10f",
+    "rege9f",
+    "siad3f",
+    "siad4f",
+    "wback1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "칼리지하동굴8층[71~Lv85",
+        "ocrConfidence": 0.9197
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "레게지하동굴9층[Lv77~ L185",
+        "ocrConfidence": 0.9971
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "샤드뮤동굴3 [v77~Lv85",
+        "ocrConfidence": 0.9965
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴9층Lv77~ Lv89",
+        "ocrConfidence": 0.8881
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "레게지하동굴10층Lv81~ LV87",
+        "ocrConfidence": 0.9463
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "샤드뮤동굴4 [v81~Lv89",
+        "ocrConfidence": 0.9934
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴10층[Lv81~L198",
+        "ocrConfidence": 0.9428
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "서부등뼈동굴1 [v85~ Lv94",
+        "ocrConfidence": 0.9974
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

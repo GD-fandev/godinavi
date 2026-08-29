@@ -1,0 +1,79 @@
+{
+  "id": "10_deeval",
+  "names": {
+    "ko": [
+      "디발"
+    ],
+    "ja": [
+      "ディバル"
+    ],
+    "en": [
+      "deeval"
+    ]
+  },
+  "image": "maps/town/10_deeval.png",
+  "images": {
+    "ko": "maps/town/ko/10_deeval.png",
+    "ja": "maps/town/ja/10_deeval.png"
+  },
+  "imageSize": {
+    "width": 704,
+    "height": 352
+  },
+  "controlPoints": [
+    {
+      "gameX": 33,
+      "gameY": 38,
+      "imageX": 305,
+      "imageY": 142
+    },
+    {
+      "gameX": 43,
+      "gameY": 41,
+      "imageX": 330,
+      "imageY": 170
+    },
+    {
+      "gameX": 56,
+      "gameY": 55,
+      "imageX": 327,
+      "imageY": 223
+    },
+    {
+      "gameX": 51,
+      "gameY": 65,
+      "imageX": 268,
+      "imageY": 235
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 3.827378341714155,
+      "gameY": -3.8870472557399247,
+      "offset": 325.77804183963883
+    },
+    "imageY": {
+      "gameX": 1.9882243143174785,
+      "gameY": 2.078196876816842,
+      "offset": -1.8515570016624772
+    },
+    "rmsePixels": 1.0658858746361626,
+    "maxErrorPixels": 1.516465003794416,
+    "pointErrorsPixels": [
+      0.9628349230439591,
+      1.516465003794416,
+      1.039861716887603,
+      0.4862316361374386
+    ],
+    "leaveOneOutErrorsPixels": [
+      4.7198649345086015,
+      2.9967396409575784,
+      4.370245309729133,
+      9.346267197047727
+    ]
+  },
+  "worldMapPosition": {
+    "x": 1051,
+    "y": 380
+  }
+}

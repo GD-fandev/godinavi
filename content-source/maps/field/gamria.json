@@ -1,0 +1,94 @@
+{
+  "id": "gamria",
+  "names": {
+    "ko": [
+      "가므리아해안"
+    ],
+    "ja": [
+      "ガムリア海岸"
+    ],
+    "en": [
+      "Gamria Coast"
+    ]
+  },
+  "image": "maps/field/gamria.jpg",
+  "images": {
+    "ko": "maps/field/ko/gamria.jpg",
+    "ja": "maps/field/ja/gamria.jpg"
+  },
+  "imageSize": {
+    "width": 992,
+    "height": 496
+  },
+  "controlPoints": [
+    {
+      "gameX": 120,
+      "gameY": 49,
+      "imageX": 848,
+      "imageY": 169
+    },
+    {
+      "gameX": 107,
+      "gameY": 42,
+      "imageX": 836,
+      "imageY": 149
+    },
+    {
+      "gameX": 101,
+      "gameY": 55,
+      "imageX": 798,
+      "imageY": 156
+    },
+    {
+      "gameX": 82,
+      "gameY": 53,
+      "imageX": 764,
+      "imageY": 135
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.0000000000002447,
+      "gameY": -2.0000000000005294,
+      "offset": 706.000000000001
+    },
+    "imageY": {
+      "gameX": 1.0,
+      "gameY": 1.0000000000000004,
+      "offset": -3.9226184108178957e-14
+    },
+    "rmsePixels": 5.108955444625581e-12,
+    "maxErrorPixels": 6.934897101018578e-12,
+    "pointErrorsPixels": [
+      4.433786671143025e-12,
+      5.002220859751105e-12,
+      3.410605131648481e-12,
+      6.934897101018578e-12
+    ],
+    "leaveOneOutErrorsPixels": [
+      3.638089827700161e-12,
+      2.428351918216984e-13,
+      1.937893777463931e-12,
+      4.2291513182745676e-11
+    ]
+  },
+  "levelRange": {
+    "min": 16,
+    "max": 32
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 187,
+    "y": 272
+  },
+  "monsterIds": [
+    "griffon",
+    "disease-slime",
+    "centipede",
+    "centaur",
+    "scorpion",
+    "couatl",
+    "troll",
+    "crab"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "id": "baslisk",
+  "no": 17,
+  "names": {
+    "ko": "바실리스크",
+    "ja": "バジリスク",
+    "en": "BASLISK"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/25_basilisk.png",
+  "attackAttributeIds": [
+    "divine",
+    "petrify"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali1f",
+    "rege1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "레게/칼리지하동굴1층[v27~Lv37",
+        "ocrConfidence": 0.887
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

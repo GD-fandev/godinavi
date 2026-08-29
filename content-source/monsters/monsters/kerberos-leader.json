@@ -1,0 +1,62 @@
+{
+  "id": "kerberos-leader",
+  "no": 65,
+  "names": {
+    "ko": "켈베로스 리더",
+    "ja": "ケルベロスリーダー",
+    "en": "KERBEROS LEADER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/66_kerberos_leader.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali6f",
+    "kali7f",
+    "rege7f",
+    "saiefe4f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "레게/칼리지하동굴6층 Lv61~ Lv67",
+        "ocrConfidence": 0.9948
+      },
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "사에프동굴4 Lv65~Lv69",
+        "ocrConfidence": 0.9968
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "레게지하동굴7층 [Lv67~ Lv73",
+        "ocrConfidence": 0.9899
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "칼리지하동굴7층Lv67~ Lv81",
+        "ocrConfidence": 0.9669
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

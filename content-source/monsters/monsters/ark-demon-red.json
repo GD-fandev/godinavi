@@ -1,0 +1,72 @@
+{
+  "id": "ark-demon-red",
+  "names": {
+    "ko": "아크데몬레드",
+    "ja": "アークデーモンレッド",
+    "en": "ARK DEMON RED"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/97_arc_demon_red.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [
+    "demonhorn",
+    "mithrill"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "eback3f",
+    "eback4f",
+    "echil3",
+    "evil3",
+    "hell4f",
+    "hell5f",
+    "hell6f",
+    "siad5f",
+    "wback3f",
+    "wback4f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "서부/동부등뼈동굴3층[v98~ Lv104",
+        "ocrConfidence": 0.999
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "에칠린/에블린동굴3층Lv100~ Lv106",
+        "ocrConfidence": 0.9981
+      },
+      {
+        "file": "maps/monsters/004-3.jpg",
+        "section": "헬6층Lv104~ L113",
+        "ocrConfidence": 0.9964
+      },
+      {
+        "file": "maps/monsters/004-3.jpg",
+        "section": "서부/동부등뼈동굴4 [Lv104~ Lv113",
+        "ocrConfidence": 0.978
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 89
+}

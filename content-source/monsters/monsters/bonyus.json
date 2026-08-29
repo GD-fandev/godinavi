@@ -1,0 +1,76 @@
+{
+  "id": "bonyus",
+  "names": {
+    "ko": "보니오스",
+    "ja": "ボニオス",
+    "en": "BONYUS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/96_bonyus.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "eback3f",
+    "echil3",
+    "evil3",
+    "hell3f",
+    "hell4f",
+    "hell5f",
+    "wback2f",
+    "wback3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "서부등뼈동굴2 Lv91~Lv102",
+        "ocrConfidence": 0.9865
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "헬2층 Lv95~Lv100",
+        "ocrConfidence": 0.9994
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "서부/동부등뼈동굴3층[v98~ Lv104",
+        "ocrConfidence": 0.9997
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "에칠린/에블린동굴3층Lv100~ Lv106",
+        "ocrConfidence": 0.9484
+      },
+      {
+        "file": "maps/monsters/004-2.jpg",
+        "section": "헬4층 Lv100~ Lv106 입장레벨:80레벨이상",
+        "ocrConfidence": 0.9789
+      },
+      {
+        "file": "maps/monsters/004-2.jpg",
+        "section": "헬5층 Lv102~ Lv110",
+        "ocrConfidence": 0.9971
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 82
+}

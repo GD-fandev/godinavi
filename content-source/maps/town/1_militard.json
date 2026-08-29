@@ -1,0 +1,67 @@
+{
+  "id": "1_militard",
+  "names": {
+    "ko": [
+      "밀리타드"
+    ],
+    "ja": [
+      "ミリタード"
+    ],
+    "en": [
+      "Militard"
+    ]
+  },
+  "image": "maps/town/1_militard.png",
+  "images": {
+    "ko": "maps/town/ko/1_militard.png",
+    "ja": "maps/town/ja/1_militard.png"
+  },
+  "imageSize": {
+    "width": 1152,
+    "height": 576
+  },
+  "controlPoints": [
+    {
+      "gameX": 61,
+      "gameY": 122,
+      "imageX": 335,
+      "imageY": 366
+    },
+    {
+      "gameX": 79,
+      "gameY": 117,
+      "imageX": 429,
+      "imageY": 391
+    },
+    {
+      "gameX": 86,
+      "gameY": 94,
+      "imageX": 547,
+      "imageY": 360
+    },
+    {
+      "gameX": 97,
+      "gameY": 82,
+      "imageX": 638,
+      "imageY": 358
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 4.144587014353289,
+      "gameY": -3.849342266947786,
+      "offset": 551.9438587868045
+    },
+    "imageY": {
+      "gameX": 1.9261855794561422,
+      "gameY": 1.9336575649002121,
+      "offset": 12.593542100519347
+    },
+    "rmsePixels": 0.2900413266189036,
+    "maxErrorPixels": 0.4599253714441221
+  },
+  "worldMapPosition": {
+    "x": 316,
+    "y": 286
+  }
+}

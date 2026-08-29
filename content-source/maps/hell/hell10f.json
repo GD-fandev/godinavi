@@ -1,0 +1,37 @@
+{
+  "id": "hell10f",
+  "names": {
+    "ko": [
+      "헬 10층"
+    ],
+    "ja": [
+      "ヘル10F"
+    ],
+    "en": [
+      "hell 10F"
+    ]
+  },
+  "image": "maps/hell/hell10F.jpg",
+  "images": {
+    "ko": "maps/hell/ko/hell10F.jpg",
+    "ja": "maps/hell/ja/hell10F.jpg"
+  },
+  "imageSize": {
+    "width": 542,
+    "height": 280
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 118,
+    "max": 119
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "gold-panzer",
+    "dark-side",
+    "death-worm",
+    "splinter",
+    "white-bonyus"
+  ]
+}

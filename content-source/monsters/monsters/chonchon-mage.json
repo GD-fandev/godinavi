@@ -1,0 +1,46 @@
+{
+  "id": "chonchon-mage",
+  "no": 69,
+  "names": {
+    "ko": "촌촌메이지",
+    "ja": "チョンチョンメイジ",
+    "en": "CHONCHON MAGE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/14_chonchon_mage.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "luc2f",
+    "ram2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-2.jpg",
+        "section": "루크레시아/람파스지하로2[v14~Lv27",
+        "ocrConfidence": 0.984
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

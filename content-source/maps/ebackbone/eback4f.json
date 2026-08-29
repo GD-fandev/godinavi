@@ -1,0 +1,120 @@
+{
+  "id": "eback4f",
+  "names": {
+    "ko": [
+      "동부등뼈동굴4"
+    ],
+    "ja": [
+      "東部背骨洞窟4"
+    ],
+    "en": [
+      "East spine cave 4"
+    ]
+  },
+  "image": "maps/ebackbone/eback4F.jpg",
+  "images": {
+    "ko": "maps/ebackbone/ko/eback4F.jpg",
+    "ja": "maps/ebackbone/ja/eback4F.jpg"
+  },
+  "imageSize": {
+    "width": 582,
+    "height": 288
+  },
+  "controlPoints": [
+    {
+      "gameX": 14,
+      "gameY": 180,
+      "imageX": 95,
+      "imageY": 112
+    },
+    {
+      "gameX": 32,
+      "gameY": 171,
+      "imageX": 125,
+      "imageY": 117
+    },
+    {
+      "gameX": 60,
+      "gameY": 154,
+      "imageX": 181,
+      "imageY": 124
+    },
+    {
+      "gameX": 64,
+      "gameY": 121,
+      "imageX": 227,
+      "imageY": 108
+    },
+    {
+      "gameX": 45,
+      "gameY": 102,
+      "imageX": 225,
+      "imageY": 84
+    },
+    {
+      "gameX": 26,
+      "gameY": 82,
+      "imageX": 227,
+      "imageY": 60
+    },
+    {
+      "gameX": 20,
+      "gameY": 61,
+      "imageX": 245,
+      "imageY": 43
+    },
+    {
+      "gameX": 22,
+      "gameY": 19,
+      "imageX": 300,
+      "imageY": 18
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.210367635964881,
+      "gameY": -1.2163796018884974,
+      "offset": 295.6304755878379
+    },
+    "imageY": {
+      "gameX": 0.6312763633564087,
+      "gameY": 0.6092324280134761,
+      "offset": -6.858508970232113
+    },
+    "rmsePixels": 1.0954098165369508,
+    "maxErrorPixels": 1.4576481653668814,
+    "pointErrorsPixels": [
+      1.4188237470922391,
+      1.4576481653668814,
+      0.84277259547659,
+      1.315575672987282,
+      1.0719132367220963,
+      0.6048012819543357,
+      0.6424758528274891,
+      1.04547574423871
+    ],
+    "leaveOneOutErrorsPixels": [
+      4.0855173289056586,
+      2.130387137263434,
+      1.3981302918110523,
+      2.4384690260290336,
+      1.2995137022325545,
+      0.7413010508127842,
+      0.9078397076646362,
+      2.188159934732902
+    ]
+  },
+  "levelRange": {
+    "min": 104,
+    "max": 113
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "brutal-hydra",
+    "ark-demon-red",
+    "death-dragon",
+    "redbonyus",
+    "great-demon",
+    "poison-dragon"
+  ]
+}

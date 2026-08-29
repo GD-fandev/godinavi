@@ -1,0 +1,73 @@
+{
+  "id": "gold-panzer",
+  "names": {
+    "ko": "골드펜저",
+    "ja": "ゴールドパンザー",
+    "en": "GOLD PANZER"
+  },
+  "aliases": {
+    "ko": [
+      "골드멘저"
+    ],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/111_gold_panzer.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [
+    "mithrill"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "echil5",
+    "evil5",
+    "goldred",
+    "hell10f",
+    "hell9f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "골드레드반도 Lv 99~ Lv119",
+        "ocrConfidence": 0.9831
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "에칠린/에블린동굴5층Lv113~Lv119",
+        "ocrConfidence": 0.9388
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "헬9층/툼스톤동굴좌/우측1층[v116~ Lv119",
+        "ocrConfidence": 0.9811
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "툼스톤동굴좌/우측2층Lv116~ Lv119",
+        "ocrConfidence": 0.9161
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "헬10층/툼스톤동굴좌/우측3층Lv118~ Lv119",
+        "ocrConfidence": 0.9663
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 117
+}

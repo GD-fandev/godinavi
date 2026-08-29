@@ -1,0 +1,93 @@
+{
+  "id": "lampas",
+  "names": {
+    "ko": [
+      "람파스소택지"
+    ],
+    "ja": [
+      "ランパス湿地"
+    ],
+    "en": [
+      "Rampas Marsh"
+    ]
+  },
+  "image": "maps/field/lampas.jpg",
+  "images": {
+    "ko": "maps/field/ko/lampas.jpg",
+    "ja": "maps/field/ja/lampas.jpg"
+  },
+  "imageSize": {
+    "width": 1056,
+    "height": 528
+  },
+  "controlPoints": [
+    {
+      "gameX": 249,
+      "gameY": 145,
+      "imageX": 689,
+      "imageY": 392
+    },
+    {
+      "gameX": 240,
+      "gameY": 172,
+      "imageX": 618,
+      "imageY": 411
+    },
+    {
+      "gameX": 184,
+      "gameY": 151,
+      "imageX": 550,
+      "imageY": 337
+    },
+    {
+      "gameX": 143,
+      "gameY": 145,
+      "imageX": 481,
+      "imageY": 288
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.961183438471085,
+      "gameY": -1.9755013487110442,
+      "offset": 487.1641602418662
+    },
+    "imageY": {
+      "gameX": 0.9741442225748072,
+      "gameY": 1.0310078586834377,
+      "offset": 0.2726242515026124
+    },
+    "rmsePixels": 1.0930321565317325,
+    "maxErrorPixels": 1.8240830541278017,
+    "pointErrorsPixels": [
+      0.3346064302647822,
+      0.40535178980633507,
+      1.8240830541278017,
+      1.0841248340572636
+    ],
+    "leaveOneOutErrorsPixels": [
+      14.282084110192942,
+      11.789456223036282,
+      2.6198791606749143,
+      4.408050651294165
+    ]
+  },
+  "levelRange": {
+    "min": 3,
+    "max": 18
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 717,
+    "y": 475
+  },
+  "monsterIds": [
+    "slime",
+    "kobolds",
+    "orc",
+    "goblin",
+    "bandits",
+    "crab",
+    "centipede"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "id": "blaz-bonyus",
+  "names": {
+    "ko": "블라즈보니오스",
+    "ja": "ブラズボニオス",
+    "en": "BLAZ BONYUS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/116_blaz_bony.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [
+    "demonhorn"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "carl1f",
+    "cback1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "카를/중부등뼈동굴1[v83~Lv89",
+        "ocrConfidence": 0.9966
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 309
+}

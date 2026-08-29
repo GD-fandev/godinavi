@@ -1,0 +1,61 @@
+{
+  "id": "ice-hellhound",
+  "names": {
+    "ko": "아이스 헬하운드",
+    "ja": "アイスヘルハウンド",
+    "en": "ICE HELLHOUND"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/94_ice_hellhound.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "carlmanue",
+    "goldred",
+    "westernspine"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "서부등뼈산맥 Lv88~Lv99",
+        "ocrConfidence": 0.9948
+      },
+      {
+        "file": "maps/monsters/003-6.jpg",
+        "section": "카를마뉴해안 Lv92~Lv99",
+        "ocrConfidence": 0.9896
+      },
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "골드레드반도 Lv 99~ Lv119",
+        "ocrConfidence": 0.9943
+      },
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "이스칼드반도 Lv99~ Lv119",
+        "ocrConfidence": 0.9668
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 139
+}

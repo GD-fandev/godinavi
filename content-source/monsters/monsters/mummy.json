@@ -1,0 +1,54 @@
+{
+  "id": "mummy",
+  "no": 23,
+  "names": {
+    "ko": "마미",
+    "ja": "マミー",
+    "en": "MUMMY"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/27_mummy.png",
+  "attackAttributeIds": [
+    "divine",
+    "disease"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali1f",
+    "kali2f",
+    "rege1f",
+    "rege2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "레게/칼리지하동굴1층[v27~Lv37",
+        "ocrConfidence": 0.9993
+      },
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "레게/칼리지하동굴2층Lv32~Lv45",
+        "ocrConfidence": 0.9992
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

@@ -1,0 +1,45 @@
+{
+  "id": "cerberos",
+  "no": 24,
+  "names": {
+    "ko": "켈베로스",
+    "ja": "ケルベロス",
+    "en": "CERBEROS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/30_cerberos.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "saiefe",
+    "shaadmum"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "사에프평원 사드t숲Lv32~ Lv44",
+        "ocrConfidence": 0.9982
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

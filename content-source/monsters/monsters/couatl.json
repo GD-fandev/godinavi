@@ -1,0 +1,68 @@
+{
+  "id": "couatl",
+  "no": 18,
+  "names": {
+    "ko": "코아틀",
+    "ja": "コアトル",
+    "en": "COUATL"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/15_couatl.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "dragonscale"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "calibria",
+    "gamria",
+    "kali1f",
+    "luc2f",
+    "luc3f",
+    "rege1f",
+    "ram2f",
+    "ram3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-2.jpg",
+        "section": "루크레시아/람파스지하로2[v14~Lv27",
+        "ocrConfidence": 0.9598
+      },
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "가므리아해안 칼리브리아반도Lv16~ Lv32",
+        "ocrConfidence": 0.9313
+      },
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "루크레시아/람파스지하로3 [v23~Lv31",
+        "ocrConfidence": 0.9313
+      },
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "레게/칼리지하동굴1층[v27~Lv37",
+        "ocrConfidence": 0.9962
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

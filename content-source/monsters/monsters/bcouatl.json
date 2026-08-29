@@ -1,0 +1,74 @@
+{
+  "id": "bcouatl",
+  "names": {
+    "ko": "B 코아틀",
+    "ja": "Bコアトル",
+    "en": "B COUATL"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/60_b_coua.png",
+  "attackAttributeIds": [
+    "ice",
+    "poison"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [
+    "dragonscale"
+  ],
+  "magicAttackIds": [
+    "hold",
+    "igenmissile"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "centralspine",
+    "lauren",
+    "nebrada",
+    "santihall",
+    "southeast"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "동남부반도 Lv60~Lv66",
+        "ocrConfidence": 0.9449
+      },
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "로렌산맥 Lv66~Lv74",
+        "ocrConfidence": 0.9237
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "네브라다사막 Lv66~Lv76",
+        "ocrConfidence": 0.9483
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "중부등뼈산맥Lv72~Lv90",
+        "ocrConfidence": 0.8796
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "싼티홀분지 Lv76~LV83",
+        "ocrConfidence": 0.9571
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 75
+}

@@ -1,0 +1,111 @@
+{
+  "id": "kali4f",
+  "names": {
+    "ko": [
+      "칼리지하동굴4층"
+    ],
+    "ja": [
+      "カリ地下洞窟4F"
+    ],
+    "en": [
+      "Kali B Cave 4F"
+    ]
+  },
+  "image": "maps/kali/kali4f.jpg",
+  "images": {
+    "ko": "maps/kali/ko/kali4f.jpg",
+    "ja": "maps/kali/ja/kali4f.jpg"
+  },
+  "imageSize": {
+    "width": 520,
+    "height": 238
+  },
+  "controlPoints": [
+    {
+      "gameX": 16,
+      "gameY": 291,
+      "imageX": 37,
+      "imageY": 97
+    },
+    {
+      "gameX": 37,
+      "gameY": 297,
+      "imageX": 49,
+      "imageY": 108
+    },
+    {
+      "gameX": 75,
+      "gameY": 304,
+      "imageX": 77,
+      "imageY": 128
+    },
+    {
+      "gameX": 124,
+      "gameY": 313,
+      "imageX": 110,
+      "imageY": 152
+    },
+    {
+      "gameX": 104,
+      "gameY": 297,
+      "imageX": 108,
+      "imageY": 138
+    },
+    {
+      "gameX": 50,
+      "gameY": 215,
+      "imageX": 131,
+      "imageY": 76
+    },
+    {
+      "gameX": 56,
+      "gameY": 198,
+      "imageX": 152,
+      "imageY": 75
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.8611474339764695,
+      "gameY": -0.8638496710609459,
+      "offset": 274.3460007977975
+    },
+    "imageY": {
+      "gameX": 0.4307428421343345,
+      "gameY": 0.4357478311813547,
+      "offset": -37.06575568262233
+    },
+    "rmsePixels": 1.2877661785306718,
+    "maxErrorPixels": 2.260518588080124,
+    "pointErrorsPixels": [
+      0.4508986224672798,
+      0.7068128762405949,
+      0.7387057017132203,
+      1.0456586281350941,
+      1.0760391868977555,
+      2.260518588080124,
+      1.7316481758941997
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.0287643189763702,
+      1.0884074454182415,
+      0.9398274897717833,
+      2.3476857977752723,
+      1.5730541344607267,
+      3.8073379692372167,
+      4.295454507983831
+    ]
+  },
+  "levelRange": {
+    "min": 49,
+    "max": 57
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "dungeon-spider",
+    "bloody-bat",
+    "g-minotaurs",
+    "teare",
+    "yellow-mummy"
+  ]
+}

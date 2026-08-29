@@ -1,0 +1,53 @@
+{
+  "id": "gargoyle",
+  "no": 16,
+  "names": {
+    "ko": "가고일",
+    "ja": "ガーゴイル",
+    "en": "GARGOYLE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/24_gargoyle.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali1f",
+    "luc3f",
+    "rege1f",
+    "ram3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "루크레시아/람파스지하로3 [v23~Lv31",
+        "ocrConfidence": 0.9791
+      },
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "레게/칼리지하동굴1층[v27~Lv37",
+        "ocrConfidence": 0.9479
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

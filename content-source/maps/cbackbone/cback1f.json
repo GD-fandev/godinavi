@@ -1,0 +1,39 @@
+{
+  "id": "cback1f",
+  "names": {
+    "ko": [
+      "중부등뼈동굴1"
+    ],
+    "ja": [
+      "中部背骨洞窟1"
+    ],
+    "en": [
+      "Central spine cave 1"
+    ]
+  },
+  "image": "maps/cbackbone/cback1F.jpg",
+  "images": {
+    "ko": "maps/cbackbone/ko/cback1F.jpg",
+    "ja": "maps/cbackbone/ja/cback1F.jpg"
+  },
+  "imageSize": {
+    "width": 526,
+    "height": 286
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 83,
+    "max": 89
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "finofet",
+    "eynet",
+    "dark-bishop",
+    "ign-ghost",
+    "cind-dark",
+    "blaz-bonyus",
+    "flam-ark"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": "hell8f",
+  "names": {
+    "ko": [
+      "헬 8층"
+    ],
+    "ja": [
+      "ヘル8F"
+    ],
+    "en": [
+      "hell 8F"
+    ]
+  },
+  "image": "maps/hell/hell8F.jpg",
+  "images": {
+    "ko": "maps/hell/ko/hell8F.jpg",
+    "ja": "maps/hell/ja/hell8F.jpg"
+  },
+  "imageSize": {
+    "width": 554,
+    "height": 285
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 113,
+    "max": 119
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "poison-dragon",
+    "dark-side",
+    "dark-bonyus",
+    "black-floop",
+    "white-bonyus"
+  ]
+}

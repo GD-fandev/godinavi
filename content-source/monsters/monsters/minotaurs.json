@@ -1,0 +1,47 @@
+{
+  "id": "minotaurs",
+  "no": 22,
+  "names": {
+    "ko": "미노타우르스",
+    "ja": "ミノタウロス",
+    "en": "MINOTAURS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/29_minotaurs.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "demonhorn"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "saiefe",
+    "shaadmum"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "사에프평원 사드t숲Lv32~ Lv44",
+        "ocrConfidence": 0.9897
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

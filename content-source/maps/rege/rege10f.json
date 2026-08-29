@@ -1,0 +1,106 @@
+{
+  "id": "rege10f",
+  "names": {
+    "ko": [
+      "레게지하동굴10층"
+    ],
+    "ja": [
+      "レゲ地下洞窟10F"
+    ],
+    "en": [
+      "Rege B Cave 10F"
+    ]
+  },
+  "image": "maps/rege/rege10f.jpg",
+  "images": {
+    "ko": "maps/rege/ko/rege10f.jpg",
+    "ja": "maps/rege/ja/rege10f.jpg"
+  },
+  "imageSize": {
+    "width": 508,
+    "height": 268
+  },
+  "controlPoints": [
+    {
+      "gameX": 166,
+      "gameY": 208,
+      "imageX": 228,
+      "imageY": 256
+    },
+    {
+      "gameX": 30,
+      "gameY": 208,
+      "imageX": 35,
+      "imageY": 159
+    },
+    {
+      "gameX": 6,
+      "gameY": 102,
+      "imageX": 149,
+      "imageY": 67
+    },
+    {
+      "gameX": 48,
+      "gameY": 7,
+      "imageX": 346,
+      "imageY": 29
+    },
+    {
+      "gameX": 145,
+      "gameY": 6,
+      "imageX": 485,
+      "imageY": 98
+    },
+    {
+      "gameX": 187,
+      "gameY": 102,
+      "imageX": 408,
+      "imageY": 196
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.4254261087921345,
+      "gameY": -1.4197931904225125,
+      "offset": 286.6885157034045
+    },
+    "imageY": {
+      "gameX": 0.7137822212041358,
+      "gameY": 0.7092762067620929,
+      "offset": -9.898848603535306
+    },
+    "rmsePixels": 0.8045381999775547,
+    "maxErrorPixels": 1.4475666363111215,
+    "pointErrorsPixels": [
+      0.11870333132046036,
+      0.8668056168344913,
+      1.4475666363111215,
+      0.8919366595666096,
+      0.20380934299304013,
+      0.4309401507926053
+    ],
+    "leaveOneOutErrorsPixels": [
+      0.282078157341987,
+      2.044707614979084,
+      2.584133522327772,
+      1.7236896757268094,
+      0.39826095979201936,
+      0.761545867469987
+    ]
+  },
+  "levelRange": {
+    "min": 81,
+    "max": 87
+  },
+  "monsterZones": [],
+  "contributors": [
+    "狐"
+  ],
+  "monsterIds": [
+    "cockatrice",
+    "fire-hellhound",
+    "arclich",
+    "black-dragon",
+    "arc-demon"
+  ]
+}

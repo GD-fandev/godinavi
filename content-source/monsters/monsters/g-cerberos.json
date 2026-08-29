@@ -1,0 +1,47 @@
+{
+  "id": "g-cerberos",
+  "no": 70,
+  "names": {
+    "ko": "G 켈베로스",
+    "ja": "Gケルベロス",
+    "en": "G CERBEROS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/35_g_cerberos.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "pyraball"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "kali2f",
+    "rege2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "레게/칼리지하동굴2층Lv32~Lv45",
+        "ocrConfidence": 0.9608
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

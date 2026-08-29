@@ -1,0 +1,66 @@
+{
+  "id": "death-worm",
+  "names": {
+    "ko": "데쓰웜",
+    "ja": "デスワーム",
+    "en": "DEATH WORM"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/112_death_worm.png",
+  "attackAttributeIds": [
+    "neutral",
+    "poison"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "mithrill"
+  ],
+  "magicAttackIds": [
+    "hold",
+    "bind"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "goldred",
+    "hell10f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "골드레드반도 Lv 99~ Lv119",
+        "ocrConfidence": 0.9502
+      },
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "이스칼드반도 Lv99~ Lv119",
+        "ocrConfidence": 0.7798
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "툼스톤동굴좌/우측2층Lv116~ Lv119",
+        "ocrConfidence": 0.976
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "헬10층/툼스톤동굴좌/우측3층Lv118~ Lv119",
+        "ocrConfidence": 0.9394
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 128
+}

@@ -1,0 +1,152 @@
+{
+  "id": "rege8f",
+  "names": {
+    "ko": [
+      "레게지하동굴8층"
+    ],
+    "ja": [
+      "レゲ地下洞窟8F"
+    ],
+    "en": [
+      "Rege B Cave 8F"
+    ]
+  },
+  "image": "maps/rege/rege8f.jpg",
+  "images": {
+    "ko": "maps/rege/ko/rege8f.jpg",
+    "ja": "maps/rege/ja/rege8f.jpg"
+  },
+  "imageSize": {
+    "width": 501,
+    "height": 222
+  },
+  "controlPoints": [
+    {
+      "gameX": 220,
+      "gameY": 192,
+      "imageX": 328,
+      "imageY": 133
+    },
+    {
+      "gameX": 223,
+      "gameY": 215,
+      "imageX": 312,
+      "imageY": 148
+    },
+    {
+      "gameX": 206,
+      "gameY": 207,
+      "imageX": 304,
+      "imageY": 135
+    },
+    {
+      "gameX": 164,
+      "gameY": 189,
+      "imageX": 284,
+      "imageY": 107
+    },
+    {
+      "gameX": 177,
+      "gameY": 188,
+      "imageX": 294,
+      "imageY": 112
+    },
+    {
+      "gameX": 195,
+      "gameY": 172,
+      "imageX": 327,
+      "imageY": 115
+    },
+    {
+      "gameX": 158,
+      "gameY": 135,
+      "imageX": 324,
+      "imageY": 80
+    },
+    {
+      "gameX": 179,
+      "gameY": 127,
+      "imageX": 352,
+      "imageY": 88
+    },
+    {
+      "gameX": 110,
+      "gameY": 121,
+      "imageX": 295,
+      "imageY": 53
+    },
+    {
+      "gameX": 86,
+      "gameY": 145,
+      "imageX": 252,
+      "imageY": 54
+    },
+    {
+      "gameX": 95,
+      "gameY": 188,
+      "imageX": 221,
+      "imageY": 75
+    },
+    {
+      "gameX": 137,
+      "gameY": 320,
+      "imageX": 143,
+      "imageY": 153
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.8907835609177207,
+      "gameY": -0.8857755390320359,
+      "offset": 303.89937221182436
+    },
+    "imageY": {
+      "gameX": 0.4571254789950046,
+      "gameY": 0.440099910528649,
+      "offset": -50.51453227439639
+    },
+    "rmsePixels": 1.4696921498266085,
+    "maxErrorPixels": 2.379028000016707,
+    "pointErrorsPixels": [
+      2.379028000016707,
+      1.9567491020544636,
+      0.25012903156029354,
+      1.5580510901455313,
+      1.541291435700878,
+      1.877848029877726,
+      1.5479394398114656,
+      1.393789871379509,
+      0.29405310083486863,
+      1.388984173484795,
+      1.1916570353839084,
+      0.5145495114270388
+    ],
+    "leaveOneOutErrorsPixels": [
+      3.05005737010199,
+      2.5988381899960036,
+      0.30094832660114357,
+      1.701677386241637,
+      1.697684711978592,
+      2.1766386526681862,
+      1.8381517136810472,
+      1.7668653040936548,
+      0.41133795922108035,
+      2.1113713441046036,
+      1.660332696412936,
+      2.2536707582127304
+    ]
+  },
+  "levelRange": {
+    "min": 71,
+    "max": 79
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "naga-lady-mage",
+    "gskeleton",
+    "cockatrice",
+    "naga-lady",
+    "skeleton",
+    "hellmaden"
+  ]
+}

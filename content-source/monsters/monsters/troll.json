@@ -1,0 +1,59 @@
+{
+  "id": "troll",
+  "no": 20,
+  "names": {
+    "ko": "트롤",
+    "ja": "トロール",
+    "en": "TROLL"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/20_troll.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "calibria",
+    "gamria",
+    "kali1f",
+    "rege1f",
+    "saiefe",
+    "shaadmum"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "가므리아해안 칼리브리아반도Lv16~ Lv32",
+        "ocrConfidence": 0.8899
+      },
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "레게/칼리지하동굴1층[v27~Lv37",
+        "ocrConfidence": 0.8027
+      },
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "사에프평원 사드t숲Lv32~ Lv44",
+        "ocrConfidence": 0.8238
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

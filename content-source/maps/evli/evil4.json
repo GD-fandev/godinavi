@@ -1,0 +1,38 @@
+{
+  "id": "evil4",
+  "names": {
+    "ko": [
+      "에블린동굴4"
+    ],
+    "ja": [
+      "エブリン洞窟4F"
+    ],
+    "en": [
+      "Evelyn Cave 4F"
+    ]
+  },
+  "image": "maps/evli/evil4.jpg",
+  "images": {
+    "ko": "maps/evli/ko/evil4.jpg",
+    "ja": "maps/evli/ja/evil4.jpg"
+  },
+  "imageSize": {
+    "width": 562,
+    "height": 278
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 108,
+    "max": 112
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "great-demon",
+    "redbonyus",
+    "poison-dragon",
+    "dark-bonyus",
+    "black-floop",
+    "white-bonyus"
+  ]
+}

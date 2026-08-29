@@ -1,0 +1,54 @@
+{
+  "id": "harpy",
+  "no": 11,
+  "names": {
+    "ko": "하피",
+    "ja": "ハーピー",
+    "en": "HARPY"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/13_harpy.png",
+  "attackAttributeIds": [
+    "divine",
+    "disease"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "luc1f",
+    "luc2f",
+    "ram1f",
+    "ram2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-2.jpg",
+        "section": "칼비론숲Lv8~Lv18",
+        "ocrConfidence": 0.9421
+      },
+      {
+        "file": "maps/monsters/001-2.jpg",
+        "section": "루크레시아/람파스지하로2[v14~Lv27",
+        "ocrConfidence": 0.9832
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

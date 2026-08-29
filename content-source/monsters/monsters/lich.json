@@ -1,0 +1,52 @@
+{
+  "id": "lich",
+  "no": 36,
+  "names": {
+    "ko": "리치",
+    "ja": "リッチ",
+    "en": "LICH"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/57_lich.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "holyball",
+    "curse",
+    "holymissile"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "kali6f",
+    "rege6f",
+    "saiefe3f",
+    "saiefe4f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "사에프동굴4 Lv65~Lv69",
+        "ocrConfidence": 0.8535
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

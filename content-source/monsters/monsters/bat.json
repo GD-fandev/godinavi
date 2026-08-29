@@ -1,0 +1,45 @@
+{
+  "id": "bat",
+  "no": 1,
+  "names": {
+    "ko": "배트",
+    "ja": "バット",
+    "en": "BAT"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/11_bat.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "luc1f",
+    "ram1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-2.jpg",
+        "section": "칼비론숲Lv8~Lv18",
+        "ocrConfidence": 0.9979
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

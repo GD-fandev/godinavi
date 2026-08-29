@@ -1,0 +1,70 @@
+{
+  "id": "bandits",
+  "no": 6,
+  "names": {
+    "ko": "밴디츠",
+    "ja": "バンディッツ",
+    "en": "BANDITS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/08_bandits.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "calbiron",
+    "lampas",
+    "luc1f",
+    "luc2f",
+    "lucre",
+    "ram1f",
+    "ram2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "루크레시아소택지Lv3~ Lv14",
+        "ocrConfidence": 0.999
+      },
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "람파스소택지[v3~Lv18",
+        "ocrConfidence": 0.9988
+      },
+      {
+        "file": "maps/monsters/001-2.jpg",
+        "section": "칼비론숲Lv8~Lv18",
+        "ocrConfidence": 0.9956
+      },
+      {
+        "file": "maps/monsters/001-2.jpg",
+        "section": "칼비론숲Lv8~Lv18",
+        "ocrConfidence": 0.9988
+      },
+      {
+        "file": "maps/monsters/001-2.jpg",
+        "section": "루크레시아/람파스지하로2[v14~Lv27",
+        "ocrConfidence": 0.9976
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

@@ -1,0 +1,60 @@
+{
+  "id": "yellow-mummy",
+  "no": 64,
+  "names": {
+    "ko": "옐로우마미",
+    "ja": "イエローマミー",
+    "en": "YELLOW MUMMY"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/46_y_mummy.png",
+  "attackAttributeIds": [
+    "divine",
+    "disease"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali4f",
+    "kali5f",
+    "rege4f",
+    "rege5f",
+    "saiefe2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "레게/칼리지하동굴4층[v49~Lv57",
+        "ocrConfidence": 0.8789
+      },
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "사에프동굴2 [Lv53~ Lv59",
+        "ocrConfidence": 0.8725
+      },
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "레게/칼리지하동굴5층[v55~ Lv63",
+        "ocrConfidence": 0.9329
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

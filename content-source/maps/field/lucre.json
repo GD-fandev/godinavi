@@ -1,0 +1,91 @@
+{
+  "id": "lucre",
+  "names": {
+    "ko": [
+      "루크레시아소택지"
+    ],
+    "ja": [
+      "ルクレシア湿地"
+    ],
+    "en": [
+      "Lucreshia Marsh"
+    ]
+  },
+  "image": "maps/field/lucre.jpg",
+  "images": {
+    "ko": "maps/field/ko/lucre.jpg",
+    "ja": "maps/field/ja/lucre.jpg"
+  },
+  "imageSize": {
+    "width": 720,
+    "height": 360
+  },
+  "controlPoints": [
+    {
+      "gameX": 82,
+      "gameY": 23,
+      "imageX": 615,
+      "imageY": 159
+    },
+    {
+      "gameX": 67,
+      "gameY": 32,
+      "imageX": 541,
+      "imageY": 149
+    },
+    {
+      "gameX": 40,
+      "gameY": 15,
+      "imageX": 509,
+      "imageY": 84
+    },
+    {
+      "gameX": 29,
+      "gameY": 37,
+      "imageX": 410,
+      "imageY": 100
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 3.0775325868051433,
+      "gameY": -2.9808149696068047,
+      "offset": 430.76127445610155
+    },
+    "imageY": {
+      "gameX": 1.4974157852112067,
+      "gameY": 1.4623983438090962,
+      "offset": 2.2716840090959307
+    },
+    "rmsePixels": 0.4789212588701337,
+    "maxErrorPixels": 0.6935523605248971,
+    "pointErrorsPixels": [
+      0.5352414956227823,
+      0.6935523605248971,
+      0.18298268800404505,
+      0.3412935529066717
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.7141090447848737,
+      1.3228450236929545,
+      5.013929453098798,
+      2.688191092323483
+    ]
+  },
+  "levelRange": {
+    "min": 3,
+    "max": 14
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 383,
+    "y": 317
+  },
+  "monsterIds": [
+    "slime",
+    "kobolds",
+    "orc",
+    "goblin",
+    "bandits"
+  ]
+}

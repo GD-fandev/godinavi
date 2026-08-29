@@ -1,0 +1,83 @@
+{
+  "id": "dark-bishop",
+  "no": 54,
+  "names": {
+    "ko": "다크비숍",
+    "ja": "ダークビショップ",
+    "en": "DARK BISHOP"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/95_dark_bishop.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "holyball",
+    "curse",
+    "holymissile"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "carl1f",
+    "cback1f",
+    "eback3f",
+    "echil3",
+    "evil3",
+    "hell2f",
+    "hell3f",
+    "hell4f",
+    "siad6f",
+    "wback3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "샤드뮤동굴6 Lv94~ Lv10o",
+        "ocrConfidence": 0.8843
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "카를/중부등뼈동굴1[v83~Lv89",
+        "ocrConfidence": 0.9936
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "헬2층 Lv95~Lv100",
+        "ocrConfidence": 0.8843
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "헬2층 Lv95~Lv100",
+        "ocrConfidence": 0.9939
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "서부/동부등뼈동굴3층[v98~ Lv104",
+        "ocrConfidence": 0.8831
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "에칠린/에블린동굴3층Lv100~ Lv106",
+        "ocrConfidence": 0.8923
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

@@ -1,0 +1,79 @@
+{
+  "id": "5_gratiz",
+  "names": {
+    "ko": [
+      "그라티즈"
+    ],
+    "ja": [
+      "グラティズ"
+    ],
+    "en": [
+      "Gratiz"
+    ]
+  },
+  "image": "maps/town/5_gratiz.png",
+  "images": {
+    "ko": "maps/town/ko/5_gratiz.png",
+    "ja": "maps/town/ja/5_gratiz.png"
+  },
+  "imageSize": {
+    "width": 1152,
+    "height": 576
+  },
+  "controlPoints": [
+    {
+      "gameX": 68,
+      "gameY": 43,
+      "imageX": 678,
+      "imageY": 223
+    },
+    {
+      "gameX": 57,
+      "gameY": 55,
+      "imageX": 587,
+      "imageY": 224
+    },
+    {
+      "gameX": 72,
+      "gameY": 63,
+      "imageX": 616,
+      "imageY": 272
+    },
+    {
+      "gameX": 64,
+      "gameY": 78,
+      "imageX": 525,
+      "imageY": 286
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 4.017748980506639,
+      "gameY": -3.9124274378077235,
+      "offset": 573.1094184309552
+    },
+    "imageY": {
+      "gameX": 2.1146655993747263,
+      "gameY": 2.041961590096904,
+      "offset": -8.739135367490851
+    },
+    "rmsePixels": 0.15603127398078584,
+    "maxErrorPixels": 0.18669252697774896,
+    "pointErrorsPixels": [
+      0.16010130653867072,
+      0.12187642711102804,
+      0.18669252697774896,
+      0.1484676475539084
+    ],
+    "leaveOneOutErrorsPixels": [
+      0.6082588328378096,
+      0.799030921318807,
+      0.5216225599102643,
+      0.6559209055599862
+    ]
+  },
+  "worldMapPosition": {
+    "x": 150,
+    "y": 462
+  }
+}

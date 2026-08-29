@@ -1,0 +1,59 @@
+{
+  "id": "albino-hydra",
+  "names": {
+    "ko": "알비노히드라",
+    "ja": "アルビノヒドラ",
+    "en": "ALBINO HYDRA"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/79_albino_hydra.png",
+  "attackAttributeIds": [
+    "ice",
+    "poison"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [
+    "dragonscale"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "centralspine",
+    "easternspine",
+    "westernspine"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "중부등뼈산맥Lv72~Lv90",
+        "ocrConfidence": 0.931
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "동부등뼈산맥 Lv84~Lv97",
+        "ocrConfidence": 0.9994
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "서부등뼈산맥 Lv88~Lv99",
+        "ocrConfidence": 0.9989
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 231
+}

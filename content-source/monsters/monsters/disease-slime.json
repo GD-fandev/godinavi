@@ -1,0 +1,46 @@
+{
+  "id": "disease-slime",
+  "names": {
+    "ko": "디지즈 슬라임",
+    "ja": "ディジーズスライム",
+    "en": "DISEASE SLIME"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/17_disease_slime.png",
+  "attackAttributeIds": [
+    "fire",
+    "disease"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "calibria",
+    "gamria"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "가므리아해안 칼리브리아반도Lv16~ Lv32",
+        "ocrConfidence": 0.968
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 84
+}

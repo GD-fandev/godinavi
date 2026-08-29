@@ -1,0 +1,52 @@
+{
+  "id": "r-griffon",
+  "names": {
+    "ko": "R 그리폰",
+    "ja": "Rグリフォン",
+    "en": "R GRIFFON"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/37_r_grif.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali2f",
+    "kali3f",
+    "rege2f",
+    "rege3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "레게/칼리지하동굴2층Lv32~Lv45",
+        "ocrConfidence": 0.9952
+      },
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "레게/칼리지하동굴3층[v43~ Lv51",
+        "ocrConfidence": 0.9395
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 85
+}

@@ -1,0 +1,53 @@
+{
+  "id": "stone-golem",
+  "no": 59,
+  "names": {
+    "ko": "스톤골렘",
+    "ja": "ストーンゴーレム",
+    "en": "STONE GOLEM"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/63_stone_golem.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "ice",
+    "divine"
+  ],
+  "dropItemIds": [
+    "demonhorn"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "lauren",
+    "nebrada"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "로렌산맥 Lv66~Lv74",
+        "ocrConfidence": 0.9865
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "네브라다사막 Lv66~Lv76",
+        "ocrConfidence": 0.9872
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

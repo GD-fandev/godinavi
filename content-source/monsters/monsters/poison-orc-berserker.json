@@ -1,0 +1,46 @@
+{
+  "id": "poison-orc-berserker",
+  "no": 60,
+  "names": {
+    "ko": "포이즌 오크버서커",
+    "ja": "ポイズンオークバーサーカー",
+    "en": "POISON ORC BERSERKER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/48_p_orc_b.png",
+  "attackAttributeIds": [
+    "neutral",
+    "poison"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "middle",
+    "southwest"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "서남부반도 Lv52~Lv6o",
+        "ocrConfidence": 0.9682
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

@@ -1,0 +1,79 @@
+{
+  "id": "6_pagohol",
+  "names": {
+    "ko": [
+      "파고홀"
+    ],
+    "ja": [
+      "パゴホル"
+    ],
+    "en": [
+      "Pagohol"
+    ]
+  },
+  "image": "maps/town/6_pagohol.png",
+  "images": {
+    "ko": "maps/town/ko/6_pagohol.png",
+    "ja": "maps/town/ja/6_pagohol.png"
+  },
+  "imageSize": {
+    "width": 1000,
+    "height": 480
+  },
+  "controlPoints": [
+    {
+      "gameX": 27,
+      "gameY": 44,
+      "imageX": 423,
+      "imageY": 144
+    },
+    {
+      "gameX": 32,
+      "gameY": 66,
+      "imageX": 354,
+      "imageY": 198
+    },
+    {
+      "gameX": 40,
+      "gameY": 76,
+      "imageX": 346,
+      "imageY": 233
+    },
+    {
+      "gameX": 67,
+      "gameY": 81,
+      "imageX": 438,
+      "imageY": 296
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 4.158218520889469,
+      "gameY": -4.092180991125708,
+      "offset": 490.83701254072844
+    },
+    "imageY": {
+      "gameX": 1.9528861487377782,
+      "gameY": 1.9932986165373596,
+      "offset": 3.6525421735135803
+    },
+    "rmsePixels": 0.23872866659406433,
+    "maxErrorPixels": 0.3496801738835595,
+    "pointErrorsPixels": [
+      0.1006588735842574,
+      0.3496801738835595,
+      0.3041648571354499,
+      0.05514355683489395
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.264733320555152,
+      0.651925736820851,
+      0.7494800916979362,
+      4.134037013718531
+    ]
+  },
+  "worldMapPosition": {
+    "x": 807,
+    "y": 495
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "id": "smogle-chief",
+  "names": {
+    "ko": "스모글치프",
+    "ja": "スモグルチーフ",
+    "en": "SMOGLE CHIEF"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/53_smogle_ch.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "demonhorn"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "chilly",
+    "lauren",
+    "middle",
+    "nebrada",
+    "remria",
+    "southeast"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "중앙평원 Lv52~Lv68",
+        "ocrConfidence": 0.9774
+      },
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "동남부반도 Lv60~Lv66",
+        "ocrConfidence": 0.9584
+      },
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "로렌산맥 Lv66~Lv74",
+        "ocrConfidence": 0.9982
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "네브라다사막 Lv66~Lv76",
+        "ocrConfidence": 0.945
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 109
+}

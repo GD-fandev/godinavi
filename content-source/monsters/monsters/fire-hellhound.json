@@ -1,0 +1,86 @@
+{
+  "id": "fire-hellhound",
+  "no": 62,
+  "names": {
+    "ko": "화이어 헬하운드",
+    "ja": "ファイアーヘルハウンド",
+    "en": "FIRE HELLHOUND"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/74_fire_hellhound.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali10f",
+    "kali7f",
+    "kali8f",
+    "kali9f",
+    "rege10f",
+    "rege9f",
+    "siad3f",
+    "siad4f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "칼리지하동굴7층Lv67~ Lv81",
+        "ocrConfidence": 0.9852
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "칼리지하동굴8층[71~Lv85",
+        "ocrConfidence": 0.8557
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "레게지하동굴9층[Lv77~ L185",
+        "ocrConfidence": 0.9951
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "샤드뮤동굴3 [v77~Lv85",
+        "ocrConfidence": 0.9954
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴9층Lv77~ Lv89",
+        "ocrConfidence": 0.9042
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "레게지하동굴10층Lv81~ LV87",
+        "ocrConfidence": 0.9511
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "샤드뮤동굴4 [v81~Lv89",
+        "ocrConfidence": 0.8878
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴10층[Lv81~L198",
+        "ocrConfidence": 0.914
+      }
+    ]
+  },
+  "schemaVersion": 1
+}
