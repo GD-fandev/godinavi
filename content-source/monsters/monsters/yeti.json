@@ -1,0 +1,46 @@
+{
+  "id": "yeti",
+  "no": 29,
+  "names": {
+    "ko": "예티",
+    "ja": "イエティ",
+    "en": "YETI"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/68_yeti.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "centralspine",
+    "nebrada",
+    "santihall"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "중부등뼈산맥Lv72~Lv90",
+        "ocrConfidence": 0.9076
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

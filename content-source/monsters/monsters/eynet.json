@@ -1,0 +1,84 @@
+{
+  "id": "eynet",
+  "names": {
+    "ko": "아이넷",
+    "ja": "アイネット",
+    "en": "EYNET"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/87_eynet.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "igenball"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "carl1f",
+    "cback1f",
+    "eback2f",
+    "echil2",
+    "evil2",
+    "hell2f",
+    "kali10f",
+    "siad6f",
+    "wback2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴10층[Lv81~L198",
+        "ocrConfidence": 0.9001
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "샤드뮤동굴6 Lv94~ Lv10o",
+        "ocrConfidence": 0.9993
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "카를/중부등뼈동굴1[v83~Lv89",
+        "ocrConfidence": 0.8859
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "동부등뼈동굴2Lv91~Lv98",
+        "ocrConfidence": 0.9974
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "서부등뼈동굴2 Lv91~Lv102",
+        "ocrConfidence": 0.9952
+      },
+      {
+        "file": "maps/monsters/003-6.jpg",
+        "section": "에칠린/에블린동굴2 [Lv94~ L198",
+        "ocrConfidence": 0.9993
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "헬2층 Lv95~Lv100",
+        "ocrConfidence": 0.9998
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 81
+}

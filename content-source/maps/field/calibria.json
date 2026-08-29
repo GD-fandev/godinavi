@@ -1,0 +1,94 @@
+{
+  "id": "calibria",
+  "names": {
+    "ko": [
+      "칼리브리아반도"
+    ],
+    "ja": [
+      "カリブリア半島"
+    ],
+    "en": [
+      "Calibria Peninsula"
+    ]
+  },
+  "image": "maps/field/calibria.jpg",
+  "images": {
+    "ko": "maps/field/ko/calibria.jpg",
+    "ja": "maps/field/ja/calibria.jpg"
+  },
+  "imageSize": {
+    "width": 960,
+    "height": 480
+  },
+  "controlPoints": [
+    {
+      "gameX": 166,
+      "gameY": 17,
+      "imageX": 833,
+      "imageY": 275
+    },
+    {
+      "gameX": 150,
+      "gameY": 38,
+      "imageX": 723,
+      "imageY": 281
+    },
+    {
+      "gameX": 123,
+      "gameY": 88,
+      "imageX": 491,
+      "imageY": 316
+    },
+    {
+      "gameX": 108,
+      "gameY": 97,
+      "imageX": 419,
+      "imageY": 307
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.9663606352583356,
+      "gameY": -3.0273853801821398,
+      "offset": 392.49330593935036
+    },
+    "imageY": {
+      "gameX": 1.5287004462707097,
+      "gameY": 1.5120472442977264,
+      "offset": -5.022620685383096
+    },
+    "rmsePixels": 0.6158139815479475,
+    "maxErrorPixels": 0.9486279840127533,
+    "pointErrorsPixels": [
+      0.7093722535440511,
+      0.9486279840127533,
+      0.08674769176001493,
+      0.32600342222710865
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.138379999997008,
+      1.5990540707549636,
+      17.48642999960806,
+      4.653041459120603
+    ]
+  },
+  "levelRange": {
+    "min": 16,
+    "max": 32
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 883,
+    "y": 543
+  },
+  "monsterIds": [
+    "griffon",
+    "disease-slime",
+    "centipede",
+    "centaur",
+    "scorpion",
+    "couatl",
+    "troll",
+    "crab"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "fire-elemental",
+  "names": {
+    "ko": "화이어 엘레멘탈",
+    "ja": "ファイアーエレメンタル",
+    "en": "FIRE ELEMENTAL"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/110_fire_ele.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "neutral",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "goldred"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "골드레드반도 Lv 99~ Lv119",
+        "ocrConfidence": 0.9807
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 113
+}

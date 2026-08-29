@@ -1,0 +1,47 @@
+{
+  "id": "king-orcberserker",
+  "no": 61,
+  "names": {
+    "ko": "킹오크버서커",
+    "ja": "キングオークバーサーカー",
+    "en": "KING ORC BERSERKER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/76_kingorc.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "mithrill"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "centralspine",
+    "santihall"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "싼티홀분지 Lv76~LV83",
+        "ocrConfidence": 0.9652
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

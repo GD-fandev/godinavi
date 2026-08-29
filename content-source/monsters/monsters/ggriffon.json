@@ -1,0 +1,52 @@
+{
+  "id": "ggriffon",
+  "names": {
+    "ko": "G 그리폰",
+    "ja": "Gグリフォン",
+    "en": "G GRIFFON"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/54_g_griff.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "igenball"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "middle",
+    "southwest"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "서남부반도 Lv52~Lv6o",
+        "ocrConfidence": 0.983
+      },
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "중앙평원 Lv52~Lv68",
+        "ocrConfidence": 0.9478
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 86
+}

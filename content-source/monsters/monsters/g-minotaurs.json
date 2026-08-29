@@ -1,0 +1,65 @@
+{
+  "id": "g-minotaurs",
+  "no": 88,
+  "names": {
+    "ko": "G 미노타우르스",
+    "ja": "Gミノタウロス",
+    "en": "G MINOTAURS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/44_g_mino.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "demonhorn"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali4f",
+    "middle",
+    "rege4f",
+    "saiefe2f",
+    "southwest"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "레게/칼리지하동굴4층[v49~Lv57",
+        "ocrConfidence": 0.9866
+      },
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "사에프동굴2 [Lv53~ Lv59",
+        "ocrConfidence": 0.9865
+      },
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "서남부반도 Lv52~Lv6o",
+        "ocrConfidence": 0.9979
+      },
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "중앙평원 Lv52~Lv68",
+        "ocrConfidence": 0.9865
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

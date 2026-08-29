@@ -1,0 +1,36 @@
+{
+  "id": "hell4f",
+  "names": {
+    "ko": [
+      "헬 4층"
+    ],
+    "ja": [
+      "ヘル4F"
+    ],
+    "en": [
+      "hell 4F"
+    ]
+  },
+  "image": "maps/hell/hell4F.jpg",
+  "images": {
+    "ko": "maps/hell/ko/hell4F.jpg",
+    "ja": "maps/hell/ja/hell4F.jpg"
+  },
+  "imageSize": {
+    "width": 540,
+    "height": 275
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 100,
+    "max": 106
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "bonyus",
+    "death-dragon",
+    "dark-bishop",
+    "ark-demon-red"
+  ]
+}

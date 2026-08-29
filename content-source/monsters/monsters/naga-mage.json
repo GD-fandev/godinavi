@@ -1,0 +1,60 @@
+{
+  "id": "naga-mage",
+  "names": {
+    "ko": "나가메이지",
+    "ja": "ナーガメイジ",
+    "en": "NAGA MAGE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/56_naga_mage.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "igenmissile"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "kali5f",
+    "kali6f",
+    "rege5f",
+    "rege6f",
+    "saiefe3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "레게/칼리지하동굴5층[v55~ Lv63",
+        "ocrConfidence": 0.9998
+      },
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "사에프동굴3 Lv59~Lv65",
+        "ocrConfidence": 0.9996
+      },
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "레게/칼리지하동굴6층 Lv61~ Lv67",
+        "ocrConfidence": 0.9998
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 73
+}

@@ -1,0 +1,98 @@
+{
+  "id": "narrow",
+  "names": {
+    "ko": [
+      "내로우소택지"
+    ],
+    "ja": [
+      "ナロウ湿地"
+    ],
+    "en": [
+      "Narrow Marsh"
+    ]
+  },
+  "image": "maps/field/narrow.jpg",
+  "images": {
+    "ko": "maps/field/ko/narrow.jpg",
+    "ja": "maps/field/ja/narrow.jpg"
+  },
+  "imageSize": {
+    "width": 960,
+    "height": 480
+  },
+  "controlPoints": [
+    {
+      "gameX": 52,
+      "gameY": 162,
+      "imageX": 442,
+      "imageY": 321
+    },
+    {
+      "gameX": 47,
+      "gameY": 144,
+      "imageX": 480,
+      "imageY": 288
+    },
+    {
+      "gameX": 37,
+      "gameY": 132,
+      "imageX": 486,
+      "imageY": 254
+    },
+    {
+      "gameX": 24,
+      "gameY": 116,
+      "imageX": 496,
+      "imageY": 210
+    },
+    {
+      "gameX": 21,
+      "gameY": 167,
+      "imageX": 335,
+      "imageY": 281
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.954623080352543,
+      "gameY": -2.9734352189119906,
+      "offset": 769.6120030583469
+    },
+    "imageY": {
+      "gameX": 1.551179007994796,
+      "gameY": 1.4759352205003295,
+      "offset": 1.8174611144408348
+    },
+    "rmsePixels": 0.5689699892689785,
+    "maxErrorPixels": 0.8025139747649503,
+    "pointErrorsPixels": [
+      0.7307161933782882,
+      0.8025139747649503,
+      0.4409624429732251,
+      0.4701937525905873,
+      0.15852245076732466
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.9328104363691214,
+      1.2657117607594914,
+      0.6240181201947097,
+      1.7847227455331813,
+      8.908460088680332
+    ]
+  },
+  "levelRange": {
+    "min": 44,
+    "max": 50
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 272,
+    "y": 429
+  },
+  "monsterIds": [
+    "orc-lord",
+    "orc-mage",
+    "giant-spider",
+    "orc-lord-mage"
+  ]
+}

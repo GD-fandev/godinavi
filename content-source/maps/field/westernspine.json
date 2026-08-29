@@ -1,0 +1,93 @@
+{
+  "id": "westernspine",
+  "names": {
+    "ko": [
+      "서부등뼈산맥"
+    ],
+    "ja": [
+      "西部背骨山脈"
+    ],
+    "en": [
+      "Western Spine Mountains"
+    ]
+  },
+  "image": "maps/field/westernspine.jpg",
+  "images": {
+    "ko": "maps/field/ko/westernspine.jpg",
+    "ja": "maps/field/ja/westernspine.jpg"
+  },
+  "imageSize": {
+    "width": 1312,
+    "height": 656
+  },
+  "controlPoints": [
+    {
+      "gameX": 243,
+      "gameY": 100,
+      "imageX": 1089,
+      "imageY": 342
+    },
+    {
+      "gameX": 230,
+      "gameY": 85,
+      "imageX": 1092,
+      "imageY": 314
+    },
+    {
+      "gameX": 238,
+      "gameY": 215,
+      "imageX": 848,
+      "imageY": 453
+    },
+    {
+      "gameX": 228,
+      "gameY": 311,
+      "imageX": 636,
+      "imageY": 539
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.050660997804447,
+      "gameY": -2.0008327787309024,
+      "offset": 790.5053571848244
+    },
+    "imageY": {
+      "gameX": 1.0121740450045495,
+      "gameY": 1.0053985612503638,
+      "offset": -4.31745132707034
+    },
+    "rmsePixels": 0.3120307220922471,
+    "maxErrorPixels": 0.46306157946553583,
+    "pointErrorsPixels": [
+      0.32264533232026676,
+      0.10453209509845433,
+      0.46306157946553583,
+      0.24494834224136344
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.2070612747209473,
+      3.7256756957120647,
+      0.841038650985572,
+      1.5899380357845565
+    ]
+  },
+  "levelRange": {
+    "min": 88,
+    "max": 99
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 712,
+    "y": 103
+  },
+  "monsterIds": [
+    "albino-hydra",
+    "snowy-worm",
+    "water-elemental",
+    "saskache",
+    "ancient-worm",
+    "ice-hellhound",
+    "bloody-couatl"
+  ]
+}

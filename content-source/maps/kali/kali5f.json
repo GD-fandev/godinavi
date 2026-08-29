@@ -1,0 +1,103 @@
+{
+  "id": "kali5f",
+  "names": {
+    "ko": [
+      "칼리지하동굴5층"
+    ],
+    "ja": [
+      "カリ地下洞窟5F"
+    ],
+    "en": [
+      "Kali B Cave 5F"
+    ]
+  },
+  "image": "maps/kali/kali5f.jpg",
+  "images": {
+    "ko": "maps/kali/ko/kali5f.jpg",
+    "ja": "maps/kali/ja/kali5f.jpg"
+  },
+  "imageSize": {
+    "width": 426,
+    "height": 255
+  },
+  "controlPoints": [
+    {
+      "gameX": 177,
+      "gameY": 94,
+      "imageX": 228,
+      "imageY": 70
+    },
+    {
+      "gameX": 199,
+      "gameY": 94,
+      "imageX": 244,
+      "imageY": 78
+    },
+    {
+      "gameX": 167,
+      "gameY": 68,
+      "imageX": 240,
+      "imageY": 56
+    },
+    {
+      "gameX": 226,
+      "gameY": 323,
+      "imageX": 89,
+      "imageY": 177
+    },
+    {
+      "gameX": 243,
+      "gameY": 323,
+      "imageX": 102,
+      "imageY": 184
+    },
+    {
+      "gameX": 244,
+      "gameY": 290,
+      "imageX": 129,
+      "imageY": 171
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.7655489667361399,
+      "gameY": -0.7681323671745462,
+      "offset": 164.34737990857798
+    },
+    "imageY": {
+      "gameX": 0.37493910505699835,
+      "gameY": 0.388689869398262,
+      "offset": -33.04030671238632
+    },
+    "rmsePixels": 0.43727003499539663,
+    "maxErrorPixels": 0.6387115632837975,
+    "pointErrorsPixels": [
+      0.38123203325396504,
+      0.4993189926430477,
+      0.03932103500409456,
+      0.3518519107333825,
+      0.46826788218206267,
+      0.6387115632837975
+    ],
+    "leaveOneOutErrorsPixels": [
+      0.5970562762750179,
+      1.3836404446776,
+      0.08156843317397185,
+      0.9715991588694818,
+      0.7491319403560921,
+      1.202104707340818
+    ]
+  },
+  "levelRange": {
+    "min": 55,
+    "max": 63
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "teare",
+    "yellow-mummy",
+    "wraith",
+    "naga",
+    "naga-mage"
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "id": "death-kinght",
+  "no": 49,
+  "names": {
+    "ko": "데쓰 나이트",
+    "ja": "デスナイト",
+    "en": "DEATH KINGHT"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/84_death_knight.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [
+    "mithrill"
+  ],
+  "magicAttackIds": [
+    "holyball",
+    "curse",
+    "holymissile"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "eback1f",
+    "echil1",
+    "evil1",
+    "hell1f",
+    "kali10f",
+    "kali9f",
+    "siad4f",
+    "siad5f",
+    "wback1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴9층Lv77~ Lv89",
+        "ocrConfidence": 0.9784
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "샤드뮤동굴4 [v81~Lv89",
+        "ocrConfidence": 0.995
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴10층[Lv81~L198",
+        "ocrConfidence": 0.9896
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "서부등뼈동굴1 [v85~ Lv94",
+        "ocrConfidence": 0.9732
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "에칠린/에블린동굴1 [v87~LV91",
+        "ocrConfidence": 0.976
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "동부등뼈동굴1 [v87~Lv91",
+        "ocrConfidence": 0.9698
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "샤드뮤동굴5 [v87~Lv94",
+        "ocrConfidence": 0.9779
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "헬1층[v89~Lv95",
+        "ocrConfidence": 0.9998
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

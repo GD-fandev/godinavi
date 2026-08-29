@@ -1,0 +1,57 @@
+{
+  "id": "water-elemental",
+  "no": 46,
+  "names": {
+    "ko": "워터엘레멘탈",
+    "ja": "ウォーターエレメンタル",
+    "en": "WATER ELEMENTAL"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/90_water_ele.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "ice",
+    "divine"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "carlmanue",
+    "easternspine",
+    "westernspine"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "동부등뼈산맥 Lv84~Lv97",
+        "ocrConfidence": 0.9647
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "서부등뼈산맥 Lv88~Lv99",
+        "ocrConfidence": 0.9868
+      },
+      {
+        "file": "maps/monsters/003-6.jpg",
+        "section": "카를마뉴해안 Lv92~Lv99",
+        "ocrConfidence": 0.9878
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

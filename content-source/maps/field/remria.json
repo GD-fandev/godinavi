@@ -1,0 +1,90 @@
+{
+  "id": "remria",
+  "names": {
+    "ko": [
+      "레므리아평원"
+    ],
+    "ja": [
+      "レムリア平原"
+    ],
+    "en": [
+      "Lemuria Plains"
+    ]
+  },
+  "image": "maps/field/remria.jpg",
+  "images": {
+    "ko": "maps/field/ko/remria.jpg",
+    "ja": "maps/field/ja/remria.jpg"
+  },
+  "imageSize": {
+    "width": 832,
+    "height": 416
+  },
+  "controlPoints": [
+    {
+      "gameX": 60,
+      "gameY": 9,
+      "imageX": 551,
+      "imageY": 70
+    },
+    {
+      "gameX": 79,
+      "gameY": 33,
+      "imageX": 542,
+      "imageY": 113
+    },
+    {
+      "gameX": 119,
+      "gameY": 51,
+      "imageX": 587,
+      "imageY": 171
+    },
+    {
+      "gameX": 112,
+      "gameY": 68,
+      "imageX": 538,
+      "imageY": 180
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.0461720547800852,
+      "gameY": -2.0248338948928133,
+      "offset": 446.72864920227795
+    },
+    "imageY": {
+      "gameX": 1.024152550754644,
+      "gameY": 0.9610425004890297,
+      "offset": 0.08392841051203345
+    },
+    "rmsePixels": 0.33866520405801814,
+    "maxErrorPixels": 0.5317008311475137,
+    "pointErrorsPixels": [
+      0.3304170161185841,
+      0.5317008311475137,
+      0.0520632271052705,
+      0.25334704213461
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.3884771648561989,
+      0.8628470276572143,
+      8.811910195838013,
+      1.8108618039928568
+    ]
+  },
+  "levelRange": {
+    "min": 67,
+    "max": 73
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 321,
+    "y": 189
+  },
+  "monsterIds": [
+    "titan",
+    "smogle",
+    "smogle-chief",
+    "hellmaden"
+  ]
+}

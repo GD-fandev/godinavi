@@ -1,0 +1,38 @@
+{
+  "id": "wback4f",
+  "names": {
+    "ko": [
+      "서부등뼈동굴4"
+    ],
+    "ja": [
+      "西部背骨洞窟4"
+    ],
+    "en": [
+      "west spine cave 4"
+    ]
+  },
+  "image": "maps/wbackbone/wback4F.jpg",
+  "images": {
+    "ko": "maps/wbackbone/ko/wback4F.jpg",
+    "ja": "maps/wbackbone/ja/wback4F.jpg"
+  },
+  "imageSize": {
+    "width": 567,
+    "height": 281
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 104,
+    "max": 113
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "ark-demon-red",
+    "brutal-hydra",
+    "great-demon",
+    "death-dragon",
+    "redbonyus",
+    "poison-dragon"
+  ]
+}

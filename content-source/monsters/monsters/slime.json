@@ -1,0 +1,50 @@
+{
+  "id": "slime",
+  "no": 0,
+  "names": {
+    "ko": "슬라임",
+    "ja": "スライム",
+    "en": "SLIME"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/04_slime.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "lampas",
+    "lucre"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "루크레시아소택지Lv3~ Lv14",
+        "ocrConfidence": 0.9495
+      },
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "람파스소택지[v3~Lv18",
+        "ocrConfidence": 0.9354
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

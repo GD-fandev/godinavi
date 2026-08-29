@@ -1,0 +1,49 @@
+{
+  "id": "flam-ark",
+  "names": {
+    "ko": "플램아크데몬레드",
+    "ja": "フレームアークデーモンレッド",
+    "en": "FLAM ARK"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/117_flam_ark_demon_red.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [
+    "demonhorn",
+    "mithrill"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "carl1f",
+    "cback1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "카를/중부등뼈동굴1[v83~Lv89",
+        "ocrConfidence": 0.9769
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 310
+}

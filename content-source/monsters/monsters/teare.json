@@ -1,0 +1,59 @@
+{
+  "id": "teare",
+  "names": {
+    "ko": "티르",
+    "ja": "ティル",
+    "en": "TEARE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/45_teare.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "chilly",
+    "kali4f",
+    "kali5f",
+    "rege4f",
+    "rege5f",
+    "saiefe2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "레게/칼리지하동굴4층[v49~Lv57",
+        "ocrConfidence": 0.9997
+      },
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "사에프동굴2 [Lv53~ Lv59",
+        "ocrConfidence": 0.9993
+      },
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "레게/칼리지하동굴5층[v55~ Lv63",
+        "ocrConfidence": 0.9995
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 79
+}

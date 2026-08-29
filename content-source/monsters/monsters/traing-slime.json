@@ -1,0 +1,42 @@
+{
+  "id": "traing-slime",
+  "no": 225,
+  "names": {
+    "ko": "수련용 슬라임",
+    "ja": "修練用スライム",
+    "en": "TRAING SLIME"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/01_training_slime.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "수련장Lv1~LV5",
+        "ocrConfidence": 0.9901
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

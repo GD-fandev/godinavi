@@ -1,0 +1,58 @@
+{
+  "id": "centipede",
+  "no": 8,
+  "names": {
+    "ko": "지네",
+    "ja": "ムカデ",
+    "en": "CENTIPEDE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/10_centipede.png",
+  "attackAttributeIds": [
+    "neutral",
+    "poison"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "calbiron",
+    "calibria",
+    "gamria",
+    "lampas"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "람파스소택지[v3~Lv18",
+        "ocrConfidence": 0.9996
+      },
+      {
+        "file": "maps/monsters/001-2.jpg",
+        "section": "칼비론숲Lv8~Lv18",
+        "ocrConfidence": 0.9996
+      },
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "가므리아해안 칼리브리아반도Lv16~ Lv32",
+        "ocrConfidence": 0.9982
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

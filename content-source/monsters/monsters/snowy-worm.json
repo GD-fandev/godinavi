@@ -1,0 +1,61 @@
+{
+  "id": "snowy-worm",
+  "names": {
+    "ko": "스노위웜",
+    "ja": "スノーウィワーム",
+    "en": "SNOWY WORM"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/80_snowy_worm.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [
+    "dragonscale"
+  ],
+  "magicAttackIds": [
+    "igenball",
+    "igenmissile"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "centralspine",
+    "easternspine",
+    "westernspine"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "중부등뼈산맥Lv72~Lv90",
+        "ocrConfidence": 0.865
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "동부등뼈산맥 Lv84~Lv97",
+        "ocrConfidence": 0.9918
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "서부등뼈산맥 Lv88~Lv99",
+        "ocrConfidence": 0.8872
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 232
+}

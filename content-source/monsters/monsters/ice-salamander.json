@@ -1,0 +1,62 @@
+{
+  "id": "ice-salamander",
+  "no": 38,
+  "names": {
+    "ko": "아이스 샐러맨더",
+    "ja": "アイスサラマンダー",
+    "en": "ICE SALAMANDER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/73_ice_salamander.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "centralspine",
+    "kali7f",
+    "kali8f",
+    "santihall"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "칼리지하동굴7층Lv67~ Lv81",
+        "ocrConfidence": 0.9973
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "칼리지하동굴8층[71~Lv85",
+        "ocrConfidence": 0.7827
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "중부등뼈산맥Lv72~Lv90",
+        "ocrConfidence": 0.9922
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "싼티홀분지 Lv76~LV83",
+        "ocrConfidence": 0.9987
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

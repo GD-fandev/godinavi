@@ -1,0 +1,81 @@
+{
+  "id": "dark-bonyus",
+  "names": {
+    "ko": "다크 보니오스",
+    "ja": "ダークボニオス",
+    "en": "DARK BONYUS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/103_dark_bony.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [
+    "demonhorn",
+    "mithrill"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "eback5f",
+    "echil4",
+    "echil5",
+    "evil4",
+    "evil5",
+    "hell7f",
+    "hell8f",
+    "hell9f",
+    "wback5f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-4.jpg",
+        "section": "헬7층/에블린/에칠린동굴4층[Lv108~ Lv112",
+        "ocrConfidence": 0.9799
+      },
+      {
+        "file": "maps/monsters/004-4.jpg",
+        "section": "서부/동부등뼈동굴5[Lv113~ Lv118",
+        "ocrConfidence": 0.9556
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "헬8층 Lv113~ Lv119",
+        "ocrConfidence": 0.9991
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "에칠린/에블린동굴5층Lv113~Lv119",
+        "ocrConfidence": 0.9613
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "헬9층/툼스톤동굴좌/우측1층[v116~ Lv119",
+        "ocrConfidence": 0.9988
+      },
+      {
+        "file": "maps/monsters/004-6.jpg",
+        "section": "툼스톤동굴좌/우측2층Lv116~ Lv119",
+        "ocrConfidence": 0.9989
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 140
+}

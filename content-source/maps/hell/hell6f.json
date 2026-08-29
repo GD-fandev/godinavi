@@ -1,0 +1,37 @@
+{
+  "id": "hell6f",
+  "names": {
+    "ko": [
+      "헬 6층"
+    ],
+    "ja": [
+      "ヘル6F"
+    ],
+    "en": [
+      "hell 6F"
+    ]
+  },
+  "image": "maps/hell/hell6F.jpg",
+  "images": {
+    "ko": "maps/hell/ko/hell6F.jpg",
+    "ja": "maps/hell/ja/hell6F.jpg"
+  },
+  "imageSize": {
+    "width": 554,
+    "height": 272
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 104,
+    "max": 113
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "ark-demon-red",
+    "death-dragon",
+    "redbonyus",
+    "great-demon",
+    "poison-dragon"
+  ]
+}

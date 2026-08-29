@@ -1,0 +1,68 @@
+{
+  "id": "redbonyus",
+  "names": {
+    "ko": "레드보니오스",
+    "ja": "レッドボニオス",
+    "en": "REDBONYUS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/100_redmonyus.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [
+    "demonhorn",
+    "mithrill"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "eback4f",
+    "echil4",
+    "evil4",
+    "hell5f",
+    "hell6f",
+    "hell7f",
+    "wback4f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-2.jpg",
+        "section": "헬5층 Lv102~ Lv110",
+        "ocrConfidence": 0.9323
+      },
+      {
+        "file": "maps/monsters/004-3.jpg",
+        "section": "헬6층Lv104~ L113",
+        "ocrConfidence": 0.9964
+      },
+      {
+        "file": "maps/monsters/004-3.jpg",
+        "section": "서부/동부등뼈동굴4 [Lv104~ Lv113",
+        "ocrConfidence": 0.9998
+      },
+      {
+        "file": "maps/monsters/004-4.jpg",
+        "section": "헬7층/에블린/에칠린동굴4층[Lv108~ Lv112",
+        "ocrConfidence": 0.9998
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 98
+}

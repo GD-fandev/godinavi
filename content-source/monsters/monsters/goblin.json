@@ -1,0 +1,56 @@
+{
+  "id": "goblin",
+  "no": 4,
+  "names": {
+    "ko": "고블린",
+    "ja": "ゴブリン",
+    "en": "GOBLIN"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/07_goblin.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "calbiron",
+    "lampas",
+    "lucre"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "루크레시아소택지Lv3~ Lv14",
+        "ocrConfidence": 0.9944
+      },
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "람파스소택지[v3~Lv18",
+        "ocrConfidence": 0.9457
+      },
+      {
+        "file": "maps/monsters/001-2.jpg",
+        "section": "칼비론숲Lv8~Lv18",
+        "ocrConfidence": 0.9924
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

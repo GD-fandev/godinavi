@@ -1,0 +1,46 @@
+{
+  "id": "zombie",
+  "no": 55,
+  "names": {
+    "ko": "좀비",
+    "ja": "ゾンビ",
+    "en": "ZOMBIE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/26_zombie.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali1f",
+    "rege1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "레게/칼리지하동굴1층[v27~Lv37",
+        "ocrConfidence": 0.9456
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

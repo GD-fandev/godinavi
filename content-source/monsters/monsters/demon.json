@@ -1,0 +1,66 @@
+{
+  "id": "demon",
+  "no": 47,
+  "names": {
+    "ko": "데몬",
+    "ja": "デーモン",
+    "en": "DEMON"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/62_demon.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [
+    "demonhorn"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali7f",
+    "rege7f",
+    "saiefe4f",
+    "saiefe5f",
+    "siad1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "사에프동굴4 Lv65~Lv69",
+        "ocrConfidence": 0.8758
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "레게지하동굴7층 [Lv67~ Lv73",
+        "ocrConfidence": 0.8047
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "칼리지하동굴7층Lv67~ Lv81",
+        "ocrConfidence": 0.8038
+      },
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "샤드뮤동굴1 사에프동굴5 Lv69~Lv73",
+        "ocrConfidence": 0.8389
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

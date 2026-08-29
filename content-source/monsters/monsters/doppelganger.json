@@ -1,0 +1,46 @@
+{
+  "id": "doppelganger",
+  "no": 28,
+  "names": {
+    "ko": "도플갱어",
+    "ja": "ドッペルゲンガー",
+    "en": "DOPPELGANGER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/34_doppel.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali2f",
+    "rege2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "레게/칼리지하동굴2층Lv32~Lv45",
+        "ocrConfidence": 0.9746
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

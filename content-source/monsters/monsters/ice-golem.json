@@ -1,0 +1,56 @@
+{
+  "id": "ice-golem",
+  "names": {
+    "ko": "아이스 골렘",
+    "ja": "アイスゴーレム",
+    "en": "ICE GOLEM"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/77_ice_golem.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "centralspine",
+    "easternspine",
+    "santihall"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "중부등뼈산맥Lv72~Lv90",
+        "ocrConfidence": 0.9653
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "싼티홀분지 Lv76~LV83",
+        "ocrConfidence": 0.9917
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "동부등뼈산맥 Lv84~Lv97",
+        "ocrConfidence": 0.9905
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 229
+}

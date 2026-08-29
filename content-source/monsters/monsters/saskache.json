@@ -1,0 +1,56 @@
+{
+  "id": "saskache",
+  "no": 67,
+  "names": {
+    "ko": "사스카치",
+    "ja": "サスカッチ",
+    "en": "SASKACHE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/92_saskache.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "carlmanue",
+    "easternspine",
+    "westernspine"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "동부등뼈산맥 Lv84~Lv97",
+        "ocrConfidence": 0.9979
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "서부등뼈산맥 Lv88~Lv99",
+        "ocrConfidence": 0.9978
+      },
+      {
+        "file": "maps/monsters/003-6.jpg",
+        "section": "카를마뉴해안 Lv92~Lv99",
+        "ocrConfidence": 0.9943
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

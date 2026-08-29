@@ -1,0 +1,40 @@
+{
+  "id": "bloody-couatl",
+  "names": {
+    "ko": "블러디 코아틀",
+    "ja": "ブラッディコアトル",
+    "en": "BLOODY COUATL"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/91_bld_couatl.png",
+  "attackAttributeIds": [
+    "petrify"
+  ],
+  "weaknessAttributeIds": [
+    "none"
+  ],
+  "dropItemIds": [
+    "dragonscale"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "westernspine"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": []
+  },
+  "schemaVersion": 1,
+  "no": 273
+}

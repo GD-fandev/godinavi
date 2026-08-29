@@ -1,0 +1,91 @@
+{
+  "id": "ram2f",
+  "names": {
+    "ko": [
+      "람파스지하로2"
+    ],
+    "ja": [
+      "ランパス地下道2"
+    ],
+    "en": [
+      "Rampas B Ro2"
+    ]
+  },
+  "image": "maps/rampas/ram2F.png",
+  "imageSize": {
+    "width": 590,
+    "height": 294
+  },
+  "controlPoints": [
+    {
+      "gameX": 84,
+      "gameY": 123,
+      "imageX": 266,
+      "imageY": 201
+    },
+    {
+      "gameX": 83,
+      "gameY": 112,
+      "imageX": 288,
+      "imageY": 189
+    },
+    {
+      "gameX": 56,
+      "gameY": 116,
+      "imageX": 226,
+      "imageY": 166
+    },
+    {
+      "gameX": 56,
+      "gameY": 99,
+      "imageX": 258,
+      "imageY": 150
+    },
+    {
+      "gameX": 39,
+      "gameY": 92,
+      "imageX": 240,
+      "imageY": 126
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.9767102164844406,
+      "gameY": -1.9877139393280403,
+      "offset": 345.34942125474976
+    },
+    "imageY": {
+      "gameX": 0.9988745679447154,
+      "gameY": 0.9611404227651076,
+      "offset": -1.3160443490214988
+    },
+    "rmsePixels": 0.9479177778854886,
+    "maxErrorPixels": 1.2816268532065582,
+    "pointErrorsPixels": [
+      0.9240738023610798,
+      1.2308744888102194,
+      0.541590271120011,
+      1.2816268532065582,
+      0.4334613663418428
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.026583952076162,
+      3.300021347964345,
+      2.806417130115901,
+      2.019581166869028,
+      1.2620765410241113
+    ]
+  },
+  "levelRange": {
+    "min": 14,
+    "max": 27
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "couatl",
+    "chonchon-mage",
+    "harpy",
+    "bandits",
+    "chonchon"
+  ]
+}

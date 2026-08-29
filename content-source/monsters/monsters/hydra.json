@@ -1,0 +1,53 @@
+{
+  "id": "hydra",
+  "no": 42,
+  "names": {
+    "ko": "히드라",
+    "ja": "ヒドラ",
+    "en": "HYDRA"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/59_hydra.png",
+  "attackAttributeIds": [
+    "neutral",
+    "poison"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "dragonscale"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali6f",
+    "southeast"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "동남부반도 Lv60~Lv66",
+        "ocrConfidence": 0.9997
+      },
+      {
+        "file": "maps/monsters/002-2.jpg",
+        "section": "레게/칼리지하동굴6층 Lv61~ Lv67",
+        "ocrConfidence": 0.9998
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

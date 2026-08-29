@@ -1,0 +1,52 @@
+{
+  "id": "orc-lord",
+  "no": 31,
+  "names": {
+    "ko": "오크로드",
+    "ja": "オークロード",
+    "en": "ORC LORD"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/33_orc_lord.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "narrow",
+    "reible",
+    "saiefe",
+    "shaadmum"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "사에프평원 사드t숲Lv32~ Lv44",
+        "ocrConfidence": 0.9977
+      },
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "내로우소택지 레이블평원Lv44~Lv5o",
+        "ocrConfidence": 0.9905
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

@@ -1,0 +1,45 @@
+{
+  "id": "orc-berserker",
+  "no": 30,
+  "names": {
+    "ko": "오크버서커",
+    "ja": "オークバーサーカー",
+    "en": "ORC BERSERKER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/32_orc_berserker.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "saiefe",
+    "shaadmum"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "사에프평원 사드t숲Lv32~ Lv44",
+        "ocrConfidence": 0.9823
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

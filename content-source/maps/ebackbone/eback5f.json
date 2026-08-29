@@ -1,0 +1,103 @@
+{
+  "id": "eback5f",
+  "names": {
+    "ko": [
+      "동부등뼈동굴5"
+    ],
+    "ja": [
+      "東部背骨洞窟5"
+    ],
+    "en": [
+      "East spine cave 5"
+    ]
+  },
+  "image": "maps/ebackbone/eback5F.jpg",
+  "images": {
+    "ko": "maps/ebackbone/ko/eback5F.jpg",
+    "ja": "maps/ebackbone/ja/eback5F.jpg"
+  },
+  "imageSize": {
+    "width": 541,
+    "height": 282
+  },
+  "controlPoints": [
+    {
+      "gameX": 221,
+      "gameY": 216,
+      "imageX": 288,
+      "imageY": 254
+    },
+    {
+      "gameX": 201,
+      "gameY": 160,
+      "imageX": 334,
+      "imageY": 206
+    },
+    {
+      "gameX": 220,
+      "gameY": 132,
+      "imageX": 391,
+      "imageY": 200
+    },
+    {
+      "gameX": 178,
+      "gameY": 103,
+      "imageX": 374,
+      "imageY": 158
+    },
+    {
+      "gameX": 156,
+      "gameY": 74,
+      "imageX": 382,
+      "imageY": 125
+    },
+    {
+      "gameX": 146,
+      "gameY": 16,
+      "imageX": 440,
+      "imageY": 84
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.2560462023525252,
+      "gameY": -1.2285821910909709,
+      "offset": 276.8253794858729
+    },
+    "imageY": {
+      "gameX": 0.5948685671453139,
+      "gameY": 0.6267612758880643,
+      "offset": -13.300364455762606
+    },
+    "rmsePixels": 0.9446256921524312,
+    "maxErrorPixels": 1.3954533772553073,
+    "pointErrorsPixels": [
+      1.132783858768103,
+      1.3954533772553073,
+      0.3037021677369346,
+      0.8690872986451234,
+      0.8915839951441906,
+      0.6935034470832103
+    ],
+    "leaveOneOutErrorsPixels": [
+      3.066779523397373,
+      1.8871679434265907,
+      3.4836034891210206,
+      1.066881510290643,
+      1.5405033132681443,
+      1.6888471237272837
+    ]
+  },
+  "levelRange": {
+    "min": 113,
+    "max": 118
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "brutal-hydra",
+    "poison-dragon",
+    "dark-bonyus",
+    "black-floop",
+    "white-bonyus"
+  ]
+}

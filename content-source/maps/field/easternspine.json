@@ -1,0 +1,100 @@
+{
+  "id": "easternspine",
+  "names": {
+    "ko": [
+      "동부등뼈산맥"
+    ],
+    "ja": [
+      "東部背骨山脈"
+    ],
+    "en": [
+      "Eastern Spine Mountains"
+    ]
+  },
+  "image": "maps/field/easternspine.jpg",
+  "images": {
+    "ko": "maps/field/ko/easternspine.jpg",
+    "ja": "maps/field/ja/easternspine.jpg"
+  },
+  "imageSize": {
+    "width": 1184,
+    "height": 592
+  },
+  "controlPoints": [
+    {
+      "gameX": 118,
+      "gameY": 343,
+      "imageX": 256,
+      "imageY": 461
+    },
+    {
+      "gameX": 108,
+      "gameY": 329,
+      "imageX": 263,
+      "imageY": 437
+    },
+    {
+      "gameX": 116,
+      "gameY": 312,
+      "imageX": 314,
+      "imageY": 427
+    },
+    {
+      "gameX": 126,
+      "gameY": 307,
+      "imageX": 344,
+      "imageY": 433
+    },
+    {
+      "gameX": 24,
+      "gameY": 91,
+      "imageX": 572,
+      "imageY": 114
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.0257831847833874,
+      "gameY": -2.0112576985603496,
+      "offset": 706.3745624993954
+    },
+    "imageY": {
+      "gameX": 0.9961581438648401,
+      "gameY": 1.004920155276457,
+      "offset": -1.381892274713069
+    },
+    "rmsePixels": 0.47676866459735295,
+    "maxErrorPixels": 0.7226480009964281,
+    "pointErrorsPixels": [
+      0.46828771058326785,
+      0.48894693961033,
+      0.7226480009964281,
+      0.3928071962869586,
+      0.04076372496639077
+    ],
+    "leaveOneOutErrorsPixels": [
+      0.777037201413102,
+      1.0737505320543228,
+      0.9785971195971359,
+      1.9741451386528048,
+      8.960102043434704
+    ]
+  },
+  "levelRange": {
+    "min": 84,
+    "max": 97
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 1017,
+    "y": 292
+  },
+  "monsterIds": [
+    "ice-golem",
+    "albino-hydra",
+    "snowy-worm",
+    "ice-spider",
+    "water-elemental",
+    "saskache"
+  ]
+}

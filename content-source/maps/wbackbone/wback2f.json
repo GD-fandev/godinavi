@@ -1,0 +1,104 @@
+{
+  "id": "wback2f",
+  "names": {
+    "ko": [
+      "서부등뼈동굴2"
+    ],
+    "ja": [
+      "西部背骨洞窟2"
+    ],
+    "en": [
+      "west spine cave 2"
+    ]
+  },
+  "image": "maps/wbackbone/wback2F.jpg",
+  "images": {
+    "ko": "maps/wbackbone/ko/wback2F.jpg",
+    "ja": "maps/wbackbone/ja/wback2F.jpg"
+  },
+  "imageSize": {
+    "width": 537,
+    "height": 287
+  },
+  "controlPoints": [
+    {
+      "gameX": 220,
+      "gameY": 214,
+      "imageX": 268,
+      "imageY": 261
+    },
+    {
+      "gameX": 165,
+      "gameY": 212,
+      "imageX": 206,
+      "imageY": 226
+    },
+    {
+      "gameX": 168,
+      "gameY": 171,
+      "imageX": 257,
+      "imageY": 203
+    },
+    {
+      "gameX": 167,
+      "gameY": 101,
+      "imageX": 343,
+      "imageY": 159
+    },
+    {
+      "gameX": 151,
+      "gameY": 91,
+      "imageX": 336,
+      "imageY": 143
+    },
+    {
+      "gameX": 75,
+      "gameY": 84,
+      "imageX": 251,
+      "imageY": 93
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.2143073286124233,
+      "gameY": -1.2222695810000879,
+      "offset": 263.2177685576248
+    },
+    "imageY": {
+      "gameX": 0.6053333769594934,
+      "gameY": 0.6168446309731768,
+      "offset": -4.358456240544218
+    },
+    "rmsePixels": 0.9744417258156197,
+    "maxErrorPixels": 1.5701794180374036,
+    "pointErrorsPixels": [
+      0.8197777001112216,
+      1.5701794180374036,
+      1.2268783614196563,
+      0.4434044768537358,
+      0.6728110446593726,
+      0.6365598432243942
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.758965103002773,
+      3.531129192112784,
+      1.5414212590400933,
+      0.8465639780731401,
+      1.1644493140850198,
+      3.319344463372831
+    ]
+  },
+  "levelRange": {
+    "min": 91,
+    "max": 102
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "ghost",
+    "finofet",
+    "eynet",
+    "dark-gagoyle",
+    "brutal-hydra",
+    "bonyus"
+  ]
+}

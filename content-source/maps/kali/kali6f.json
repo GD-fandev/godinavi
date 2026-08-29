@@ -1,0 +1,120 @@
+{
+  "id": "kali6f",
+  "names": {
+    "ko": [
+      "칼리지하동굴6층"
+    ],
+    "ja": [
+      "カリ地下洞窟6F"
+    ],
+    "en": [
+      "Kali B Cave 6F"
+    ]
+  },
+  "image": "maps/kali/kali6f.jpg",
+  "images": {
+    "ko": "maps/kali/ko/kali6f.jpg",
+    "ja": "maps/kali/ja/kali6f.jpg"
+  },
+  "imageSize": {
+    "width": 546,
+    "height": 196
+  },
+  "controlPoints": [
+    {
+      "gameX": 260,
+      "gameY": 301,
+      "imageX": 202,
+      "imageY": 154
+    },
+    {
+      "gameX": 260,
+      "gameY": 321,
+      "imageX": 186,
+      "imageY": 163
+    },
+    {
+      "gameX": 252,
+      "gameY": 321,
+      "imageX": 178,
+      "imageY": 159
+    },
+    {
+      "gameX": 107,
+      "gameY": 289,
+      "imageX": 91,
+      "imageY": 89
+    },
+    {
+      "gameX": 79,
+      "gameY": 289,
+      "imageX": 67,
+      "imageY": 78
+    },
+    {
+      "gameX": 9,
+      "gameY": 259,
+      "imageX": 35,
+      "imageY": 38
+    },
+    {
+      "gameX": 24,
+      "gameY": 215,
+      "imageX": 82,
+      "imageY": 27
+    },
+    {
+      "gameX": 84,
+      "gameY": 120,
+      "imageX": 204,
+      "imageY": 12
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.7923505735244798,
+      "gameY": -0.7853220792680805,
+      "offset": 231.7724163891468
+    },
+    "imageY": {
+      "gameX": 0.39517079842126235,
+      "gameY": 0.40170057279458465,
+      "offset": -69.30066497042534
+    },
+    "rmsePixels": 0.8332519976856847,
+    "maxErrorPixels": 1.4061057315794847,
+    "pointErrorsPixels": [
+      0.6960754973602703,
+      0.6822552610410505,
+      1.375445989109465,
+      1.4061057315794847,
+      0.4101360991246015,
+      0.585649599814787,
+      0.45433502166377127,
+      0.13369895705411042
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.0359920199230015,
+      1.0146546165642734,
+      1.9828622791037727,
+      1.7396579814700603,
+      0.554517757002686,
+      0.9815972843413833,
+      0.6319855068196597,
+      1.3557474597841914
+    ]
+  },
+  "levelRange": {
+    "min": 61,
+    "max": 67
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "naga",
+    "naga-mage",
+    "hydra",
+    "kerberos-leader",
+    "cockatrice",
+    "lich"
+  ]
+}

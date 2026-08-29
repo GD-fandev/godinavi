@@ -1,0 +1,50 @@
+{
+  "id": "kobolds",
+  "no": 3,
+  "names": {
+    "ko": "코볼트",
+    "ja": "コボルト",
+    "en": "KOBOLDS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/05_kobolds.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "lampas",
+    "lucre"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "루크레시아소택지Lv3~ Lv14",
+        "ocrConfidence": 0.9998
+      },
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "람파스소택지[v3~Lv18",
+        "ocrConfidence": 0.9998
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

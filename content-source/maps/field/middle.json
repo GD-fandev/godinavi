@@ -1,0 +1,94 @@
+{
+  "id": "middle",
+  "names": {
+    "ko": [
+      "중앙평원"
+    ],
+    "ja": [
+      "中央平原"
+    ],
+    "en": [
+      "Central Plains"
+    ]
+  },
+  "image": "maps/field/middle.jpg",
+  "images": {
+    "ko": "maps/field/ko/middle.jpg",
+    "ja": "maps/field/ja/middle.jpg"
+  },
+  "imageSize": {
+    "width": 960,
+    "height": 480
+  },
+  "controlPoints": [
+    {
+      "gameX": 130,
+      "gameY": 205,
+      "imageX": 331,
+      "imageY": 335
+    },
+    {
+      "gameX": 100,
+      "gameY": 223,
+      "imageX": 235,
+      "imageY": 324
+    },
+    {
+      "gameX": 100,
+      "gameY": 210,
+      "imageX": 262,
+      "imageY": 310
+    },
+    {
+      "gameX": 98,
+      "gameY": 170,
+      "imageX": 337,
+      "imageY": 269
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.9887362606413894,
+      "gameY": -1.9936706008704932,
+      "offset": 481.1766814872111
+    },
+    "imageY": {
+      "gameX": 0.9784883044119933,
+      "gameY": 0.9950018212747421,
+      "offset": 3.8113835304188153
+    },
+    "rmsePixels": 0.5525738719996903,
+    "maxErrorPixels": 0.8705580874840656,
+    "pointErrorsPixels": [
+      0.013920363023698383,
+      0.6478322791228927,
+      0.8705580874840656,
+      0.20880544533783982
+    ],
+    "leaveOneOutErrorsPixels": [
+      87.73848311954778,
+      1.885289719921661,
+      1.4029523746064514,
+      5.8492322079903705
+    ]
+  },
+  "levelRange": {
+    "min": 52,
+    "max": 68
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 536,
+    "y": 387
+  },
+  "monsterIds": [
+    "g-minotaurs",
+    "golem",
+    "ggriffon",
+    "worm",
+    "smogle",
+    "master-berserker",
+    "smogle-chief",
+    "poison-orc-berserker"
+  ]
+}

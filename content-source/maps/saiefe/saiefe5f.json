@@ -1,0 +1,109 @@
+{
+  "id": "saiefe5f",
+  "names": {
+    "ko": [
+      "사에프동굴5"
+    ],
+    "ja": [
+      "サエフ洞窟5"
+    ],
+    "en": [
+      "Saiefe Cave 5"
+    ]
+  },
+  "image": "maps/saiefe/saiefe5F.jpg",
+  "images": {
+    "ko": "maps/saiefe/ko/saiefe5F.jpg",
+    "ja": "maps/saiefe/ja/saiefe5F.jpg"
+  },
+  "imageSize": {
+    "width": 512,
+    "height": 170
+  },
+  "controlPoints": [
+    {
+      "gameX": 12,
+      "gameY": 96,
+      "imageX": 58,
+      "imageY": 75
+    },
+    {
+      "gameX": 16,
+      "gameY": 92,
+      "imageX": 79,
+      "imageY": 76
+    },
+    {
+      "gameX": 20,
+      "gameY": 88,
+      "imageX": 101,
+      "imageY": 76
+    },
+    {
+      "gameX": 28,
+      "gameY": 88,
+      "imageX": 123,
+      "imageY": 85
+    },
+    {
+      "gameX": 27,
+      "gameY": 103,
+      "imageX": 80,
+      "imageY": 108
+    },
+    {
+      "gameX": 88,
+      "gameY": 24,
+      "imageX": 450,
+      "imageY": 81
+    },
+    {
+      "gameX": 103,
+      "gameY": 24,
+      "imageX": 489,
+      "imageY": 103
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.6592105389904637,
+      "gameY": -2.6252779744744923,
+      "offset": 278.6014654844527
+    },
+    "imageY": {
+      "gameX": 1.459936872815527,
+      "gameY": 1.4618787795711947,
+      "offset": -82.58414458384713
+    },
+    "rmsePixels": 1.0212152697081234,
+    "maxErrorPixels": 2.1662806819424114,
+    "pointErrorsPixels": [
+      0.5580330793803778,
+      0.9616272614908463,
+      0.7776431141264908,
+      2.1662806819424114,
+      0.5923449523418636,
+      0.3954449420966075,
+      0.5092017588051091
+    ],
+    "leaveOneOutErrorsPixels": [
+      0.7914127924920858,
+      1.3304009909002874,
+      1.0568933872418955,
+      2.6267459644569713,
+      2.6290517430126483,
+      0.917430770334736,
+      1.4333454882297343
+    ]
+  },
+  "levelRange": {
+    "min": 69,
+    "max": 73
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "naga-lady",
+    "skeleton",
+    "demon"
+  ]
+}

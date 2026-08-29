@@ -1,0 +1,50 @@
+{
+  "id": "earth-elemental",
+  "names": {
+    "ko": "어쓰 엘레멘탈",
+    "ja": "アースエレメンタル",
+    "en": "EARTH ELEMENTAL"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/105_earth_ele.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "divine"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "goldred"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "골드레드반도 Lv 99~ Lv119",
+        "ocrConfidence": 0.9942
+      },
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "이스칼드반도 Lv99~ Lv119",
+        "ocrConfidence": 0.9966
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 77
+}

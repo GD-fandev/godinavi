@@ -1,0 +1,54 @@
+{
+  "id": "r-ancient-worm",
+  "no": 72,
+  "names": {
+    "ko": "R 에이션트웜",
+    "ja": "Rエインシェントワーム",
+    "en": "R ANCIENT WORM"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/106_rancient.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "dragonscale"
+  ],
+  "magicAttackIds": [
+    "hold",
+    "bind"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "goldred"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "골드레드반도 Lv 99~ Lv119",
+        "ocrConfidence": 0.9727
+      },
+      {
+        "file": "maps/monsters/004-5.jpg",
+        "section": "이스칼드반도 Lv99~ Lv119",
+        "ocrConfidence": 0.9675
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

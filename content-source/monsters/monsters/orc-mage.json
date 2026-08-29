@@ -1,0 +1,48 @@
+{
+  "id": "orc-mage",
+  "no": 32,
+  "names": {
+    "ko": "오크메이지",
+    "ja": "オークメイジ",
+    "en": "ORC MAGE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/38_orc_mage.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "hold",
+    "bind"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "narrow",
+    "reible"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "내로우소택지 레이블평원Lv44~Lv5o",
+        "ocrConfidence": 0.9995
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

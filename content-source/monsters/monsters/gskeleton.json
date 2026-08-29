@@ -1,0 +1,85 @@
+{
+  "id": "gskeleton",
+  "names": {
+    "ko": "G 스켈레톤",
+    "ja": "Gスケルトン",
+    "en": "G SKELETON"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/72_gskeleton.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [
+    "demonhorn",
+    "mithrill"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali7f",
+    "kali8f",
+    "kali9f",
+    "rege8f",
+    "rege9f",
+    "saiefe6f",
+    "siad2f",
+    "siad3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "칼리지하동굴7층Lv67~ Lv81",
+        "ocrConfidence": 0.9504
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "",
+        "ocrConfidence": 0.7523
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "칼리지하동굴8층[71~Lv85",
+        "ocrConfidence": 0.7529
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "사에프동굴6샤드뮤동굴2[73~Lv79",
+        "ocrConfidence": 0.8432
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "레게지하동굴9층[Lv77~ L185",
+        "ocrConfidence": 0.9578
+      },
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "샤드뮤동굴3 [v77~Lv85",
+        "ocrConfidence": 0.9601
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴9층Lv77~ Lv89",
+        "ocrConfidence": 0.9306
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 87
+}

@@ -1,0 +1,85 @@
+{
+  "id": "saiefe1f",
+  "names": {
+    "ko": [
+      "사에프동굴1"
+    ],
+    "ja": [
+      "サエフ洞窟1"
+    ],
+    "en": [
+      "Saiefe Cave 1"
+    ]
+  },
+  "image": "maps/saiefe/saiefe1F.jpg",
+  "images": {
+    "ko": "maps/saiefe/ko/saiefe1F.jpg",
+    "ja": "maps/saiefe/ja/saiefe1F.jpg"
+  },
+  "imageSize": {
+    "width": 542,
+    "height": 226
+  },
+  "controlPoints": [
+    {
+      "gameX": 151,
+      "gameY": 113,
+      "imageX": 357,
+      "imageY": 156
+    },
+    {
+      "gameX": 148,
+      "gameY": 104,
+      "imageX": 366,
+      "imageY": 148
+    },
+    {
+      "gameX": 136,
+      "gameY": 119,
+      "imageX": 327,
+      "imageY": 150
+    },
+    {
+      "gameX": 119,
+      "gameY": 96,
+      "imageX": 335,
+      "imageY": 122
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 1.4532803180924565,
+      "gameY": -1.430417495031113,
+      "offset": 299.45576540755485
+    },
+    "imageY": {
+      "gameX": 0.6970221680667745,
+      "gameY": 0.6960388208385305,
+      "offset": -27.709762927809486
+    },
+    "rmsePixels": 0.23065332331657482,
+    "maxErrorPixels": 0.3269400640328563,
+    "pointErrorsPixels": [
+      0.3269400640328563,
+      0.27522073185466134,
+      0.14592240147162663,
+      0.0942030692931574
+    ],
+    "leaveOneOutErrorsPixels": [
+      0.6508955176907454,
+      0.7732114538950775,
+      1.4583355269667555,
+      2.2589903260861384
+    ]
+  },
+  "levelRange": {
+    "min": 47,
+    "max": 51
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "debleeth",
+    "dungeon-spider",
+    "bloody-bat"
+  ]
+}

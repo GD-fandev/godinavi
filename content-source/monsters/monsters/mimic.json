@@ -1,0 +1,32 @@
+{
+  "id": "mimic",
+  "no": 2,
+  "names": {
+    "ko": "미믹",
+    "ja": "ミミック",
+    "en": "Mimic"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/00_mimic.png",
+  "attackAttributeIds": [],
+  "weaknessAttributeIds": [],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": null,
+  "mapIds": [],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": []
+  },
+  "schemaVersion": 1
+}

@@ -1,0 +1,66 @@
+{
+  "id": "naga-lady-mage",
+  "names": {
+    "ko": "나가레이디 메이지",
+    "ja": "ナーガレディメイジ",
+    "en": "NAGA LADY MAGE"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/70_nagal_mage.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "igenball",
+    "igenmissile"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "kali7f",
+    "kali8f",
+    "rege8f",
+    "saiefe6f",
+    "siad2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/002-3.jpg",
+        "section": "칼리지하동굴7층Lv67~ Lv81",
+        "ocrConfidence": 0.9937
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "",
+        "ocrConfidence": 0.9198
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "칼리지하동굴8층[71~Lv85",
+        "ocrConfidence": 0.8896
+      },
+      {
+        "file": "maps/monsters/002-4.jpg",
+        "section": "사에프동굴6샤드뮤동굴2[73~Lv79",
+        "ocrConfidence": 0.8816
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 74
+}

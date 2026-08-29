@@ -1,0 +1,103 @@
+{
+  "id": "finofet",
+  "names": {
+    "ko": "피노펫",
+    "ja": "ピノペット",
+    "en": "FINOFET"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/86_finofet.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "neutral",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [
+    "pyraball"
+  ],
+  "magicAttack": true,
+  "mapIds": [
+    "carl1f",
+    "cback1f",
+    "eback2f",
+    "echil2",
+    "evil2",
+    "hell1f",
+    "hell3f",
+    "kali10f",
+    "siad5f",
+    "siad6f",
+    "wback1f",
+    "wback2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴10층[Lv81~L198",
+        "ocrConfidence": 0.7938
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "서부등뼈동굴1 [v85~ Lv94",
+        "ocrConfidence": 0.953
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "샤드뮤동굴5 [v87~Lv94",
+        "ocrConfidence": 0.9796
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "샤드뮤동굴6 Lv94~ Lv10o",
+        "ocrConfidence": 0.9618
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "카를/중부등뼈동굴1[v83~Lv89",
+        "ocrConfidence": 0.9994
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "헬1층[v89~Lv95",
+        "ocrConfidence": 0.8078
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "동부등뼈동굴2Lv91~Lv98",
+        "ocrConfidence": 0.9609
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "서부등뼈동굴2 Lv91~Lv102",
+        "ocrConfidence": 0.964
+      },
+      {
+        "file": "maps/monsters/003-6.jpg",
+        "section": "에칠린/에블린동굴2 [Lv94~ L198",
+        "ocrConfidence": 0.8282
+      },
+      {
+        "file": "maps/monsters/004-1.jpg",
+        "section": "헬2층 Lv95~Lv100",
+        "ocrConfidence": 0.9732
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 80
+}

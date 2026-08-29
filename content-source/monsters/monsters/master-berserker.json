@@ -1,0 +1,50 @@
+{
+  "id": "master-berserker",
+  "no": 63,
+  "names": {
+    "ko": "마스터 버서커",
+    "ja": "マスターバーサーカー",
+    "en": "MASTER BERSERKER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/52_master_berserker.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "middle",
+    "southeast"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "중앙평원 Lv52~Lv68",
+        "ocrConfidence": 0.969
+      },
+      {
+        "file": "maps/monsters/002-1.jpg",
+        "section": "동남부반도 Lv60~Lv66",
+        "ocrConfidence": 0.9966
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

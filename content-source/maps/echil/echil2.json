@@ -1,0 +1,35 @@
+{
+  "id": "echil2",
+  "names": {
+    "ko": [
+      "에칠린동굴2층"
+    ],
+    "ja": [
+      "エチリン洞窟2F"
+    ],
+    "en": [
+      "echilin cave 2F"
+    ]
+  },
+  "image": "maps/echil/echil2.jpg",
+  "images": {
+    "ko": "maps/echil/ko/echil2.jpg",
+    "ja": "maps/echil/ja/echil2.jpg"
+  },
+  "imageSize": {
+    "width": 578,
+    "height": 292
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 94,
+    "max": 98
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "finofet",
+    "eynet",
+    "dark-gagoyle"
+  ]
+}

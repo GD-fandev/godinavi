@@ -1,0 +1,45 @@
+{
+  "id": "berserker",
+  "no": 25,
+  "names": {
+    "ko": "버서커",
+    "ja": "バーサーカー",
+    "en": "BERSERKER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/31_berserker.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "saiefe",
+    "shaadmum"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "사에프평원 사드t숲Lv32~ Lv44",
+        "ocrConfidence": 0.9995
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

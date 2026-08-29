@@ -1,0 +1,56 @@
+{
+  "id": "debleeth",
+  "names": {
+    "ko": "디블리스",
+    "ja": "ディブリス",
+    "en": "DEBLEETH"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/41_debeleeth.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [
+    "demonhorn"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "chilly",
+    "kali3f",
+    "rege3f",
+    "saiefe1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [
+      "肌トラブル"
+    ],
+    "sources": [
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "레게/칼리지하동굴3층[v43~ Lv51",
+        "ocrConfidence": 0.9496
+      },
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "사에프동굴1 [Lv47~Lv51",
+        "ocrConfidence": 0.9995
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 78
+}

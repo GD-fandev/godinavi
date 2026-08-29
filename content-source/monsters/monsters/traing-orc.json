@@ -1,0 +1,42 @@
+{
+  "id": "traing-orc",
+  "no": 227,
+  "names": {
+    "ko": "수련용 오크",
+    "ja": "修練用オーク",
+    "en": "TRAING ORC"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/03_training_orc.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "수련장Lv1~LV5",
+        "ocrConfidence": 0.9841
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

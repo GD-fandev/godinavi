@@ -1,0 +1,42 @@
+{
+  "id": "traing-kobolds",
+  "no": 226,
+  "names": {
+    "ko": "수련용 코볼트",
+    "ja": "修練用コボルト",
+    "en": "TRAING KOBOLDS"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/02_training_kobolds.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-1.jpg",
+        "section": "수련장Lv1~LV5",
+        "ocrConfidence": 0.9994
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

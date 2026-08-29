@@ -1,0 +1,46 @@
+{
+  "id": "ign-ghost",
+  "names": {
+    "ko": "아이그 고스트",
+    "ja": "アイグゴースト",
+    "en": "IGN GHOST"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/114_ign_ghost.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "carl1f",
+    "cback1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "카를/중부등뼈동굴1[v83~Lv89",
+        "ocrConfidence": 0.9963
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 307
+}

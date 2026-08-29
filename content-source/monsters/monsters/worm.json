@@ -1,0 +1,52 @@
+{
+  "id": "worm",
+  "no": 40,
+  "names": {
+    "ko": "웜",
+    "ja": "ワーム",
+    "en": "WORM"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/50_worm.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [
+    "dragonscale"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "middle",
+    "southwest"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "서남부반도 Lv52~Lv6o",
+        "ocrConfidence": 0.5069
+      },
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "중앙평원 Lv52~Lv68",
+        "ocrConfidence": 0.5069
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

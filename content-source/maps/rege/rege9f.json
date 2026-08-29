@@ -1,0 +1,115 @@
+{
+  "id": "rege9f",
+  "names": {
+    "ko": [
+      "레게지하동굴9층"
+    ],
+    "ja": [
+      "レゲ地下洞窟9F"
+    ],
+    "en": [
+      "Rege B Cave 9F"
+    ]
+  },
+  "image": "maps/rege/rege9f.jpg",
+  "images": {
+    "ko": "maps/rege/ko/rege9f.jpg",
+    "ja": "maps/rege/ja/rege9f.jpg"
+  },
+  "imageSize": {
+    "width": 487,
+    "height": 207
+  },
+  "controlPoints": [
+    {
+      "gameX": 108,
+      "gameY": 402,
+      "imageX": 32,
+      "imageY": 156
+    },
+    {
+      "gameX": 147,
+      "gameY": 384,
+      "imageX": 77,
+      "imageY": 164
+    },
+    {
+      "gameX": 220,
+      "gameY": 321,
+      "imageX": 184,
+      "imageY": 168
+    },
+    {
+      "gameX": 328,
+      "gameY": 205,
+      "imageX": 361,
+      "imageY": 166
+    },
+    {
+      "gameX": 46,
+      "gameY": 351,
+      "imageX": 25,
+      "imageY": 112
+    },
+    {
+      "gameX": 83,
+      "gameY": 111,
+      "imageX": 241,
+      "imageY": 32
+    },
+    {
+      "gameX": 309,
+      "gameY": 51,
+      "imageX": 467,
+      "imageY": 97
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.7876549019004381,
+      "gameY": -0.7862485724685184,
+      "offset": 263.48913021380037
+    },
+    "imageY": {
+      "gameX": 0.39365948098451015,
+      "gameY": 0.39259623151980894,
+      "offset": -44.288505489346974
+    },
+    "rmsePixels": 0.7152007772338993,
+    "maxErrorPixels": 1.3080696789400754,
+    "pointErrorsPixels": [
+      0.48655126675606014,
+      0.4890273539026911,
+      0.5154336720736626,
+      0.7660591597709073,
+      1.3080696789400754,
+      0.5920271306576609,
+      0.43662828501075995
+    ],
+    "leaveOneOutErrorsPixels": [
+      0.7137148419492406,
+      0.677812037476407,
+      0.6879250541380131,
+      1.4323422156193901,
+      2.102673390278113,
+      2.2990518111502523,
+      1.0081272863769188
+    ]
+  },
+  "levelRange": {
+    "min": 77,
+    "max": 85
+  },
+  "monsterZones": [],
+  "contributors": [
+    "狐"
+  ],
+  "monsterIds": [
+    "cockatrice",
+    "hellmaden",
+    "gskeleton",
+    "fire-hellhound",
+    "arclich",
+    "black-dragon"
+  ]
+}

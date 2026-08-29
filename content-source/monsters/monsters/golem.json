@@ -1,0 +1,53 @@
+{
+  "id": "golem",
+  "no": 27,
+  "names": {
+    "ko": "골렘",
+    "ja": "ゴーレム",
+    "en": "GOLEM"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/49_golem.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "ice",
+    "divine"
+  ],
+  "dropItemIds": [
+    "mithrill"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "middle",
+    "southwest"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "서남부반도 Lv52~Lv6o",
+        "ocrConfidence": 0.9338
+      },
+      {
+        "file": "maps/monsters/001-6.jpg",
+        "section": "중앙평원 Lv52~Lv68",
+        "ocrConfidence": 0.9125
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

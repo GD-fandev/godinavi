@@ -1,0 +1,96 @@
+{
+  "id": "kali1f",
+  "names": {
+    "ko": [
+      "칼리지하동굴1층"
+    ],
+    "ja": [
+      "カリ地下洞窟1F"
+    ],
+    "en": [
+      "Kali B Cave 1F"
+    ]
+  },
+  "image": "maps/kali/kali1f.jpg",
+  "images": {
+    "ko": "maps/kali/ko/kali1f.jpg",
+    "ja": "maps/kali/ja/kali1f.jpg"
+  },
+  "imageSize": {
+    "width": 463,
+    "height": 240
+  },
+  "controlPoints": [
+    {
+      "gameX": 104,
+      "gameY": 326,
+      "imageX": 55,
+      "imageY": 165
+    },
+    {
+      "gameX": 115,
+      "gameY": 297,
+      "imageX": 94,
+      "imageY": 155
+    },
+    {
+      "gameX": 158,
+      "gameY": 30,
+      "imageX": 380,
+      "imageY": 53
+    },
+    {
+      "gameX": 189,
+      "gameY": 75,
+      "imageX": 370,
+      "imageY": 86
+    },
+    {
+      "gameX": 223,
+      "gameY": 80,
+      "imageX": 393,
+      "imageY": 107
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.9204154408959018,
+      "gameY": -0.9301021681005734,
+      "offset": 263.46295379167947
+    },
+    "imageY": {
+      "gameX": 0.4703158934131046,
+      "gameY": 0.4637091814396398,
+      "offset": -35.95125170123365
+    },
+    "rmsePixels": 1.7814130089315499,
+    "maxErrorPixels": 2.8990759725332684,
+    "pointErrorsPixels": [
+      1.3045923100763808,
+      1.264168856964501,
+      1.2264833043250736,
+      2.8990759725332684,
+      1.6303909829288077
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.9666370775666673,
+      2.2616525994000702,
+      10.668794579815174,
+      4.185472453903187,
+      8.418159150802857
+    ]
+  },
+  "levelRange": {
+    "min": 27,
+    "max": 37
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "couatl",
+    "troll",
+    "gargoyle",
+    "baslisk",
+    "zombie",
+    "mummy"
+  ]
+}

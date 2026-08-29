@@ -1,0 +1,51 @@
+{
+  "id": "ice-spider",
+  "names": {
+    "ko": "아이스 스파이더",
+    "ja": "アイススパイダー",
+    "en": "ICE SPIDER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/78_ice_spider.png",
+  "attackAttributeIds": [
+    "ice"
+  ],
+  "weaknessAttributeIds": [
+    "fire"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "centralspine",
+    "easternspine",
+    "santihall"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-1.jpg",
+        "section": "싼티홀분지 Lv76~LV83",
+        "ocrConfidence": 0.9678
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "동부등뼈산맥 Lv84~Lv97",
+        "ocrConfidence": 0.9823
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 230
+}

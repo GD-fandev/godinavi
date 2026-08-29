@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 2,
+  "channel": "test",
+  "clientVersion": "2.0.1",
+  "snapshotVersion": "2026.08.30.1",
+  "historyUrl": "https://api.github.com/repos/GD-fandev/godinavi_dev/contents/update/v2/test/history.json?ref=main",
+  "components": {
+    "launcher": {
+      "version": "2.0.0",
+      "path": "GodiNavi.exe",
+      "url": "https://github.com/GD-fandev/godinavi_dev/releases/download/v2.0.0/GodiNavi.exe",
+      "size": 12874208,
+      "sha256": "591eb5978f93392fc037795a10224ba2079ac935e21b725715fcc022ec318dc7",
+      "format": "file"
+    },
+    "updater": {
+      "version": "2.0.0",
+      "path": "GodiNaviUpdater.exe",
+      "url": "https://github.com/GD-fandev/godinavi_dev/releases/download/v2.0.0/GodiNaviUpdater.exe",
+      "size": 15999036,
+      "sha256": "5a4b7a74e2f46b6969acee5a1ba961d9cd4986d911dbec46b2eaf86bd4238998",
+      "format": "file"
+    },
+    "core": {
+      "version": "2.0.1",
+      "path": "data/GodiNaviCore.exe",
+      "url": "https://github.com/GD-fandev/godinavi_dev/releases/download/v2.0.1/GodiNaviCore.exe",
+      "size": 9269882,
+      "sha256": "691f770399c2ea4258a51998f7183525affacc3ee5dadc6a2bcae3b8e96e26dd",
+      "format": "file"
+    },
+    "runtime": {
+      "version": "2.0.0",
+      "path": "data/runtime",
+      "url": "https://github.com/GD-fandev/godinavi_dev/releases/download/v2.0.0/runtime-2.0.0.zip",
+      "size": 89666737,
+      "sha256": "362a20af1bd525e391b91901ecc6e2a6e5ee1cd7385c94a533a4d1d38efbecac",
+      "format": "zip"
+    },
+    "ocr_models": {
+      "version": "2.0.0",
+      "path": "data/content/ocr_models.pak",
+      "url": "https://github.com/GD-fandev/godinavi_dev/releases/download/v2.0.0/ocr_models-2.0.0.pak",
+      "size": 47011479,
+      "sha256": "5e9bec461f98f95c0a09fd9c2927be91e47746b180dbb045e05073348a4bcba0",
+      "format": "pak"
+    },
+    "ui_assets": {
+      "version": "2.0.0",
+      "path": "data/assets/ui.pak",
+      "url": "https://github.com/GD-fandev/godinavi_dev/releases/download/v2.0.0/ui_assets-2.0.0.pak",
+      "size": 31476812,
+      "sha256": "3c0e6ca3b1c5b92e9b708980425fa39a297f09ffbbb9b9f22051c569b035d671",
+      "format": "pak"
+    },
+    "audio_assets": {
+      "version": "2.0.0",
+      "path": "data/assets/audio.pak",
+      "url": "https://github.com/GD-fandev/godinavi_dev/releases/download/v2.0.0/audio_assets-2.0.0.pak",
+      "size": 38777,
+      "sha256": "782db2dad294e4536d768bdf3c42d73e7fcabb8e73f997e5929020d8fe7c382d",
+      "format": "pak"
+    },
+    "maps": {
+      "version": "2026.08.29.1",
+      "path": "data/content/maps.pak",
+      "url": "https://github.com/GD-fandev/godinavi_dev/releases/download/v2.0.0/maps-2026.08.29.1.pak",
+      "size": 22756081,
+      "sha256": "db5b15e33459a96eabf35aa80f57087e28169eccd1850a7845fa5ac95f0ab109",
+      "format": "pak"
+    },
+    "monsters": {
+      "version": "2026.08.29.1",
+      "path": "data/content/monsters.pak",
+      "url": "https://github.com/GD-fandev/godinavi_dev/releases/download/v2.0.0/monsters-2026.08.29.1.pak",
+      "size": 1368910,
+      "sha256": "284bdd255deda0259f612ca6ad0d4c56f8044821b44d7f757c670f253c403ab6",
+      "format": "pak"
+    },
+    "equipment": {
+      "version": "2026.08.30.2",
+      "path": "data/content/equipment.pak",
+      "url": "https://github.com/GD-fandev/godinavi_dev/releases/download/content-2026.08.30.1-test/equipment-2026.08.30.2.pak",
+      "size": 417817,
+      "sha256": "744fede3c98b78c99d7222278488838dfd384d63792a8ea86f9cbb31832fe9a2",
+      "format": "pak"
+    }
+  }
+}

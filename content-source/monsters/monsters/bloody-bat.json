@@ -1,0 +1,59 @@
+{
+  "id": "bloody-bat",
+  "no": 58,
+  "names": {
+    "ko": "블러디 배트",
+    "ja": "ブラッディバット",
+    "en": "BLOODY BAT"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/43_bloody_bat.png",
+  "attackAttributeIds": [
+    "fire",
+    "disease"
+  ],
+  "weaknessAttributeIds": [
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali3f",
+    "kali4f",
+    "rege3f",
+    "rege4f",
+    "saiefe1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "레게/칼리지하동굴3층[v43~ Lv51",
+        "ocrConfidence": 0.9975
+      },
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "사에프동굴1 [Lv47~Lv51",
+        "ocrConfidence": 0.9968
+      },
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "레게/칼리지하동굴4층[v49~Lv57",
+        "ocrConfidence": 0.9884
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

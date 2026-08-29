@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "dragonscale",
+      "names": {
+        "ko": "용의비늘",
+        "ja": "竜の鱗",
+        "en": "Dragon Scale"
+      }
+    },
+    {
+      "id": "demonhorn",
+      "names": {
+        "ko": "악마의뿔",
+        "ja": "悪魔の角",
+        "en": "Demon's Horn"
+      }
+    },
+    {
+      "id": "mithrill",
+      "names": {
+        "ko": "미스릴광석",
+        "ja": "ミスリル鉱石",
+        "en": "Mithril Ore"
+      }
+    }
+  ]
+}

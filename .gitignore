@@ -1,0 +1,63 @@
+# Python environments and generated caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Entire local/private workspace: never publish any child or metadata.
+private/
+**/.env
+**/.env.*
+!**/.env.example
+
+# Generated local output
+build/
+!tools/build/
+!tools/build/**
+tools/**/__pycache__/
+dist/
+output/
+vendor/gh/
+.worktrees/
+tmp/
+
+# Locally generated GitHub Release assets
+release/
+*.spec.bak
+*.manifest
+
+# Temporary updater/test working directories
+godinavi-update-test-*/
+godinavi-update-stage-*/
+godinavi-update-backup-*/
+godinavi-v2*-verify-*/
+
+# Local runtime state and credentials
+*.sqlite
+*.sqlite3
+*.db
+*.pid
+*.token
+update-reminder.json
+v2-modal-positions.json
+godinavi-config.json
+
+# Common editor and OS clutter
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+*.tmp
+*.bak
+
+# Other build systems
+**/bin/
+**/obj/

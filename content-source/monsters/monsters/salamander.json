@@ -1,0 +1,53 @@
+{
+  "id": "salamander",
+  "no": 26,
+  "names": {
+    "ko": "샐러맨더",
+    "ja": "サラマンダー",
+    "en": "SALAMANDER"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/36_salamander.png",
+  "attackAttributeIds": [
+    "fire"
+  ],
+  "weaknessAttributeIds": [
+    "neutral",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "kali2f",
+    "kali3f",
+    "rege2f",
+    "rege3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-4.jpg",
+        "section": "레게/칼리지하동굴2층Lv32~Lv45",
+        "ocrConfidence": 0.9991
+      },
+      {
+        "file": "maps/monsters/001-5.jpg",
+        "section": "레게/칼리지하동굴3층[v43~ Lv51",
+        "ocrConfidence": 0.9937
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

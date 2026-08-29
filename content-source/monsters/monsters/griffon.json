@@ -1,0 +1,45 @@
+{
+  "id": "griffon",
+  "no": 19,
+  "names": {
+    "ko": "그리폰",
+    "ja": "グリフォン",
+    "en": "GRIFFON"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/19_griffon.png",
+  "attackAttributeIds": [
+    "neutral"
+  ],
+  "weaknessAttributeIds": [
+    "all_non_neutral"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "calibria",
+    "gamria"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "가므리아해안 칼리브리아반도Lv16~ Lv32",
+        "ocrConfidence": 0.9998
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

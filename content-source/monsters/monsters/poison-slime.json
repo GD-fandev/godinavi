@@ -1,0 +1,47 @@
+{
+  "id": "poison-slime",
+  "names": {
+    "ko": "포이즌 슬라임",
+    "ja": "ポイズンスライム",
+    "en": "POISON SLIME"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/21_poison_slime.png",
+  "attackAttributeIds": [
+    "poison",
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "luc3f",
+    "ram3f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/001-3.jpg",
+        "section": "루크레시아/람파스지하로3 [v23~Lv31",
+        "ocrConfidence": 0.9621
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "no": 83
+}

@@ -1,0 +1,91 @@
+{
+  "id": "calbiron",
+  "names": {
+    "ko": [
+      "칼비론숲"
+    ],
+    "ja": [
+      "カルビロンの森"
+    ],
+    "en": [
+      "kalbiron forest"
+    ]
+  },
+  "image": "maps/field/calbiron.jpg",
+  "images": {
+    "ko": "maps/field/ko/calbiron.jpg",
+    "ja": "maps/field/ja/calbiron.jpg"
+  },
+  "imageSize": {
+    "width": 1008,
+    "height": 504
+  },
+  "controlPoints": [
+    {
+      "gameX": 19,
+      "gameY": 13,
+      "imageX": 259,
+      "imageY": 49
+    },
+    {
+      "gameX": 165,
+      "gameY": 42,
+      "imageX": 613,
+      "imageY": 312
+    },
+    {
+      "gameX": 179,
+      "gameY": 45,
+      "imageX": 645,
+      "imageY": 336
+    },
+    {
+      "gameX": 138,
+      "gameY": 48,
+      "imageX": 512,
+      "imageY": 280
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 3.032610600431097,
+      "gameY": -3.0842679170875966,
+      "offset": 241.533435228247
+    },
+    "imageY": {
+      "gameX": 1.4944115234936313,
+      "gameY": 1.5166007042298173,
+      "offset": 0.9607306259194925
+    },
+    "rmsePixels": 0.6742603254741851,
+    "maxErrorPixels": 0.9872273306681205,
+    "pointErrorsPixels": [
+      0.09089983792580668,
+      0.9872273306681205,
+      0.9139565522185599,
+      0.017629059474027063
+    ],
+    "leaveOneOutErrorsPixels": [
+      20.00562363544665,
+      1.842035658400165,
+      1.9897094031581974,
+      103.15399687027019
+    ]
+  },
+  "levelRange": {
+    "min": 8,
+    "max": 18
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 279,
+    "y": 334
+  },
+  "monsterIds": [
+    "goblin",
+    "bandits",
+    "crab",
+    "centipede",
+    "orc"
+  ]
+}

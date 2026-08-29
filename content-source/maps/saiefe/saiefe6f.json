@@ -1,0 +1,126 @@
+{
+  "id": "saiefe6f",
+  "names": {
+    "ko": [
+      "사에프동굴6"
+    ],
+    "ja": [
+      "サエフ洞窟6"
+    ],
+    "en": [
+      "Saiefe Cave 6"
+    ]
+  },
+  "image": "maps/saiefe/saiefe6F.jpg",
+  "images": {
+    "ko": "maps/saiefe/ko/saiefe6F.jpg",
+    "ja": "maps/saiefe/ja/saiefe6F.jpg"
+  },
+  "imageSize": {
+    "width": 457,
+    "height": 200
+  },
+  "controlPoints": [
+    {
+      "gameX": 68,
+      "gameY": 12,
+      "imageX": 414,
+      "imageY": 50
+    },
+    {
+      "gameX": 79,
+      "gameY": 20,
+      "imageX": 425,
+      "imageY": 78
+    },
+    {
+      "gameX": 79,
+      "gameY": 31,
+      "imageX": 393,
+      "imageY": 96
+    },
+    {
+      "gameX": 64,
+      "gameY": 19,
+      "imageX": 384,
+      "imageY": 53
+    },
+    {
+      "gameX": 64,
+      "gameY": 28,
+      "imageX": 358,
+      "imageY": 66
+    },
+    {
+      "gameX": 75,
+      "gameY": 35,
+      "imageX": 371,
+      "imageY": 94
+    },
+    {
+      "gameX": 16,
+      "gameY": 80,
+      "imageX": 71,
+      "imageY": 72
+    },
+    {
+      "gameX": 12,
+      "gameY": 84,
+      "imageX": 49,
+      "imageY": 72
+    },
+    {
+      "gameX": 12,
+      "gameY": 91,
+      "imageX": 29,
+      "imageY": 84
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.9310582591744163,
+      "gameY": -2.8050989785503955,
+      "offset": 249.04147420748401
+    },
+    "imageY": {
+      "gameX": 1.546979758691815,
+      "gameY": 1.5298688555486468,
+      "offset": -74.72011656065781
+    },
+    "rmsePixels": 0.9414142545578693,
+    "maxErrorPixels": 1.3569274504137552,
+    "pointErrorsPixels": [
+      1.3569274504137552,
+      0.5145982878804571,
+      1.2562621339687965,
+      0.7557630559189572,
+      1.1262373724258776,
+      0.9028011525127158,
+      0.6772856650456338,
+      0.5439270570291105,
+      0.9396160296522106
+    ],
+    "leaveOneOutErrorsPixels": [
+      2.50872793531045,
+      0.6596629919076004,
+      2.1397651180101165,
+      1.1455331906700088,
+      1.3333054886552662,
+      1.46856942284074,
+      0.9631779859905419,
+      0.8243734149032338,
+      1.5409987277584054
+    ]
+  },
+  "levelRange": {
+    "min": 73,
+    "max": 79
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "skeleton",
+    "naga-lady-mage",
+    "hellmaden",
+    "gskeleton"
+  ]
+}

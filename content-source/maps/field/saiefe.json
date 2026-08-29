@@ -1,0 +1,93 @@
+{
+  "id": "saiefe",
+  "names": {
+    "ko": [
+      "사에프평원"
+    ],
+    "ja": [
+      "サエフ平原"
+    ],
+    "en": [
+      "Saiefe Plains"
+    ]
+  },
+  "image": "maps/field/saiefe.jpg",
+  "images": {
+    "ko": "maps/field/ko/saiefe.jpg",
+    "ja": "maps/field/ja/saiefe.jpg"
+  },
+  "imageSize": {
+    "width": 1152,
+    "height": 576
+  },
+  "controlPoints": [
+    {
+      "gameX": 242,
+      "gameY": 263,
+      "imageX": 538,
+      "imageY": 505
+    },
+    {
+      "gameX": 210,
+      "gameY": 267,
+      "imageX": 463,
+      "imageY": 478
+    },
+    {
+      "gameX": 209,
+      "gameY": 239,
+      "imageX": 517,
+      "imageY": 449
+    },
+    {
+      "gameX": 192,
+      "gameY": 207,
+      "imageX": 548,
+      "imageY": 399
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 2.0911048239296885,
+      "gameY": -2.0422605384441224,
+      "offset": 568.8834676773602
+    },
+    "imageY": {
+      "gameX": 0.9702307870246819,
+      "gameY": 1.0245511485969496,
+      "offset": 0.8578044093310978
+    },
+    "rmsePixels": 0.5608492313923478,
+    "maxErrorPixels": 0.961978904434499,
+    "pointErrorsPixels": [
+      0.21441698471849668,
+      0.31293289663162915,
+      0.961978904434499,
+      0.4346290230834982
+    ],
+    "leaveOneOutErrorsPixels": [
+      5.868039992434622,
+      4.020694068891198,
+      1.307936624820148,
+      2.894899729601232
+    ]
+  },
+  "levelRange": {
+    "min": 32,
+    "max": 44
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 389,
+    "y": 543
+  },
+  "monsterIds": [
+    "troll",
+    "manticore",
+    "minotaurs",
+    "cerberos",
+    "berserker",
+    "orc-berserker",
+    "orc-lord"
+  ]
+}

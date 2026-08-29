@@ -1,0 +1,88 @@
+{
+  "id": "ghost",
+  "no": 56,
+  "names": {
+    "ko": "고스트",
+    "ja": "ゴースト",
+    "en": "GHOST"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/85_ghost.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "eback1f",
+    "eback2f",
+    "echil1",
+    "evil1",
+    "hell1f",
+    "kali10f",
+    "siad5f",
+    "wback1f",
+    "wback2f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴10층[Lv81~L198",
+        "ocrConfidence": 0.9995
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "서부등뼈동굴1 [v85~ Lv94",
+        "ocrConfidence": 0.9999
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "에칠린/에블린동굴1 [v87~LV91",
+        "ocrConfidence": 0.9997
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "동부등뼈동굴1 [v87~Lv91",
+        "ocrConfidence": 0.9994
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "샤드뮤동굴5 [v87~Lv94",
+        "ocrConfidence": 0.9998
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "헬1층[v89~Lv95",
+        "ocrConfidence": 0.9998
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "동부등뼈동굴2Lv91~Lv98",
+        "ocrConfidence": 0.9999
+      },
+      {
+        "file": "maps/monsters/003-5.jpg",
+        "section": "서부등뼈동굴2 Lv91~Lv102",
+        "ocrConfidence": 0.9999
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

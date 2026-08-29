@@ -1,0 +1,89 @@
+{
+  "id": "arc-demon",
+  "no": 48,
+  "names": {
+    "ko": "아크데몬",
+    "ja": "アークデーモン",
+    "en": "ARC DEMON"
+  },
+  "aliases": {
+    "ko": [],
+    "ja": [],
+    "en": []
+  },
+  "image": "maps/monsters/83_arc_demon.png",
+  "attackAttributeIds": [
+    "divine"
+  ],
+  "weaknessAttributeIds": [
+    "fire",
+    "ice"
+  ],
+  "dropItemIds": [
+    "demonhorn"
+  ],
+  "magicAttackIds": [],
+  "magicAttack": false,
+  "mapIds": [
+    "eback1f",
+    "echil1",
+    "evil1",
+    "kali10f",
+    "kali9f",
+    "rege10f",
+    "siad4f",
+    "wback1f"
+  ],
+  "notes": {
+    "ko": "",
+    "ja": "",
+    "en": ""
+  },
+  "research": {
+    "status": "draft",
+    "contributors": [],
+    "sources": [
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴9층Lv77~ Lv89",
+        "ocrConfidence": 0.9939
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "레게지하동굴10층Lv81~ LV87",
+        "ocrConfidence": 0.9841
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "샤드뮤동굴4 [v81~Lv89",
+        "ocrConfidence": 0.9981
+      },
+      {
+        "file": "maps/monsters/003-2.jpg",
+        "section": "칼리지하동굴10층[Lv81~L198",
+        "ocrConfidence": 0.9971
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "서부등뼈동굴1 [v85~ Lv94",
+        "ocrConfidence": 0.9998
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "에칠린/에블린동굴1 [v87~LV91",
+        "ocrConfidence": 0.9992
+      },
+      {
+        "file": "maps/monsters/003-3.jpg",
+        "section": "동부등뼈동굴1 [v87~Lv91",
+        "ocrConfidence": 0.9994
+      },
+      {
+        "file": "maps/monsters/003-4.jpg",
+        "section": "샤드뮤동굴5 [v87~Lv94",
+        "ocrConfidence": 0.9996
+      }
+    ]
+  },
+  "schemaVersion": 1
+}

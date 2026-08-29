@@ -1,0 +1,92 @@
+{
+  "id": "kali7f",
+  "names": {
+    "ko": [
+      "칼리지하동굴7층"
+    ],
+    "ja": [
+      "カリ地下洞窟7F"
+    ],
+    "en": [
+      "Kali B Cave 7F"
+    ]
+  },
+  "image": "maps/kali/kali7f.jpg",
+  "imageSize": {
+    "width": 417,
+    "height": 166
+  },
+  "controlPoints": [
+    {
+      "gameX": 122,
+      "gameY": 402,
+      "imageX": 56,
+      "imageY": 103
+    },
+    {
+      "gameX": 135,
+      "gameY": 359,
+      "imageX": 89,
+      "imageY": 96
+    },
+    {
+      "gameX": 204,
+      "gameY": 306,
+      "imageX": 163,
+      "imageY": 102
+    },
+    {
+      "gameX": 305,
+      "gameY": 354,
+      "imageX": 195,
+      "imageY": 144
+    }
+  ],
+  "transform": {
+    "imageX": {
+      "gameX": 0.6040843972454147,
+      "gameY": -0.5989992911269395,
+      "offset": 222.86233610034773
+    },
+    "imageY": {
+      "gameX": 0.2910730217709005,
+      "gameY": 0.25928384769887414,
+      "offset": -36.601070564152344
+    },
+    "rmsePixels": 0.28460489513142767,
+    "maxErrorPixels": 0.4347242356495382,
+    "pointErrorsPixels": [
+      0.27632669470774074,
+      0.4347242356495382,
+      0.23104292013435682,
+      0.07264537919023353
+    ],
+    "leaveOneOutErrorsPixels": [
+      1.1725243762576665,
+      0.7452995686533502,
+      1.4023359172097059,
+      4.460019192359267
+    ]
+  },
+  "levelRange": {
+    "min": 67,
+    "max": 81
+  },
+  "monsterZones": [],
+  "images": {
+    "ko": "maps/kali/ko/kali7f.jpg",
+    "ja": "maps/kali/ja/kali7f.jpg"
+  },
+  "monsterIds": [
+    "kerberos-leader",
+    "cockatrice",
+    "demon",
+    "naga-lady",
+    "skeleton",
+    "naga-lady-mage",
+    "hellmaden",
+    "gskeleton",
+    "ice-salamander",
+    "fire-hellhound"
+  ]
+}

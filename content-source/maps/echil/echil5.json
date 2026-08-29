@@ -1,0 +1,37 @@
+{
+  "id": "echil5",
+  "names": {
+    "ko": [
+      "에칠린동굴5층"
+    ],
+    "ja": [
+      "エチリン洞窟5F"
+    ],
+    "en": [
+      "echilin cave 5F"
+    ]
+  },
+  "image": "maps/echil/echil5.jpg",
+  "images": {
+    "ko": "maps/echil/ko/echil5.jpg",
+    "ja": "maps/echil/ja/echil5.jpg"
+  },
+  "imageSize": {
+    "width": 582,
+    "height": 291
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 113,
+    "max": 119
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "poison-dragon",
+    "dark-bonyus",
+    "black-floop",
+    "white-bonyus",
+    "gold-panzer"
+  ]
+}

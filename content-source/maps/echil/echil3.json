@@ -1,0 +1,36 @@
+{
+  "id": "echil3",
+  "names": {
+    "ko": [
+      "에칠린동굴3층"
+    ],
+    "ja": [
+      "エチリン洞窟3F"
+    ],
+    "en": [
+      "echilin cave 3F"
+    ]
+  },
+  "image": "maps/echil/echil3.jpg",
+  "images": {
+    "ko": "maps/echil/ko/echil3.jpg",
+    "ja": "maps/echil/ja/echil3.jpg"
+  },
+  "imageSize": {
+    "width": 580,
+    "height": 293
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 100,
+    "max": 106
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "dark-bishop",
+    "bonyus",
+    "ark-demon-red",
+    "death-dragon"
+  ]
+}
