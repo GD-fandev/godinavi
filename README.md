@@ -1,6 +1,6 @@
 # GodiNavi / ガディナビ / 가디내비
 
-> ### [⬇ GodiNavi 1.0.1 Download](https://github.com/GD-fandev/godinavi/releases/tag/v1.0.1)
+> ### [⬇ GodiNavi 2.0.2 Download](https://github.com/GD-fandev/godinavi/releases/tag/v2.0.2)
 
 ## 目次 / 목차 / Table of Contents
 
