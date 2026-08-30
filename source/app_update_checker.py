@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import ssl
 import sys
@@ -8,7 +9,7 @@ from pathlib import Path
 import certifi
 
 
-APP_VERSION = "2.0.0"
+APP_VERSION = "2.0.1"
 REPOSITORIES = {
     "stable": "GD-fandev/godinavi",
     "test": "GD-fandev/godinavi_dev",
@@ -16,6 +17,7 @@ REPOSITORIES = {
 USER_AGENT = "GodiNavi-VersionChecker/1.0"
 EXE_ASSET_NAME = "GodiNavi.exe"
 CHECKSUM_ASSET_NAME = "GodiNavi.exe.sha256"
+V2_SOURCE_CHANNEL = os.environ.get("GODINAVI_V2_SOURCE_CHANNEL", "stable").strip().lower()
 
 
 def v2_history_text(history, code):
@@ -64,7 +66,42 @@ def version_tuple(value):
     return tuple(int(number) for number in numbers[:3]) + (0,) * max(0, 3 - len(numbers))
 
 
+def load_source_v2_release(root=None):
+    """Use the checked-out V2 channel files for the development runner."""
+    if getattr(sys, "frozen", False):
+        return None
+    root = Path(root) if root else _install_dir()
+    channel = V2_SOURCE_CHANNEL if V2_SOURCE_CHANNEL in REPOSITORIES else "stable"
+    manifest_path = root / "update" / "v2" / channel / "manifest.json"
+    history_path = root / "update" / "v2" / channel / "history.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+        history = json.loads(history_path.read_text(encoding="utf-8-sig"))
+        from v2_contracts import validate_history, validate_manifest
+        manifest = validate_manifest(manifest)
+        history = validate_history(history)
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError):
+        return None
+    update_available = is_newer_version(manifest["clientVersion"], APP_VERSION)
+    return {
+        "version": manifest["clientVersion"],
+        "current_version": APP_VERSION,
+        "url": "",
+        "body": v2_history_release_body(history),
+        "exe_url": "v2-unified-updater",
+        "checksum_url": "v2-unified-updater",
+        "size": sum(component["size"] for component in manifest["components"].values()) if update_available else 0,
+        "v2": True,
+        "update_available": update_available,
+    }
+
+
 def fetch_latest_release(timeout=15):
+    source_release = load_source_v2_release()
+    if source_release:
+        return source_release
+    if os.environ.get("GODINAVI_V2_SOURCE_CHANNEL"):
+        raise RuntimeError(f"V2 source runner requires valid update/v2/{V2_SOURCE_CHANNEL} manifest.json and history.json")
     config_path = _install_dir() / "update-channel.json"
     try:
         config = json.loads(config_path.read_text(encoding="utf-8-sig"))

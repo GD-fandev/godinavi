@@ -14,6 +14,7 @@ from map_engine import BUNDLE_DIR, show_interactive_above_owner
 from godinavi.window_attachment import (
     attach_above, focus_native_window, make_activatable_toolwindow, make_noactivate_toolwindow,
 )
+from godinavi.round_slider import RoundSlider
 
 
 BG = "#2a2118"
@@ -624,11 +625,9 @@ class PartyUI:
             log_header, text=texts["log_chat"], bg=HEADER, fg="#ffe3a1",
             font=("Noto Sans KR", 10, "bold"), anchor="w", padx=12, pady=8,
         ).pack(side="left", fill="x", expand=True)
-        volume = tk.Scale(
-            log_header, from_=0, to=100, orient="horizontal", showvalue=False,
-            variable=tk.IntVar(value=self.chat_sound_volume), length=80,
-            bg=HEADER, fg=TEXT, troughcolor=FIELD, activebackground=GOLD,
-            highlightthickness=0, bd=0, sliderlength=12,
+        volume = RoundSlider(
+            log_header, value=self.chat_sound_volume, length=80,
+            background=HEADER, trough=FIELD, fill=GOLD,
         )
         self.chat_volume_scale = volume
         volume.bind("<ButtonRelease-1>", self._save_chat_volume)

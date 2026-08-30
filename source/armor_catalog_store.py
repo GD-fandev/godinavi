@@ -133,9 +133,10 @@ def enhanced_stats(item, level, steps, set_effect=None):
     if not isinstance(stats, dict):
         return None
     level = max(0, min(int(level), len(steps)))
+    enhancement = steps[level - 1] if level else {}
     result = {
-        "ac": stats.get("ac", 0) + sum(step.get("ac", 0) for step in steps[:level]),
-        "dc": stats.get("dc", 0) + sum(step.get("dc", 0) for step in steps[:level]),
+        "ac": stats.get("ac", 0) + enhancement.get("ac", 0),
+        "dc": stats.get("dc", 0) + enhancement.get("dc", 0),
         "weight": stats.get("weight", 0),
     }
     bonuses = set_effect.get("bonuses", {}) if isinstance(set_effect, dict) else {}
