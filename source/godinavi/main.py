@@ -145,6 +145,32 @@ def installed_map_version(resource_dir=RESOURCE_DIR, v2_managed=V2_MANAGED_INSTA
     return load_local_version(resource_dir)
 
 
+def source_manifest_version_info(resource_dir):
+    """Read component versions when running directly from the source tree."""
+    path = Path(resource_dir) / "update" / "v2" / "stable" / "manifest.json"
+    try:
+        manifest = json.loads(path.read_text(encoding="utf-8-sig"))
+        components = manifest.get("components", {})
+        return {
+            "snapshot": str(manifest.get("snapshotVersion") or "-"),
+            **{
+                name: str(components.get(name, {}).get("version") or "-")
+                for name in ("maps", "monsters", "equipment", "ocr_models", "ui_assets", "audio_assets")
+            },
+        }
+    except (OSError, UnicodeError, json.JSONDecodeError, AttributeError):
+        return None
+
+
+def v2_runtime_enabled(resource_dir=RESOURCE_DIR, v2_managed=V2_MANAGED_INSTALL):
+    return v2_managed or source_manifest_version_info(resource_dir) is not None
+
+
+def legacy_map_updater_enabled(resource_dir=RESOURCE_DIR, v2_managed=V2_MANAGED_INSTALL):
+    """Keep the standalone map updater only for legacy, non-V2 runtimes."""
+    return not v2_runtime_enabled(resource_dir, v2_managed)
+
+
 def installed_version_info(resource_dir=RESOURCE_DIR, v2_managed=V2_MANAGED_INSTALL):
     if v2_managed:
         try:
@@ -157,6 +183,9 @@ def installed_version_info(resource_dir=RESOURCE_DIR, v2_managed=V2_MANAGED_INST
             }
         except (OSError, UnicodeError, json.JSONDecodeError, AttributeError):
             pass
+    source_info = source_manifest_version_info(resource_dir)
+    if source_info:
+        return {"client": APP_VERSION, **source_info}
     return {"client": APP_VERSION, "snapshot": installed_map_version(resource_dir, v2_managed), "maps": installed_map_version(resource_dir, v2_managed)}
 
 
@@ -312,7 +341,7 @@ class PrototypeApp:
             initial_collapse_edge=self.map_engine.config.get("dock_collapse_edge"),
             initial_ui_language=self.map_engine.ui_language,
         )
-        if not V2_MANAGED_INSTALL:
+        if legacy_map_updater_enabled():
             self.map_update_ui = MapUpdateUI(
                 self.root,
                 RESOURCE_DIR,
@@ -834,7 +863,7 @@ class PrototypeApp:
             activeforeground="#ffffff", padx=20, pady=7,
             font=(family, 9, "bold"),
         ).pack(side="bottom", anchor="e", padx=12, pady=(0, 12))
-        place_modal(win, minimum_width=390, minimum_height=330 if V2_MANAGED_INSTALL else 210, position_key="version_dialog")
+        place_modal(win, minimum_width=390, minimum_height=330 if v2_runtime_enabled() else 210, position_key="version_dialog")
         bind_modal_escape(win, close)
 
     def _create_items(self, configured=True) -> list[DockItem]:

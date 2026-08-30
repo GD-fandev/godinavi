@@ -16,6 +16,7 @@ from modal_window import activate_modal, bind_modal_escape
 from v2_runtime_assets import materialize_runtime_assets
 
 from .window_attachment import attach_above, client_screen_rect, user32
+from .round_slider import RoundSlider
 
 
 BG = "#17130f"
@@ -188,16 +189,28 @@ def fit_image(image: Image.Image, max_width: int, max_height: int) -> Image.Imag
     return binary_alpha(image.resize(size, Image.Resampling.LANCZOS))
 
 
+def clamp_bbox_to_rect(bbox, rect):
+    """Fit a screen-space box wholly inside the Godius client rectangle."""
+    left, top, right, bottom = (round(value) for value in rect)
+    box_left, box_top, box_right, box_bottom = (round(value) for value in bbox)
+    width = min(max(1, box_right - box_left), max(1, right - left))
+    height = min(max(1, box_bottom - box_top), max(1, bottom - top))
+    box_left = max(left, min(box_left, right - width))
+    box_top = max(top, min(box_top, bottom - height))
+    return box_left, box_top, box_left + width, box_top + height
+
+
 class EditableRegion:
     HEADER_HEIGHT = 22
 
-    def __init__(self, master, color, on_changed, content_drawer=None, label=None, action=None, action_label="↻"):
+    def __init__(self, master, color, on_changed, content_drawer=None, label=None, action=None, action_label="↻", bounds_provider=None):
         self.color = color
         self.on_changed = on_changed
         self.content_drawer = content_drawer
         self.label = label or (lambda: "이동")
         self.action = action
         self.action_label = action_label
+        self.bounds_provider = bounds_provider
         self.last_draw_size = None
         self.drag = None
         self.mode = None
@@ -259,6 +272,13 @@ class EditableRegion:
         else:
             x += event.x_root - sx
             y += event.y_root - sy
+        bounds = self.bounds_provider() if self.bounds_provider else None
+        if bounds:
+            left, top, right, bottom = bounds
+            width = min(width, max(28, right - left))
+            height = min(height, max(self.HEADER_HEIGHT + 20, bottom - top + self.HEADER_HEIGHT))
+            x = max(left, min(x, right - width))
+            y = max(top - self.HEADER_HEIGHT, min(y, bottom - height))
         self.window.geometry(f"{width}x{height}+{x}+{y}")
 
     def _release(self, _event):
@@ -360,6 +380,7 @@ class DurabilityMonitor:
         self.warning_editor = EditableRegion(
             master, GOLD, self._store_warning_region,
             label=lambda: TEXTS[self.language]["move"], action=self.toggle_warning_orientation,
+            bounds_provider=lambda: self._client_rect()[1],
         )
         self.warning_editor.content_drawer = self._draw_warning_editor
         self.warning_window = self._create_warning_window()
@@ -514,7 +535,12 @@ class DurabilityMonitor:
         cx, cy = (left + right) // 2, (top + bottom) // 2
         horizontal = self.config.get("warning_orientation", "horizontal") == "horizontal"
         fallback = (cx - (150 if horizontal else 50), cy - (50 if horizontal else 150), cx + (150 if horizontal else 50), cy + (50 if horizontal else 150))
-        return self._screen_bbox(self.config.get("warning_region"), self.config.get("warning_reference_size"), rect, fallback)
+        raw = self._screen_bbox(self.config.get("warning_region"), self.config.get("warning_reference_size"), rect, fallback)
+        clamped = clamp_bbox_to_rect(raw, rect)
+        if tuple(raw) != clamped:
+            self.config["warning_region"], self.config["warning_reference_size"] = self._relative_region(clamped, rect)
+            self.save()
+        return clamped
 
     def _relative_region(self, bbox, rect):
         left, top, right, bottom = rect
@@ -532,6 +558,7 @@ class DurabilityMonitor:
         _hwnd, rect = self._client_rect()
         if not rect:
             return
+        bbox = clamp_bbox_to_rect(bbox, rect)
         self.config["warning_region"], self.config["warning_reference_size"] = self._relative_region(bbox, rect)
 
     def toggle_warning_orientation(self):
@@ -577,12 +604,10 @@ class DurabilityMonitor:
             highlightthickness=0, bd=0,
         )
         sound_check.pack(side="left")
-        self.warning_volume_scale = tk.Scale(
-            sound_controls, from_=0, to=100, orient="horizontal", showvalue=False,
-            length=90, bg=PANEL, fg=TEXT, troughcolor=BG, activebackground=GOLD,
-            highlightthickness=0, bd=0, sliderlength=12,
+        self.warning_volume_scale = RoundSlider(
+            sound_controls, value=self.warning_sound_volume, length=90,
+            background=PANEL, trough=BG, fill=GOLD,
         )
-        self.warning_volume_scale.set(self.warning_sound_volume)
         self.warning_volume_scale.bind("<ButtonRelease-1>", self._save_warning_volume)
         if self.warning_sound_enabled:
             self.warning_volume_scale.pack(side="left", padx=(4, 0))

@@ -200,7 +200,10 @@ class AppUpdateUI:
             return
         if self.prompt_decision_callback:
             self.prompt_decision_callback("accepted")
-        self.open()
+        # Let Windows finish destroying the owned prompt before attaching the
+        # details window. Replacing one owned overlay synchronously can leave
+        # the new window behind Godius until the owner is activated again.
+        self.root.after_idle(self.open)
 
     def _snooze_update_prompt(self):
         if self.prompt_preview:
@@ -315,11 +318,7 @@ class AppUpdateUI:
 
     def open(self):
         if self.window and self.window.winfo_exists():
-            self.window.deiconify()
-            owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
-            if owner: attach_above(self.window, owner)
-            else: self.window.lift()
-            activate_modal(self.window)
+            self._present_window()
             self._refresh(); return
         win = tk.Toplevel(self.root)
         self.window = win
@@ -374,6 +373,31 @@ class AppUpdateUI:
         self.notes.configure(state="disabled")
         self._center_window()
         self._refresh()
+        self._present_window()
+
+    def _present_window(self):
+        """Raise the details window above Godius even when opened from an overlay."""
+        if not self.window or not self.window.winfo_exists():
+            return
+        self.window.deiconify()
+        owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
+        if owner:
+            attach_above(self.window, owner, self.window.winfo_x(), self.window.winfo_y())
+        self.window.attributes("-topmost", True)
+        self.window.lift()
+        activate_modal(self.window)
+
+        def restore_owned_z_order():
+            if not self.window or not self.window.winfo_exists():
+                return
+            self.window.attributes("-topmost", False)
+            current_owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
+            if current_owner:
+                attach_above(self.window, current_owner, self.window.winfo_x(), self.window.winfo_y())
+            self.window.lift()
+            activate_modal(self.window)
+
+        self.window.after(120, restore_owned_z_order)
 
     def _center_window(self):
         self.window.update_idletasks()
@@ -387,9 +411,6 @@ class AppUpdateUI:
         else:
             x, y = (self.window.winfo_screenwidth() - width) // 2, (self.window.winfo_screenheight() - height) // 2
         self.window.geometry(f"{width}x{height}+{max(0, x)}+{max(0, y)}")
-        owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
-        if owner:
-            attach_above(self.window, owner, max(0, x), max(0, y))
 
     def _start_drag(self, event):
         self.drag_origin = event.x_root, event.y_root, self.window.winfo_x(), self.window.winfo_y()

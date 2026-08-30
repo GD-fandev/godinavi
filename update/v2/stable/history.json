@@ -2,6 +2,36 @@
   "schemaVersion": 2,
   "entries": [
     {
+      "id": "client-2.0.1",
+      "kind": "client",
+      "version": "2.0.1",
+      "components": [
+        "core",
+        "equipment"
+      ],
+      "publishedAt": "2026-08-30T00:00:00Z",
+      "changes": {
+        "KR": {
+          "summary": "가디내비 v2.0.1",
+          "details": [
+            "[개선]\n- 각종 음량조절 UI를 수정하였습니다.\n- 장비 도감의 한벌옷 쪽을 코스튬으로 명칭변경 하였습니다. 스팀 상점에서 확인 가능한 수치로의 변경은 구조를 크게 변경할 필요가 있어 다음 업데이트때 수정 예정입니다.\n\n[버그 수정]\n- 내구도 감시 알림 아이콘이 화면 밖으로 나갈수 있었던 문제를 수정했습니다.\n- 업데이트 창이 가디우스 윈도우를 한번 클릭해야 표시되던 문제를 수정했습니다. 다음 패치부터 체감 가능합니다.\n- 강화수치가 누적식으로 잘못 계산되고 있던 문제를 수정했습니다."
+          ]
+        },
+        "JP": {
+          "summary": "ガディナビ v2.0.1",
+          "details": [
+            "[改善]\n- 各種音量調整UIを修正しました。\n- 装備図鑑の「衣装」を「コスチューム」に名称変更しました。Steamストアで確認できる数値への変更は大幅な構造変更が必要なため、次回アップデートで対応予定です。\n\n[不具合修正]\n- 耐久度監視の通知アイコンが画面外へ移動できてしまう問題を修正しました。\n- アップデート画面がガディウスウィンドウを一度クリックしないと表示されない問題を修正しました。次回パッチ以降に効果を確認できます。\n- 強化値が累積方式で誤って計算されていた問題を修正しました。"
+          ]
+        },
+        "EN": {
+          "summary": "GodiNavi v2.0.1",
+          "details": [
+            "[Improvements]\n- Updated the various volume-control interfaces.\n- Renamed the Equipment Catalog category from Outfit to Costume. Matching the values shown in the Steam store requires a substantial structural change and is planned for the next update.\n\n[Bug Fixes]\n- Fixed an issue that allowed the durability-monitor notification icon to move outside the screen.\n- Fixed an issue where the update window appeared only after clicking the Godius window. This will take effect starting with the next patch.\n- Fixed enhancement values being calculated incorrectly as cumulative bonuses."
+          ]
+        }
+      }
+    },
+    {
       "id": "client-2.0.0",
       "kind": "client",
       "version": "2.0.0",
@@ -32,7 +62,7 @@
           "details": [
             "[新機能]\n- v2向けにプログラム全体を再構成しました。今後のコンテンツ更新では、統合アップデーターが必要なファイルだけをダウンロードします。\n- 装備図鑑を追加しました。冒険手帳からご利用いただけます。資料を入手できなかった一部の衣装は表示対象外です。セット衣装は今後追加予定で、武器もグローバルサーバー向けDBの構築完了後に更新予定です。",
             "[改善]\n- 装備耐久度監視に効果音機能を追加しました。必要な場合は設定画面で有効にし、音量を調節してご利用ください。\n- 耐久度警告アイコンの表示条件を分かりやすくするため、入力値の「未満」から「以下」へ変更しました。\n- マップ名の更新間隔を3秒から1秒へ短縮し、エリア移動時にミニマップがより速く更新されるよう調整しました。",
-            "[不具合修正]\n- デュアルモニター環境でGodiusウィンドウを別のモニターへ移動した際、バフタイマーが正常に表示されない問題を修正しました。"
+            "[不具合修正]\n- デュアルモニター環境でガディウスウィンドウを別のモニターへ移動した際、バフタイマーが正常に表示されない問題を修正しました。"
           ]
         },
         "EN": {

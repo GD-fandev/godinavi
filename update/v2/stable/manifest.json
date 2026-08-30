@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "channel": "stable",
-  "clientVersion": "2.0.0",
+  "clientVersion": "2.0.1",
   "snapshotVersion": "2026.08.30.1",
   "historyUrl": "https://api.github.com/repos/GD-fandev/godinavi/contents/update/v2/stable/history.json?ref=main",
   "components": {
@@ -22,11 +22,11 @@
       "format": "file"
     },
     "core": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "path": "data/GodiNaviCore.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.0.0/GodiNaviCore.exe",
-      "size": 9269894,
-      "sha256": "e5c78860476d7d92cef3e7760d3f82764b3ca0ddf42a27d14a7ffdfe67c3e0d9",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.0.1/GodiNaviCore.exe",
+      "size": 9276576,
+      "sha256": "27260d3c41e882567a0c10906b7f23d13844cd6cc7aa48ea647f9151d605ed00",
       "format": "file"
     },
     "runtime": {
@@ -78,11 +78,11 @@
       "format": "pak"
     },
     "equipment": {
-      "version": "2026.08.30.2",
+      "version": "2026.08.30.3",
       "path": "data/content/equipment.pak",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.0.0/equipment-2026.08.30.2.pak",
-      "size": 417817,
-      "sha256": "744fede3c98b78c99d7222278488838dfd384d63792a8ea86f9cbb31832fe9a2",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.0.1/equipment-2026.08.30.3.pak",
+      "size": 417845,
+      "sha256": "94ba6200158dc27c2ed05dd8900881a4980989f1582dc26dc80afbbcdd291070",
       "format": "pak"
     }
   }
