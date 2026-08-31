@@ -2,6 +2,43 @@
   "schemaVersion": 2,
   "entries": [
     {
+      "id": "client-2.1.0",
+      "kind": "client",
+      "version": "2.1.0",
+      "components": [
+        "launcher",
+        "updater",
+        "core",
+        "runtime",
+        "ui_assets",
+        "audio_assets",
+        "maps",
+        "monsters",
+        "equipment"
+      ],
+      "publishedAt": "2026-08-31T21:43:14Z",
+      "changes": {
+        "KR": {
+          "summary": "가디내비 v2.1.0",
+          "details": [
+            "[새로운 기능]\n- 신규 기능의 사용법을 확인할 수 있는 튜토리얼을 추가했습니다. 자세한 내용은 모험수첩을 확인해주세요.\n- 현재 지역의 몬스터와 공격 속성, 약점, 사용 마법을 한눈에 확인할 수 있는 몬스터 정보 오버레이를 추가했습니다.\n- 미니맵과 몬스터 사전에 PK존 안내를 추가했습니다. PK존에서는 미니맵과 몬스터 정보 오버레이의 테두리가 붉게 표시됩니다.\n- 사용자 PC의 현재 시각을 표시하는 시계 오버레이를 추가했습니다.\n- 알람과 스톱워치 기능을 추가했습니다.\n- 스톱워치와 연동하여 지정한 시간 동안 획득한 경험치를 측정하는 기능을 추가했습니다.\n- 이후 추가되는 신규 기능도 모험수첩 튜토리얼을 통해 자세한 사용법을 안내하겠습니다.\n\n[개선]\n- 장비 도감의 코스튬 항목에서 강화 수치를 제거하고, 포탈 기능과 경험치 보너스 등 코스튬의 특수 능력을 표시하도록 개선했습니다."
+          ]
+        },
+        "JP": {
+          "summary": "ガディナビ v2.1.0",
+          "details": [
+            "[新機能]\n- 新機能の使い方を確認できるチュートリアルを追加しました。詳しくは冒険手帳をご確認ください。\n- 現在の狩場に出現するモンスターの攻撃属性・弱点・使用魔法などを一覧で確認できる、モンスター情報オーバーレイを追加しました。\n- ミニマップとモンスター図鑑にPKエリアの案内表示を追加しました。PKエリアでは、ミニマップとモンスター情報オーバーレイの枠が赤く表示されます。\n- PCの現在時刻を表示する時計オーバーレイを追加しました。\n- アラームおよびストップウォッチ機能を追加しました。\n- ストップウォッチと連動し、指定した時間内に獲得した経験値を測定する機能を追加しました。\n- 今後追加される新機能についても、冒険手帳のチュートリアルで詳しい使い方をご案内します。\n\n[改善]\n- 装備図鑑のコスチューム項目から強化値を削除し、ポータル機能や獲得経験値ボーナスなど、コスチューム固有の特殊能力を表示するよう改善しました。"
+          ]
+        },
+        "EN": {
+          "summary": "GodiNavi v2.1.0",
+          "details": [
+            "[New Features]\n- Added tutorials that explain how to use new features. See the Adventure Journal for details.\n- Added a monster information overlay showing monsters in the current hunting area together with their attack attributes, weaknesses, and spells.\n- Added PK-zone notices to the minimap and Monster Compendium. In PK zones, the minimap and monster information overlay use a red border.\n- Added a clock overlay showing the current time on the user's PC.\n- Added alarm and stopwatch features.\n- Added an EXP measurement tool linked to the stopwatch, showing how much EXP was gained during a selected period.\n- Detailed instructions for future features will also be added to the Adventure Journal tutorials.\n\n[Improvements]\n- Removed enhancement values from costumes in the Equipment Catalog and now display costume-specific abilities such as portal functions and EXP bonuses."
+          ]
+        }
+      }
+    },
+    {
       "id": "client-2.0.1",
       "kind": "client",
       "version": "2.0.1",
