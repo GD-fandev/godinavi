@@ -10,6 +10,7 @@ from PIL import Image, ImageTk
 
 from armor_catalog_store import ArmorCatalogStore, enhanced_stats, filtered_items, localized_name
 from modal_window import activate_modal, bind_modal_drag, bind_modal_escape, modal_font_family, place_modal
+from config_store import load_section, save_section
 
 
 BG, PANEL, HEADER = "#17130f", "#2a2118", "#5a4932"
@@ -25,30 +26,51 @@ TEXTS = {
            "sort_name": "이름순", "sort_level_asc": "레벨 낮은순", "sort_level_desc": "레벨 높은순",
            "sort_category": "종류순", "count": "{count}개", "no_results": "조건에 맞는 장비가 없습니다.",
            "variants": "염색 색상표", "move_speed": "이동속도", "poison_resistance": "독 저항",
-           "disease_resistance": "질병 저항", "set": "세트", "unknown_color": "정보제공\n잘 부탁\n드립니다!", "close": "닫기"},
+           "disease_resistance": "질병 저항", "portal_feature": "포탈기능", "experience_5": "경험치 5%",
+           "max_resources_5": "최대 HP/MP/SP +5%", "set": "세트",
+           "unknown_color": "정보제공\n잘 부탁\n드립니다!", "close": "닫기"},
     "JP": {"title": "装備図鑑", "search": "名前検索", "all": "すべて", "male": "男性", "female": "女性",
            "armor": "鎧", "clothes": "服", "shoes": "靴", "outfit": "コスチューム", "level": "装備レベル",
            "base": "基本", "enhanced": "強化", "weight": "重量", "color": "カラー", "sort": "並び順",
            "sort_name": "名前順", "sort_level_asc": "レベル昇順", "sort_level_desc": "レベル降順",
            "sort_category": "種類順", "count": "{count}件", "no_results": "条件に一致する装備がありません。",
            "variants": "染色カラーチャート", "move_speed": "移動速度", "poison_resistance": "毒耐性",
-           "disease_resistance": "病気耐性", "set": "セット", "unknown_color": "情報提供を\nお待ちして\nおります！", "close": "閉じる"},
+           "disease_resistance": "病気耐性", "portal_feature": "ポータル機能", "experience_5": "経験値 5%",
+           "max_resources_5": "最大 HP/MP/SP +5%", "set": "セット",
+           "unknown_color": "情報提供を\nお待ちして\nおります！", "close": "閉じる"},
     "EN": {"title": "Equipment Catalog", "search": "Search names", "all": "All", "male": "Male", "female": "Female",
            "armor": "Armor", "clothes": "Clothes", "shoes": "Shoes", "outfit": "Costume", "level": "Required level",
            "base": "Base", "enhanced": "Enhanced", "weight": "Weight", "color": "Color", "sort": "Sort",
            "sort_name": "Name", "sort_level_asc": "Level: low to high", "sort_level_desc": "Level: high to low",
            "sort_category": "Category", "count": "{count} items", "no_results": "No equipment matches these filters.",
            "variants": "Dye color chart", "move_speed": "Move speed", "poison_resistance": "Poison resist",
-           "disease_resistance": "Disease resist", "set": "SET", "unknown_color": "No\nInformation", "close": "Close"},
+           "disease_resistance": "Disease resist", "portal_feature": "Portal feature", "experience_5": "EXP 5%",
+           "max_resources_5": "Max HP/MP/SP +5%", "set": "SET",
+           "unknown_color": "No\nInformation", "close": "Close"},
 }
+
+OUTFIT_BASIC_EFFECT_ITEM_IDS = {55, 58, 59}
+
+
+def outfit_effect_keys(item):
+    """Return the display effects granted by a costume item."""
+    if item.get("category") != "outfit":
+        return []
+    effects = ["portal_feature", "experience_5"]
+    if item.get("item_id") not in OUTFIT_BASIC_EFFECT_ITEM_IDS:
+        effects.append("max_resources_5")
+    return effects
 
 
 def load_preferences(path=PREFERENCES_PATH):
     defaults = {"gender": "male", "category": "armor", "sort": "level_asc", "color": "0"}
-    try:
-        value = json.loads(Path(path).read_text(encoding="utf-8-sig"))
-    except (OSError, UnicodeError, json.JSONDecodeError):
-        return defaults
+    if Path(path) == PREFERENCES_PATH:
+        value = load_section("armor_catalog_preferences", defaults, (PREFERENCES_PATH,))
+    else:
+        try:
+            value = json.loads(Path(path).read_text(encoding="utf-8-sig"))
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            return defaults
     if not isinstance(value, dict):
         return defaults
     if value.get("gender") in {"all", "male", "female"}:
@@ -64,6 +86,9 @@ def load_preferences(path=PREFERENCES_PATH):
 
 def save_preferences(value, path=PREFERENCES_PATH):
     path = Path(path)
+    if path == PREFERENCES_PATH:
+        save_section("armor_catalog_preferences", value)
+        return
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(".json.tmp")
     temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -423,24 +448,29 @@ class ArmorCatalogUI:
             if short_set_name != full_set_name:
                 self.bind_name_tooltip(set_check, full_set_name)
             card.create_window(16, 182, window=set_check, anchor="nw", width=170, height=24)
-        controls = tk.Frame(card, bg=CARD_BG)
-        minus_button = tk.Button(
-            controls, text="−", command=lambda value=item["id"]: self.adjust_enhancement(value, -1),
-            bg="#3b3022", fg=TEXT, activebackground=HEADER, activeforeground=TEXT,
-            relief="flat", bd=0, highlightthickness=0, padx=0, pady=0,
-            font=control_font, cursor="hand2",
+        if item.get("category") != "outfit":
+            controls = tk.Frame(card, bg=CARD_BG)
+            minus_button = tk.Button(
+                controls, text="−", command=lambda value=item["id"]: self.adjust_enhancement(value, -1),
+                bg="#3b3022", fg=TEXT, activebackground=HEADER, activeforeground=TEXT,
+                relief="flat", bd=0, highlightthickness=0, padx=0, pady=0,
+                font=control_font, cursor="hand2",
+            )
+            plus_button = tk.Button(
+                controls, text="+", command=lambda value=item["id"]: self.adjust_enhancement(value, 1),
+                bg="#3b3022", fg=TEXT, activebackground=HEADER, activeforeground=TEXT,
+                relief="flat", bd=0, highlightthickness=0, padx=0, pady=0,
+                font=control_font, cursor="hand2",
+            )
+            minus_button.place(x=0, y=1, width=40, height=30)
+            plus_button.place(x=44, y=1, width=40, height=30)
+            card.create_window(400, 154, window=controls, anchor="nw", width=84, height=36)
+        effect_width = 280 if item.get("category") == "outfit" else 195
+        effect_label = tk.Label(
+            card, bg=CARD_BG, fg=MUTED, anchor="w", justify="left", wraplength=effect_width,
+            font=("Noto Sans KR", 8),
         )
-        plus_button = tk.Button(
-            controls, text="+", command=lambda value=item["id"]: self.adjust_enhancement(value, 1),
-            bg="#3b3022", fg=TEXT, activebackground=HEADER, activeforeground=TEXT,
-            relief="flat", bd=0, highlightthickness=0, padx=0, pady=0,
-            font=control_font, cursor="hand2",
-        )
-        minus_button.place(x=0, y=1, width=40, height=30)
-        plus_button.place(x=44, y=1, width=40, height=30)
-        card.create_window(400, 154, window=controls, anchor="nw", width=84, height=36)
-        effect_label = tk.Label(card, bg=CARD_BG, fg=MUTED, anchor="w", font=("Noto Sans KR", 8))
-        card.create_window(204, 145, window=effect_label, anchor="nw", width=195, height=36)
+        card.create_window(204, 145, window=effect_label, anchor="nw", width=effect_width, height=54)
         colors = item.get("colors") or []
         selected_color = catalog_color_selection(self.category_var.get(), self.color_var.get())
         initial_color = color_index_for_selection(item, selected_color)
@@ -479,6 +509,7 @@ class ArmorCatalogUI:
             bonus_label.configure(text=f'{bonus:+d}')
             total_label.configure(text=f'({total})')
         extra = []
+        extra.extend(self.texts()[key] for key in outfit_effect_keys(item))
         if active_set and result:
             if result.get("move_speed_percent"):
                 extra.append(f'{self.texts()["move_speed"]} +{result["move_speed_percent"]}%')

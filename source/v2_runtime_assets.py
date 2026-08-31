@@ -12,6 +12,21 @@ from pathlib import Path
 from v2_pak import PakReader
 
 
+def _prune_cache(cache, keep):
+    if not cache.is_dir():
+        return
+    for entry in cache.iterdir():
+        if entry == keep:
+            continue
+        if entry.is_dir():
+            shutil.rmtree(entry, ignore_errors=True)
+        else:
+            try:
+                entry.unlink()
+            except OSError:
+                pass
+
+
 def installed_data_root(executable=None):
     executable = Path(executable or sys.executable).resolve()
     parent = executable.parent
@@ -38,6 +53,7 @@ def materialize_runtime_assets(data_root=None, cache_root=None):
     cache = Path(cache_root or Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local")) / "GodiNavi" / "cache" / "runtime-assets")
     target = cache / digest.hexdigest()
     if (target / ".ready").is_file():
+        _prune_cache(cache, target)
         return target
     temporary = cache / f".{target.name}.{uuid.uuid4().hex}.tmp"
     temporary.mkdir(parents=True, exist_ok=False)
@@ -55,6 +71,7 @@ def materialize_runtime_assets(data_root=None, cache_root=None):
             os.replace(temporary, target)
         except FileExistsError:
             shutil.rmtree(temporary)
+        _prune_cache(cache, target)
         return target
     except Exception:
         shutil.rmtree(temporary, ignore_errors=True)

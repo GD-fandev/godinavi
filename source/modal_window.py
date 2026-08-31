@@ -10,9 +10,11 @@ from tkinter import font as tkfont
 from godinavi.window_attachment import (
     attach_above, client_screen_rect, find_godius_window, make_activatable_toolwindow,
 )
+from config_store import load_section, save_section
 
 
 POSITION_PATH = Path(os.environ.get("LOCALAPPDATA", Path.cwd())) / "GodiNavi" / "modal-positions.json"
+V2_POSITION_PATH = POSITION_PATH.with_name("v2-modal-positions.json")
 
 
 def select_font_family(code, available):
@@ -30,6 +32,8 @@ def modal_font_family(window, code):
 
 
 def _positions():
+    if POSITION_PATH == Path(os.environ.get("LOCALAPPDATA", Path.cwd())) / "GodiNavi" / "modal-positions.json":
+        return load_section("modal_positions", {}, (POSITION_PATH, V2_POSITION_PATH))
     try:
         value = json.loads(POSITION_PATH.read_text(encoding="utf-8-sig"))
         return value if isinstance(value, dict) else {}
@@ -42,6 +46,9 @@ def _save_position(key, x, y, bounds):
         return
     positions = _positions()
     positions[key] = {"x": round(x - bounds[0]), "y": round(y - bounds[1])}
+    if POSITION_PATH == Path(os.environ.get("LOCALAPPDATA", Path.cwd())) / "GodiNavi" / "modal-positions.json":
+        save_section("modal_positions", positions)
+        return
     POSITION_PATH.parent.mkdir(parents=True, exist_ok=True)
     temporary = POSITION_PATH.with_suffix(".json.tmp")
     temporary.write_text(json.dumps(positions, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -112,12 +119,29 @@ def bind_modal_drag(window, widgets, bounds_provider, position_key=None):
 
 
 def activate_modal(window):
-    """Make an interactive overlay capable of receiving keyboard shortcuts."""
+    """Enable modal input without locking Windows focus to the game group."""
     try:
         if not window.winfo_exists():
             return
-        make_activatable_toolwindow(window)
-        window.focus_force()
+        # Modal entry normally follows a direct user click. Removing
+        # WS_EX_NOACTIVATE is sufficient; SetForegroundWindow + focus_force
+        # can leave a game-owned popup fighting subsequent clicks on unrelated
+        # applications. Keep focus local to Tk instead.
+        make_activatable_toolwindow(window, request_foreground=False)
+        window.focus_set()
+        if not getattr(window, "_modal_cleanup_bound", False):
+            def cleanup(event):
+                if event.widget is not window:
+                    return
+                try:
+                    grabbed = window.grab_current()
+                    if grabbed is not None and str(grabbed).startswith(str(window)):
+                        grabbed.grab_release()
+                except Exception:
+                    pass
+
+            window.bind("<Destroy>", cleanup, add="+")
+            window._modal_cleanup_bound = True
     except Exception:
         pass
 

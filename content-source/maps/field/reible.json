@@ -1,5 +1,6 @@
 {
   "id": "reible",
+  "isPKArea": false,
   "names": {
     "ko": [
       "레이블평원"

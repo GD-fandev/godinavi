@@ -54,7 +54,10 @@ class MonsterStore:
         return json.loads(self._pak_reader().read(relative).decode("utf-8"))
 
     def _use_packaged_data(self):
-        return self.prefer_pak or (not self.monsters_dir.exists() and self.pak_path.is_file())
+        # Packaged releases prefer the verified PAK. Source/test runs do not
+        # necessarily build one after every database edit, so fall back to the
+        # editable JSON database when no PAK is present.
+        return self.pak_path.is_file() and (self.prefer_pak or not self.monsters_dir.exists())
 
     @staticmethod
     def _read(path):
@@ -173,7 +176,7 @@ class MonsterStore:
     def load_catalog(self, filename):
         if filename not in {"attributes.json", "items.json", "magic_attacks.json"}:
             raise ValueError(f"Unknown catalog: {filename}")
-        if self.prefer_pak or (not self.catalogs_dir.exists() and self.pak_path.is_file()):
+        if self.pak_path.is_file() and (self.prefer_pak or not self.catalogs_dir.exists()):
             return self._read_packaged_json(f"catalogs/{filename}").get("items", [])
         return self._read(self.catalogs_dir / filename).get("items", [])
 

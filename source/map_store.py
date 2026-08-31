@@ -220,6 +220,10 @@ class MapStore:
     def _validated_record(record):
         result = dict(record)
         _safe_id(result.get("id"))
+        is_pk_area = result.get("isPKArea", False)
+        if not isinstance(is_pk_area, bool):
+            raise ValueError("isPKArea must be a boolean")
+        result["isPKArea"] = is_pk_area
         level_range = result.get("levelRange")
         if level_range is not None:
             if not isinstance(level_range, dict):

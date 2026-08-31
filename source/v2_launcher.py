@@ -80,7 +80,17 @@ def _load_channel_and_manifest(channel_path):
 
 def _stage_updater(root, manifest):
     item = manifest["components"]["updater"]
-    stage = Path(os.environ.get("LOCALAPPDATA", root)) / "GodiNavi" / "updater-stage" / str(int(time.time() * 1000))
+    stage_root = Path(os.environ.get("LOCALAPPDATA", root)) / "GodiNavi" / "updater-stage"
+    if stage_root.is_dir():
+        for previous in stage_root.iterdir():
+            if previous.is_dir():
+                shutil.rmtree(previous, ignore_errors=True)
+            else:
+                try:
+                    previous.unlink()
+                except OSError:
+                    pass
+    stage = stage_root / str(int(time.time() * 1000))
     stage.mkdir(parents=True, exist_ok=True)
     staged_updater = stage / "GodiNaviUpdater.exe"
     installed = root / "GodiNaviUpdater.exe"

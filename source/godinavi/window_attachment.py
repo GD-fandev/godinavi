@@ -222,18 +222,22 @@ def make_noactivate_toolwindow(window, topmost=False):
     user32.SetWindowPos(hwnd, HWND_TOPMOST if topmost else HWND_TOP, 0, 0, 0, 0, flags)
 
 
-def make_activatable_toolwindow(window, topmost=False):
+def make_activatable_toolwindow(window, topmost=False, request_foreground=True):
     """Temporarily allow an overlay input control to receive keyboard focus."""
     window.update_idletasks()
     hwnd = user32.GetAncestor(window.winfo_id(), GA_ROOT) or window.winfo_id()
     style = user32.GetWindowLongW(hwnd, GWL_EXSTYLE)
     style = (style | WS_EX_TOOLWINDOW) & ~WS_EX_NOACTIVATE
     user32.SetWindowLongW(hwnd, GWL_EXSTYLE, style)
+    flags = SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED | SWP_SHOWWINDOW
+    if not request_foreground:
+        flags |= SWP_NOACTIVATE
     user32.SetWindowPos(
         hwnd, HWND_TOPMOST if topmost else HWND_TOP, 0, 0, 0, 0,
-        SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED | SWP_SHOWWINDOW,
+        flags,
     )
-    user32.SetForegroundWindow(hwnd)
+    if request_foreground:
+        user32.SetForegroundWindow(hwnd)
 
 
 def focus_native_window(hwnd):
