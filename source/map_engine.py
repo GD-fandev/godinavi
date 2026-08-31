@@ -47,6 +47,11 @@ class PerformanceMetrics:
     def __init__(self, enabled, path=None, interval=10.0):
         self.enabled = bool(enabled)
         self.path = Path(path or (LOCAL_APPDATA / "GodiNavi" / "performance.log"))
+        if not self.enabled:
+            try:
+                self.path.unlink(missing_ok=True)
+            except OSError:
+                pass
         self.interval = float(interval)
         self.lock = threading.Lock()
         self.metrics = {}
@@ -236,7 +241,7 @@ DEFAULT_CONFIG = {
     "dock_orientation": "horizontal",
     "dock_icon_scale": 1.0,
     "ocr_interval_ms": DEFAULT_OCR_INTERVAL_MS,
-    "performance_logging_enabled": True,
+    "performance_logging_enabled": False,
     "map_match_hold_seconds": 2.0,
     "ui_language": None,
     "ocr_backend": "paddle",
@@ -787,7 +792,8 @@ class MapEngine:
         self.shell_mode = bool(shell_mode)
         self.on_calibration_confirmed = on_calibration_confirmed
         self.config = load_config()
-        self.performance = PerformanceMetrics(self.config.get("performance_logging_enabled", True))
+        self.config.pop("performance_logging_enabled", None)
+        self.performance = PerformanceMetrics(False)
         self.ui_language = self.config.get("ui_language", "EN")
         self._party_marker_font = None
         favorites = self.config.get("favorites")

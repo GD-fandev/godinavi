@@ -20,6 +20,20 @@ from v2_updater_engine import UpdateError, load_installation
 LEGACY_BACKUP_DIR = ".godinavi-v1-backup"
 
 
+def _cleanup_updater_stage(wait=False):
+    stage_root = Path(os.environ.get("LOCALAPPDATA", "")) / "GodiNavi" / "updater-stage"
+    attempts = 50 if wait else 1
+    for _attempt in range(attempts):
+        if not stage_root.exists():
+            return True
+        shutil.rmtree(stage_root, ignore_errors=True)
+        if not stage_root.exists():
+            return True
+        if wait:
+            time.sleep(0.1)
+    return False
+
+
 def bundled_channel():
     bundle = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent))
     return bundle / "update-channel.json"
@@ -137,6 +151,12 @@ def start_update(root, *, mode=None):
 def main():
     root = install_root()
     arguments = sys.argv[1:]
+    cleanup_index = arguments.index("--cleanup-updater-stage") if "--cleanup-updater-stage" in arguments else -1
+    if cleanup_index >= 0:
+        del arguments[cleanup_index:cleanup_index + 2]
+        _cleanup_updater_stage(wait=True)
+    else:
+        _cleanup_updater_stage()
     mode = installation_mode(root)
     if mode == "legacy":
         preserve_legacy_launcher(root)

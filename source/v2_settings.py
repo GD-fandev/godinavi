@@ -19,6 +19,23 @@ SETTINGS = {
 }
 
 
+def prune_settings_backups(local_appdata=None, keep=2):
+    root = user_root(local_appdata) / "backups"
+    if not root.is_dir():
+        return []
+    entries = sorted(
+        (path for path in root.iterdir() if path.is_dir()),
+        key=lambda path: (path.stat().st_mtime_ns, path.name),
+        reverse=True,
+    )
+    removed = []
+    for path in entries[max(0, int(keep)):]:
+        shutil.rmtree(path, ignore_errors=True)
+        if not path.exists():
+            removed.append(path)
+    return removed
+
+
 def _validate_json(path):
     try:
         payload = json.loads(Path(path).read_text(encoding="utf-8-sig"))
