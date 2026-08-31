@@ -1,5 +1,6 @@
 {
   "id": "maze1",
+  "isPKArea": false,
   "names": {
     "ko": [
       "라비린토스미로"

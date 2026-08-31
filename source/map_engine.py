@@ -20,6 +20,7 @@ from map_store import MapStore
 from v2_assets import V2AssetStore
 from v2_runtime_assets import installed_data_root, materialize_runtime_assets
 from app_update_checker import APP_VERSION, fetch_latest_release, is_newer_version
+from config_store import AUXILIARY_KEYS
 
 
 if getattr(sys, "frozen", False):
@@ -250,6 +251,33 @@ DEFAULT_CONFIG = {
     "favorite_overlay_opacity_percent": 100,
     "minimap_enabled": True,
     "minimap_boundary_restricted": True,
+    "pk_zone_alert_enabled": True,
+    "monster_list_overlay_enabled": False,
+    "monster_list_overlay_scale": 1.0,
+    "monster_list_overlay_opacity_percent": 100,
+    "monster_list_overlay_offset_x": None,
+    "monster_list_overlay_offset_y": None,
+    "tutorial_read_flags": {},
+    "tutorial_notice_dismissed": False,
+    "clock_overlay_enabled": False,
+    "clock_overlay_scale": 1.0,
+    "clock_overlay_scale_normalized": False,
+    "clock_overlay_opacity_percent": 100,
+    "clock_overlay_offset_x": None,
+    "clock_overlay_offset_y": None,
+    "clock_stopwatch_overlay_enabled": False,
+    "clock_stopwatch_overlay_scale": 1.0,
+    "clock_stopwatch_overlay_opacity_percent": 100,
+    "clock_stopwatch_overlay_offset_x": None,
+    "clock_stopwatch_overlay_offset_y": None,
+    "clock_stopwatch_sound_volume": 60,
+    "clock_stopwatch_five_second_alert": False,
+    "clock_xp_tracking_enabled": False,
+    "clock_xp_region": None,
+    "clock_xp_reference_size": None,
+    "clock_xp_measurements": [],
+    "clock_alarms": [],
+    "clock_alarm_sound_volume": 60,
 }
 
 
@@ -287,7 +315,18 @@ def load_config():
 
 def save_config(config):
     CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    CONFIG_PATH.write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    try:
+        current = json.loads(CONFIG_PATH.read_text(encoding="utf-8-sig"))
+        current = current if isinstance(current, dict) else {}
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        current = {}
+    merged = dict(config)
+    for key in AUXILIARY_KEYS:
+        if key in current:
+            merged[key] = current[key]
+    temporary = CONFIG_PATH.with_suffix(".json.tmp")
+    temporary.write_text(json.dumps(merged, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    os.replace(temporary, CONFIG_PATH)
 
 
 def contributors_for_map(map_record):
@@ -729,18 +768,18 @@ def show_above_owner(window, owner_hwnd, x=None, y=None):
 
 
 def show_interactive_above_owner(window, owner_hwnd):
-    """Show an interactive editor above the game and give it keyboard/mouse focus."""
+    """Show an editor above the game without forcing the Windows foreground."""
     if not window.winfo_viewable():
         window.deiconify()
     window.update_idletasks()
     hwnd = user32.GetAncestor(window.winfo_id(), GA_ROOT) or window.winfo_id()
     if owner_hwnd:
         user32.SetWindowLongPtrW(hwnd, GWLP_HWNDPARENT, owner_hwnd)
-    user32.SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW)
-    user32.SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW)
+    flags = SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW
+    user32.SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, flags)
+    user32.SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, flags)
     window.lift()
-    window.focus_force()
-    user32.SetForegroundWindow(hwnd)
+    window.focus_set()
 
 
 class MapEngine:
@@ -2349,6 +2388,17 @@ class MapEngine:
             "<Leave>",
             lambda _event: self.map_canvas.configure(cursor="fleur" if self.map_resize_mode else "arrow"),
         )
+        self.pk_mark_photo = None
+        try:
+            mark_path = BUNDLE_DIR / "assets" / "icons" / "godinavi" / "pkmark.png"
+            with Image.open(mark_path) as source:
+                mark = source.convert("RGBA").resize(
+                    (source.width * 2, source.height * 2),
+                    Image.Resampling.NEAREST,
+                )
+                self.pk_mark_photo = ImageTk.PhotoImage(mark, master=self.root)
+        except (OSError, ValueError, tk.TclError):
+            pass
         self.map_width = 1
         self.map_height = 1
         self.map_scale = 1.0
@@ -2525,7 +2575,7 @@ class MapEngine:
             set_window_click_through(self.map_window, True)
             self.hide_world_map()
             if self.active_map and self.minimap_enabled:
-                self.map_canvas.configure(highlightbackground="#444444", highlightcolor="#444444")
+                self.apply_minimap_border()
                 self.apply_map_size()
                 self.apply_map_opacity()
                 self.show_map()
@@ -2666,8 +2716,7 @@ class MapEngine:
             self.apply_world_map_mouse_mode()
         else:
             set_window_click_through(self.map_window, not self.map_resize_mode)
-        border_color = "#d8b15a" if self.map_resize_mode else "#444444"
-        self.map_canvas.configure(highlightbackground=border_color, highlightcolor=border_color)
+        self.apply_minimap_border()
         if self.world_map_mode:
             self.world_map_render_key = None
         if self.map_resize_mode:
@@ -2749,8 +2798,10 @@ class MapEngine:
                 except (KeyError, TypeError, ValueError):
                     continue
         self.map_photo = ImageTk.PhotoImage(image)
+        self.apply_minimap_border()
         self.map_canvas.delete("all")
         self.map_canvas.create_image(0, 0, image=self.map_photo, anchor="nw")
+        self.draw_pk_area_label()
         if self.active_map and not has_location_data:
             label = self.map_canvas.create_text(
                 image.width - 7,
@@ -2786,6 +2837,63 @@ class MapEngine:
                 time.perf_counter() - render_started,
                 time.process_time() - render_cpu_started,
             )
+
+    def draw_pk_area_label(self):
+        """Give PK-enabled maps a compact warning treatment."""
+        self.map_canvas.delete("pk_area_label")
+        if (
+            not self.config.get("pk_zone_alert_enabled", True)
+            or not self.active_map
+            or not self.active_map.get("isPKArea")
+            or self.map_resize_mode
+        ):
+            return
+        width = max(1, int(float(self.map_canvas.cget("width"))))
+        height = max(1, int(float(self.map_canvas.cget("height"))))
+        accent = "#ff4658"
+        self.map_canvas.create_rectangle(
+            0,
+            0,
+            width - 1,
+            height - 1,
+            outline=accent,
+            width=1,
+            tags="pk_area_label",
+        )
+        if self.pk_mark_photo is not None:
+            icon_right = width - 4
+            icon_top = 4
+            self.map_canvas.create_image(
+                icon_right,
+                icon_top,
+                image=self.pk_mark_photo,
+                anchor="ne",
+                tags="pk_area_label",
+            )
+            self.map_canvas.create_text(
+                icon_right - self.pk_mark_photo.width() // 2,
+                icon_top + self.pk_mark_photo.height() + 1,
+                text="PK",
+                anchor="n",
+                fill=accent,
+                font=("Arial", 11, "bold"),
+                tags="pk_area_label",
+            )
+
+    def apply_minimap_border(self):
+        if self.world_map_mode:
+            color = "#7a1c1c"
+        elif self.map_resize_mode:
+            color = "#d8b15a"
+        elif (
+            self.config.get("pk_zone_alert_enabled", True)
+            and self.active_map
+            and self.active_map.get("isPKArea")
+        ):
+            color = "#ff4658"
+        else:
+            color = "#444444"
+        self.map_canvas.configure(highlightbackground=color, highlightcolor=color)
 
     def set_party_positions(self, positions):
         self.party_positions = list(positions or [])
@@ -3473,7 +3581,7 @@ class MapEngine:
             return
         if self.map_resize_mode:
             self.map_resize_mode = False
-            self.map_canvas.configure(highlightbackground="#444444", highlightcolor="#444444")
+            self.apply_minimap_border()
             set_window_click_through(self.map_window, True)
             self.render_map()
             if self.target_hwnd:
@@ -3945,6 +4053,14 @@ class MapEngine:
         if self.minimap_boundary_restricted and not self.world_map_mode:
             self.position_map()
         return self.minimap_boundary_restricted
+
+    def toggle_pk_zone_alert(self):
+        enabled = not bool(self.config.get("pk_zone_alert_enabled", True))
+        self.config["pk_zone_alert_enabled"] = enabled
+        save_config(self.config)
+        if self.active_map and not self.world_map_mode:
+            self.render_map()
+        return enabled
 
     def request_immediate_ocr(self):
         """Run one OCR pass as soon as Tk is idle instead of waiting for tick()."""

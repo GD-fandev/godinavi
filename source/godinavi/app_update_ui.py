@@ -18,6 +18,7 @@ import certifi
 from app_update_checker import APP_VERSION, extract_patch_notes, fetch_latest_release, is_newer_version
 from .window_attachment import attach_above
 from modal_window import activate_modal, bind_modal_drag, bind_modal_escape, modal_font_family, place_modal
+from config_store import load_section, save_section
 
 
 TEXTS = {
@@ -65,23 +66,33 @@ def reminder_path():
 
 
 def update_prompt_is_snoozed(path=None, today=None):
-    path = Path(path) if path else reminder_path()
     today = today or date.today()
+    if path is None:
+        payload = load_section("update_reminder", {}, (reminder_path(),))
+    else:
+        path = Path(path)
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            return False
     try:
-        payload = json.loads(path.read_text(encoding="utf-8-sig"))
         remind_after = date.fromisoformat(str(payload.get("remindAfter", "")))
-    except (OSError, UnicodeError, json.JSONDecodeError, ValueError, AttributeError):
+    except (ValueError, AttributeError):
         return False
     return today < remind_after
 
 
 def snooze_update_prompt(path=None, today=None):
-    path = Path(path) if path else reminder_path()
     today = today or date.today()
+    payload = {"remindAfter": (today + timedelta(days=1)).isoformat()}
+    if path is None:
+        save_section("update_reminder", payload)
+        return
+    path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(".json.tmp")
     temporary.write_text(
-        json.dumps({"remindAfter": (today + timedelta(days=1)).isoformat()}, ensure_ascii=False, indent=2) + "\n",
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
     os.replace(temporary, path)

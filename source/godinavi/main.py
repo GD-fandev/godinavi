@@ -22,6 +22,7 @@ from .alchemy_ui import AlchemyUI
 from .app_update_ui import AppUpdateUI
 from .armor_catalog_ui import ArmorCatalogUI
 from .buff_timer_engine import BuffTimerApp, default_buff_config
+from .clock_overlay import ClockOverlay
 from .dock import OverlayDock
 from .durability_monitor import DurabilityMonitor, default_durability_config
 from .feature_notice_ui import FeatureNoticeUI
@@ -31,6 +32,7 @@ from .monster_dictionary_ui import MonsterDictionaryUI
 from .party_ui import PartyUI
 from .party_client import PartyClient
 from .toolbar_customize_ui import ToolbarCustomizeUI
+from .tutorial_ui import TutorialUI
 from .ui_fonts import apply_tk_default_fonts, register_bundled_fonts
 from .window_attachment import (
     attach_above, client_screen_rect, find_godius_window, is_minimized,
@@ -59,11 +61,11 @@ def default_dock_offset(client_width: int, client_height: int, bar_width: int, b
 
 DOCK_TEXTS = {
     "KR": {
-        "map": "지도", "map_adjust": "지도 위치·크기 조절", "ocr_edit": "OCR 영역 편집", "world_map": "월드맵 열기 (F10)", "map_boundary_on": "영역제한 ON", "map_boundary_off": "영역제한 OFF", "maze_mode_on": "미궁 지도 모드 ON", "maze_mode_off": "미궁 지도 모드 OFF",
+        "map": "지도", "map_adjust": "지도 위치·크기 조절", "ocr_edit": "OCR 영역 편집", "world_map": "월드맵 열기 (F10)", "map_boundary_on": "영역제한 ON", "map_boundary_off": "영역제한 OFF", "pk_alert_on": "PK존 알림 ON", "pk_alert_off": "PK존 알림 OFF", "maze_mode_on": "미궁 지도 모드 ON", "maze_mode_off": "미궁 지도 모드 OFF",
         "portal": "포탈", "portal_edit": "포탈 장소 편집", "preset": "프리셋 전환", "portal_bar": "포탈 바 표시/숨김",
         "buff": "버프 타이머", "buff_region": "버프 인식 영역 편집", "buff_toggle": "타이머 표시/숨김", "buff_size": "버프 창 조정",
         "durability": "내구도 감시", "durability_settings": "내구도 감시 설정", "durability_toggle": "내구도 감시 On/Off",
-        "alchemy": "모험수첩", "alchemy_open": "연금술 계산기", "monster_dictionary": "몬스터 사전", "armor_catalog": "장비 도감",
+        "alchemy": "모험수첩", "alchemy_open": "연금술 계산기", "monster_dictionary": "몬스터 사전", "armor_catalog": "장비 도감", "tutorial": "가디내비 튜토리얼",
         "party": "파티룸", "party_create": "파티룸 생성", "party_join": "파티룸 입실", "party_leave": "파티룸 퇴실", "party_settings": "파티룸 확인", "party_buff_adjust": "버프 확인창 조정", "party_personal_timer": "개인 버프 타이머",
         "settings": "기타 설정", "button_ui": "버튼 UI 설정", "toolbar_customize": "툴바 커스터마이즈", "orientation": "가로/세로 전환", "quit": "종료",
         "map_update": "지도 데이터 업데이트", "map_update_available": "지도 업데이트 가능 ↓",
@@ -71,11 +73,11 @@ DOCK_TEXTS = {
         "version_check": "버전 확인", "version_title": "버전 정보", "close": "닫기",
     },
     "JP": {
-        "map": "地図", "map_adjust": "地図の位置・サイズ調整", "ocr_edit": "OCR領域を編集", "world_map": "ワールドマップを開く (F10)", "map_boundary_on": "領域制限 ON", "map_boundary_off": "領域制限 OFF", "maze_mode_on": "迷宮マップモード ON", "maze_mode_off": "迷宮マップモード OFF",
+        "map": "地図", "map_adjust": "地図の位置・サイズ調整", "ocr_edit": "OCR領域を編集", "world_map": "ワールドマップを開く (F10)", "map_boundary_on": "領域制限 ON", "map_boundary_off": "領域制限 OFF", "pk_alert_on": "PKゾーン通知 ON", "pk_alert_off": "PKゾーン通知 OFF", "maze_mode_on": "迷宮マップモード ON", "maze_mode_off": "迷宮マップモード OFF",
         "portal": "ポータル", "portal_edit": "ポータル地点を編集", "preset": "プリセット切替", "portal_bar": "ポータルバー 表示/非表示",
         "buff": "バフタイマー", "buff_region": "バフ認識領域を編集", "buff_toggle": "タイマー 表示/非表示", "buff_size": "バフ画面調整",
         "durability": "耐久度監視", "durability_settings": "耐久度監視設定", "durability_toggle": "耐久度監視 On/Off",
-        "alchemy": "冒険手帳", "alchemy_open": "錬金術計算機", "monster_dictionary": "モンスター図鑑", "armor_catalog": "装備図鑑",
+        "alchemy": "冒険手帳", "alchemy_open": "錬金術計算機", "monster_dictionary": "モンスター図鑑", "armor_catalog": "装備図鑑", "tutorial": "ガディナビ チュートリアル",
         "party": "パーティールーム", "party_create": "パーティールーム作成", "party_join": "パーティールーム入室", "party_leave": "パーティールーム退出", "party_settings": "パーティールーム確認", "party_buff_adjust": "バフ確認画面の調整", "party_personal_timer": "個人バフタイマー",
         "settings": "設定", "button_ui": "ボタンUI設定", "toolbar_customize": "ツールバーカスタマイズ", "orientation": "横/縦を切替", "quit": "終了",
         "map_update": "マップデータ更新", "map_update_available": "マップ更新あり ↓",
@@ -83,11 +85,11 @@ DOCK_TEXTS = {
         "version_check": "バージョン確認", "version_title": "バージョン情報", "close": "閉じる",
     },
     "EN": {
-        "map": "Map", "map_adjust": "Adjust map position/size", "ocr_edit": "Edit OCR region", "world_map": "Open world map (F10)", "map_boundary_on": "Boundary lock ON", "map_boundary_off": "Boundary lock OFF", "maze_mode_on": "Labyrinth Map Mode ON", "maze_mode_off": "Labyrinth Map Mode OFF",
+        "map": "Map", "map_adjust": "Adjust map position/size", "ocr_edit": "Edit OCR region", "world_map": "Open world map (F10)", "map_boundary_on": "Boundary lock ON", "map_boundary_off": "Boundary lock OFF", "pk_alert_on": "PK zone alerts ON", "pk_alert_off": "PK zone alerts OFF", "maze_mode_on": "Labyrinth Map Mode ON", "maze_mode_off": "Labyrinth Map Mode OFF",
         "portal": "Portal", "portal_edit": "Edit portal locations", "preset": "Switch preset", "portal_bar": "Show/hide portal bar",
         "buff": "Buff Timer", "buff_region": "Edit buff detection region", "buff_toggle": "Show/hide timer", "buff_size": "Adjust buff window",
         "durability": "Durability Monitor", "durability_settings": "Durability settings", "durability_toggle": "Durability monitor On/Off",
-        "alchemy": "Adventure Journal", "alchemy_open": "Alchemy calculator", "monster_dictionary": "Monster compendium", "armor_catalog": "Equipment catalog",
+        "alchemy": "Adventure Journal", "alchemy_open": "Alchemy calculator", "monster_dictionary": "Monster compendium", "armor_catalog": "Equipment catalog", "tutorial": "GodiNavi Tutorial",
         "party": "Party Room", "party_create": "Create party room", "party_join": "Join party room", "party_leave": "Leave party room", "party_settings": "Party room overview", "party_buff_adjust": "Adjust party buff window", "party_personal_timer": "Personal buff timer",
         "settings": "Settings", "button_ui": "Button UI settings", "toolbar_customize": "Customize toolbar", "orientation": "Switch horizontal/vertical", "quit": "Quit",
         "map_update": "Map data update", "map_update_available": "Map update available ↓",
@@ -281,11 +283,29 @@ class PrototypeApp:
             lambda: self.client_rect,
             lambda: self.target_hwnd,
             BUNDLE_DIR,
+            self.map_engine.config,
+            lambda: save_config(self.map_engine.config),
         )
         self.armor_catalog_ui = ArmorCatalogUI(
             self.root,
             RESOURCE_DIR,
             lambda: self.map_engine.ui_language if self.map_engine else "KR",
+        )
+        self.tutorial_ui = TutorialUI(
+            self.root,
+            lambda: self.map_engine.ui_language if self.map_engine else "KR",
+            self.map_engine.config,
+            lambda: save_config(self.map_engine.config),
+        )
+        self.clock_overlay = ClockOverlay(
+            self.root,
+            BUNDLE_DIR,
+            self.map_engine.config,
+            lambda: save_config(self.map_engine.config),
+            lambda: self.map_engine.ui_language if self.map_engine else "KR",
+            lambda: self.client_rect,
+            lambda: self.target_hwnd,
+            self.map_engine,
         )
         installation_id = str(self.map_engine.config.get("party_installation_id", ""))
         if len(installation_id) < 16:
@@ -370,7 +390,7 @@ class PrototypeApp:
         )
         self._start_tray_icon()
         self.root.after(100, self._follow_godius)
-        self.root.after(1500, self._start_140_notice_flow)
+        self.root.after(1500, self._start_tutorial_notice_flow)
 
     def _start_tray_icon(self):
         if pystray is None:
@@ -491,6 +511,17 @@ class PrototypeApp:
             return
         if _attempt < 40:
             self.root.after(150, lambda: self.center_message(text, duration, _attempt + 1))
+
+    def _start_tutorial_notice_flow(self):
+        if self.onboarding_pending:
+            return
+        if self.tutorial_ui.notice_window and self.tutorial_ui.notice_window.winfo_exists():
+            self.tutorial_ui.notice_close_callback = self._start_140_notice_flow
+            return
+        if self.tutorial_ui.should_show_notice():
+            self.tutorial_ui.show_notice(self._start_140_notice_flow)
+            return
+        self._start_140_notice_flow()
 
     def _start_140_notice_flow(self):
         if APP_VERSION != "1.4.0":
@@ -629,6 +660,10 @@ class PrototypeApp:
         if self.map_engine:
             self.map_engine.toggle_minimap_boundary_restriction()
 
+    def toggle_pk_zone_alert(self):
+        if self.map_engine:
+            self.map_engine.toggle_pk_zone_alert()
+
     def toggle_map_calibration(self):
         if self.map_engine:
             self.map_engine.toggle_calibration()
@@ -709,6 +744,8 @@ class PrototypeApp:
     def shutdown(self):
         if hasattr(self, "party_client"):
             self.party_client.close()
+        if hasattr(self, "clock_overlay"):
+            self.clock_overlay.close()
         if self.tray_icon is not None:
             try:
                 self.tray_icon.stop()
@@ -793,6 +830,7 @@ class PrototypeApp:
         self.map_engine.config["onboarding_complete"] = True
         save_config(self.map_engine.config)
         self.message({"KR": "초기 설정 완료", "JP": "初期設定完了", "EN": "Initial setup complete"}[self.map_engine.ui_language])
+        self.root.after(250, lambda: self.tutorial_ui.show_notice(self._start_140_notice_flow))
 
     def _save_buff_config(self, config):
         if not self.map_engine:
@@ -875,6 +913,10 @@ class PrototypeApp:
                 lambda: texts["map_boundary_off"] if self.map_engine.minimap_boundary_restricted else texts["map_boundary_on"],
                 self.toggle_map_boundary_restriction,
             ),
+            QuickAction(
+                lambda: texts["pk_alert_off"] if self.map_engine.config.get("pk_zone_alert_enabled", True) else texts["pk_alert_on"],
+                self.toggle_pk_zone_alert,
+            ),
             QuickAction(texts["ocr_edit"], self.toggle_map_calibration),
             QuickAction(texts["world_map"], self.toggle_world_map),
             QuickAction(
@@ -940,9 +982,15 @@ class PrototypeApp:
                     QuickAction(texts["alchemy_open"], self.alchemy_ui.open),
                     QuickAction(texts["monster_dictionary"], self.monster_dictionary_ui.open),
                     QuickAction(texts["armor_catalog"], self.armor_catalog_ui.open),
+                    QuickAction(
+                        lambda: f"⚠ {texts['tutorial']}" if self.tutorial_ui.has_unread() else texts["tutorial"],
+                        self.tutorial_ui.open,
+                    ),
+                    QuickAction(self.clock_overlay.menu_text, self.clock_overlay.toggle),
                 ),
                 str(ICON_DIR / "encyclopedia.jpg"),
                 secondary=self.alchemy_ui.open,
+                alert=self.tutorial_ui.alert_badge,
             ),
             DockItem(
                 "party", "", texts["party"], self.toggle_party_overview,
@@ -1172,6 +1220,7 @@ class PrototypeApp:
             self.party_ui.set_owner_overlays_available(False)
             self.map_engine.set_overlays_temporarily_hidden(True)
             self.buff_timer.set_overlays_temporarily_hidden(True)
+            self.clock_overlay.set_temporarily_hidden(True)
             self._hide_non_toolbar_overlays(remember=True)
             if self.dock:
                 self.dock.set_temporarily_disabled(True)
@@ -1181,6 +1230,7 @@ class PrototypeApp:
             self.dock.set_temporarily_disabled(False)
         self.map_engine.set_overlays_temporarily_hidden(False)
         self.buff_timer.set_overlays_temporarily_hidden(False)
+        self.clock_overlay.set_temporarily_hidden(False)
         self.party_ui.set_owner_overlays_available(bool(self.client_rect) and self._toolbar_feature_enabled("party"))
         for window in tuple(self.temporarily_hidden_windows):
             try:

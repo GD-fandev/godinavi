@@ -12,6 +12,21 @@ from pathlib import Path
 from v2_pak import PakReader
 
 
+def _prune_cache(cache, keep):
+    if not cache.is_dir():
+        return
+    for entry in cache.iterdir():
+        if entry == keep:
+            continue
+        if entry.is_dir():
+            shutil.rmtree(entry, ignore_errors=True)
+        else:
+            try:
+                entry.unlink()
+            except OSError:
+                pass
+
+
 def _installed_pak(model_root):
     requested = Path(model_root)
     if requested.is_file():
@@ -35,6 +50,7 @@ def materialize_ocr_models(model_root, cache_root=None):
     target = cache / digest
     ready = target / ".ready"
     if ready.is_file():
+        _prune_cache(cache, target)
         return target
     temporary = cache / f".{digest}.{uuid.uuid4().hex}.tmp"
     temporary.mkdir(parents=True, exist_ok=False)
@@ -50,6 +66,7 @@ def materialize_ocr_models(model_root, cache_root=None):
             os.replace(temporary, target)
         except FileExistsError:
             shutil.rmtree(temporary)
+        _prune_cache(cache, target)
         return target
     except Exception:
         shutil.rmtree(temporary, ignore_errors=True)

@@ -1,5 +1,6 @@
 {
   "id": "middle",
+  "isPKArea": true,
   "names": {
     "ko": [
       "중앙평원"

@@ -151,6 +151,9 @@ class OverlayDock:
         self.icon_cache: dict[tuple[str, int, int, bool | str | None], tuple[ImageTk.PhotoImage, ImageTk.PhotoImage]] = {}
         self.item_buttons: dict[str, tk.Button] = {}
         self.collapse_handle: tk.Canvas | None = None
+        self.collapsed_alert_window: tk.Toplevel | None = None
+        self.collapsed_alert_label: tk.Label | None = None
+        self.collapsed_alert_geometry: str | None = None
         self.restoring_anchor = False
         self.resize_origin = None
         self.edit_header_window = None
@@ -371,6 +374,94 @@ class OverlayDock:
             else:
                 points = (width * 0.38, height * 0.65, width * 0.62, height * 0.65, width * 0.50, height * 0.28)
         handle.create_polygon(*points, fill=TEXT, outline=GOLD)
+
+    def _ensure_collapsed_alert(self):
+        if self._window_exists(self.collapsed_alert_window):
+            return self.collapsed_alert_window
+        window = tk.Toplevel(self.root)
+        window.overrideredirect(True)
+        window.configure(bg=TRANSPARENT)
+        window.transient(self.root)
+        label = tk.Label(
+            window, text="⚠️", bg=TRANSPARENT, fg="#ffdc37", bd=0,
+            padx=0, pady=0, font=("Segoe UI Emoji", max(20, round(25 * self.icon_scale))),
+        )
+        label.pack()
+        try:
+            window.wm_attributes("-transparentcolor", TRANSPARENT)
+        except tk.TclError:
+            pass
+        window.withdraw()
+        make_noactivate_toolwindow(window)
+        self.collapsed_alert_window = window
+        self.collapsed_alert_label = label
+        return window
+
+    def _collapsed_alert_opacity(self):
+        if not self.collapsed:
+            return None
+        visible_keys = {item.key for item in self._visible_items()}
+        opacity = None
+        for item in self.items:
+            if item.key in visible_keys or item.alert is None:
+                continue
+            try:
+                alert = item.alert() if callable(item.alert) else item.alert
+            except Exception:
+                continue
+            if isinstance(alert, tuple) and len(alert) == 2:
+                if alert[0]:
+                    value = max(0, min(100, int(alert[1])))
+                    opacity = value if opacity is None else max(opacity, value)
+            elif alert:
+                opacity = 100
+        return opacity
+
+    def _refresh_collapsed_alert(self):
+        opacity = self._collapsed_alert_opacity()
+        if opacity is None or not self.root.winfo_viewable() or not self.collapse_handle:
+            if self._window_exists(self.collapsed_alert_window):
+                self.collapsed_alert_window.withdraw()
+            self.collapsed_alert_geometry = None
+            return
+        window = self._ensure_collapsed_alert()
+        if self.collapsed_alert_label:
+            self.collapsed_alert_label.configure(
+                font=("Segoe UI Emoji", max(20, round(25 * self.icon_scale)))
+            )
+        window.update_idletasks()
+        handle = self.collapse_handle
+        gap = max(2, round(3 * self.icon_scale))
+        badge_width = window.winfo_reqwidth()
+        badge_height = window.winfo_reqheight()
+        handle_left = handle.winfo_rootx()
+        handle_top = handle.winfo_rooty()
+        handle_right = handle_left + handle.winfo_width()
+        handle_bottom = handle_top + handle.winfo_height()
+        if self.collapse_edge == "right":
+            x = handle_right + gap
+            y = handle_top + (handle.winfo_height() - badge_height) // 2
+        elif self.collapse_edge == "left":
+            x = handle_left - badge_width - gap
+            y = handle_top + (handle.winfo_height() - badge_height) // 2
+        elif self.collapse_edge == "bottom":
+            x = handle_left + (handle.winfo_width() - badge_width) // 2
+            y = handle_bottom + gap
+        else:
+            x = handle_left + (handle.winfo_width() - badge_width) // 2
+            y = handle_top - badge_height - gap
+        geometry = f"+{x}+{y}"
+        if geometry != self.collapsed_alert_geometry:
+            window.geometry(geometry)
+            self.collapsed_alert_geometry = geometry
+        window.attributes("-alpha", (opacity / 100.0) * (self.opacity_percent / 100.0))
+        if not window.winfo_viewable():
+            window.deiconify()
+        # The game regains focus after toolbar actions and can otherwise cover
+        # this separate alert window. Keep it immediately above the dock
+        # without activating it, just like the other attached overlays.
+        attach_above(window, native_window_handle(self.root), x, y)
+
     def toggle_collapsed(self):
         if not self.locked:
             return
@@ -445,7 +536,7 @@ class OverlayDock:
         alert = None
         if item.alert is not None:
             try:
-                alert = str(item.alert() or "")
+                alert = item.alert() or ""
             except Exception:
                 alert = ""
         if item.badge is not None:
@@ -550,7 +641,32 @@ class OverlayDock:
         draw.rounded_rectangle((left, top, right, bottom), radius=3, fill=fill, outline=outline, width=1)
         draw.text((left + pad_x, top + pad_y - text_box[1]), label, font=font, fill="#ffffff")
 
-    def _draw_alert_badge(self, image: Image.Image, label: str):
+    def _draw_alert_badge(self, image: Image.Image, label):
+        if isinstance(label, tuple) and len(label) == 2:
+            text, opacity = str(label[0]), max(0, min(100, int(label[1])))
+            if not text or opacity <= 0:
+                return
+            overlay = Image.new("RGBA", image.size, (0, 0, 0, 0))
+            draw = ImageDraw.Draw(overlay)
+            font_size = max(32, round(42 * self.icon_scale))
+            try:
+                font = ImageFont.truetype("arialbd.ttf", font_size)
+            except OSError:
+                font = ImageFont.load_default()
+            stroke_width = max(2, round(3 * self.icon_scale))
+            box = draw.textbbox((0, 0), text, font=font, stroke_width=stroke_width)
+            text_width = box[2] - box[0]
+            text_height = box[3] - box[1]
+            x = (image.width - text_width) // 2 - box[0]
+            y = (image.height - text_height) // 2 - box[1]
+            alpha = round(255 * opacity / 100)
+            draw.text(
+                (x, y), text, font=font, fill=(255, 220, 55, alpha),
+                stroke_width=stroke_width, stroke_fill=(35, 26, 8, alpha),
+            )
+            image.paste(overlay, (0, 0), overlay)
+            return
+        label = str(label)
         draw = ImageDraw.Draw(image)
         right = image.width - max(2, round(3 * self.icon_scale))
         top = max(2, round(3 * self.icon_scale))
@@ -598,8 +714,9 @@ class OverlayDock:
                 button._normal_icon = normal_icon
                 button._hover_icon = hover_icon
                 button.configure(image=normal_icon or "")
+            self._refresh_collapsed_alert()
             if schedule_next:
-                self.root.after(150, self._refresh_state_badges)
+                self.root.after(50, self._refresh_state_badges)
             if not self.locked:
                 self._position_edit_chrome()
         except tk.TclError:

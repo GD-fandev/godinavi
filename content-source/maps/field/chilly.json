@@ -1,5 +1,6 @@
 {
   "id": "chilly",
+  "isPKArea": true,
   "names": {
     "ko": [
       "칠리해안"

@@ -37,7 +37,7 @@ def calibration_ping_expansions(now: float) -> tuple[int, int, int]:
     phase = int(now * 24) % 24
     return tuple((phase + offset) % 24 for offset in (0, 8, 16))
 
-APP_VERSION = "2.0.1"
+APP_VERSION = "2.1.0"
 DEFAULT_BUFF_CONFIG_JSON = r'''{
   "process_name": "Godius.exe",
   "window_title": "Godius Client",

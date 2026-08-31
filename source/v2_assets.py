@@ -17,6 +17,8 @@ PAK_ROUTES = (
     ("assets/buff_timer/", "assets/ui.pak", "ui", "buff_timer/"),
     ("assets/durability/", "assets/ui.pak", "ui", "durability/"),
     ("assets/map_ocr/", "assets/ui.pak", "ui", "map_ocr/"),
+    ("assets/tutorials/", "assets/ui.pak", "ui", "tutorials/"),
+    ("assets/sounds/", "assets/audio.pak", "audio", "sounds/"),
     ("assets/chat.mp3", "assets/audio.pak", "audio", "chat.mp3"),
     ("assets/warn.mp3", "assets/audio.pak", "audio", "warn.mp3"),
 )
