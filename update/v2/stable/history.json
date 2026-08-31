@@ -2,6 +2,37 @@
   "schemaVersion": 2,
   "entries": [
     {
+      "id": "client-2.1.1",
+      "kind": "client",
+      "version": "2.1.1",
+      "components": [
+        "launcher",
+        "updater",
+        "core"
+      ],
+      "publishedAt": "2026-08-31T22:06:15Z",
+      "changes": {
+        "KR": {
+          "summary": "가디내비 v2.1.1",
+          "details": [
+            "[핫픽스]\n- 업데이트 오류에 대비한 백업 파일의 보관 개수를 조정했습니다.\n- 오래된 업데이트용 자료를 자동으로 정리하도록 개선했습니다."
+          ]
+        },
+        "JP": {
+          "summary": "ガディナビ v2.1.1",
+          "details": [
+            "[ホットフィックス]\n- アップデートエラーに備えたバックアップファイルの保管数を調整しました。\n- 古いアップデート用ファイルを自動的に整理するよう改善しました。"
+          ]
+        },
+        "EN": {
+          "summary": "GodiNavi v2.1.1",
+          "details": [
+            "[Hotfix]\n- Adjusted the number of backup files retained for recovery from update errors.\n- Improved automatic cleanup of obsolete update files."
+          ]
+        }
+      }
+    },
+    {
       "id": "client-2.1.0",
       "kind": "client",
       "version": "2.1.0",
