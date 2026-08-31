@@ -1,30 +1,27 @@
-"""Materialize V2 UI/audio PAKs for libraries that require filesystem paths."""
+"""Materialize V2 UI/audio assets only for the lifetime of the process."""
 
 from __future__ import annotations
 
-import hashlib
+import atexit
 import os
 import shutil
 import sys
+import tempfile
 import uuid
 from pathlib import Path
 
 from v2_pak import PakReader
 
+_MATERIALIZED_ROOT = None
 
-def _prune_cache(cache, keep):
-    if not cache.is_dir():
-        return
-    for entry in cache.iterdir():
-        if entry == keep:
-            continue
-        if entry.is_dir():
-            shutil.rmtree(entry, ignore_errors=True)
-        else:
-            try:
-                entry.unlink()
-            except OSError:
-                pass
+
+def _remove_tree(path):
+    shutil.rmtree(path, ignore_errors=True)
+
+
+def _remove_legacy_cache():
+    local = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local"))
+    _remove_tree(local / "GodiNavi" / "cache" / "runtime-assets")
 
 
 def installed_data_root(executable=None):
@@ -38,6 +35,7 @@ def installed_data_root(executable=None):
 
 
 def materialize_runtime_assets(data_root=None, cache_root=None):
+    global _MATERIALIZED_ROOT
     data_root = Path(data_root) if data_root else installed_data_root()
     if data_root is None:
         return Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent))
@@ -47,16 +45,16 @@ def materialize_runtime_assets(data_root=None, cache_root=None):
     )
     if any(not path.is_file() for path, _name in packages):
         return Path(getattr(sys, "_MEIPASS", data_root))
-    digest = hashlib.sha256()
-    for path, _name in packages:
-        digest.update(path.read_bytes())
-    cache = Path(cache_root or Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local")) / "GodiNavi" / "cache" / "runtime-assets")
-    target = cache / digest.hexdigest()
-    if (target / ".ready").is_file():
-        _prune_cache(cache, target)
-        return target
-    temporary = cache / f".{target.name}.{uuid.uuid4().hex}.tmp"
-    temporary.mkdir(parents=True, exist_ok=False)
+    if cache_root is None:
+        _remove_legacy_cache()
+    if _MATERIALIZED_ROOT is not None and _MATERIALIZED_ROOT.is_dir():
+        return _MATERIALIZED_ROOT
+    if cache_root is None:
+        temporary = Path(tempfile.mkdtemp(prefix=".godinavi-assets-"))
+    else:
+        temporary = Path(cache_root) / uuid.uuid4().hex
+        temporary.mkdir(parents=True, exist_ok=False)
+    atexit.register(_remove_tree, temporary)
     try:
         assets = temporary / "assets"
         for pak, package_name in packages:
@@ -65,14 +63,8 @@ def materialize_runtime_assets(data_root=None, cache_root=None):
                     destination = assets / Path(name)
                     destination.parent.mkdir(parents=True, exist_ok=True)
                     destination.write_bytes(reader.read(name))
-        (temporary / ".ready").write_text(target.name + "\n", encoding="ascii")
-        target.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            os.replace(temporary, target)
-        except FileExistsError:
-            shutil.rmtree(temporary)
-        _prune_cache(cache, target)
-        return target
+        _MATERIALIZED_ROOT = temporary
+        return temporary
     except Exception:
-        shutil.rmtree(temporary, ignore_errors=True)
+        _remove_tree(temporary)
         raise

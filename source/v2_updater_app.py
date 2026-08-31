@@ -16,7 +16,7 @@ from v2_contracts import validate_channel, validate_history, validate_manifest
 from v2_modal_window import bind_modal_drag, modal_font_family, place_modal
 from v2_network import download, fetch_json
 from v2_process import check_core
-from v2_settings import backup_settings, migrate_legacy_settings, restore_settings
+from v2_settings import backup_settings, migrate_legacy_settings, prune_settings_backups, restore_settings
 from v2_updater_engine import TransactionalInstaller, UpdateCancelled, load_installation, required_components
 from v2_wait import wait_for_pid
 from app_update_checker import v2_history_text
@@ -236,7 +236,10 @@ class UpdaterWindow:
 
     def _restart(self):
         launcher = Path(self.args.install_root) / "GodiNavi.exe"
-        subprocess.Popen([str(launcher)], cwd=str(launcher.parent), close_fds=True)
+        subprocess.Popen(
+            [str(launcher), "--cleanup-updater-stage", str(os.getpid())],
+            cwd=str(launcher.parent), close_fds=True,
+        )
         self.root.destroy()
 
     def _component_text(self, name, percent):
@@ -283,6 +286,7 @@ class UpdaterWindow:
             )
             if self.args.legacy_install:
                 discard_legacy_launcher_backup(self.args.install_root)
+            prune_settings_backups(keep=2)
             self.events.put(("done",))
         except Exception as exc:
             try:
