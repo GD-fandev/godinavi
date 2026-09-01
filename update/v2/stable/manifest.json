@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "channel": "stable",
-  "clientVersion": "2.1.1",
-  "snapshotVersion": "2026.09.01.1",
+  "clientVersion": "2.1.2",
+  "snapshotVersion": "2026.09.02.1",
   "historyUrl": "https://api.github.com/repos/GD-fandev/godinavi/contents/update/v2/stable/history.json?ref=main",
   "components": {
     "launcher": {
@@ -22,11 +22,11 @@
       "format": "file"
     },
     "core": {
-      "version": "2.1.1",
+      "version": "2.1.2",
       "path": "data/GodiNaviCore.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.1/GodiNaviCore.exe",
-      "size": 9368461,
-      "sha256": "33c6a988d6db1ba11d9cf571eb93db0d1898a1a944601eb602be99cc06175fa3",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.2/GodiNaviCore.exe",
+      "size": 9380912,
+      "sha256": "40386f54f6b89838833da7fa76816fe165bc0a87862afbf147a7e57bb28012f0",
       "format": "file"
     },
     "runtime": {
@@ -46,11 +46,11 @@
       "format": "pak"
     },
     "ui_assets": {
-      "version": "2.1.0",
+      "version": "2.1.2",
       "path": "data/assets/ui.pak",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.0/ui_assets-2.1.0.pak",
-      "size": 32794994,
-      "sha256": "1c8e68e0238aa6de412af65875296906a24ca57ef2f68b3728711df8eef9d77c",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.2/ui_assets-2.1.2.pak",
+      "size": 33038210,
+      "sha256": "2e4594da279034a830e2b4536b93e7df0db07c37f3681ea277dbe1c9a40cf763",
       "format": "pak"
     },
     "audio_assets": {
@@ -62,11 +62,11 @@
       "format": "pak"
     },
     "maps": {
-      "version": "2026.09.01.1",
+      "version": "2026.09.02.1",
       "path": "data/content/maps.pak",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.0/maps-2026.09.01.1.pak",
-      "size": 23905308,
-      "sha256": "37dbe7c9fcc68d0d083a22e01f748e11f8f2e2778eb4fd04eb965eba3f1075f5",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.2/maps-2026.09.02.1.pak",
+      "size": 23905314,
+      "sha256": "17fe1f7177f5fc4170190a93b00510a6780044d174e6690edceb42824bcc7e29",
       "format": "pak"
     },
     "monsters": {

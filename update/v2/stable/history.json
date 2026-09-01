@@ -2,6 +2,37 @@
   "schemaVersion": 2,
   "entries": [
     {
+      "id": "client-2.1.2",
+      "kind": "client",
+      "version": "2.1.2",
+      "components": [
+        "core",
+        "maps",
+        "ui_assets"
+      ],
+      "publishedAt": "2026-09-01T19:41:14Z",
+      "changes": {
+        "KR": {
+          "summary": "가디내비 v2.1.2",
+          "details": [
+            "[신규 기능]\n- 경험치 측정에 실시간 미터기 기능을 추가했습니다.\n  스톱워치 설정 화면에서 ‘미터기 표시’를 활성화하면, 측정 중 획득한 경험치와 시간당 경험치 효율을 실시간으로 확인할 수 있습니다.\n\n[개선]\n- 몬스터 오버레이 수정 모드에서 ‘세로’ 버튼을 누르면 몬스터 목록을 세로로 정렬할 수 있습니다.\n- 이제 몬스터 오버레이를 가디우스 창 바깥에도 배치할 수 있습니다.\n- 전사의 쉴드블록도 검투사의 광포화와 마찬가지로 버프 타이머를 수동으로 시작할 수 있게 개선했습니다.\n  버프가 없는 상태에서 쉴드블록이 동작 중일 때 버프 타이머를 왼쪽 더블클릭하면 얼음의 결정, 오른쪽 더블클릭하면 불의 결정 타이머를 시작할 수 있습니다.\n- 마법사의 불·얼음 마법과 바드의 노래에 버프 타이머가 반응하지 않도록 개선했습니다.\n- 여전히 다른 스킬 아이콘에 반응한다면, 이번 업데이트에서 보다 알기 쉽게 개선한 버프 타이머 아이콘 인식 영역 튜토리얼을 참고하여 인식 영역을 다시 조정해 주세요.\n\n[오류 수정]\n- 일부 맵의 잘못된 PK존 정보를 수정했습니다.\n  이용에 불편을 드려 죄송하며, 오류를 제보해 주신 분들께 감사드립니다."
+          ]
+        },
+        "JP": {
+          "summary": "ガディナビ v2.1.2",
+          "details": [
+            "[新機能]\n- 経験値測定にリアルタイムメーター機能を追加しました。\n  ストップウォッチ設定画面で「メーター表示」を有効にすると、測定中に獲得した経験値と1時間あたりの経験値効率をリアルタイムで確認できます。\n\n[改善]\n- モンスターオーバーレイの編集モードで「縦」ボタンを押すと、モンスター一覧を縦方向に並べられるようになりました。\n- モンスターオーバーレイをガディウスのウィンドウ外にも配置できるようになりました。\n- 戦士のシールドブロック中も、剣闘士の狂砲火と同様にバフタイマーを手動で開始できるようにしました。\n  バフがかかっていない状態でシールドブロックが発動している場合、バフタイマーを左ダブルクリックすると氷の結晶、右ダブルクリックすると炎の結晶のタイマーを開始できます。\n- 魔法使いの炎・氷魔法やバードの歌に、バフタイマーが反応しないよう改善しました。\n- それでも他のスキルアイコンに反応する場合は、今回のアップデートで分かりやすく改善したバフタイマーのアイコン認識範囲チュートリアルを確認し、認識範囲を再調整してください。\n\n[不具合修正]\n- 一部マップの誤ったPKゾーン情報を修正しました。\n  ご不便をおかけして申し訳ございません。問題をご報告いただいた皆様に感謝いたします。"
+          ]
+        },
+        "EN": {
+          "summary": "GodiNavi v2.1.2",
+          "details": [
+            "[New Features]\n- Added a real-time meter to EXP tracking.\n  Enable “Meter display” in the stopwatch settings to view your EXP gained and EXP efficiency per hour in real time while tracking.\n\n[Improvements]\n- Pressing the “Vertical” button in Monster Overlay edit mode now arranges the monster list vertically.\n- The Monster Overlay can now be positioned outside the Godius window.\n- The Buff Timer can now be started manually while a Warrior’s Shield Block is active, just as it can with a Gladiator’s Berserk.\n  When no buff is active and Shield Block is running, double-click the Buff Timer with the left mouse button to start the Ice Crystal timer or with the right mouse button to start the Fire Crystal timer.\n- The Buff Timer no longer reacts to a Mage’s fire or ice spells or a Bard’s songs.\n- If the Buff Timer still reacts to other skill icons, we recommend recalibrating its icon recognition region using the newly improved and easier-to-follow tutorial included in this update.\n\n[Bug Fixes]\n- Corrected inaccurate PK zone information for several maps.\n  We apologize for the inconvenience and thank everyone who reported the issue."
+          ]
+        }
+      }
+    },
+    {
       "id": "client-2.1.1",
       "kind": "client",
       "version": "2.1.1",
