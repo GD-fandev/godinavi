@@ -5,6 +5,7 @@ import os
 import sys
 import time
 import tkinter as tk
+import winreg
 from ctypes import wintypes
 from pathlib import Path
 
@@ -37,7 +38,7 @@ def calibration_ping_expansions(now: float) -> tuple[int, int, int]:
     phase = int(now * 24) % 24
     return tuple((phase + offset) % 24 for offset in (0, 8, 16))
 
-APP_VERSION = "2.1.1"
+APP_VERSION = "2.1.2"
 DEFAULT_BUFF_CONFIG_JSON = r'''{
   "process_name": "Godius.exe",
   "window_title": "Godius Client",
@@ -53,6 +54,32 @@ DEFAULT_BUFF_CONFIG_JSON = r'''{
   "absent_template_path": "icons/ice_absent_template.png",
   "ignore_template_paths": [
     "icons/berserk_ignore_template.jpg"
+  ],
+  "extra_ignore_templates_enabled": true,
+  "extra_ignore_template_paths": [
+    "icons/buff_capture_20260902_023158.png",
+    "icons/buff_capture_20260902_023205.png",
+    "icons/buff_capture_20260902_023211.png",
+    "icons/buff_capture_20260902_023216.png",
+    "icons/buff_capture_20260902_023221.png",
+    "icons/buff_capture_20260902_023228.png",
+    "icons/buff_capture_20260902_023232.png",
+    "icons/buff_ignore_001.jpg",
+    "icons/buff_ignore_002.jpg",
+    "icons/buff_ignore_003.jpg",
+    "icons/buff_ignore_004.jpg",
+    "icons/buff_ignore_005.jpg",
+    "icons/buff_ignore_006.jpg",
+    "icons/buff_ignore_007.jpg",
+    "icons/buff_ignore_008.jpg",
+    "icons/buff_ignore_009.jpg",
+    "icons/buff_ignore_010.jpg",
+    "icons/buff_ignore_011.jpg",
+    "icons/buff_ignore_012.jpg",
+    "icons/buff_ignore_013.jpg",
+    "icons/buff_ignore_014.jpg",
+    "icons/buff_ignore_015.jpg",
+    "icons/buff_ignore_016.jpg"
   ],
   "ignore_template_threshold": 0.9,
   "ignore_template_min_score_gap": 0.08,
@@ -118,6 +145,37 @@ DEFAULT_BUFF_CONFIG_JSON = r'''{
   "control_window_x": 87,
   "control_window_y": 675
 }'''
+
+DEFAULT_EXTRA_IGNORE_TEMPLATE_PATHS = [
+    "icons/buff_capture_20260902_023158.png",
+    "icons/buff_capture_20260902_023205.png",
+    "icons/buff_capture_20260902_023211.png",
+    "icons/buff_capture_20260902_023216.png",
+    "icons/buff_capture_20260902_023221.png",
+    "icons/buff_capture_20260902_023228.png",
+    "icons/buff_capture_20260902_023232.png",
+    "icons/buff_ignore_001.jpg",
+    "icons/buff_ignore_002.jpg",
+    "icons/buff_ignore_003.jpg",
+    "icons/buff_ignore_004.jpg",
+    "icons/buff_ignore_005.jpg",
+    "icons/buff_ignore_006.jpg",
+    "icons/buff_ignore_007.jpg",
+    "icons/buff_ignore_008.jpg",
+    "icons/buff_ignore_009.jpg",
+    "icons/buff_ignore_010.jpg",
+    "icons/buff_ignore_011.jpg",
+    "icons/buff_ignore_012.jpg",
+    "icons/buff_ignore_013.jpg",
+    "icons/buff_ignore_014.jpg",
+    "icons/buff_ignore_015.jpg",
+    "icons/buff_ignore_016.jpg",
+]
+
+MANUAL_START_IGNORE_TEMPLATES = {
+    "berserk_ignore_template",
+    "buff_ignore_009",
+}
 
 
 def default_buff_config():
@@ -407,7 +465,12 @@ class BuffTimerApp:
         self.calibration_ping_until = 0.0
         self.calibration_guide_window = None
         self.calibration_guide_image = None
+        self.calibration_guide_image_label = None
         self.calibration_bad_guide_images = []
+        self.calibration_magnifier_label = None
+        self.calibration_magnifier_image = None
+        self.calibration_magnifier_last_at = 0.0
+        self.calibration_overlay_fonts = {}
         self.calibration_guide_text_label = None
         self.calibration_guide_confirm_button = None
         self.calibration_correct_title = None
@@ -454,6 +517,9 @@ class BuffTimerApp:
         self.debug_capture_label = None
         self.debug_capture_text = None
         self.debug_capture_image = None
+        self.debug_capture_source = None
+        self.debug_capture_save_button = None
+        self.debug_capture_save_status = None
         if self.capture_coordinator is None and dxcam is not None:
             try:
                 self.desktop_camera = dxcam.create(output_color="RGB", processor_backend="numpy")
@@ -522,8 +588,15 @@ class BuffTimerApp:
 
         self.apply_tool_window_style()
         self.region_window = self.create_region_window()
-        self.region_window.winfo_children()[0].bind("<ButtonPress-1>", self.begin_region_drag)
-        self.region_window.winfo_children()[0].bind("<B1-Motion>", self.region_drag)
+        region_canvas = self.region_window.winfo_children()[0]
+        region_canvas.configure(takefocus=True)
+        region_canvas.bind("<ButtonPress-1>", self.begin_region_drag)
+        region_canvas.bind("<B1-Motion>", self.region_drag)
+        region_hwnd = root_hwnd(self.region_window)
+        region_exstyle = user32.GetWindowLongW(region_hwnd, GWL_EXSTYLE)
+        user32.SetWindowLongW(region_hwnd, GWL_EXSTYLE, region_exstyle & ~WS_EX_NOACTIVATE)
+        for key in ("Left", "Right", "Up", "Down"):
+            self.region_window.bind(f"<KeyPress-{key}>", self.calibration_arrow_key)
         self.calibration_guide_window = self.create_calibration_guide_window()
         self.resize_window = self.create_resize_window()
         self.resize_lock_window = self.create_resize_lock_window()
@@ -540,9 +613,9 @@ class BuffTimerApp:
 
     def calibration_guide_text(self):
         return {
-            "KR": "빨간 박스 안에 버프 슬롯 전체가 들어오도록 맞춰주세요.\n위 − / + 버튼이나 넘패드 − / +로 크기를 조절할 수 있습니다.\n버프 창의 위치·크기는 좌측 하단 메인 아이콘에서 조절할 수 있습니다.",
-            "JP": "赤い枠の中にバフスロット全体が入るように合わせてください。\n上の－／＋ボタンまたはテンキーの－／＋でサイズを調整できます。\nバフ画面の位置・サイズは左下のメインアイコンから調整できます。",
-            "EN": "Fit the entire buff slot inside the red box.\nResize it with the − / + buttons above or Numpad − / +.\nAdjust the buff window position and size from the main icon at the bottom left.",
+            "KR": "빨간 박스 안에 버프 슬롯 전체가 들어오도록 맞춰주세요.\n정밀하게 이동하려면 화살표 이동키로 조정해주세요.\n위 − / + 버튼이나 넘패드 − / +로 크기를 조절할 수 있습니다.\n버프 창의 위치·크기는 좌측 하단 메인 아이콘에서 조절할 수 있습니다.",
+            "JP": "赤い枠の中にバフスロット全体が入るように合わせてください。\n細かく移動するには矢印キーで調整してください。\n上の－／＋ボタンまたはテンキーの－／＋でサイズを調整できます。\nバフ画面の位置・サイズは左下のメインアイコンから調整できます。",
+            "EN": "Fit the entire buff slot inside the red box.\nFor precise movement, adjust it with the arrow keys.\nResize it with the − / + buttons above or Numpad − / +.\nAdjust the buff window position and size from the main icon at the bottom left.",
         }.get(self.config.get("ui_language", "KR"), "빨간 박스를 예시 이미지처럼 맞춰주세요.")
 
     def calibration_example_text(self, correct=True):
@@ -558,6 +631,103 @@ class BuffTimerApp:
             self.config.get("ui_language", "KR"), "확정 및 닫기"
         )
 
+    def calibration_image_overlay_texts(self):
+        texts = {
+            "KR": ("※ 예시 이미지", "※실시간 확대", "왼쪽의 예시 이미지와 일치시켜주세요."),
+            "JP": ("※ 見本画像", "※リアルタイム拡大", "左の見本画像に合わせてください。"),
+            "EN": ("※ EXAMPLE", "※LIVE ZOOM", "Match the example image on the left."),
+        }
+        return texts.get(self.config.get("ui_language", "KR"), texts["KR"])
+
+    def calibration_overlay_font(self, size):
+        size = max(8, int(size))
+        language = str(self.config.get("ui_language", "KR")).upper()
+        cache_key = (language, size)
+        font_name = {
+            "KR": "notosanskr-variablefont_wght.ttf",
+            "JP": "notosansjp-variablefont_wght.ttf",
+            "EN": "notosans-variablefont_wdth,wght.ttf",
+        }.get(language, "notosanskr-variablefont_wght.ttf")
+        if cache_key not in self.calibration_overlay_fonts:
+            candidates = (
+                RESOURCE_DIR / "assets" / "fonts" / font_name,
+                Path("C:/Windows/Fonts/YuGothB.ttc") if language == "JP" else Path("C:/Windows/Fonts/malgunbd.ttf"),
+                Path("C:/Windows/Fonts/malgunbd.ttf"),
+                Path("C:/Windows/Fonts/malgun.ttf"),
+            )
+            for path in candidates:
+                try:
+                    font = ImageFont.truetype(str(path), size)
+                    # Bundled Noto fonts are variable fonts and otherwise render at
+                    # their Regular default.  Force their weight axis to Bold so the
+                    # small labels remain legible over the game image.
+                    try:
+                        font.set_variation_by_name("Bold")
+                    except (AttributeError, OSError, ValueError):
+                        try:
+                            axes = font.get_variation_axes()
+                            values = [axis.get("default", axis.get(b"default", 0)) for axis in axes]
+                            for index, axis in enumerate(axes):
+                                axis_name = axis.get("name", axis.get(b"name", b""))
+                                if isinstance(axis_name, bytes):
+                                    axis_name = axis_name.decode("ascii", errors="ignore")
+                                if str(axis_name).lower() == "weight":
+                                    maximum = axis.get("maximum", axis.get(b"maximum", 900))
+                                    values[index] = min(700, maximum)
+                            font.set_variation_by_axes(values)
+                        except (AttributeError, OSError, TypeError, ValueError):
+                            pass
+                    self.calibration_overlay_fonts[cache_key] = font
+                    break
+                except (OSError, ValueError):
+                    continue
+            else:
+                self.calibration_overlay_fonts[cache_key] = ImageFont.load_default()
+        return self.calibration_overlay_fonts[cache_key]
+
+    def draw_calibration_image_label(self, image, text, position, color, font_size):
+        draw = ImageDraw.Draw(image, "RGBA")
+        font = self.calibration_overlay_font(font_size)
+        stroke = 1
+        text_box = draw.textbbox((0, 0), text, font=font, stroke_width=stroke)
+        text_width = text_box[2] - text_box[0]
+        text_height = text_box[3] - text_box[1]
+        pad_x, pad_y = 6, 4
+        if position == "bottom_right":
+            x = image.width - text_width - pad_x * 2 - 7
+            y = image.height - text_height - pad_y * 2 - 7
+        else:
+            x, y = 7, 7
+        draw.rounded_rectangle(
+            (x, y, x + text_width + pad_x * 2, y + text_height + pad_y * 2),
+            radius=4,
+            fill=(10, 8, 6, 205),
+            outline=(216, 177, 90, 230),
+            width=1,
+        )
+        draw.text(
+            (x + pad_x, y + pad_y - text_box[1]),
+            text,
+            font=font,
+            fill=color,
+            stroke_width=stroke,
+            stroke_fill=(0, 0, 0, 255),
+        )
+
+    def refresh_calibration_example_image(self):
+        image_path = BUFF_ASSET_DIR / "calibration_alignment_example.png"
+        if not image_path.exists() or not self.calibration_guide_image_label:
+            return
+        try:
+            with Image.open(image_path) as source:
+                example = source.convert("RGB")
+        except (OSError, ValueError):
+            return
+        example_text, _live_text, _instruction = self.calibration_image_overlay_texts()
+        self.draw_calibration_image_label(example, example_text, "top_left", (255, 224, 102, 255), 15)
+        self.calibration_guide_image = ImageTk.PhotoImage(example)
+        self.calibration_guide_image_label.configure(image=self.calibration_guide_image)
+
     def create_calibration_guide_window(self):
         win = tk.Toplevel(self.root)
         win.overrideredirect(True)
@@ -566,7 +736,7 @@ class BuffTimerApp:
         panel = tk.Frame(win, bg="#2a2118")
         panel.pack(fill="both", expand=True, padx=2, pady=2)
 
-        image_path = BUFF_ASSET_DIR / "calibration_example.png"
+        image_path = BUFF_ASSET_DIR / "calibration_alignment_example.png"
         image_label = None
         correct_title = tk.Label(
             panel, text=self.calibration_example_text(True), bg="#2a2118", fg="#83d68a",
@@ -574,11 +744,27 @@ class BuffTimerApp:
         )
         correct_title.pack(fill="x", padx=12, pady=(10, 4))
         self.calibration_correct_title = correct_title
+        correct_row = tk.Frame(panel, bg="#17130f")
+        correct_row.pack(fill="x", padx=12, pady=(0, 8))
         if image_path.exists():
-            with Image.open(image_path) as source:
-                self.calibration_guide_image = ImageTk.PhotoImage(source.convert("RGB"))
-            image_label = tk.Label(panel, image=self.calibration_guide_image, bg="#17130f", bd=0)
-            image_label.pack(padx=12, pady=(0, 8))
+            image_label = tk.Label(correct_row, bg="#17130f", bd=0)
+            self.calibration_guide_image_label = image_label
+            self.refresh_calibration_example_image()
+            image_label.pack(side="left", expand=True, padx=4, pady=6)
+        magnifier_holder = tk.Frame(correct_row, width=260, height=266, bg="#17130f")
+        magnifier_holder.pack(side="left", expand=True, padx=4, pady=6)
+        magnifier_holder.pack_propagate(False)
+        self.calibration_magnifier_label = tk.Label(
+            magnifier_holder,
+            text="Live",
+            bg="#17130f",
+            fg="#fff1c9",
+            bd=0,
+            highlightthickness=2,
+            highlightbackground="#d8b15a",
+            font=("Noto Sans KR", 9, "bold"),
+        )
+        self.calibration_magnifier_label.pack(fill="both", expand=True)
 
         wrong_title = tk.Label(
             panel, text=self.calibration_example_text(False), bg="#2a2118", fg="#ff7770",
@@ -631,7 +817,11 @@ class BuffTimerApp:
             relief="flat", bd=0, cursor="hand2", font=("Noto Sans KR", 9, "bold"),
         )
         self.calibration_guide_confirm_button.pack(fill="x", padx=10, pady=(0, 10), ipady=5)
-        drag_widgets = [win, panel, correct_title, wrong_title, self.calibration_guide_text_label, *wrong_labels]
+        drag_widgets = [
+            win, panel, correct_title, correct_row, magnifier_holder,
+            self.calibration_magnifier_label, wrong_title,
+            self.calibration_guide_text_label, *wrong_labels,
+        ]
         if image_label is not None:
             drag_widgets.append(image_label)
         for widget in drag_widgets:
@@ -639,6 +829,8 @@ class BuffTimerApp:
             widget.bind("<ButtonPress-1>", self.begin_calibration_guide_drag)
             widget.bind("<B1-Motion>", self.calibration_guide_drag)
             widget.bind("<ButtonRelease-1>", self.end_calibration_guide_drag)
+        for key in ("Left", "Right", "Up", "Down"):
+            win.bind(f"<KeyPress-{key}>", self.calibration_arrow_key)
 
         win.withdraw()
         win.update_idletasks()
@@ -653,6 +845,20 @@ class BuffTimerApp:
             callback = getattr(self, "on_calibration_confirmed", None)
             if callback:
                 callback()
+
+    def calibration_arrow_key(self, event):
+        if not self.calibration_mode:
+            return None
+        movement = {
+            "Left": (-1, 0),
+            "Right": (1, 0),
+            "Up": (0, -1),
+            "Down": (0, 1),
+        }.get(event.keysym)
+        if movement:
+            self.move_detect_region(*movement)
+            self.update_region_window()
+        return "break"
 
     def begin_calibration_guide_drag(self, event):
         self.calibration_guide_drag_origin = (
@@ -875,6 +1081,7 @@ class BuffTimerApp:
 
     def set_ui_language(self, language):
         self.config["ui_language"] = language
+        self.refresh_calibration_example_image()
         if self.calibration_guide_text_label:
             self.calibration_guide_text_label.configure(text=self.calibration_guide_text())
         if self.calibration_correct_title:
@@ -926,6 +1133,30 @@ class BuffTimerApp:
         win.configure(bg="#111111")
         self.debug_capture_label = tk.Label(win, bg="#111111", bd=0)
         self.debug_capture_label.pack(padx=8, pady=(8, 4))
+        self.debug_capture_save_button = tk.Button(
+            win,
+            text="현재 캡처 저장",
+            command=self.save_debug_capture,
+            state="disabled",
+            bg="#2b2b2b",
+            fg="#ffffff",
+            activebackground="#444444",
+            activeforeground="#ffffff",
+            relief="flat",
+            padx=12,
+            pady=5,
+        )
+        self.debug_capture_save_button.pack(anchor="w", padx=8, pady=(0, 4))
+        self.debug_capture_save_status = tk.Label(
+            win,
+            text="",
+            bg="#111111",
+            fg="#8fd694",
+            justify="left",
+            anchor="w",
+            font=("Malgun Gothic", 9),
+        )
+        self.debug_capture_save_status.pack(fill="x", padx=8, pady=(0, 4))
         self.debug_capture_text = tk.Label(
             win,
             text="Waiting for capture...",
@@ -938,6 +1169,33 @@ class BuffTimerApp:
         self.debug_capture_text.pack(fill="x", padx=8, pady=(0, 8))
         win.geometry("560x430+80+80")
         return win
+
+    def desktop_directory(self):
+        try:
+            with winreg.OpenKey(
+                winreg.HKEY_CURRENT_USER,
+                r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders",
+            ) as key:
+                desktop, _value_type = winreg.QueryValueEx(key, "Desktop")
+            return Path(os.path.expandvars(desktop))
+        except OSError:
+            return Path.home() / "Desktop"
+
+    def save_debug_capture(self):
+        capture = getattr(self, "debug_capture_source", None)
+        if capture is None:
+            return
+        try:
+            desktop = self.desktop_directory()
+            desktop.mkdir(parents=True, exist_ok=True)
+            timestamp = time.strftime("%Y%m%d_%H%M%S")
+            path = desktop / f"buff_capture_{timestamp}.png"
+            capture.save(path, format="PNG")
+            if self.debug_capture_save_status:
+                self.debug_capture_save_status.configure(text=f"저장됨: {path}", fg="#8fd694")
+        except (OSError, ValueError) as exc:
+            if self.debug_capture_save_status:
+                self.debug_capture_save_status.configure(text=f"저장 실패: {exc}", fg="#ff7777")
 
     def update_debug_status(self, status):
         if not self.debug_capture_enabled or not self.debug_capture_window or not self.debug_capture_text:
@@ -1027,6 +1285,12 @@ class BuffTimerApp:
 
     def begin_region_drag(self, event):
         self.drag_enabled = self.calibration_mode
+        if self.drag_enabled:
+            try:
+                self.region_window.focus_force()
+                event.widget.focus_set()
+            except tk.TclError:
+                pass
 
     def region_drag(self, event):
         if not self.drag_enabled or not self.calibration_mode:
@@ -1192,6 +1456,12 @@ class BuffTimerApp:
             self.target_hwnd = find_window_by_title(self.config.get("window_title", ""))
         if not self.target_hwnd:
             self.target_hwnd = find_window_by_process_name(self.config["process_name"])
+        # A minimized Win32 window may report its client origin at a sentinel
+        # position such as (-32000, -32000). Never clamp or persist timer
+        # offsets from that transient geometry; keep the last normal client-
+        # relative position so restoration returns to the same place.
+        if not self.target_hwnd or user32.IsIconic(self.target_hwnd):
+            return False
         if self.manual_position:
             if not self.timer_resize_drag_origin:
                 self.update_timer_attached_position()
@@ -1348,7 +1618,7 @@ class BuffTimerApp:
         return (
             self.end_time is None
             and self.active_buff is None
-            and self.detected_ignore_template == "berserk_ignore_template"
+            and self.detected_ignore_template in MANUAL_START_IGNORE_TEMPLATES
             and not self.timer_resize_mode
         )
 
@@ -1403,6 +1673,8 @@ class BuffTimerApp:
             self.calibration_ping_until = time.monotonic() + 2.0
             self.show_calibration_guide()
             self.update_region_window()
+            if self.calibration_guide_window:
+                self.calibration_guide_window.after(50, self.calibration_guide_window.focus_force)
 
     def toggle_timer_resize_mode(self):
         self.timer_resize_mode = not self.timer_resize_mode
@@ -1509,6 +1781,35 @@ class BuffTimerApp:
         left, top, right, bottom = [int(v) for v in region]
         width = max(8, (right - left) + delta)
         height = max(8, (bottom - top) + delta)
+        self.config["detect_region"] = [left, top, left + width, top + height]
+        self.save_config()
+        self.last_capture_bbox = self.current_detection_bbox()
+
+    def move_detect_region(self, delta_x, delta_y):
+        bbox = self.current_detection_bbox()
+        client = get_client_screen_rect(self.target_hwnd) if self.target_hwnd else None
+        if bbox and client:
+            client_left, client_top, client_right, client_bottom = client
+            left = bbox[0] - client_left
+            top = bbox[1] - client_top
+            width = max(1, bbox[2] - bbox[0])
+            height = max(1, bbox[3] - bbox[1])
+            reference_width = max(1, client_right - client_left)
+            reference_height = max(1, client_bottom - client_top)
+            self.config["detect_coordinate_origin"] = "client"
+            self.config["detect_reference_size"] = [reference_width, reference_height]
+        else:
+            region = self.config.get("detect_region", [0, 0, 40, 40])
+            left, top, right, bottom = [int(v) for v in region]
+            width = max(1, right - left)
+            height = max(1, bottom - top)
+            reference = self.config.get("detect_reference_size", [left + width, top + height])
+            reference_width = max(1, int(reference[0]))
+            reference_height = max(1, int(reference[1]))
+        max_left = max(0, reference_width - width)
+        max_top = max(0, reference_height - height)
+        left = max(0, min(max_left, left + int(delta_x)))
+        top = max(0, min(max_top, top + int(delta_y)))
         self.config["detect_region"] = [left, top, left + width, top + height]
         self.save_config()
         self.last_capture_bbox = self.current_detection_bbox()
@@ -1665,7 +1966,14 @@ class BuffTimerApp:
 
     def load_ignore_templates(self):
         templates = []
-        for relative_path in self.config.get("ignore_template_paths", []):
+        paths = list(self.config.get("ignore_template_paths", []))
+        if self.config.get("extra_ignore_templates_enabled", False):
+            # This list is a bundled detector asset set, not a user-authored
+            # preference. Older saved configs contain a full stale copy and
+            # would otherwise override replacements shipped with the app.
+            self.config["extra_ignore_template_paths"] = list(DEFAULT_EXTRA_IGNORE_TEMPLATE_PATHS)
+            paths.extend(DEFAULT_EXTRA_IGNORE_TEMPLATE_PATHS)
+        for relative_path in paths:
             try:
                 templates.append((Path(str(relative_path)).stem, Image.open(resource_path(relative_path)).convert("RGB")))
             except (FileNotFoundError, OSError, ValueError):
@@ -1763,9 +2071,12 @@ class BuffTimerApp:
             return
         try:
             scale = max(1, int(self.config.get("debug_capture_scale", 4)))
+            self.debug_capture_source = capture.copy()
             preview = capture.resize((capture.width * scale, capture.height * scale), Image.Resampling.NEAREST)
             self.debug_capture_image = ImageTk.PhotoImage(preview)
             self.debug_capture_label.configure(image=self.debug_capture_image)
+            if self.debug_capture_save_button:
+                self.debug_capture_save_button.configure(state="normal")
             bbox_text = f"bbox: {bbox[0]},{bbox[1]} - {bbox[2]},{bbox[3]}"
             self.debug_capture_text.configure(text=f"{self.capture_backend}\n{bbox_text}\n{status}")
             self.debug_capture_window.update_idletasks()
@@ -2092,6 +2403,64 @@ class BuffTimerApp:
         visible_icon = expected_icon & ((cap_luma > 105) | ((cap_luma > 65) & (cap_spread > 35)))
         return float(np.count_nonzero(visible_icon)) / max(1, int(np.count_nonzero(expected_icon)))
 
+    def update_calibration_magnifier(self, bbox):
+        if not self.calibration_mode or not self.calibration_magnifier_label:
+            return
+        now = time.monotonic()
+        if now - self.calibration_magnifier_last_at < 0.09:
+            return
+        self.calibration_magnifier_last_at = now
+        client = get_client_screen_rect(self.target_hwnd) if self.target_hwnd else None
+        if not client:
+            return
+        frame = self.capture_client_frame(client)
+        if frame is None:
+            return
+
+        left, top, right, bottom = bbox
+        client_left, client_top, client_right, client_bottom = client
+        margin = 12
+        scale = 4
+        source_width = max(1, right - left) + margin * 2
+        source_height = max(1, bottom - top) + margin * 2
+        source = Image.new("RGB", (source_width, source_height), "#17130f")
+        crop_left = max(client_left, left - margin)
+        crop_top = max(client_top, top - margin)
+        crop_right = min(client_right, right + margin)
+        crop_bottom = min(client_bottom, bottom + margin)
+        if crop_right > crop_left and crop_bottom > crop_top:
+            crop = frame.crop((
+                crop_left - client_left,
+                crop_top - client_top,
+                crop_right - client_left,
+                crop_bottom - client_top,
+            ))
+            source.paste(crop, (crop_left - (left - margin), crop_top - (top - margin)))
+        enlarged = source.resize((source_width * scale, source_height * scale), Image.Resampling.NEAREST)
+        draw = ImageDraw.Draw(enlarged)
+        draw.rectangle(
+            (
+                margin * scale,
+                margin * scale,
+                (source_width - margin) * scale - 1,
+                (source_height - margin) * scale - 1,
+            ),
+            outline="#ff3030",
+            width=3,
+        )
+        _example_text, live_text, instruction = self.calibration_image_overlay_texts()
+        blink_color = (255, 232, 72, 255) if int(now / 0.6) % 2 == 0 else (100, 255, 155, 255)
+        self.draw_calibration_image_label(enlarged, live_text, "top_left", blink_color, 14)
+        self.draw_calibration_image_label(
+            enlarged,
+            instruction,
+            "bottom_right",
+            (255, 248, 225, 255),
+            12,
+        )
+        self.calibration_magnifier_image = ImageTk.PhotoImage(enlarged)
+        self.calibration_magnifier_label.configure(image=self.calibration_magnifier_image, text="")
+
     def update_region_window(self):
         if not self.region_window:
             return
@@ -2135,6 +2504,7 @@ class BuffTimerApp:
             width=3,
         )
         attach_above(self.region_window, self.target_hwnd, left - padding, top - padding)
+        self.update_calibration_magnifier(self.last_capture_bbox)
 
     def handle_auto_detect(self):
         if not self.config.get("auto_detect", False):

@@ -252,6 +252,7 @@ class PrototypeApp:
         self.dock_owner_hwnd = None
         self.client_rect = None
         self.overlays_temporarily_hidden = False
+        self.client_overlays_unavailable = False
         self.temporarily_hidden_windows = set()
         self.temporarily_released_grab = None
         durability_config = default_durability_config()
@@ -1230,7 +1231,7 @@ class PrototypeApp:
             self.dock.set_temporarily_disabled(False)
         self.map_engine.set_overlays_temporarily_hidden(False)
         self.buff_timer.set_overlays_temporarily_hidden(False)
-        self.clock_overlay.set_temporarily_hidden(False)
+        self.clock_overlay.set_temporarily_hidden(self.client_overlays_unavailable)
         self.party_ui.set_owner_overlays_available(bool(self.client_rect) and self._toolbar_feature_enabled("party"))
         for window in tuple(self.temporarily_hidden_windows):
             try:
@@ -1302,6 +1303,13 @@ class PrototypeApp:
         self.map_engine.config["dock_collapsed"] = bool(collapsed)
         save_config(self.map_engine.config)
 
+    def _set_client_overlays_unavailable(self, unavailable):
+        unavailable = bool(unavailable)
+        if self.client_overlays_unavailable == unavailable:
+            return
+        self.client_overlays_unavailable = unavailable
+        self.clock_overlay.set_temporarily_hidden(unavailable or self.overlays_temporarily_hidden)
+
     def _follow_godius(self):
         if self.target_hwnd is None or client_screen_rect(self.target_hwnd) is None:
             self.target_hwnd = find_godius_window()
@@ -1309,16 +1317,19 @@ class PrototypeApp:
 
         rect = client_screen_rect(self.target_hwnd)
         if self.target_hwnd is None or not rect:
+            self._set_client_overlays_unavailable(True)
             self._show_missing_client()
             self.party_ui.set_owner_overlays_available(False)
             if self.root.winfo_viewable():
                 self.root.withdraw()
         elif is_minimized(self.target_hwnd):
+            self._set_client_overlays_unavailable(True)
             self._hide_missing_client()
             self.party_ui.set_owner_overlays_available(False)
             if self.root.winfo_viewable():
                 self.root.withdraw()
         else:
+            self._set_client_overlays_unavailable(False)
             self._hide_missing_client()
             self.client_rect = rect
             self.party_ui.set_owner_overlays_available(
