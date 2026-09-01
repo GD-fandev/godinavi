@@ -71,6 +71,8 @@ TEXTS = {
         "minimum_level_notice": "※카드에 표기된 레벨은 해당 몬스터의 레벨이 아닌, 등장지역 중 가장 낮은 레벨을 표시한 것입니다.",
         "monster_overlay_on": "몬스터 일람 오버레이 ON", "monster_overlay_off": "몬스터 일람 오버레이 OFF",
         "monster_overlay_adjust": "드래그 이동 · 휠로 투명도 조절",
+        "monster_overlay_horizontal": "가로", "monster_overlay_vertical": "세로",
+        "monster_overlay_move": "이동\n·\n휠",
     },
     "JP": {
         "title": "モンスター図鑑", "search": "名前検索", "all_maps": "全地域",
@@ -87,6 +89,8 @@ TEXTS = {
         "minimum_level_notice": "※カードのレベルはモンスター自身ではなく、出現地域のうち最も低いレベルを示します。",
         "monster_overlay_on": "モンスター一覧オーバーレイ ON", "monster_overlay_off": "モンスター一覧オーバーレイ OFF",
         "monster_overlay_adjust": "ドラッグで移動・ホイールで透明度調整",
+        "monster_overlay_horizontal": "横", "monster_overlay_vertical": "縦",
+        "monster_overlay_move": "移動\n・\nホイール",
     },
     "EN": {
         "title": "Monster Compendium", "search": "Search names", "all_maps": "All regions",
@@ -103,6 +107,8 @@ TEXTS = {
         "minimum_level_notice": "※The card level is the lowest level among its habitats, not the monster's own level.",
         "monster_overlay_on": "Monster list overlay ON", "monster_overlay_off": "Monster list overlay OFF",
         "monster_overlay_adjust": "Drag to move · Wheel adjusts opacity",
+        "monster_overlay_horizontal": "Horizontal", "monster_overlay_vertical": "Vertical",
+        "monster_overlay_move": "Move\n·\nWheel",
     },
 }
 
@@ -153,10 +159,13 @@ class MonsterDictionaryUI:
         self.monster_overlay_resize_origin = None
         self.monster_overlay_header_window = None
         self.monster_overlay_header_label = None
+        self.monster_overlay_orientation_button = None
         self.monster_overlay_grip_window = None
         self.monster_overlay_lock_window = None
         self.monster_overlay_scale = max(0.5, min(2.0, float(self.settings.get("monster_list_overlay_scale", 1.0))))
         self.monster_overlay_opacity = max(50, min(100, int(self.settings.get("monster_list_overlay_opacity_percent", 100))))
+        orientation = str(self.settings.get("monster_list_overlay_orientation", "horizontal"))
+        self.monster_overlay_orientation = orientation if orientation in {"horizontal", "vertical"} else "horizontal"
         self.master.after(500, self.refresh_monster_overlay)
 
     def language(self):
@@ -511,7 +520,7 @@ class MonsterDictionaryUI:
                 continue
             self.monster_overlay_images.append(photo)
             label = tk.Label(row, image=photo, bg="#17130f", bd=0, padx=1, pady=1, cursor="hand2")
-            label.pack(side="left", padx=2)
+            label.pack(side="top" if self.monster_overlay_orientation == "vertical" else "left", padx=2, pady=2 if self.monster_overlay_orientation == "vertical" else 0)
             label.bind("<Button-3>", self.toggle_monster_overlay_adjustment)
             label.bind("<MouseWheel>", self.adjust_monster_overlay_opacity)
             label.bind(
@@ -664,8 +673,10 @@ class MonsterDictionaryUI:
         saved_y = self.settings.get("monster_list_overlay_offset_y")
         x = left + int(saved_x) if isinstance(saved_x, (int, float)) else left + max(0, (right - left - width) // 2)
         y = top + int(saved_y) if isinstance(saved_y, (int, float)) else top + 8
-        x = max(left, min(x, right - width))
-        y = max(top, min(y, bottom - height))
+        if not isinstance(saved_x, (int, float)):
+            x = max(left, min(x, right - width))
+        if not isinstance(saved_y, (int, float)):
+            y = max(top, min(y, bottom - height))
         owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
         if owner:
             attach_above(window, owner, x, y)
@@ -717,6 +728,7 @@ class MonsterDictionaryUI:
     def save_monster_overlay_settings(self):
         self.settings["monster_list_overlay_scale"] = self.monster_overlay_scale
         self.settings["monster_list_overlay_opacity_percent"] = self.monster_overlay_opacity
+        self.settings["monster_list_overlay_orientation"] = self.monster_overlay_orientation
         if self.save_settings:
             self.save_settings()
 
@@ -752,11 +764,6 @@ class MonsterDictionaryUI:
         start_x, start_y, origin_x, origin_y = self.monster_overlay_drag_origin
         x = origin_x + event.x_root - start_x
         y = origin_y + event.y_root - start_y
-        rect = self.target_rect_provider() if self.target_rect_provider else None
-        if rect:
-            left, top, right, bottom = rect
-            x = max(left, min(x, right - self.monster_overlay_window.winfo_width()))
-            y = max(top, min(y, bottom - self.monster_overlay_window.winfo_height()))
         self.monster_overlay_window.geometry(f"+{round(x)}+{round(y)}")
         self.position_monster_overlay_edit_chrome()
 
@@ -836,25 +843,73 @@ class MonsterDictionaryUI:
         if self.overlay_window_exists(self.monster_overlay_header_window):
             self.monster_overlay_header_window.configure(bg=self.monster_overlay_border_color())
             if self.monster_overlay_header_label is not None:
-                self.monster_overlay_header_label.configure(text=self.texts()["monster_overlay_adjust"])
+                self.monster_overlay_header_label.configure(text=self.monster_overlay_header_text())
+            if self.monster_overlay_orientation_button is not None:
+                self.monster_overlay_orientation_button.configure(text=self.monster_overlay_orientation_text())
             return self.monster_overlay_header_window
         window = tk.Toplevel(self.master)
         window.overrideredirect(True)
         window.configure(bg=self.monster_overlay_border_color())
         label = tk.Label(
-            window, text=self.texts()["monster_overlay_adjust"], bg=HEADER, fg="#fff1c9",
-            anchor="w", padx=8, pady=4, cursor="fleur", font=("Noto Sans KR", 8, "bold"),
+            window, text=self.monster_overlay_header_text(), bg=HEADER, fg="#fff1c9",
+            anchor="center" if self.monster_overlay_orientation == "vertical" else "w",
+            padx=5 if self.monster_overlay_orientation == "vertical" else 8,
+            pady=4, cursor="fleur", font=("Noto Sans KR", 8, "bold"),
         )
-        label.pack(fill="both", expand=True, padx=1, pady=1)
+        label.pack(
+            side="top" if self.monster_overlay_orientation == "vertical" else "left",
+            fill="both", expand=True,
+            padx=1 if self.monster_overlay_orientation == "vertical" else (1, 0),
+            pady=(1, 0) if self.monster_overlay_orientation == "vertical" else 1,
+        )
         label.bind("<ButtonPress-1>", self.begin_monster_overlay_drag)
         label.bind("<B1-Motion>", self.drag_monster_overlay)
         label.bind("<ButtonRelease-1>", self.end_monster_overlay_drag)
         label.bind("<MouseWheel>", self.adjust_monster_overlay_opacity)
+        orientation_button = tk.Button(
+            window, text=self.monster_overlay_orientation_text(), command=self.toggle_monster_overlay_orientation,
+            bg="#3b3022", fg="#fff1c9", activebackground="#6b5537", activeforeground="#ffffff",
+            relief="flat", bd=0, padx=8, pady=2, cursor="hand2", font=("Noto Sans KR", 8, "bold"),
+        )
+        orientation_button.pack(
+            side="bottom" if self.monster_overlay_orientation == "vertical" else "right",
+            fill="x" if self.monster_overlay_orientation == "vertical" else "y",
+            padx=1 if self.monster_overlay_orientation == "vertical" else (3, 1),
+            pady=(3, 1) if self.monster_overlay_orientation == "vertical" else 1,
+        )
+        orientation_button.bind("<MouseWheel>", self.adjust_monster_overlay_opacity)
         self.monster_overlay_header_label = label
+        self.monster_overlay_orientation_button = orientation_button
         window.withdraw()
         make_noactivate_toolwindow(window)
         self.monster_overlay_header_window = window
         return window
+
+    def monster_overlay_orientation_text(self):
+        key = "monster_overlay_horizontal" if self.monster_overlay_orientation == "vertical" else "monster_overlay_vertical"
+        return self.texts()[key]
+
+    def monster_overlay_header_text(self):
+        if self.monster_overlay_orientation == "vertical":
+            return self.texts()["monster_overlay_move"]
+        return self.texts()["monster_overlay_adjust"]
+
+    def toggle_monster_overlay_orientation(self):
+        self.save_monster_overlay_position()
+        self.monster_overlay_orientation = (
+            "vertical" if self.monster_overlay_orientation == "horizontal" else "horizontal"
+        )
+        self.settings["monster_list_overlay_orientation"] = self.monster_overlay_orientation
+        self.save_monster_overlay_settings()
+        if self.overlay_window_exists(self.monster_overlay_header_window):
+            self.monster_overlay_header_window.destroy()
+        self.monster_overlay_header_window = None
+        self.monster_overlay_header_label = None
+        self.monster_overlay_orientation_button = None
+        active = self.active_map_provider() if self.active_map_provider else None
+        if active:
+            self.build_monster_overlay(active)
+        return "break"
 
     def ensure_monster_overlay_grip(self):
         if self.overlay_window_exists(self.monster_overlay_grip_window):
@@ -926,19 +981,32 @@ class MonsterDictionaryUI:
         grip = self.ensure_monster_overlay_grip()
         lock = self.ensure_monster_overlay_lock()
         x, y, width, height = bar.winfo_x(), bar.winfo_y(), bar.winfo_width(), bar.winfo_height()
-        header_height = 28
         rect = self.target_rect_provider() if self.target_rect_provider else None
-        header_y = y - header_height - 4
-        if rect and header_y < rect[1]:
-            header_y = y + height + 4
-        header.geometry(f"{max(160, width)}x{header_height}+{x}+{header_y}")
+        vertical_header_on_right = False
+        vertical_header_height = 0
+        if self.monster_overlay_orientation == "vertical":
+            header_width = 58
+            vertical_header_height = max(110, height)
+            header_x = x - header_width - 4
+            if header_x < 0:
+                header_x = x + width + 4
+                vertical_header_on_right = True
+            header.geometry(f"{header_width}x{vertical_header_height}+{header_x}+{y}")
+        else:
+            header_height = 28
+            header_y = y - header_height - 4
+            if rect and header_y < rect[1]:
+                header_y = y + height + 4
+            header.geometry(f"{max(160, width)}x{header_height}+{x}+{header_y}")
         grip.update_idletasks()
         grip_width, grip_height = grip.winfo_reqwidth(), grip.winfo_reqheight()
         grip.geometry(f"+{x + width - grip_width}+{y + height - grip_height}")
         lock.update_idletasks()
         lock_width, lock_height = lock.winfo_reqwidth(), lock.winfo_reqheight()
         lock_x, lock_y = x + width + 6, y
-        if rect and lock_x + lock_width > rect[2]:
+        if self.monster_overlay_orientation == "vertical" and vertical_header_on_right:
+            lock_y = y + vertical_header_height + 4
+        if rect and not vertical_header_on_right and lock_x + lock_width > rect[2]:
             lock_x = x - lock_width - 6
         lock.geometry(f"+{lock_x}+{lock_y}")
 

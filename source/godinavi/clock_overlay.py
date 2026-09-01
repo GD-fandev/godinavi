@@ -22,6 +22,14 @@ GOLD = "#d8b15a"
 HEADER = "#5a4932"
 CLOCK_BASE_SCALE = 2.27
 
+
+def format_clock_time(now, use_24_hour=False):
+    if use_24_hour:
+        return f"{now.hour:02d}:{now.minute:02d}"
+    period = "AM" if now.hour < 12 else "PM"
+    hour = now.hour % 12 or 12
+    return f"{period} {hour:02d}:{now.minute:02d}"
+
 CLOCK_TEXTS = {
     "KR": {
         "on": "시계 표시 ON", "off": "시계 표시 OFF", "adjust": "드래그 이동 · 휠로 투명도 조절",
@@ -34,6 +42,7 @@ CLOCK_TEXTS = {
         "overlay_on": "오버레이 ON", "overlay_off": "오버레이 OFF", "sound_volume": "음량",
         "five_second_alert": "5초 전 알림",
         "xp_mode_on": "경험치 측정 ON", "xp_mode_off": "경험치 측정 OFF", "xp_region": "영역 설정",
+        "xp_meter_on": "미터기 표시 ON", "xp_meter_off": "미터기 표시 OFF",
         "xp_recognized": "현재 인식: {value}", "xp_no_value": "인식 대기 중", "xp_recent": "최근 측정값",
         "xp_clear": "측정값 초기화", "xp_empty": "측정 기록이 없습니다.", "xp_done": "설정 완료",
     },
@@ -48,6 +57,7 @@ CLOCK_TEXTS = {
         "overlay_on": "オーバーレイ ON", "overlay_off": "オーバーレイ OFF", "sound_volume": "音量",
         "five_second_alert": "5秒前通知",
         "xp_mode_on": "経験値測定 ON", "xp_mode_off": "経験値測定 OFF", "xp_region": "範囲設定",
+        "xp_meter_on": "メーター表示 ON", "xp_meter_off": "メーター表示 OFF",
         "xp_recognized": "現在の認識: {value}", "xp_no_value": "認識待機中", "xp_recent": "最近の測定値",
         "xp_clear": "測定値を消去", "xp_empty": "測定履歴がありません。", "xp_done": "設定完了",
     },
@@ -62,6 +72,7 @@ CLOCK_TEXTS = {
         "overlay_on": "Overlay ON", "overlay_off": "Overlay OFF", "sound_volume": "Volume",
         "five_second_alert": "5-second warning",
         "xp_mode_on": "EXP tracking ON", "xp_mode_off": "EXP tracking OFF", "xp_region": "Set region",
+        "xp_meter_on": "Meter display ON", "xp_meter_off": "Meter display OFF",
         "xp_recognized": "Recognized: {value}", "xp_no_value": "Waiting for recognition", "xp_recent": "Recent measurements",
         "xp_clear": "Clear measurements", "xp_empty": "No measurements yet.", "xp_done": "Done",
     },
@@ -92,6 +103,7 @@ class ClockOverlay:
                 save_settings()
         self.scale = max(0.5, min(3.0, float(settings.get("clock_overlay_scale", 1.0))))
         self.opacity = max(50, min(100, int(settings.get("clock_overlay_opacity_percent", 100))))
+        self.use_24_hour = bool(settings.get("clock_24_hour_format", False))
         self.window = None
         self.label = None
         self.photo = None
@@ -104,6 +116,8 @@ class ClockOverlay:
         self.resize_origin = None
         self.last_time = None
         self.temporarily_hidden = False
+        self.temporarily_hidden_control_visible = False
+        self.temporarily_hidden_control_had_grab = False
         self.control_window = None
         self.control_tab = "stopwatch"
         self.control_body = None
@@ -140,6 +154,7 @@ class ClockOverlay:
         self.stopwatch_overlay_panel = None
         self.stopwatch_xp_gain_window = None
         self.stopwatch_xp_gain_label = None
+        self.stopwatch_xp_rate_label = None
         self.stopwatch_xp_gain_visible = False
         self.stopwatch_xp_gain_hide_after = None
         self.stopwatch_overlay_buttons = []
@@ -170,6 +185,7 @@ class ClockOverlay:
         self.alarm_volume_scale = None
         self.stopwatch_sound_lock = threading.Lock()
         self.xp_mode_enabled = bool(settings.get("clock_xp_tracking_enabled", False))
+        self.xp_meter_enabled = bool(settings.get("clock_xp_meter_enabled", False))
         self.xp_current_value = None
         self.xp_start_value = None
         self.xp_finished_start_value = None
@@ -184,6 +200,7 @@ class ClockOverlay:
         self.xp_history_frame = None
         self.xp_history_list = None
         self.xp_toggle_button = None
+        self.xp_meter_toggle_button = None
         self.xp_region_window = None
         self.xp_region_lock_window = None
         self.xp_region_editing = False
@@ -277,13 +294,11 @@ class ClockOverlay:
         except OSError:
             font = ImageFont.load_default()
         now = datetime.now()
-        period = "AM" if now.hour < 12 else "PM"
-        hour = now.hour % 12 or 12
         clock_color = "#ff4545" if self.active_alarm and self.alarm_flash_on else (
             "#ffd84d" if self.active_alarm else "#fff1c9"
         )
         draw.text(
-            (width // 2, height // 2), f"{period} {hour:02d}:{now.minute:02d}",
+            (width // 2, height // 2), format_clock_time(now, self.use_24_hour),
             anchor="mm", font=font, fill=clock_color,
             stroke_width=max(1, round(render_scale)), stroke_fill="#24170e",
         )
@@ -364,7 +379,34 @@ class ClockOverlay:
             header, text=text["title"], bg=HEADER, fg="#ffe09a", anchor="w",
             padx=14, font=("Noto Sans KR", 11, "bold"), cursor="fleur",
         )
-        title.pack(fill="both", expand=True)
+        title.pack(side="left", fill="both", expand=True)
+        format_buttons = {}
+
+        def select_hour_format(value):
+            self.use_24_hour = bool(value)
+            self.settings["clock_24_hour_format"] = self.use_24_hour
+            self.last_time = None
+            self.save()
+            if self.enabled:
+                self.render()
+            for mode, button in format_buttons.items():
+                active = mode == self.use_24_hour
+                button.configure(
+                    bg="#9a7632" if active else "#3b3022",
+                    fg="#fff1c9" if active else "#c8b58e",
+                )
+
+        for value, label in ((True, "24H"), (False, "12H")):
+            button = tk.Button(
+                header, text=label, command=lambda current=value: select_hour_format(current),
+                bg="#9a7632" if self.use_24_hour == value else "#3b3022",
+                fg="#fff1c9" if self.use_24_hour == value else "#c8b58e",
+                activebackground="#b18a3d", activeforeground="#fff8df",
+                relief="flat", bd=0, padx=10, pady=3,
+                font=("Noto Sans KR", 9, "bold"), cursor="hand2",
+            )
+            button.pack(side="left", padx=(0, 3 if value else 10), pady=7)
+            format_buttons[value] = button
         tabs = tk.Frame(outer, bg="#17130f")
         tabs.pack(fill="x", padx=12, pady=(12, 0))
         self.control_tab_buttons = {}
@@ -670,6 +712,12 @@ class ClockOverlay:
             bg="#3b3022", fg="#fff1c9", activebackground=HEADER, activeforeground="#ffffff",
             relief="flat", bd=0, padx=12, pady=5, cursor="hand2", font=("Noto Sans KR", 9),
         ).pack(side="left", padx=(6, 0))
+        self.xp_meter_toggle_button = tk.Button(
+            xp_controls, command=self.toggle_xp_meter, bg="#3b3022", fg="#fff1c9",
+            activebackground=HEADER, activeforeground="#ffffff", relief="flat", bd=0,
+            padx=12, pady=5, cursor="hand2", font=("Noto Sans KR", 9, "bold"),
+        )
+        self.xp_meter_toggle_button.pack(side="left", padx=(6, 0))
         self.xp_status_label = tk.Label(
             xp_controls, bg="#17130f", fg="#ffe09a", anchor="e", font=("Noto Sans KR", 9, "bold"),
         )
@@ -699,12 +747,25 @@ class ClockOverlay:
             return "-"
         return f"{float(value):.5f}%"
 
+    @staticmethod
+    def xp_per_hour(gain, elapsed_seconds):
+        try:
+            elapsed = float(elapsed_seconds)
+            return float(gain) * 3600.0 / elapsed if elapsed > 0 else None
+        except (TypeError, ValueError):
+            return None
+
     def refresh_xp_ui(self):
         text = self.texts()
         if self.xp_toggle_button and self.xp_toggle_button.winfo_exists():
             self.xp_toggle_button.configure(
                 text=text["xp_mode_on" if self.xp_mode_enabled else "xp_mode_off"],
                 bg="#8a6a36" if self.xp_mode_enabled else "#3b3022",
+            )
+        if self.xp_meter_toggle_button and self.xp_meter_toggle_button.winfo_exists():
+            self.xp_meter_toggle_button.configure(
+                text=text["xp_meter_on" if self.xp_meter_enabled else "xp_meter_off"],
+                bg="#8a6a36" if self.xp_meter_enabled else "#3b3022",
             )
         if self.xp_status_label and self.xp_status_label.winfo_exists():
             status = (
@@ -722,7 +783,11 @@ class ClockOverlay:
                     start = self.format_xp(item.get("start"))
                     end = self.format_xp(item.get("end"))
                     gain = self.format_xp(item.get("gain"))
-                    self.xp_history_list.insert("end", f"{duration}   {start} -> {end}   (+{gain})")
+                    hourly = self.xp_per_hour(item.get("gain"), item.get("duration"))
+                    hourly_text = f"{hourly:.5f}%/h" if hourly is not None else "-"
+                    self.xp_history_list.insert(
+                        "end", f"{duration}   {start} -> {end}   (+{gain})   EXP {hourly_text}"
+                    )
 
     def toggle_xp_mode(self):
         self.xp_mode_enabled = not self.xp_mode_enabled
@@ -732,8 +797,24 @@ class ClockOverlay:
             self.xp_finish_pending = False
             self.xp_discard_future = False
             self.close_xp_region_editor(save_region=True)
+            self.hide_stopwatch_xp_gain()
         elif not self.settings.get("clock_xp_region"):
             self.open_xp_region_editor()
+        self.save()
+        self.refresh_xp_ui()
+
+    def toggle_xp_meter(self):
+        self.xp_meter_enabled = not self.xp_meter_enabled
+        self.settings["clock_xp_meter_enabled"] = self.xp_meter_enabled
+        if (
+            self.xp_meter_enabled
+            and self.xp_mode_enabled
+            and self.stopwatch_state in ("running", "paused")
+            and self.xp_start_value is not None
+        ):
+            self.show_stopwatch_xp_gain()
+        else:
+            self.hide_stopwatch_xp_gain()
         self.save()
         self.refresh_xp_ui()
 
@@ -919,7 +1000,19 @@ class ClockOverlay:
         prepared = ImageOps.expand(mask, border=8, fill=0).resize(
             ((mask.width + 16) * 4, (mask.height + 16) * 4), Image.Resampling.NEAREST
         )
-        return self.parse_xp_text(self.map_engine.ocr.recognize_coordinates(prepared))
+        # Integer percentages are much shorter OCR tokens than the usual
+        # five-decimal display. Some recognizers return an empty result for the
+        # white-on-black mask even though a value such as 12.34567% works. Retry
+        # with reversed polarity and then the original anti-aliased pixels so
+        # low-level values such as 37% are handled as well.
+        original = ImageOps.expand(crop, border=8, fill="black").resize(
+            ((crop.width + 16) * 4, (crop.height + 16) * 4), Image.Resampling.BICUBIC
+        )
+        for candidate in (prepared, ImageOps.invert(prepared), original):
+            result = self.parse_xp_text(self.map_engine.ocr.recognize_coordinates(candidate))
+            if result is not None:
+                return result
+        return None
 
     def update_xp_ocr(self):
         if not self.xp_mode_enabled or self.xp_region_editing or self.temporarily_hidden or not self.map_engine:
@@ -1030,7 +1123,7 @@ class ClockOverlay:
         self.schedule_countdown_sounds()
         self.refresh_stopwatch_controls()
         self.show_stopwatch_overlay()
-        if self.xp_mode_enabled and self.xp_start_value is not None:
+        if self.xp_meter_enabled and self.xp_mode_enabled and self.xp_start_value is not None:
             self.show_stopwatch_xp_gain()
 
     def start_stopwatch_and_focus(self):
@@ -1324,12 +1417,18 @@ class ClockOverlay:
             window.wm_attributes("-transparentcolor", TRANSPARENT)
         except tk.TclError:
             pass
-        label = tk.Label(
-            window, text="+0.00000%", bg=TRANSPARENT, fg="#ffffff",
+        gain_label = tk.Label(
+            window, text="0.00000%", bg=TRANSPARENT, fg="#ffffff",
             font=("Consolas", 11, "bold"), padx=4, pady=1,
         )
-        label.pack()
-        self.stopwatch_xp_gain_label = label
+        gain_label.pack(side="left")
+        rate_label = tk.Label(
+            window, text=" (-)", bg=TRANSPARENT, fg="#ffd45a",
+            font=("Consolas", 11, "bold"), padx=0, pady=1,
+        )
+        rate_label.pack(side="left", padx=(0, 4))
+        self.stopwatch_xp_gain_label = gain_label
+        self.stopwatch_xp_rate_label = rate_label
         make_noactivate_toolwindow(window)
         return window
 
@@ -1344,19 +1443,39 @@ class ClockOverlay:
             gain += 100.0
         return gain
 
+    def stopwatch_xp_elapsed(self):
+        if self.stopwatch_state == "running" and self.stopwatch_end_at is not None:
+            remaining = max(0.0, self.stopwatch_end_at - time.monotonic())
+        else:
+            remaining = self.stopwatch_remaining
+        return max(0.0, float(self.stopwatch_configured_duration) - float(remaining))
+
     def refresh_stopwatch_xp_gain(self, final_value=False):
         if not self.stopwatch_xp_gain_visible and not final_value:
             return
         gain = self.stopwatch_xp_gain()
+        elapsed = self.stopwatch_xp_elapsed()
         if final_value and self.xp_history:
-            gain = self.xp_history[-1].get("gain")
+            measurement = self.xp_history[-1]
+            gain = measurement.get("gain")
+            elapsed = measurement.get("duration", 0)
         if gain is None:
             return
         self.ensure_stopwatch_xp_gain()
-        self.stopwatch_xp_gain_label.configure(text=f"+{float(gain):.5f}%")
+        hourly = self.xp_per_hour(gain, elapsed)
+        hourly_text = f"{hourly:.5f}%/h" if hourly is not None else "-"
+        self.stopwatch_xp_gain_label.configure(text=f"{float(gain):.5f}%")
+        self.stopwatch_xp_rate_label.configure(text=f" ({hourly_text})")
 
     def show_stopwatch_xp_gain(self):
-        if not self.stopwatch_overlay_enabled or not self.enabled or self.temporarily_hidden:
+        if (
+            not self.xp_meter_enabled
+            or not self.xp_mode_enabled
+            or not self.stopwatch_overlay_enabled
+            or not self.enabled
+            or self.temporarily_hidden
+        ):
+            self.hide_stopwatch_xp_gain()
             return
         self.stopwatch_xp_gain_visible = True
         window = self.ensure_stopwatch_xp_gain()
@@ -1373,14 +1492,10 @@ class ClockOverlay:
         window.update_idletasks()
         x = self.stopwatch_window.winfo_x() + (self.stopwatch_window.winfo_width() - window.winfo_reqwidth()) // 2
         above_y = self.stopwatch_window.winfo_y() - window.winfo_reqheight() - 3
-        below_y = self.stopwatch_window.winfo_y() + self.stopwatch_window.winfo_height() + 3
         y = above_y
         rect = self.target_rect_provider() if self.target_rect_provider else None
         if rect:
             x = max(rect[0], min(x, rect[2] - window.winfo_reqwidth()))
-            stopwatch_center = self.stopwatch_window.winfo_y() + self.stopwatch_window.winfo_height() // 2
-            client_center = (rect[1] + rect[3]) // 2
-            y = below_y if stopwatch_center < client_center else above_y
             y = max(rect[1], min(y, rect[3] - window.winfo_reqheight()))
         owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
         if owner:
@@ -2061,12 +2176,29 @@ class ClockOverlay:
     def set_temporarily_hidden(self, hidden):
         self.temporarily_hidden = bool(hidden)
         if hidden:
+            if self.exists(self.control_window) and self.control_window.winfo_viewable():
+                self.temporarily_hidden_control_visible = True
+                try:
+                    grabbed = self.master.grab_current()
+                    if grabbed and grabbed.winfo_toplevel() == self.control_window:
+                        self.temporarily_hidden_control_had_grab = True
+                        grabbed.grab_release()
+                except tk.TclError:
+                    self.temporarily_hidden_control_had_grab = False
+                self.control_window.withdraw()
             self.hide()
             for window in (self.xp_region_window, self.xp_region_lock_window):
                 if self.exists(window):
                     window.withdraw()
         elif self.enabled:
             self.show()
+        if not hidden and self.temporarily_hidden_control_visible:
+            self.temporarily_hidden_control_visible = False
+            if self.exists(self.control_window):
+                self.control_window.deiconify()
+                if self.temporarily_hidden_control_had_grab:
+                    activate_modal(self.control_window)
+            self.temporarily_hidden_control_had_grab = False
         if not hidden and self.xp_region_editing:
             self.open_xp_region_editor()
 

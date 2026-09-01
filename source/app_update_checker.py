@@ -9,7 +9,7 @@ from pathlib import Path
 import certifi
 
 
-APP_VERSION = "2.1.1"
+APP_VERSION = "2.1.2"
 REPOSITORIES = {
     "stable": "GD-fandev/godinavi",
     "test": "GD-fandev/godinavi_dev",

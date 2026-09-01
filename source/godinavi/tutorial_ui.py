@@ -160,6 +160,21 @@ TUTORIALS = (
                 "JP": "PKゾーンでは枠が赤く表示されます。",
                 "EN": "In a PK zone, the border is displayed in red.",
             }},
+            {"image": "tutorials/tutorial_002_overlay_vertical.png"},
+            {"text": {
+                "KR": (
+                    "수정모드에서 세로 버튼을 누르면 리스트를 세로로 정렬할 수 있습니다.\n"
+                    "또한 v2.1.2부터 해당 오버레이를 가디우스 창 밖에도 배치할 수 있습니다."
+                ),
+                "JP": (
+                    "編集モードで「縦」ボタンを押すと、リストを縦方向に並べることができます。\n"
+                    "また、v2.1.2以降、このオーバーレイをガディウスのウィンドウ外にも配置できます。"
+                ),
+                "EN": (
+                    "In edit mode, press the Vertical button to arrange the list vertically.\n"
+                    "Starting with v2.1.2, this overlay can also be positioned outside the Godius window."
+                ),
+            }},
         ),
     },
     {
@@ -427,6 +442,27 @@ TUTORIALS = (
                     "If you keep the character information window open during measurement,\n"
                     "you can also monitor the EXP gained in real time, as shown above."
                 ),
+            }},
+            {"image": "tutorials/tutorial_004_exp_meter.png"},
+            {"text": {
+                "KR": (
+                    "v2.1.2부터 경험치 미터기가 추가되었습니다.\n"
+                    "활성화하면 스톱워치 사용 중 실시간으로 시간당 경험치 획득 효율을 표시합니다."
+                ),
+                "JP": (
+                    "v2.1.2から経験値メーターが追加されました。\n"
+                    "有効にすると、ストップウォッチ使用中に1時間あたりの経験値獲得効率をリアルタイムで表示します。"
+                ),
+                "EN": (
+                    "The EXP meter was added in v2.1.2.\n"
+                    "When enabled, it displays your real-time EXP gain rate per hour while the stopwatch is running."
+                ),
+            }},
+            {"image": "tutorials/tutorial_004_exp_meter_overlay.png"},
+            {"text": {
+                "KR": "극한의 효율을 향해 달려봅시다!!",
+                "JP": "限界まで効率を追求してみましょう！！",
+                "EN": "Let's push for maximum efficiency!!",
             }},
         ),
     },
