@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "channel": "stable",
-  "clientVersion": "2.1.2",
+  "clientVersion": "2.1.3",
   "snapshotVersion": "2026.09.02.1",
   "historyUrl": "https://api.github.com/repos/GD-fandev/godinavi/contents/update/v2/stable/history.json?ref=main",
   "components": {
@@ -22,11 +22,11 @@
       "format": "file"
     },
     "core": {
-      "version": "2.1.2",
+      "version": "2.1.3",
       "path": "data/GodiNaviCore.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.2/GodiNaviCore.exe",
-      "size": 9380912,
-      "sha256": "40386f54f6b89838833da7fa76816fe165bc0a87862afbf147a7e57bb28012f0",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.3/GodiNaviCore.exe",
+      "size": 9380979,
+      "sha256": "5a6f5acf2102de45818b31f6e64755ebd26855ea2d5de4e9d78d28cc8f4fc3d9",
       "format": "file"
     },
     "runtime": {
