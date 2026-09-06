@@ -761,7 +761,10 @@ class PartyUI:
                 }
                 profiles = [{"profile_id": uuid.uuid4().hex, **seed}]
         if profiles != original:
-            self.config["party_profiles"] = profiles
+            # Open profile dialogs retain this list for add/edit/delete actions.
+            # Keep it shared with config when selectors normalize it again.
+            original[:] = profiles
+            self.config["party_profiles"] = original
             if profiles and not any(
                 item["profile_id"] == self.config.get("party_active_profile_id") for item in profiles
             ):
@@ -769,7 +772,9 @@ class PartyUI:
             if not profiles:
                 self.config.pop("party_active_profile_id", None)
             self.save_config()
-        return profiles
+        if not isinstance(self.config.get("party_profiles"), list):
+            self.config["party_profiles"] = original
+        return original
 
     def _profile_label(self, profile):
         name = normalize_player_id(profile.get("player_id", "")) or "-"
