@@ -2,6 +2,35 @@
   "schemaVersion": 2,
   "entries": [
     {
+      "id": "content-2026.09.10.2",
+      "kind": "content",
+      "version": "2026.09.10.2",
+      "components": [
+        "ui_assets"
+      ],
+      "publishedAt": "2026-09-09T19:32:03Z",
+      "changes": {
+        "KR": {
+          "summary": "버프 타이머 수동모드 튜토리얼의 누락된 스크린샷을 추가했습니다.",
+          "details": [
+            "버프 타이머 수동모드 튜토리얼의 누락된 스크린샷을 추가했습니다."
+          ]
+        },
+        "JP": {
+          "summary": "バフタイマーの手動モードのチュートリアルに、欠落していたスクリーンショットを追加しました。",
+          "details": [
+            "バフタイマーの手動モードのチュートリアルに、欠落していたスクリーンショットを追加しました。"
+          ]
+        },
+        "EN": {
+          "summary": "Added the missing screenshots to the buff timer manual mode tutorial.",
+          "details": [
+            "Added the missing screenshots to the buff timer manual mode tutorial."
+          ]
+        }
+      }
+    },
+    {
       "id": "client-2.1.4",
       "kind": "client",
       "version": "2.1.4",
