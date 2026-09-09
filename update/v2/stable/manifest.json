@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "channel": "stable",
   "clientVersion": "2.1.4",
-  "snapshotVersion": "2026.09.10.1",
+  "snapshotVersion": "2026.09.10.2",
   "historyUrl": "https://api.github.com/repos/GD-fandev/godinavi/contents/update/v2/stable/history.json?ref=main",
   "components": {
     "launcher": {
@@ -46,11 +46,11 @@
       "format": "pak"
     },
     "ui_assets": {
-      "version": "2.1.2",
+      "version": "2.1.4",
       "path": "data/assets/ui.pak",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.2/ui_assets-2.1.2.pak",
-      "size": 33038210,
-      "sha256": "2e4594da279034a830e2b4536b93e7df0db07c37f3681ea277dbe1c9a40cf763",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.4/ui_assets-2.1.4.pak",
+      "size": 33201315,
+      "sha256": "c5a2031a2cf8809b5837ade73ccf4de9b6fa3840eea305c4b7753284b1961904",
       "format": "pak"
     },
     "audio_assets": {
