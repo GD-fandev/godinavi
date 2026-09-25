@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "channel": "stable",
   "clientVersion": "2.1.4",
-  "snapshotVersion": "2026.09.10.2",
+  "snapshotVersion": "2026.09.25.1",
   "historyUrl": "https://api.github.com/repos/GD-fandev/godinavi/contents/update/v2/stable/history.json?ref=main",
   "components": {
     "launcher": {
@@ -62,11 +62,11 @@
       "format": "pak"
     },
     "maps": {
-      "version": "2026.09.10.1",
+      "version": "2026.09.25.1",
       "path": "data/content/maps.pak",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.4/maps-2026.09.10.1.pak",
-      "size": 24164658,
-      "sha256": "350e79a0c5d610a92d5ac6bb4a02c73b6a6520c809d84ad9d9363cbd4aaf5cc6",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/content-2026.09.25.1-stable/maps-2026.09.25.1.pak",
+      "size": 24186142,
+      "sha256": "98d0961f2e24a8260ff21a43b5a895d75278c6cf24e1bdede195287751c3ddb9",
       "format": "pak"
     },
     "monsters": {
