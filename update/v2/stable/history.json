@@ -2,6 +2,35 @@
   "schemaVersion": 2,
   "entries": [
     {
+      "id": "content-2026.09.25.1",
+      "kind": "content",
+      "version": "2026.09.25.1",
+      "components": [
+        "maps"
+      ],
+      "publishedAt": "2026-09-25T14:04:38Z",
+      "changes": {
+        "JP": {
+          "summary": "イスカルド半島の座標を追加しました（測量にご協力いただいた冒険者：SERE様）。",
+          "details": [
+            "イスカルド半島の座標を追加しました（測量にご協力いただいた冒険者：SERE様）。"
+          ]
+        },
+        "KR": {
+          "summary": "이스칼드반도 좌표 추가 (측량에 참여한 모험가 SERE님)",
+          "details": [
+            "이스칼드반도 좌표 추가 (측량에 참여한 모험가 SERE님)"
+          ]
+        },
+        "EN": {
+          "summary": "Added coordinates for Iskald Peninsula (survey contributed by adventurer SERE).",
+          "details": [
+            "Added coordinates for Iskald Peninsula (survey contributed by adventurer SERE)."
+          ]
+        }
+      }
+    },
+    {
       "id": "content-2026.09.10.2",
       "kind": "content",
       "version": "2026.09.10.2",
