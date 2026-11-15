@@ -16,6 +16,6 @@ os.makedirs(CHANNEL_STAGE_DIR, exist_ok=True)
 CHANNEL_STAGE_FILE = os.path.join(CHANNEL_STAGE_DIR, 'update-channel.json')
 shutil.copyfile(CHANNEL_FILE, CHANNEL_STAGE_FILE)
 
-a = Analysis([os.path.join(SOURCE_DIR, 'v2_launcher.py')], pathex=[SOURCE_DIR], datas=[(CHANNEL_STAGE_FILE, '.')])
+a = Analysis([os.path.join(SOURCE_DIR, 'v2_launcher.py')], pathex=[SOURCE_DIR], datas=[(CHANNEL_STAGE_FILE, '.')], hookspath=[os.path.join(PROJECT_ROOT, 'packaging', 'hooks')])
 pyz = PYZ(a.pure)
 exe = EXE(pyz, a.scripts, a.binaries, a.datas, [], name='GodiNaviLauncher', console=False, icon=[ICON_PATH])

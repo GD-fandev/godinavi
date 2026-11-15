@@ -41,7 +41,7 @@ excludes = [
 a = Analysis(
     [os.path.join(SOURCE_DIR, "godinavi_launcher.py")],
     pathex=[SOURCE_DIR], binaries=binaries, datas=datas,
-    hiddenimports=hiddenimports, hookspath=[], hooksconfig={},
+    hiddenimports=hiddenimports, hookspath=[os.path.join(PROJECT_ROOT, "packaging", "hooks")], hooksconfig={},
     runtime_hooks=[], excludes=excludes, noarchive=False, optimize=0,
 )
 pyz = PYZ(a.pure)
