@@ -1,3 +1,7 @@
+from auto_ui.mode import legacy_enabled
+from auto_ui.region_display import exclude_from_capture
+from auto_ui.service import service as auto_regions
+from godinavi.process_match import matches_game_process
 import ctypes
 import difflib
 import json
@@ -21,6 +25,8 @@ from v2_assets import V2AssetStore
 from v2_runtime_assets import installed_data_root, materialize_runtime_assets
 from app_update_checker import APP_VERSION, fetch_latest_release, is_newer_version
 from config_store import AUXILIARY_KEYS
+from godinavi.map_geometry import project_coordinate
+from godinavi.map_annotations import annotate_points
 
 
 if getattr(sys, "frozen", False):
@@ -657,7 +663,6 @@ def find_target_window(process_name, window_title):
     title_matches = []
     process_matches = []
     title_needle = window_title.lower()
-    process_needle = process_name.lower()
 
     def callback(hwnd, _):
         if not user32.IsWindowVisible(hwnd):
@@ -665,7 +670,7 @@ def find_target_window(process_name, window_title):
         title = window_title_for_hwnd(hwnd)
         if title_needle and title_needle in title.lower():
             title_matches.append(hwnd)
-        if process_name_for_hwnd(hwnd).lower() == process_needle:
+        if matches_game_process(process_name_for_hwnd(hwnd), process_name):
             process_matches.append(hwnd)
         return True
 
@@ -925,6 +930,7 @@ class MapEngine:
         self.name_ocr_refresh_seconds = NAME_OCR_REFRESH_SECONDS
         self.last_coordinate_signature = None
         self.capture_coordinator = CaptureCoordinator(self.performance)
+        auto_regions.set_capture_provider(self.capture_coordinator.capture_client)
         self.capture_backend = self.capture_coordinator.backend
         self.closed = False
 
@@ -2761,6 +2767,9 @@ class MapEngine:
         render_started = time.perf_counter()
         render_cpu_started = time.process_time()
         image = self.map_base_image.copy()
+        controls = getattr(self, "map_controls", None)
+        if controls is not None:
+            image = controls.compose(self.map_base_image, self.active_map, OCR_LANGUAGE_BY_UI[self.ui_language])
         transform = self.active_map.get("transform") if self.active_map else None
         has_location_data = (
             isinstance(transform, dict)
@@ -2768,23 +2777,20 @@ class MapEngine:
             and isinstance(transform.get("imageY"), dict)
         )
         if self.marker_visible and self.current_game_coordinate and self.active_map and has_location_data:
-            tx = transform.get("imageX", {})
-            ty = transform.get("imageY", {})
             game_x, game_y = self.current_game_coordinate
-            try:
-                image_x = tx["gameX"] * game_x + tx["gameY"] * game_y + tx["offset"]
-                image_y = ty["gameX"] * game_x + ty["gameY"] * game_y + ty["offset"]
-                px = round(image_x * self.map_scale)
-                py = round(image_y * self.map_scale)
+            position = project_coordinate(self.active_map, game_x, game_y, image.size)
+            if position is not None:
+                px, py = map(round, position)
                 if -10 <= px <= image.width + 10 and -10 <= py <= image.height + 10:
-                    draw = ImageDraw.Draw(image)
-                    radius = 7
-                    draw.ellipse((px - radius, py - radius, px + radius, py + radius), fill="#ffe500", outline="#000000", width=2)
-            except (KeyError, TypeError, ValueError):
-                pass
+                    if controls is not None:
+                        annotate_points(image, self.active_map,
+                                        [{'x': game_x, 'y': game_y, 'name': controls.tr('내 위치')}],
+                                        controls.values['player'], OCR_LANGUAGE_BY_UI[self.ui_language], annotations=False)
+                    else:
+                        draw = ImageDraw.Draw(image)
+                        radius = 7
+                        draw.ellipse((px - radius, py - radius, px + radius, py + radius), fill="#ffe500", outline="#000000", width=2)
         if self.active_map and has_location_data:
-            tx = transform.get("imageX", {})
-            ty = transform.get("imageY", {})
             active_id = str(self.active_map.get("id", ""))
             draw = ImageDraw.Draw(image)
             for member in self.party_positions:
@@ -2792,9 +2798,10 @@ class MapEngine:
                     continue
                 try:
                     game_x, game_y = int(member["x"]), int(member["y"])
-                    image_x = tx["gameX"] * game_x + tx["gameY"] * game_y + tx["offset"]
-                    image_y = ty["gameX"] * game_x + ty["gameY"] * game_y + ty["offset"]
-                    px, py = round(image_x * self.map_scale), round(image_y * self.map_scale)
+                    position = project_coordinate(self.active_map, game_x, game_y, image.size)
+                    if position is None:
+                        continue
+                    px, py = map(round, position)
                     if -10 <= px <= image.width + 10 and -10 <= py <= image.height + 10:
                         radius = 6
                         draw.ellipse((px - radius, py - radius, px + radius, py + radius),
@@ -2912,15 +2919,18 @@ class MapEngine:
         if self._party_marker_font is not None:
             return self._party_marker_font
         fonts_dir = Path(os.environ.get("WINDIR", "C:/Windows")) / "Fonts"
-        preferred = {
-            "KR": ("malgun.ttf", "malgunbd.ttf"),
-            "JP": ("YuGothM.ttc", "msgothic.ttc"),
-            "EN": ("segoeui.ttf", "arial.ttf"),
-        }
-        candidates = preferred.get(self.ui_language, preferred["EN"]) + ("malgun.ttf", "YuGothM.ttc", "segoeui.ttf")
-        for filename in candidates:
+        # Nicknames can mix Korean, Japanese and Latin in every UI language.
+        # PIL does not provide Tk/Windows font fallback for missing glyphs.
+        candidates = (
+            BUNDLE_DIR / "assets/fonts/notosanskr-variablefont_wght.ttf",
+            BUNDLE_DIR / "assets/fonts/notosansjp-variablefont_wght.ttf",
+            fonts_dir / "malgun.ttf",
+            fonts_dir / "YuGothM.ttc",
+            fonts_dir / "segoeui.ttf",
+        )
+        for path in candidates:
             try:
-                self._party_marker_font = ImageFont.truetype(str(fonts_dir / filename), 13)
+                self._party_marker_font = ImageFont.truetype(str(path), 13)
                 return self._party_marker_font
             except (OSError, ValueError):
                 continue
@@ -3451,7 +3461,7 @@ class MapEngine:
         foreground = user32.GetForegroundWindow()
         if not foreground:
             return False
-        if process_name_for_hwnd(foreground).lower() == self.config["process_name"].lower():
+        if matches_game_process(process_name_for_hwnd(foreground), self.config["process_name"]):
             return True
         if self.map_resize_mode:
             map_root = user32.GetAncestor(self.map_window.winfo_id(), GA_ROOT) or self.map_window.winfo_id()
@@ -3489,15 +3499,16 @@ class MapEngine:
         if modified == self.map_database_state:
             return
         self.map_database_state = modified
+        MAP_STORE.close()
+        ASSET_STORE.close()
         updated_maps = load_map_database()
         active_id = self.active_map.get("id") if self.active_map else None
         self.maps = updated_maps
         if active_id:
             updated_active = next((item for item in self.maps if item.get("id") == active_id), None)
             if updated_active:
-                self.active_map = updated_active
-                if self.world_map_mode:
-                    self.render_world_map()
+                self.active_map_image_path = None
+                self.set_active_map(updated_active)
             else:
                 self.active_map = None
                 self.current_game_coordinate = None
@@ -3507,7 +3518,12 @@ class MapEngine:
         raw = get_client_screen_rect(self.target_hwnd)
         if not raw:
             return self.stable_client_rect
-        if self.calibration_mode:
+        if not legacy_enabled(self.config) or self.calibration_mode:
+            if raw != self.stable_client_rect:
+                self.capture_coordinator.invalidate()
+                auto_regions.invalidate()
+                self.last_ocr_at = self.last_name_ocr_at = 0.0
+                self.last_coordinate_signature = None
             self.stable_client_rect = raw
             self.pending_client_rect = None
             self.pending_client_rect_hits = 0
@@ -3542,6 +3558,9 @@ class MapEngine:
         client = self.get_stable_client_rect()
         if not client:
             return None
+        if not legacy_enabled(self.config):
+            layout = auto_regions.snapshot(hwnd, client)
+            return layout.bbox("coordinates" if kind == "coordinates" else "map")
         left, top, right, bottom = client
         client_w = right - left
         client_h = bottom - top
@@ -3567,6 +3586,8 @@ class MapEngine:
         )
 
     def store_bbox(self, bbox, kind=None):
+        if not legacy_enabled(self.config):
+            return
         client = self.get_stable_client_rect()
         if not client:
             return
@@ -3584,6 +3605,14 @@ class MapEngine:
         save_config(self.config)
 
     def toggle_calibration(self):
+        if not legacy_enabled(self.config):
+            self.auto_region_viewing = not getattr(self, "auto_region_viewing", False)
+            if self.auto_region_viewing:
+                self.update_region_windows()
+            else:
+                self.region_window.withdraw()
+                self.coordinate_region_window.withdraw()
+            return
         if not self.find_target():
             self.set_status("target_missing", "#ff7777")
             return
@@ -3607,9 +3636,12 @@ class MapEngine:
         else:
             if self.world_map_mode:
                 self.toggle_world_map()
+            boxes = {kind: self.current_bbox(kind, allow_default=True) for kind in ("name", "coordinates")}
             self.calibration_mode = "both"
-            for kind in ("name", "coordinates"):
-                self.capture_bboxes[kind] = self.current_bbox(kind, allow_default=True)
+            for kind, box in boxes.items():
+                if box:
+                    self.store_bbox(box, kind)
+                self.capture_bboxes[kind] = box
             self.hide_map()
             self.show_ocr_guide()
             self.update_region_windows()
@@ -3622,7 +3654,8 @@ class MapEngine:
 
     def update_region_window(self, kind, region_window):
         bbox = self.current_bbox(kind, allow_default=True)
-        if not bbox:
+        if not bbox or not self.target_hwnd or user32.IsIconic(self.target_hwnd):
+            region_window.withdraw()
             return
         self.capture_bboxes[kind] = bbox
         left, top, right, bottom = bbox
@@ -3635,13 +3668,19 @@ class MapEngine:
         color = "#ffd400" if kind == "coordinates" else "#ff3535"
         fill = "#947d00" if kind == "coordinates" else "#b51f1f"
         canvas.create_rectangle(2, 2, width - 3, height - 3, outline=color, fill=fill, width=4)
-        handle = 12
-        x = width - handle - 2
-        y = height - handle - 2
-        canvas.create_oval(x, y, x + handle, y + handle, fill="white", outline=color, width=2)
+        read_only = not legacy_enabled(self.config)
+        exclude_from_capture(region_window, read_only)
+        canvas.configure(cursor="arrow" if read_only else "fleur")
+        if not read_only:
+            handle = 12
+            x = width - handle - 2
+            y = height - handle - 2
+            canvas.create_oval(x, y, x + handle, y + handle, fill="white", outline=color, width=2)
         show_above_owner(region_window, self.target_hwnd, left, top)
 
     def region_press(self, event, kind):
+        if not legacy_enabled(self.config):
+            return
         region_window = self.coordinate_region_window if kind == "coordinates" else self.region_window
         width = max(1, region_window.winfo_width())
         height = max(1, region_window.winfo_height())
@@ -3654,6 +3693,9 @@ class MapEngine:
         self.drag_bbox = self.capture_bboxes.get(kind) or self.current_bbox(kind, allow_default=True)
 
     def region_pointer_motion(self, event, kind):
+        if not legacy_enabled(self.config):
+            event.widget.configure(cursor="arrow")
+            return
         region_window = self.coordinate_region_window if kind == "coordinates" else self.region_window
         width = max(1, region_window.winfo_width())
         height = max(1, region_window.winfo_height())
@@ -3663,6 +3705,8 @@ class MapEngine:
             event.widget.configure(cursor="fleur")
 
     def region_drag(self, event, kind):
+        if not legacy_enabled(self.config):
+            return
         if self.drag_region_kind != kind or not self.drag_start or not self.drag_bbox:
             return
         dx = event.x_root - self.drag_start[0]
@@ -3685,6 +3729,8 @@ class MapEngine:
         self.update_region_window(kind, region_window)
 
     def region_release(self, _event, kind):
+        if not legacy_enabled(self.config):
+            return
         if self.drag_region_kind == kind and self.capture_bboxes.get(kind):
             self.store_bbox(self.capture_bboxes[kind], kind)
         self.drag_region_kind = None
@@ -3738,6 +3784,10 @@ class MapEngine:
             self.set_status("capture_failed", "#ff7777", backend=self.capture_backend, error=exc)
             return
 
+        if (self.current_bbox("name") != name_bbox or
+                self.current_bbox("coordinates") != coordinate_bbox or
+                self.get_stable_client_rect() != client):
+            return
         client_left, client_top, _client_right, _client_bottom = client
 
         def crop_from_client(bbox):
@@ -3831,6 +3881,7 @@ class MapEngine:
 
         self.ocr_running = True
         future = self.executor.submit(recognize_inputs)
+        future.capture_context = (self.target_hwnd, tuple(client), name_bbox, coordinate_bbox)
         future.add_done_callback(lambda result: self.root.after(0, self.finish_ocr, result))
 
     @staticmethod
@@ -3842,6 +3893,12 @@ class MapEngine:
     def finish_ocr(self, future):
         self.ocr_running = False
         if self.closed:
+            return
+        context = getattr(future, "capture_context", None)
+        if context and context != (self.find_target(), tuple(self.get_stable_client_rect() or ()),
+                                   self.current_bbox("name"), self.current_bbox("coordinates")):
+            self.last_coordinate_signature = None
+            self.last_name_ocr_at = 0.0
             return
         try:
             name_results, coordinate_text, recognized_name = future.result()
@@ -4064,6 +4121,10 @@ class MapEngine:
 
     def toggle_pk_zone_alert(self):
         enabled = not bool(self.config.get("pk_zone_alert_enabled", True))
+        controls = getattr(self, "map_controls", None)
+        if controls is not None:
+            controls.set_pk_enabled(enabled)
+            return enabled
         self.config["pk_zone_alert_enabled"] = enabled
         save_config(self.config)
         if self.active_map and not self.world_map_mode:
@@ -4093,6 +4154,7 @@ class MapEngine:
             return
         self.reload_map_database_if_changed()
         self.find_target()
+        self.get_stable_client_rect()
         if self.overlays_temporarily_hidden:
             if self.map_window.winfo_viewable():
                 self.map_window.withdraw()
@@ -4134,6 +4196,8 @@ class MapEngine:
                 x, y = client[0] + offset[0], client[1] + offset[1]
                 self.favorite_dialog.geometry(f"+{x}+{y}")
 
+        if getattr(self, "auto_region_viewing", False):
+            self.update_region_windows()
         if self.calibration_mode:
             self.update_region_windows()
         elif not self.target_hwnd:

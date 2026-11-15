@@ -27,7 +27,8 @@ TEXTS = {
            "sort_category": "종류순", "count": "{count}개", "no_results": "조건에 맞는 장비가 없습니다.",
            "variants": "염색 색상표", "move_speed": "이동속도", "poison_resistance": "독 저항",
            "disease_resistance": "질병 저항", "portal_feature": "포탈기능", "experience_5": "경험치 5%",
-           "max_resources_5": "최대 HP/MP/SP +5%", "set": "세트",
+           "max_resources_5": "최대 HP/MP/SP +5%", "magic_physical_damage_10": "마법/물리 데미지 +10", "set": "세트",
+           "dye_credit": "염색정보 제공 : {names} 님",
            "unknown_color": "정보제공\n잘 부탁\n드립니다!", "close": "닫기"},
     "JP": {"title": "装備図鑑", "search": "名前検索", "all": "すべて", "male": "男性", "female": "女性",
            "armor": "鎧", "clothes": "服", "shoes": "靴", "outfit": "コスチューム", "level": "装備レベル",
@@ -36,7 +37,8 @@ TEXTS = {
            "sort_category": "種類順", "count": "{count}件", "no_results": "条件に一致する装備がありません。",
            "variants": "染色カラーチャート", "move_speed": "移動速度", "poison_resistance": "毒耐性",
            "disease_resistance": "病気耐性", "portal_feature": "ポータル機能", "experience_5": "経験値 5%",
-           "max_resources_5": "最大 HP/MP/SP +5%", "set": "セット",
+           "max_resources_5": "最大 HP/MP/SP +5%", "magic_physical_damage_10": "魔法・物理ダメージ +10", "set": "セット",
+           "dye_credit": "染色情報提供：{names} 様",
            "unknown_color": "情報提供を\nお待ちして\nおります！", "close": "閉じる"},
     "EN": {"title": "Equipment Catalog", "search": "Search names", "all": "All", "male": "Male", "female": "Female",
            "armor": "Armor", "clothes": "Clothes", "shoes": "Shoes", "outfit": "Costume", "level": "Required level",
@@ -45,7 +47,8 @@ TEXTS = {
            "sort_category": "Category", "count": "{count} items", "no_results": "No equipment matches these filters.",
            "variants": "Dye color chart", "move_speed": "Move speed", "poison_resistance": "Poison resist",
            "disease_resistance": "Disease resist", "portal_feature": "Portal feature", "experience_5": "EXP 5%",
-           "max_resources_5": "Max HP/MP/SP +5%", "set": "SET",
+           "max_resources_5": "Max HP/MP/SP +5%", "magic_physical_damage_10": "Magic/Physical damage +10", "set": "SET",
+           "dye_credit": "Dye information courtesy of {names}",
            "unknown_color": "No\nInformation", "close": "Close"},
 }
 
@@ -57,7 +60,9 @@ def outfit_effect_keys(item):
     if item.get("category") != "outfit":
         return []
     effects = ["portal_feature", "experience_5"]
-    if item.get("item_id") not in OUTFIT_BASIC_EFFECT_ITEM_IDS:
+    if item.get("item_id") == 60:
+        effects.append("magic_physical_damage_10")
+    elif item.get("item_id") not in OUTFIT_BASIC_EFFECT_ITEM_IDS:
         effects.append("max_resources_5")
     return effects
 
@@ -599,6 +604,10 @@ class ArmorCatalogUI:
         tk.Button(footer, text=text["close"], command=self.close_variants, bg="#3b3022", fg="#f3d68f",
                   activebackground=HEADER, activeforeground="#fff4d2", relief="flat", bd=0,
                   padx=18, font=(family, 9, "bold"), cursor="hand2").pack(side="right", fill="y")
+        contributors = item.get("dye_contributors", [])
+        if contributors:
+            tk.Label(footer, text=text["dye_credit"].format(names=", ".join(contributors)),
+                     bg=PANEL, fg=MUTED, anchor="w", font=(family, 9)).pack(side="left", fill="y")
         rows = max(1, (len(slots) + columns - 1) // columns)
         modal_width = max(350, columns * 150 + 40)
         modal_height = 118 + rows * 218

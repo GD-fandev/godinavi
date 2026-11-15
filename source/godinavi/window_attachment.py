@@ -1,3 +1,4 @@
+from godinavi.process_match import matches_game_process
 import ctypes
 import os
 from ctypes import wintypes
@@ -91,7 +92,6 @@ def _window_title(hwnd) -> str:
 def find_godius_window(process_name: str = "Godius.exe", window_title: str = "Godius Client"):
     title_matches = []
     process_matches = []
-    process_needle = process_name.casefold()
     title_needle = window_title.casefold()
 
     def visit(hwnd, _lparam):
@@ -99,7 +99,7 @@ def find_godius_window(process_name: str = "Godius.exe", window_title: str = "Go
             return True
         if title_needle and title_needle in _window_title(hwnd).casefold():
             title_matches.append(hwnd)
-        if _process_name(hwnd).casefold() == process_needle:
+        if matches_game_process(_process_name(hwnd), process_name):
             process_matches.append(hwnd)
         return True
 

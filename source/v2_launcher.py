@@ -15,6 +15,7 @@ from v2_contracts import validate_channel, validate_manifest
 from v2_network import download, fetch_json
 from v2_process import launch_core
 from v2_updater_engine import UpdateError, load_installation
+from legacy_install_notice import show_legacy_install_notice
 
 
 LEGACY_BACKUP_DIR = ".godinavi-v1-backup"
@@ -63,7 +64,7 @@ def install_root():
 def installation_mode(root):
     state_path = Path(root) / "data" / "installation.json"
     if not state_path.is_file():
-        return "legacy"
+        return "repair" if (Path(root) / "data/GodiNaviCore.exe").is_file() else "legacy"
     try:
         return "v2" if load_installation(root) is not None else "legacy"
     except UpdateError:
@@ -130,6 +131,9 @@ def _quarantine_invalid_state(root):
 def start_update(root, *, mode=None):
     root = Path(root)
     mode = mode or installation_mode(root)
+    if mode == "legacy":
+        show_legacy_install_notice()
+        return None
     channel_path = ensure_channel(root)
     _channel, manifest = _load_channel_and_manifest(channel_path)
     staged_updater = _stage_updater(root, manifest)
@@ -159,7 +163,8 @@ def main():
         _cleanup_updater_stage()
     mode = installation_mode(root)
     if mode == "legacy":
-        preserve_legacy_launcher(root)
+        show_legacy_install_notice()
+        return 0
     ensure_channel(root)
     if "--update" in arguments or mode in {"legacy", "repair"}:
         start_update(root, mode=mode)

@@ -1,3 +1,5 @@
+from auto_ui.mode import legacy_enabled
+from auto_ui.service import service as auto_regions
 import ctypes
 import json
 import secrets
@@ -27,6 +29,7 @@ from .dock import OverlayDock
 from .durability_monitor import DurabilityMonitor, default_durability_config
 from .feature_notice_ui import FeatureNoticeUI
 from .map_update_ui import MapUpdateUI, map_update_prompt_is_snoozed
+from .map_controls import MapControls
 from .app_update_ui import update_prompt_is_snoozed
 from .monster_dictionary_ui import MonsterDictionaryUI
 from .party_ui import PartyUI
@@ -49,7 +52,8 @@ except Exception:
 
 
 def onboarding_required(config_exists: bool, config: dict) -> bool:
-    return not config_exists or bool(config.get("onboarding_pending", False))
+    # OCR placement is no longer a first-run requirement.
+    return False
 
 
 def default_dock_offset(client_width: int, client_height: int, bar_width: int, bar_height: int) -> tuple[int, int]:
@@ -61,10 +65,12 @@ def default_dock_offset(client_width: int, client_height: int, bar_width: int, b
 
 DOCK_TEXTS = {
     "KR": {
-        "map": "지도", "map_adjust": "지도 위치·크기 조절", "ocr_edit": "OCR 영역 편집", "world_map": "월드맵 열기 (F10)", "map_boundary_on": "영역제한 ON", "map_boundary_off": "영역제한 OFF", "pk_alert_on": "PK존 알림 ON", "pk_alert_off": "PK존 알림 OFF", "maze_mode_on": "미궁 지도 모드 ON", "maze_mode_off": "미궁 지도 모드 OFF",
-        "portal": "포탈", "portal_edit": "포탈 장소 편집", "preset": "프리셋 전환", "portal_bar": "포탈 바 표시/숨김",
+        "buff_manual_settings": "수동시작모드 키설정",
+        "buff_manual": "수동시작모드", "in_use": "사용중", "not_in_use": "미사용중",
+        "map": "지도", "map_adjust": "지도 위치·크기 조절", "ocr_edit": "OCR 영역 편집", "world_map": "월드맵 열기 (F10)", "map_boundary_on": "영역제한: 사용중", "map_boundary_off": "영역제한: 미사용중", "pk_alert_on": "PK존 알림: 사용중", "pk_alert_off": "PK존 알림: 미사용중", "maze_mode_on": "미궁 지도 모드: 사용중", "maze_mode_off": "미궁 지도 모드: 미사용중",
+        "portal": "포탈", "portal_edit": "포탈 장소 편집", "preset": "프리셋 전환", "portal_bar": "포탈 바",
         "buff": "버프 타이머", "buff_region": "버프 인식 영역 편집", "buff_toggle": "타이머 표시/숨김", "buff_size": "버프 창 조정",
-        "durability": "내구도 감시", "durability_settings": "내구도 감시 설정", "durability_toggle": "내구도 감시 On/Off",
+        "durability": "내구도 감시", "durability_settings": "내구도 감시 설정", "durability_toggle": "내구도 감시",
         "alchemy": "모험수첩", "alchemy_open": "연금술 계산기", "monster_dictionary": "몬스터 사전", "armor_catalog": "장비 도감", "tutorial": "가디내비 튜토리얼",
         "party": "파티룸", "party_create": "파티룸 생성", "party_join": "파티룸 입실", "party_leave": "파티룸 퇴실", "party_settings": "파티룸 확인", "party_buff_adjust": "버프 확인창 조정", "party_personal_timer": "개인 버프 타이머",
         "settings": "기타 설정", "button_ui": "버튼 UI 설정", "toolbar_customize": "툴바 커스터마이즈", "orientation": "가로/세로 전환", "quit": "종료",
@@ -73,10 +79,12 @@ DOCK_TEXTS = {
         "version_check": "버전 확인", "version_title": "버전 정보", "close": "닫기",
     },
     "JP": {
-        "map": "地図", "map_adjust": "地図の位置・サイズ調整", "ocr_edit": "OCR領域を編集", "world_map": "ワールドマップを開く (F10)", "map_boundary_on": "領域制限 ON", "map_boundary_off": "領域制限 OFF", "pk_alert_on": "PKゾーン通知 ON", "pk_alert_off": "PKゾーン通知 OFF", "maze_mode_on": "迷宮マップモード ON", "maze_mode_off": "迷宮マップモード OFF",
-        "portal": "ポータル", "portal_edit": "ポータル地点を編集", "preset": "プリセット切替", "portal_bar": "ポータルバー 表示/非表示",
+        "buff_manual_settings": "手動開始モードのキー設定",
+        "buff_manual": "手動開始モード", "in_use": "使用中", "not_in_use": "未使用",
+        "map": "地図", "map_adjust": "地図の位置・サイズ調整", "ocr_edit": "OCR領域を編集", "world_map": "ワールドマップを開く (F10)", "map_boundary_on": "領域制限: 使用中", "map_boundary_off": "領域制限: 未使用", "pk_alert_on": "PKゾーン通知: 使用中", "pk_alert_off": "PKゾーン通知: 未使用", "maze_mode_on": "迷宮マップモード: 使用中", "maze_mode_off": "迷宮マップモード: 未使用",
+        "portal": "ポータル", "portal_edit": "ポータル地点を編集", "preset": "プリセット切替", "portal_bar": "ポータルバー",
         "buff": "バフタイマー", "buff_region": "バフ認識領域を編集", "buff_toggle": "タイマー 表示/非表示", "buff_size": "バフ画面調整",
-        "durability": "耐久度監視", "durability_settings": "耐久度監視設定", "durability_toggle": "耐久度監視 On/Off",
+        "durability": "耐久度監視", "durability_settings": "耐久度監視設定", "durability_toggle": "耐久度監視",
         "alchemy": "冒険手帳", "alchemy_open": "錬金術計算機", "monster_dictionary": "モンスター図鑑", "armor_catalog": "装備図鑑", "tutorial": "ガディナビ チュートリアル",
         "party": "パーティールーム", "party_create": "パーティールーム作成", "party_join": "パーティールーム入室", "party_leave": "パーティールーム退出", "party_settings": "パーティールーム確認", "party_buff_adjust": "バフ確認画面の調整", "party_personal_timer": "個人バフタイマー",
         "settings": "設定", "button_ui": "ボタンUI設定", "toolbar_customize": "ツールバーカスタマイズ", "orientation": "横/縦を切替", "quit": "終了",
@@ -85,10 +93,12 @@ DOCK_TEXTS = {
         "version_check": "バージョン確認", "version_title": "バージョン情報", "close": "閉じる",
     },
     "EN": {
-        "map": "Map", "map_adjust": "Adjust map position/size", "ocr_edit": "Edit OCR region", "world_map": "Open world map (F10)", "map_boundary_on": "Boundary lock ON", "map_boundary_off": "Boundary lock OFF", "pk_alert_on": "PK zone alerts ON", "pk_alert_off": "PK zone alerts OFF", "maze_mode_on": "Labyrinth Map Mode ON", "maze_mode_off": "Labyrinth Map Mode OFF",
-        "portal": "Portal", "portal_edit": "Edit portal locations", "preset": "Switch preset", "portal_bar": "Show/hide portal bar",
+        "buff_manual_settings": "Manual start mode key settings",
+        "buff_manual": "Manual start mode", "in_use": "Enabled", "not_in_use": "Disabled",
+        "map": "Map", "map_adjust": "Adjust map position/size", "ocr_edit": "Edit OCR region", "world_map": "Open world map (F10)", "map_boundary_on": "Boundary lock: Enabled", "map_boundary_off": "Boundary lock: Disabled", "pk_alert_on": "PK zone alerts: Enabled", "pk_alert_off": "PK zone alerts: Disabled", "maze_mode_on": "Labyrinth Map Mode: Enabled", "maze_mode_off": "Labyrinth Map Mode: Disabled",
+        "portal": "Portal", "portal_edit": "Edit portal locations", "preset": "Switch preset", "portal_bar": "Portal bar",
         "buff": "Buff Timer", "buff_region": "Edit buff detection region", "buff_toggle": "Show/hide timer", "buff_size": "Adjust buff window",
-        "durability": "Durability Monitor", "durability_settings": "Durability settings", "durability_toggle": "Durability monitor On/Off",
+        "durability": "Durability Monitor", "durability_settings": "Durability settings", "durability_toggle": "Durability monitor",
         "alchemy": "Adventure Journal", "alchemy_open": "Alchemy calculator", "monster_dictionary": "Monster compendium", "armor_catalog": "Equipment catalog", "tutorial": "GodiNavi Tutorial",
         "party": "Party Room", "party_create": "Create party room", "party_join": "Join party room", "party_leave": "Leave party room", "party_settings": "Party room overview", "party_buff_adjust": "Adjust party buff window", "party_personal_timer": "Personal buff timer",
         "settings": "Settings", "button_ui": "Button UI settings", "toolbar_customize": "Customize toolbar", "orientation": "Switch horizontal/vertical", "quit": "Quit",
@@ -219,17 +229,13 @@ class PrototypeApp:
         self.map_engine: MapEngine | None = MapEngine(
             master=self.root,
             shell_mode=True,
-            on_calibration_confirmed=self._complete_onboarding,
         )
+        self.map_controls = MapControls(self)
         self.onboarding_pending = onboarding_required(not new_install, self.map_engine.config)
         self.onboarding_started = False
-        if self.onboarding_pending:
-            self.map_engine.config["onboarding_pending"] = True
-            self.map_engine.config["onboarding_complete"] = False
-            self.map_engine.config["minimap_enabled"] = False
-            self.map_engine.config["favorite_overlay_visible"] = False
-            self.map_engine.minimap_enabled = False
-            save_config(self.map_engine.config)
+        self.map_engine.config["onboarding_pending"] = False
+        self.map_engine.config["onboarding_complete"] = True
+        save_config(self.map_engine.config)
         buff_config = default_buff_config()
         saved_buff_config = self.map_engine.config.get("buff_timer", {})
         if isinstance(saved_buff_config, dict):
@@ -238,13 +244,11 @@ class PrototypeApp:
         buff_config["window_title"] = self.map_engine.config.get("window_title", "Godius Client")
         buff_config["ui_language"] = self.map_engine.ui_language
         buff_config["allow_timer_visibility_toggle"] = True
-        if self.onboarding_pending:
-            buff_config["timer_visible"] = False
+        buff_config["legacy_ocr_regions"] = legacy_enabled(self.map_engine.config)
         self.buff_timer = BuffTimerApp(
             self.root,
             buff_config,
             self._save_buff_config,
-            on_calibration_confirmed=self._start_map_onboarding,
             performance=self.map_engine.performance,
             capture_coordinator=self.map_engine.capture_coordinator,
         )
@@ -261,6 +265,7 @@ class PrototypeApp:
             durability_config.update(saved_durability_config)
             if saved_durability_config and "presets" not in saved_durability_config:
                 durability_config["_migrate_legacy_preset"] = True
+        durability_config["legacy_ocr_regions"] = legacy_enabled(self.map_engine.config)
         self.durability_monitor = DurabilityMonitor(
             self.root,
             durability_config,
@@ -727,6 +732,7 @@ class PrototypeApp:
         if not self.map_engine:
             return
         self.map_engine.cycle_locale()
+        self.map_controls.language_changed()
         if self.buff_timer:
             self.buff_timer.set_ui_language(self.map_engine.ui_language)
         self.durability_monitor.set_language(self.map_engine.ui_language)
@@ -739,10 +745,42 @@ class PrototypeApp:
         language_name = {"KR": "한국어", "JP": "日本語", "EN": "English"}[self.map_engine.ui_language]
         self.message(f"언어: {language_name}")
 
+    def auto_region_label(self):
+        language = self.map_engine.ui_language
+        title = {"KR": "수동 OCR 영역 지정", "JP": "手動OCR領域指定", "EN": "Manual OCR regions"}[language]
+        enabled = legacy_enabled(self.map_engine.config)
+        return title + ({"KR": " : 켜짐", "JP": " : オン", "EN": " : on"}[language] if enabled else
+                        {"KR": " : 꺼짐", "JP": " : オフ", "EN": " : off"}[language])
+
+    def toggle_auto_regions(self):
+        enabled = not legacy_enabled(self.map_engine.config)
+        if self.map_engine.calibration_mode:
+            self.map_engine.toggle_calibration()
+        if self.buff_timer.calibration_mode:
+            self.buff_timer.toggle_calibration_mode()
+        if self.durability_monitor.editing:
+            self.durability_monitor.close_settings()
+        if self.clock_overlay.xp_region_editing or getattr(self.clock_overlay, "xp_region_viewing", False):
+            self.clock_overlay.close_xp_region_editor(save_region=True)
+        for owner, toggle in ((self.map_engine, self.map_engine.toggle_calibration),
+                              (self.buff_timer, self.buff_timer.toggle_calibration_mode)):
+            if getattr(owner, "auto_region_viewing", False):
+                toggle()
+        for config in (self.map_engine.config, self.buff_timer.config, self.durability_monitor.config):
+            config["legacy_ocr_regions"] = enabled
+        self.map_engine.capture_coordinator.invalidate()
+        auto_regions.invalidate()
+        self._save_buff_config(self.buff_timer.config)
+        self._save_durability_config(self.durability_monitor.config)
+        save_config(self.map_engine.config)
+        self.message(self.auto_region_label())
+
     def current_language_name(self):
         return "🌐 LANGUAGE"
 
     def shutdown(self):
+        if hasattr(self, "map_controls"):
+            self.map_controls.close()
         if hasattr(self, "party_client"):
             self.party_client.close()
         if hasattr(self, "clock_overlay"):
@@ -764,74 +802,6 @@ class PrototypeApp:
             self.root.destroy()
         except tk.TclError:
             pass
-
-    def _start_onboarding(self):
-        if not self.onboarding_pending or self.buff_timer.calibration_mode:
-            return
-        self.buff_timer.config["detect_coordinate_origin"] = "client"
-        self.buff_timer.config["detect_region"] = [0, 0, 40, 40]
-        self.buff_timer.toggle_calibration_mode()
-        self.root.after(60, self._position_initial_buff_region)
-
-    def _position_initial_buff_region(self):
-        if not self.buff_timer.calibration_mode or not self.client_rect:
-            return
-        guide = self.buff_timer.calibration_guide_window
-        guide.update_idletasks()
-        left, top, right, bottom = self.client_rect
-        screen_x = max(left + 24, min(guide.winfo_x() + 24, right - 24))
-        screen_y = max(top + 24, min(guide.winfo_y() + 24, bottom - 24))
-        self.buff_timer.calibrate_region_at_screen_point(screen_x, screen_y)
-        self.buff_timer.update_region_window()
-
-    def _start_map_onboarding(self):
-        if self.buff_timer and not self.buff_timer.timer_visible:
-            self.buff_timer.toggle_timer_visibility()
-        if not self.onboarding_pending or not self.map_engine:
-            return
-        if not self.map_engine.calibration_mode:
-            self.map_engine.toggle_calibration()
-        self.root.after(60, self._position_initial_map_regions)
-
-    def _position_initial_map_regions(self):
-        engine = self.map_engine
-        if not engine or not engine.calibration_mode:
-            return
-        client = engine.get_stable_client_rect()
-        if not client:
-            self.root.after(100, self._position_initial_map_regions)
-            return
-        guide = engine.ocr_guide_window
-        guide.update_idletasks()
-        cl, ct, cr, cb = client
-        name_width, coordinate_width, region_height = 280, 140, 42
-        x = max(cl, min(guide.winfo_x() + 18, cr - name_width))
-        name_y = max(ct, min(guide.winfo_y() - 98, cb - region_height * 2 - 8))
-        coordinate_y = max(ct, min(name_y + region_height + 8, cb - region_height))
-        engine.capture_bboxes["name"] = (x, name_y, x + name_width, name_y + region_height)
-        engine.capture_bboxes["coordinates"] = (
-            x,
-            coordinate_y,
-            x + coordinate_width,
-            coordinate_y + region_height,
-        )
-        for kind in ("name", "coordinates"):
-            engine.store_bbox(engine.capture_bboxes[kind], kind)
-        engine.update_region_windows()
-
-    def _complete_onboarding(self):
-        if not self.map_engine:
-            return
-        if not self.map_engine.minimap_enabled:
-            self.map_engine.toggle_minimap()
-        if not self.onboarding_pending:
-            return
-        self.onboarding_pending = False
-        self.map_engine.config["onboarding_pending"] = False
-        self.map_engine.config["onboarding_complete"] = True
-        save_config(self.map_engine.config)
-        self.message({"KR": "초기 설정 완료", "JP": "初期設定完了", "EN": "Initial setup complete"}[self.map_engine.ui_language])
-        self.root.after(250, lambda: self.tutorial_ui.show_notice(self._start_140_notice_flow))
 
     def _save_buff_config(self, config):
         if not self.map_engine:
@@ -907,27 +877,36 @@ class PrototypeApp:
 
     def _create_items(self, configured=True) -> list[DockItem]:
         texts = DOCK_TEXTS[self.map_engine.ui_language if self.map_engine else "KR"]
+        def state_label(key, enabled):
+            return f'{texts[key]}: {texts["in_use" if enabled else "not_in_use"]}'
+
         update_available = bool(self.map_update_ui and self.map_update_ui.update_available)
         map_actions = [
+            QuickAction(self.map_controls.tr('지도 설정'), self.map_controls.open_settings),
+            QuickAction(
+                lambda: self.map_controls.tr('시설 위치') + ': ' + self.map_controls.tr('켜짐' if self.map_controls.values['navigation'] else '꺼짐'),
+                self.map_controls.toggle,
+            ),
             QuickAction(texts["map_adjust"], self.toggle_map_adjustment),
             QuickAction(
-                lambda: texts["map_boundary_off"] if self.map_engine.minimap_boundary_restricted else texts["map_boundary_on"],
+                lambda: texts["map_boundary_on"] if self.map_engine.minimap_boundary_restricted else texts["map_boundary_off"],
                 self.toggle_map_boundary_restriction,
             ),
             QuickAction(
-                lambda: texts["pk_alert_off"] if self.map_engine.config.get("pk_zone_alert_enabled", True) else texts["pk_alert_on"],
+                lambda: texts["pk_alert_on"] if self.map_engine.config.get("pk_zone_alert_enabled", True) else texts["pk_alert_off"],
                 self.toggle_pk_zone_alert,
             ),
             QuickAction(texts["ocr_edit"], self.toggle_map_calibration),
             QuickAction(texts["world_map"], self.toggle_world_map),
             QuickAction(
-                lambda: texts["maze_mode_off"] if self.map_engine.labyrinth_map_mode else texts["maze_mode_on"],
+                lambda: texts["maze_mode_on"] if self.map_engine.labyrinth_map_mode else texts["maze_mode_off"],
                 self.toggle_labyrinth_map_mode,
             ),
         ]
         if update_available:
             map_actions.append(QuickAction(texts["map_update_available"], self.open_map_update))
         settings_actions = [
+            QuickAction(self.auto_region_label, self.toggle_auto_regions),
             QuickAction(self.current_language_name, self.cycle_language),
             QuickAction(texts["button_ui"], lambda: self.dock.toggle_lock() if self.dock else None),
             QuickAction(texts["toolbar_customize"], self.open_toolbar_customize),
@@ -952,7 +931,7 @@ class PrototypeApp:
             ),
             DockItem(
                 "portal", "◈", texts["portal"], self.toggle_portal_bar,
-                (QuickAction(texts["portal_edit"], self.open_portal_editor), QuickAction(texts["preset"], self.cycle_portal_preset), QuickAction(texts["portal_bar"], self.toggle_portal_bar)),
+                (QuickAction(texts["portal_edit"], self.open_portal_editor), QuickAction(texts["preset"], self.cycle_portal_preset), QuickAction(lambda: state_label("portal_bar", self.portal_bar_visible()), self.toggle_portal_bar)),
                 str(ICON_DIR / "portal.jpg"),
                 state=self.portal_bar_visible,
                 secondary=self.open_portal_editor,
@@ -960,7 +939,15 @@ class PrototypeApp:
             ),
             DockItem(
                 "buff", "⏱", texts["buff"], self.toggle_buff_timer,
-                (QuickAction(texts["buff_region"], self.toggle_buff_region), QuickAction(texts["buff_size"], self.toggle_buff_size)),
+                (
+                    QuickAction(texts["buff_region"], self.toggle_buff_region),
+                    QuickAction(texts["buff_size"], self.toggle_buff_size),
+                    QuickAction(
+                        lambda: state_label("buff_manual", self.buff_timer.manual_start_mode),
+                        self.buff_timer.toggle_manual_start_mode,
+                    ),
+                    QuickAction(texts["buff_manual_settings"], self.buff_timer.open_manual_settings),
+                ),
                 str(ICON_DIR / "buff_timer.jpg"),
                 state=lambda: bool(self.buff_timer and self.buff_timer.timer_visible),
                 secondary=self.toggle_buff_size,
@@ -971,7 +958,7 @@ class PrototypeApp:
                 "durability", "◆", texts["durability"], self.toggle_durability_monitor,
                 (
                     QuickAction(texts["durability_settings"], self.open_durability_settings),
-                    QuickAction(texts["durability_toggle"], self.toggle_durability_monitor),
+                    QuickAction(lambda: state_label("durability_toggle", self.durability_monitor.monitoring_enabled), self.toggle_durability_monitor),
                 ),
                 str(ICON_DIR / "dura.jpg"),
                 state=lambda: self.durability_monitor.monitoring_enabled,
@@ -1331,6 +1318,13 @@ class PrototypeApp:
         else:
             self._set_client_overlays_unavailable(False)
             self._hide_missing_client()
+            if rect != self.client_rect:
+                self.map_engine.capture_coordinator.invalidate()
+                auto_regions.invalidate()
+                self.map_engine.last_ocr_at = self.map_engine.last_name_ocr_at = 0.0
+                self.map_engine.last_coordinate_signature = None
+                self.durability_monitor.last_ocr_at = 0.0
+                self.clock_overlay.xp_last_capture_at = 0.0
             self.client_rect = rect
             self.party_ui.set_owner_overlays_available(
                 self._toolbar_feature_enabled("party") and not self.overlays_temporarily_hidden
@@ -1371,9 +1365,6 @@ class PrototypeApp:
                 self.dock_owner_hwnd = desired_dock_owner
             if not self.dock.drag_origin:
                 move_attached(self.root, x, y)
-            if self.onboarding_pending and not self.onboarding_started:
-                self.onboarding_started = True
-                self.root.after(250, self._start_onboarding)
             self.party_ui.follow_owner(rect, self.target_hwnd)
             self.party_ui.sync_position()
 

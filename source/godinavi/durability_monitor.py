@@ -1,3 +1,6 @@
+from auto_ui.mode import legacy_enabled
+from auto_ui.region_display import exclude_from_capture
+from auto_ui.service import service as auto_regions
 import concurrent.futures
 from collections import Counter
 import ctypes
@@ -212,6 +215,7 @@ class EditableRegion:
         self.action_label = action_label
         self.bounds_provider = bounds_provider
         self.last_draw_size = None
+        self.read_only = False
         self.drag = None
         self.mode = None
         self.window = tk.Toplevel(master)
@@ -234,26 +238,32 @@ class EditableRegion:
 
     def _redraw(self, _event=None):
         width, height = self.window.winfo_width(), self.window.winfo_height()
-        size = (width, height)
+        size = (width, height, self.read_only)
         if size == self.last_draw_size:
             return
         self.last_draw_size = size
         self.canvas.delete("guide")
         self.canvas.create_rectangle(0, 0, width, self.HEADER_HEIGHT, fill=self.color, outline=self.color, tags="guide")
-        self.canvas.create_text(8, self.HEADER_HEIGHT // 2, text=f"⠿  {self.label()}", fill="#fff1c9", anchor="w", font=("Noto Sans KR", 9, "bold"), tags="guide")
+        self.canvas.create_text(8, self.HEADER_HEIGHT // 2, text="🔒" if self.read_only else f"⠿  {self.label()}", fill="#fff1c9", anchor="w", font=("Noto Sans KR", 9, "bold"), tags="guide")
         if self.action:
             self.canvas.create_rectangle(width - 28, 2, width - 2, self.HEADER_HEIGHT - 2, fill="#2a2118", outline="#fff1c9", tags="guide")
             self.canvas.create_text(width - 15, self.HEADER_HEIGHT // 2, text=self.action_label, fill="#fff1c9", font=("Segoe UI Symbol", 11, "bold"), tags="guide")
         self.canvas.create_rectangle(1, self.HEADER_HEIGHT, width - 2, height - 2, outline=self.color, width=3, tags="guide")
-        self.canvas.create_polygon(width-15, height-2, width-2, height-15, width-2, height-2, fill=self.color, tags="guide")
+        if not self.read_only:
+            self.canvas.create_polygon(width-15, height-2, width-2, height-15, width-2, height-2, fill=self.color, tags="guide")
         if self.content_drawer:
             self.content_drawer(self.canvas, width, height, self.HEADER_HEIGHT)
 
     def _pointer(self, event):
+        if self.read_only:
+            self.canvas.configure(cursor="arrow")
+            return
         resize = event.x >= self.window.winfo_width() - 16 and event.y >= self.window.winfo_height() - 16
         self.canvas.configure(cursor="size_nw_se" if resize else "fleur" if event.y <= self.HEADER_HEIGHT else "arrow")
 
     def _press(self, event):
+        if self.read_only:
+            return
         if self.action and event.y <= self.HEADER_HEIGHT and event.x >= self.window.winfo_width() - 30:
             self.action()
             self.drag = None
@@ -263,6 +273,8 @@ class EditableRegion:
         self.drag = (event.x_root, event.y_root, self.window.winfo_x(), self.window.winfo_y(), self.window.winfo_width(), self.window.winfo_height())
 
     def _motion(self, event):
+        if self.read_only:
+            return
         if not self.drag:
             return
         sx, sy, x, y, width, height = self.drag
@@ -282,6 +294,8 @@ class EditableRegion:
         self.window.geometry(f"{width}x{height}+{x}+{y}")
 
     def _release(self, _event):
+        if self.read_only:
+            return
         self.drag = None
         self.mode = None
         self.on_changed(self.geometry())
@@ -291,11 +305,18 @@ class EditableRegion:
         x, y = self.window.winfo_x(), self.window.winfo_y()
         return x, y + self.HEADER_HEIGHT, x + self.window.winfo_width(), y + self.window.winfo_height()
 
-    def show(self, bbox, owner):
+    def show(self, bbox, owner, read_only=False):
+        self.read_only = read_only
+        exclude_from_capture(self.window, read_only)
+        self.canvas.configure(cursor="arrow" if read_only else "fleur")
+        if not bbox:
+            self.hide()
+            return
         left, top, right, bottom = bbox
         outer_top = top - self.HEADER_HEIGHT
         self.window.geometry(f"{max(28, right-left)}x{max(20, bottom-top)+self.HEADER_HEIGHT}+{left}+{outer_top}")
         attach_above(self.window, owner, left, outer_top)
+        self._redraw()
 
     def hide(self):
         self.window.withdraw()
@@ -527,6 +548,14 @@ class DurabilityMonitor:
         return tuple(round(value * (sx if index % 2 == 0 else sy)) + (left if index % 2 == 0 else top) for index, value in enumerate(values))
 
     def _part_bbox(self, part, rect):
+        if not legacy_enabled(self.config):
+            hwnd, _ = self._client_rect()
+            layout = auto_regions.snapshot(hwnd, rect)
+            if not layout.boxes:
+                return None
+            from auto_ui.service import durability_box
+            frame = self.capture_provider(rect)
+            return durability_box(frame, layout, part) if frame is not None else None
         part_config = self.config["parts"][part]
         return self._screen_bbox(part_config.get("region"), part_config.get("reference_size"), rect, self._default_regions(rect)[part])
 
@@ -547,6 +576,8 @@ class DurabilityMonitor:
         return [bbox[0] - left, bbox[1] - top, bbox[2] - left, bbox[3] - top], [right - left, bottom - top]
 
     def _store_region(self, part, bbox):
+        if not legacy_enabled(self.config):
+            return
         _hwnd, rect = self._client_rect()
         if not rect:
             return
@@ -769,7 +800,7 @@ class DurabilityMonitor:
         attach_above(win, hwnd, x, y)
         defaults = self._default_regions(rect)
         for part, region_window in self.region_windows.items():
-            region_window.show(self._part_bbox(part, rect), hwnd)
+            region_window.show(self._part_bbox(part, rect), hwnd, read_only=not legacy_enabled(self.config))
         self.warning_editor.show(self._warning_bbox(rect), hwnd)
 
     def _sync_edit_windows(self, hwnd, rect):
@@ -778,7 +809,7 @@ class DurabilityMonitor:
             attach_above(self.dialog, hwnd, rect[0] + offset_x, rect[1] + offset_y)
         for part, region_window in self.region_windows.items():
             if not region_window.drag:
-                region_window.show(self._part_bbox(part, rect), hwnd)
+                region_window.show(self._part_bbox(part, rect), hwnd, read_only=not legacy_enabled(self.config))
         if not self.warning_editor.drag:
             self.warning_editor.show(self._warning_bbox(rect), hwnd)
 
@@ -889,12 +920,17 @@ class DurabilityMonitor:
         if self.preset_name_dialog and self.preset_name_dialog.winfo_exists():
             self.preset_name_dialog.destroy()
         self.preset_name_dialog = None
+        self._hide_warning()
+
+    def _hide_warning(self):
         self.warning_window.withdraw()
+        self.warning_visible = False
+        self.warning_last_bbox = None
 
     def toggle_monitoring(self):
         self.config["monitoring_enabled"] = not self.monitoring_enabled
         if not self.monitoring_enabled:
-            self.warning_window.withdraw()
+            self._hide_warning()
             self.warning_sound_low_parts.clear()
         self.save()
 
@@ -1054,6 +1090,10 @@ class DurabilityMonitor:
 
     def _begin_ocr(self, rect):
         images = {}
+        hwnd, _ = self._client_rect()
+        layout = auto_regions.snapshot(hwnd, rect) if not legacy_enabled(self.config) else None
+        if layout is not None and not layout.boxes:
+            return
         client_left, client_top, client_right, client_bottom = rect
         try:
             client_capture = self.capture_provider(rect)
@@ -1062,11 +1102,19 @@ class DurabilityMonitor:
         if client_capture is None:
             return
         client_capture = client_capture.convert("RGB")
+        if layout and layout.supported and auto_regions.snapshot(hwnd, rect) != layout:
+            return
         for part in PARTS:
             enabled = self.config["parts"][part].get("enabled", False) or self.editing
             if not enabled:
                 continue
-            bbox = self._part_bbox(part, rect)
+            if layout and layout.supported:
+                from auto_ui.service import durability_box
+                bbox = durability_box(client_capture, layout, part)
+                if bbox is None:
+                    continue
+            else:
+                bbox = self._part_bbox(part, rect)
             try:
                 left, top, right, bottom = bbox
                 crop_box = (
@@ -1081,7 +1129,7 @@ class DurabilityMonitor:
                     # own colored guide border and bottom-right resize grip.
                     # Remove only that known editor chrome so the debug input
                     # matches the unobstructed image used during normal play.
-                    if self.editing:
+                    if self.editing and legacy_enabled(self.config):
                         image = self._without_editor_chrome(image)
                     images[part] = image
             except Exception:
@@ -1089,6 +1137,9 @@ class DurabilityMonitor:
         images = {part: image for part, image in images.items() if image is not None}
         if images:
             self.ocr_future = self.executor.submit(self._recognize_images, images)
+            self.ocr_future.capture_context = (hwnd, tuple(rect), layout)
+        elif layout and layout.supported:
+            self._accept_results({}, time.monotonic())
 
     @staticmethod
     def _without_editor_chrome(image):
@@ -1288,19 +1339,16 @@ class DurabilityMonitor:
 
     def _render_warning(self, rect, now):
         if self.editing:
-            self.warning_window.withdraw()
-            self.warning_visible = False
+            self._hide_warning()
             return
         if now < getattr(self, "warning_suppressed_until", 0):
-            self.warning_window.withdraw()
-            self.warning_visible = False
+            self._hide_warning()
             return
         hwnd = self.target_provider()
         low_parts = set(self._low_parts())
         self._update_warning_sound()
         if not low_parts:
-            self.warning_window.withdraw()
-            self.warning_visible = False
+            self._hide_warning()
             return
         bbox = self._warning_bbox(rect)
         left, top, right, bottom = bbox
@@ -1327,14 +1375,16 @@ class DurabilityMonitor:
         hwnd, rect = self._client_rect()
         now = time.monotonic()
         if not hwnd or not rect or user32.IsIconic(hwnd):
-            self.warning_window.withdraw()
-            self.warning_visible = False
+            self._hide_warning()
         else:
             if self.editing:
                 self._sync_edit_windows(hwnd, rect)
             if self.ocr_future and self.ocr_future.done():
                 try:
-                    self._accept_results(self.ocr_future.result(), now)
+                    context = getattr(self.ocr_future, "capture_context", None)
+                    current_layout = auto_regions.snapshot(hwnd, rect) if not legacy_enabled(self.config) else None
+                    if context is None or context == (hwnd, tuple(rect), current_layout):
+                        self._accept_results(self.ocr_future.result(), now)
                 except Exception:
                     pass
                 self.ocr_future = None
@@ -1350,7 +1400,7 @@ class DurabilityMonitor:
             if self.monitoring_enabled or self.editing:
                 self._render_warning(rect, now)
             else:
-                self.warning_window.withdraw()
+                self._hide_warning()
         try:
             self.master.after(100, self.tick)
         except tk.TclError:

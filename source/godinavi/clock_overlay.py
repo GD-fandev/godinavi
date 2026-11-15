@@ -1,3 +1,6 @@
+from auto_ui.mode import legacy_enabled
+from auto_ui.region_display import exclude_from_capture
+from auto_ui.service import service as auto_regions
 import ctypes
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
@@ -32,7 +35,7 @@ def format_clock_time(now, use_24_hour=False):
 
 CLOCK_TEXTS = {
     "KR": {
-        "on": "시계 표시 ON", "off": "시계 표시 OFF", "adjust": "드래그 이동 · 휠로 투명도 조절",
+        "on": "시계 표시: 사용중", "off": "시계 표시: 미사용중", "adjust": "드래그 이동 · 휠로 투명도 조절",
         "title": "시계", "alarm": "알람 설정", "stopwatch": "스톱워치", "alarm_pending": "알람을 최대 5개까지 설정할 수 있습니다.",
         "alarm_add": "+ 알람 추가", "alarm_time": "시간", "alarm_memo": "메모", "alarm_sound": "알람음",
         "alarm_enabled": "사용", "alarm_delete": "삭제", "alarm_stop": "STOP", "alarm_snooze": "+5min",
@@ -47,7 +50,7 @@ CLOCK_TEXTS = {
         "xp_clear": "측정값 초기화", "xp_empty": "측정 기록이 없습니다.", "xp_done": "설정 완료",
     },
     "JP": {
-        "on": "時計表示 ON", "off": "時計表示 OFF", "adjust": "ドラッグで移動・ホイールで透明度調整",
+        "on": "時計表示: 使用中", "off": "時計表示: 未使用", "adjust": "ドラッグで移動・ホイールで透明度調整",
         "title": "時計", "alarm": "アラーム設定", "stopwatch": "ストップウォッチ", "alarm_pending": "アラームは5件まで設定できます。",
         "alarm_add": "+ アラーム追加", "alarm_time": "時刻", "alarm_memo": "メモ", "alarm_sound": "アラーム音",
         "alarm_enabled": "使用", "alarm_delete": "削除", "alarm_stop": "STOP", "alarm_snooze": "+5min",
@@ -62,7 +65,7 @@ CLOCK_TEXTS = {
         "xp_clear": "測定値を消去", "xp_empty": "測定履歴がありません。", "xp_done": "設定完了",
     },
     "EN": {
-        "on": "Clock display ON", "off": "Clock display OFF", "adjust": "Drag to move · Wheel adjusts opacity",
+        "on": "Clock display: Enabled", "off": "Clock display: Disabled", "adjust": "Drag to move · Wheel adjusts opacity",
         "title": "Clock", "alarm": "Alarm", "stopwatch": "Stopwatch", "alarm_pending": "You can configure up to 5 alarms.",
         "alarm_add": "+ Add alarm", "alarm_time": "Time", "alarm_memo": "Memo", "alarm_sound": "Sound",
         "alarm_enabled": "On", "alarm_delete": "Delete", "alarm_stop": "STOP", "alarm_snooze": "+5min",
@@ -334,6 +337,7 @@ class ClockOverlay:
     def tick(self):
         try:
             self.update_alarms()
+            self.update_xp_region_view()
             self.update_xp_ocr()
             self.update_stopwatch()
             if self.enabled and not self.temporarily_hidden:
@@ -357,6 +361,8 @@ class ClockOverlay:
         return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
 
     def open_control_modal(self, _event=None):
+        if self.editing:
+            return "break"
         if self.exists(self.control_window):
             self.control_window.deiconify()
             self.control_window.lift()
@@ -799,7 +805,11 @@ class ClockOverlay:
             self.close_xp_region_editor(save_region=True)
             self.hide_stopwatch_xp_gain()
         elif not self.settings.get("clock_xp_region"):
-            self.open_xp_region_editor()
+            hwnd = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
+            client = self.target_rect_provider() if self.target_rect_provider else None
+            layout = auto_regions.snapshot(hwnd, client)
+            if legacy_enabled(self.settings):
+                self.open_xp_region_editor()
         self.save()
         self.refresh_xp_ui()
 
@@ -828,6 +838,10 @@ class ClockOverlay:
         client = self.target_rect_provider() if self.target_rect_provider else None
         if not client:
             return None
+        if not legacy_enabled(self.settings):
+            hwnd = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
+            layout = auto_regions.snapshot(hwnd, client)
+            return layout.bbox("experience?", include_inactive=allow_default)
         left, top, right, bottom = map(int, client)
         client_width, client_height = right - left, bottom - top
         region = self.settings.get("clock_xp_region")
@@ -849,6 +863,8 @@ class ClockOverlay:
         return tuple(bbox)
 
     def store_xp_region(self):
+        if not legacy_enabled(self.settings):
+            return
         if not self.exists(self.xp_region_window):
             return
         client = self.target_rect_provider() if self.target_rect_provider else None
@@ -877,6 +893,8 @@ class ClockOverlay:
         label.place(relx=0.5, rely=0.5, anchor="center")
         grip = tk.Label(panel, text="◢", bg="#3a0907", fg="#ff746c", cursor="sizing", font=("Arial", 14, "bold"))
         grip.place(relx=1.0, rely=1.0, anchor="se")
+        self.xp_region_grip = grip
+        self.xp_region_widgets = (window, panel, label)
         for widget in (window, panel, label):
             widget.bind("<Button-1>", lambda event: self.begin_xp_region_drag(event, "move"))
             widget.bind("<B1-Motion>", self.drag_xp_region)
@@ -897,6 +915,13 @@ class ClockOverlay:
         make_noactivate_toolwindow(lock)
 
     def open_xp_region_editor(self):
+        if not legacy_enabled(self.settings):
+            if getattr(self, "xp_region_viewing", False):
+                self.close_xp_region_editor()
+            else:
+                self.xp_region_viewing = True
+                self.update_xp_region_view()
+            return
         if not self.xp_mode_enabled:
             self.xp_mode_enabled = True
             self.settings["clock_xp_tracking_enabled"] = True
@@ -905,6 +930,7 @@ class ClockOverlay:
             return
         self.ensure_xp_region_editor()
         self.xp_region_editing = True
+        self.configure_xp_region_read_only(False)
         left, top, right, bottom = bbox
         self.xp_region_window.geometry(f"{right-left}x{bottom-top}+{left}+{top}")
         self.position_xp_region_lock()
@@ -915,6 +941,36 @@ class ClockOverlay:
                 attach_above(window, owner, window.winfo_x(), window.winfo_y())
         self.save()
         self.refresh_xp_ui()
+
+    def configure_xp_region_read_only(self, read_only):
+        exclude_from_capture(self.xp_region_window, read_only)
+        exclude_from_capture(self.xp_region_lock_window, read_only)
+        for widget in self.xp_region_widgets:
+            widget.configure(cursor="arrow" if read_only else "fleur")
+        if read_only:
+            self.xp_region_grip.place_forget()
+        else:
+            self.xp_region_grip.place(relx=1.0, rely=1.0, anchor="se")
+
+    def update_xp_region_view(self):
+        if not getattr(self, "xp_region_viewing", False) or self.temporarily_hidden:
+            return
+        bbox = self.xp_region_bbox()
+        if not bbox:
+            for window in (self.xp_region_window, self.xp_region_lock_window):
+                if self.exists(window):
+                    window.withdraw()
+            return
+        self.ensure_xp_region_editor()
+        self.configure_xp_region_read_only(True)
+        left, top, right, bottom = bbox
+        self.xp_region_window.geometry(f"{right-left}x{bottom-top}+{left}+{top}")
+        self.xp_region_lock_window.withdraw()
+        owner = self.owner_hwnd_provider() if self.owner_hwnd_provider else None
+        self.xp_region_window.deiconify()
+        if owner:
+            window = self.xp_region_window
+            attach_above(window, owner, window.winfo_x(), window.winfo_y())
 
     def position_xp_region_lock(self):
         if not self.exists(self.xp_region_window) or not self.exists(self.xp_region_lock_window):
@@ -928,6 +984,8 @@ class ClockOverlay:
         self.xp_region_lock_window.geometry(f"+{x}+{y}")
 
     def begin_xp_region_drag(self, event, mode):
+        if not legacy_enabled(self.settings):
+            return
         if not self.exists(self.xp_region_window):
             return "break"
         self.xp_region_drag_mode = mode
@@ -938,6 +996,8 @@ class ClockOverlay:
         return "break"
 
     def drag_xp_region(self, event):
+        if not legacy_enabled(self.settings):
+            return "break"
         if not self.xp_region_drag_origin:
             return "break"
         sx, sy, x, y, width, height = self.xp_region_drag_origin
@@ -963,6 +1023,7 @@ class ClockOverlay:
         return "break"
 
     def close_xp_region_editor(self, save_region=False):
+        self.xp_region_viewing = False
         if save_region:
             self.store_xp_region()
         self.xp_region_editing = False
@@ -986,6 +1047,10 @@ class ClockOverlay:
     def recognize_xp_region(self, client, bbox):
         frame = self.map_engine.capture_coordinator.capture_client(client)
         if frame is None:
+            return None
+        if frame is None:
+            return None
+        if not legacy_enabled(self.settings) and self.xp_region_bbox() != bbox:
             return None
         left, top, _right, _bottom = client
         x1, y1, x2, y2 = bbox
@@ -1024,8 +1089,12 @@ class ClockOverlay:
                 result = self.xp_future.result()
             except Exception:
                 result = None
+            context = getattr(self.xp_future, "capture_context", None)
+            stale = context is not None and context != (
+                self.owner_hwnd_provider() if self.owner_hwnd_provider else None,
+                tuple(self.target_rect_provider() or ()), self.xp_region_bbox())
             self.xp_future = None
-            if self.xp_discard_future:
+            if self.xp_discard_future or stale:
                 self.xp_discard_future = False
             else:
                 self.xp_current_value = result
@@ -1042,6 +1111,8 @@ class ClockOverlay:
             return
         self.xp_last_capture_at = now
         self.xp_future = self.xp_executor.submit(self.recognize_xp_region, tuple(client), bbox)
+        self.xp_future.capture_context = (
+            self.owner_hwnd_provider() if self.owner_hwnd_provider else None, tuple(client), bbox)
 
     def finish_xp_measurement(self):
         if not self.xp_mode_enabled or self.xp_start_value is None:

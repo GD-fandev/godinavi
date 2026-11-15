@@ -17,6 +17,7 @@ datas = [
     (os.path.join(ASSET_DIR, "Godius_104.png"), "assets/icons"),
     (PARTY_ENDPOINT, "config"),
 ]
+datas.append((os.path.join(SOURCE_DIR, "auto_ui", "assets"), "auto_ui/assets"))
 binaries = []
 rapidocr_root = get_package_paths("rapidocr")[1]
 datas += [

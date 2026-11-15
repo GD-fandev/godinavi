@@ -15,8 +15,9 @@ def _safe_id(value):
 class MapStore:
     """Store map JSON beside the matching area folder under maps/."""
 
-    def __init__(self, project_dir):
+    def __init__(self, project_dir, prefer_pak=True):
         self.project_dir = Path(project_dir)
+        self.prefer_pak = prefer_pak
         source_data = self.project_dir / "content-source" / "maps"
         self.data_dir = source_data if source_data.exists() else self.project_dir / "mapdata"
         # Kept as the public attribute used by the calibrator UI. JSON files
@@ -45,7 +46,7 @@ class MapStore:
 
     def _record_path(self, record):
         map_id = _safe_id(record.get("id"))
-        image_path = Path(str(record.get("image", "")).replace("\\", "/"))
+        image_path = Path(self.image_key(record.get("image", "")))
         parts = list(image_path.parts)
         area_parts = []
         for index, part in enumerate(parts):
@@ -107,7 +108,7 @@ class MapStore:
         return migrated
 
     def load_maps(self):
-        if self.pak_path.is_file():
+        if self.prefer_pak and self.pak_path.is_file():
             records = {}
             reader = self._pak_reader()
             for name in reader.names():
@@ -134,7 +135,7 @@ class MapStore:
         return list(records.values())
 
     def signature(self):
-        if self.pak_path.is_file():
+        if self.prefer_pak and self.pak_path.is_file():
             stat = self.pak_path.stat()
             return (("content/maps.pak", stat.st_mtime_ns, stat.st_size),)
         return tuple(
@@ -216,9 +217,33 @@ class MapStore:
         temp_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         temp_path.replace(path)
 
-    @staticmethod
-    def _validated_record(record):
+    def image_key(self, value):
+        text = str(value or "").replace("\\", "/")
+        path = Path(text)
+        if path.is_absolute():
+            try:
+                text = path.resolve().relative_to(self.project_dir.resolve()).as_posix()
+            except ValueError:
+                return text
+        prefix = "private/content-source/map-images/"
+        if text.startswith(prefix):
+            text = "maps/" + text[len(prefix):]
+        return text
+
+    def image_source_path(self, value):
+        key = self.image_key(value)
+        if key.startswith("maps/"):
+            source = self.project_dir / "private/content-source/map-images" / key[5:]
+            if source.is_file():
+                return source
+        return self.project_dir / key
+
+    def _validated_record(self, record):
         result = dict(record)
+        if "image" in result:
+            result["image"] = self.image_key(result["image"])
+        if isinstance(result.get("images"), dict):
+            result["images"] = {language: self.image_key(value) for language, value in result["images"].items()}
         _safe_id(result.get("id"))
         is_pk_area = result.get("isPKArea", False)
         if not isinstance(is_pk_area, bool):

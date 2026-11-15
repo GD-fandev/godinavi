@@ -26,9 +26,9 @@ LEGACY_BACKUP_DIR = ".godinavi-v1-backup"
 
 
 TEXT = {
-    "KR": {"title": "GodiNavi 2 업데이트", "description": "{current}에서 {target}(으)로 업데이트합니다.", "current": "현재 버전", "target": "대상 버전", "components": "업데이트 구성요소", "changes": "변경 내용", "ready": "업데이트를 준비하고 있습니다…", "update": "업데이트 시작", "cancel": "업데이트 중단", "cancelling": "업데이트를 중단하고 기존 상태로 복구하고 있습니다…", "cancelled": "업데이트가 중단되었으며 기존 상태로 복구되었습니다.", "restart": "업데이트 완료 및 재시작", "restart_old": "GodiNavi 재시작", "close": "닫기", "done": "업데이트가 완료되었습니다.", "failed": "업데이트에 실패했습니다.", "file": "현재 파일", "overall": "전체 진행률", "downloading": "다운로드 중"},
-    "JP": {"title": "GodiNavi 2 アップデート", "description": "{current}から{target}へアップデートします。", "current": "現在のバージョン", "target": "対象バージョン", "components": "更新コンポーネント", "changes": "変更内容", "ready": "アップデートを準備しています…", "update": "アップデート開始", "cancel": "アップデート中止", "cancelling": "アップデートを中止し、以前の状態に戻しています…", "cancelled": "アップデートを中止し、以前の状態に戻しました。", "restart": "アップデート完了・再起動", "restart_old": "GodiNaviを再起動", "close": "閉じる", "done": "アップデートが完了しました。", "failed": "アップデートに失敗しました。", "file": "現在のファイル", "overall": "全体の進行状況", "downloading": "ダウンロード中"},
-    "EN": {"title": "GodiNavi 2 Update", "description": "Updating from {current} to {target}.", "current": "Current version", "target": "Target version", "components": "Components", "changes": "Changes", "ready": "Preparing the update…", "update": "Start update", "cancel": "Cancel update", "cancelling": "Cancelling the update and restoring the previous state…", "cancelled": "The update was cancelled and the previous state was restored.", "restart": "Finish update and restart", "restart_old": "Restart GodiNavi", "close": "Close", "done": "The update completed.", "failed": "The update failed.", "file": "Current file", "overall": "Overall progress", "downloading": "Downloading"},
+    "KR": {"title": "가디내비 3 업데이트", "description": "{current}에서 {target}(으)로 업데이트합니다.", "current": "현재 버전", "target": "대상 버전", "components": "업데이트 구성요소", "changes": "변경 내용", "ready": "업데이트를 준비하고 있습니다…", "update": "업데이트 시작", "cancel": "업데이트 중단", "cancelling": "업데이트를 중단하고 기존 상태로 복구하고 있습니다…", "cancelled": "업데이트가 중단되었으며 기존 상태로 복구되었습니다.", "restart": "업데이트 완료 및 재시작", "restart_old": "GodiNavi 재시작", "close": "닫기", "done": "업데이트가 완료되었습니다.", "failed": "업데이트에 실패했습니다.", "file": "현재 파일", "overall": "전체 진행률", "downloading": "다운로드 중"},
+    "JP": {"title": "ガディナビ 3 アップデート", "description": "{current}から{target}へアップデートします。", "current": "現在のバージョン", "target": "対象バージョン", "components": "更新コンポーネント", "changes": "変更内容", "ready": "アップデートを準備しています…", "update": "アップデート開始", "cancel": "アップデート中止", "cancelling": "アップデートを中止し、以前の状態に戻しています…", "cancelled": "アップデートを中止し、以前の状態に戻しました。", "restart": "アップデート完了・再起動", "restart_old": "GodiNaviを再起動", "close": "閉じる", "done": "アップデートが完了しました。", "failed": "アップデートに失敗しました。", "file": "現在のファイル", "overall": "全体の進行状況", "downloading": "ダウンロード中"},
+    "EN": {"title": "GodiNavi 3 Update", "description": "Updating from {current} to {target}.", "current": "Current version", "target": "Target version", "components": "Components", "changes": "Changes", "ready": "Preparing the update…", "update": "Start update", "cancel": "Cancel update", "cancelling": "Cancelling the update and restoring the previous state…", "cancelled": "The update was cancelled and the previous state was restored.", "restart": "Finish update and restart", "restart_old": "Restart GodiNavi", "close": "Close", "done": "The update completed.", "failed": "The update failed.", "file": "Current file", "overall": "Overall progress", "downloading": "Downloading"},
 }
 
 
@@ -313,4 +313,9 @@ def parse_args():
 
 
 if __name__ == "__main__":
-    UpdaterWindow(parse_args()).run()
+    args = parse_args()
+    if args.legacy_install:
+        from legacy_install_notice import show_legacy_install_notice
+        show_legacy_install_notice()
+    else:
+        UpdaterWindow(args).run()

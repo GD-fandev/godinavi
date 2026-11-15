@@ -63,7 +63,7 @@ NOTICE_TEXTS = {
 
 TUTORIALS = (
     {
-        "id": "tutorial_intro",
+        "id": "Tutorial_001_intro",
         "titles": {
             "KR": "튜토리얼",
             "JP": "チュートリアル",
@@ -218,7 +218,7 @@ TUTORIALS = (
         ),
     },
     {
-        "id": "Tutorial_003_clock_alarm",
+        "id": "Tutorial_004_clock_alarm",
         "titles": {
             "KR": "시계와 알람설정",
             "JP": "時計とアラーム設定",
@@ -314,7 +314,7 @@ TUTORIALS = (
         ),
     },
     {
-        "id": "Tutorial_004_stopwatch_exp",
+        "id": "Tutorial_005_stopwatch_exp",
         "titles": {
             "KR": "스톱워치와 경험치 계산기",
             "JP": "ストップウォッチと経験値計算機",
@@ -466,6 +466,142 @@ TUTORIALS = (
             }},
         ),
     },
+    {
+        "id": "Tutorial_006_buff_manual_mode",
+        "titles": {
+            "KR": "버프 타이머의 수동모드",
+            "JP": "バフタイマーの手動モード",
+            "EN": "Buff Timer Manual Mode",
+        },
+        "blocks": (
+            {"image": "icons/godinavi/buff_timer.jpg", "max_width": 75, "max_height": 70},
+            {"text": {
+                "KR": "버프 타이머를 수동으로 시작할 수 있습니다.",
+                "JP": "バフタイマーを手動で開始できます。",
+                "EN": "You can start the buff timer manually.",
+            }},
+            {"image": "tutorials/tutorial_006_buff_manual_mode.png"},
+            {"text": {
+                "KR": (
+                    "툴바의 버프타이머 메뉴에서 수동시작모드를 활성화 해주십시오.\n"
+                    "활성화 하면 이하의 내용대로 동작합니다.\n\n"
+                    "1. 버프 타이머를 왼쪽 더블클릭 : 얼음버프 600초 카운트 또는 현재 카운트 비활성화\n"
+                    "2. 버프 타이머를 오른쪽 더블클릭 : 불버프 600초 카운트 또는 현재 카운트 비활성화\n"
+                    "3. Shift + S : 얼음버프 600초 카운트 또는 현재 카운트 비활성화\n"
+                    "4. Shift + D : 불버프 600초 카운트 또는 현재 카운트 비활성화"
+                ),
+                "JP": (
+                    "ツールバーのバフタイマーメニューで手動開始モードを有効にしてください。\n"
+                    "有効にすると、以下のように動作します。\n\n"
+                    "1. バフタイマーを左ダブルクリック：氷バフの600秒カウント開始、または現在のカウント停止\n"
+                    "2. バフタイマーを右ダブルクリック：炎バフの600秒カウント開始、または現在のカウント停止\n"
+                    "3. Shift + S：氷バフの600秒カウント開始、または現在のカウント停止\n"
+                    "4. Shift + D：炎バフの600秒カウント開始、または現在のカウント停止"
+                ),
+                "EN": (
+                    "Enable Manual start mode in the toolbar's Buff Timer menu.\n"
+                    "When enabled, it works as follows.\n\n"
+                    "1. Double-click the buff timer with the left mouse button: start a 600-second ice buff countdown or stop the current countdown.\n"
+                    "2. Double-click the buff timer with the right mouse button: start a 600-second fire buff countdown or stop the current countdown.\n"
+                    "3. Shift + S: start a 600-second ice buff countdown or stop the current countdown.\n"
+                    "4. Shift + D: start a 600-second fire buff countdown or stop the current countdown."
+                ),
+            }},
+            {"text": {
+                "KR": (
+                    "Shift + S 또는 D의 경우 이동키와 겹쳐서 캐릭터가 움직일 수 있으나\n"
+                    "사용성을 보다 우선한 관계로, 불편하신 분들은 더블클릭으로 작동 부탁드립니다."
+                ),
+                "JP": (
+                    "Shift + SまたはDは移動キーと重なるため、キャラクターが動くことがあります。\n"
+                    "使いやすさを優先した操作のため、気になる場合はダブルクリックをご利用ください。"
+                ),
+                "EN": (
+                    "Shift + S or D may also move your character because these shortcuts overlap with movement keys.\n"
+                    "These shortcuts prioritize ease of use. If this is inconvenient, please use double-clicks instead."
+                ),
+            }},
+            {"text": {
+                "KR": (
+                    "가디내비는 가디우스와 깊게 연동된 프로그램이 아닌 관계로\n"
+                    "이용중 채팅에 대문자 S 또는 대문자 D를 입력하시면 의도치 않게\n"
+                    "카운트가 개시되거나 중단될 수 있습니다."
+                ),
+                "JP": (
+                    "ガディナビはガディウスと深く連携するプログラムではないため、\n"
+                    "使用中にチャットで大文字のSやDを入力すると、\n"
+                    "意図せずカウントが開始または停止することがあります。"
+                ),
+                "EN": (
+                    "GodiNavi is not deeply integrated with Godius.\n"
+                    "Typing a capital S or D in chat while using manual mode\n"
+                    "may unintentionally start or stop the countdown."
+                ),
+            }},
+            {"image": "tutorials/tutorial_006_buff_manual_settings.png"},
+            {"text": {
+                "KR": (
+                    "기본 키 조합이 마음에 들지 않으시다면\n"
+                    "버프타이머 수동시작모드 키 설정메뉴를 통해\n"
+                    "직접 변경도 가능합니다."
+                ),
+                "JP": (
+                    "初期設定のキーの組み合わせが使いにくい場合は、\n"
+                    "バフタイマーの「手動開始モードのキー設定」メニューから\n"
+                    "お好みの組み合わせに変更できます。"
+                ),
+                "EN": (
+                    "If you prefer a different key combination,\n"
+                    "you can customize it through the Buff Timer's\n"
+                    "Manual start mode key settings menu."
+                ),
+            }},
+        ),
+    },
+    {'id': 'Tutorial_007_auto_ocr',
+     'titles': {'KR': 'OCR 영역 자동지정', 'JP': 'OCR領域の自動設定', 'EN': 'Automatic OCR Regions'},
+     'blocks': ({'image': 'icons/godinavi/settings.jpg', 'max_width': 75, 'max_height': 70},
+                {'text': {'KR': 'OCR 영역이 자동으로 설정됩니다. 게임 창 크기가 바뀌면 그에 맞춰 인식 영역도 자동으로 조정됩니다.',
+                          'JP': 'OCR領域は自動で設定されます。ゲームウィンドウのサイズを変更すると、それに合わせて認識領域も自動で調整されます。',
+                          'EN': 'OCR regions are now set automatically. When you resize the game window, the '
+                                'recognition regions adjust to match.'}},
+                {'image': 'tutorials/tutorial_007_auto_ocr.png'},
+                {'text': {'KR': '설정에서 이미지와 같이 수동 OCR 영역 지정이 꺼져 있으면 자동 인식 모드입니다. 내용이 제대로 인식되지 않는다면 이 옵션을 켜고, 기존 '
+                                '가디내비처럼 OCR 영역을 직접 조정해 주세요.',
+                          'JP': '設定で画像のように「手動OCR領域指定」がオフになっている場合は、自動認識モードです。内容が正しく認識されない場合は、この設定をオンにして、従来のガディナビと同じようにOCR領域を手動で調整してください。',
+                          'EN': 'If Settings shows Manual OCR regions : off, as in the image, automatic '
+                                'recognition is enabled. If text is not being recognized correctly, turn this '
+                                'option on and adjust the OCR regions manually, just as in previous versions of '
+                                'GodiNavi.'}},
+                {'text': {'KR': '자동 지정 상태에서 OCR 영역 조정 모드에 들어가면 현재 인식 중인 영역을 확인할 수 있습니다. 이때는 영역을 이동하거나 크기를 변경할 수 '
+                                '없습니다.',
+                          'JP': '自動設定中にOCR領域の調整モードを開くと、現在の認識領域を確認できます。この状態では、領域の移動やサイズ変更はできません。',
+                          'EN': 'Opening OCR region adjustment mode while automatic mode is enabled shows the '
+                                'current recognition regions for reference only. You cannot move or resize '
+                                'them.'}})},
+    {'id': 'Tutorial_008_map_features',
+     'titles': {'KR': '지도기능 강화', 'JP': '地図機能の強化', 'EN': 'Enhanced Map Features'},
+     'blocks': ({'image': 'icons/godinavi/map.jpg', 'max_width': 75, 'max_height': 70},
+                {'text': {'KR': '지도 기능을 새롭게 개선했습니다.',
+                          'JP': '地図機能を一新しました。',
+                          'EN': 'The map features have been revamped.'}},
+                {'image': 'tutorials/tutorial_008_map_menu.png'},
+                {'text': {'KR': '지도 아이콘의 메뉴에서 지도 설정을 누르면 지도 위의 표시를 원하는 대로 설정할 수 있습니다.\n'
+                                '입구 라벨이나 시설 라벨 등 다양한 표시를 조절할 수 있습니다.',
+                          'JP': '地図アイコンのメニューから「地図設定」を開くと、地図上の表示を自由に設定できます。\n出入口や施設のラベルなど、さまざまな表示を調整できます。',
+                          'EN': 'Open Map settings from the map icon menu to customize what appears on the map.\n'
+                                'You can adjust entrance labels, facility labels, and other display options.'}},
+                {'image': 'tutorials/tutorial_008_map_settings.png'},
+                {'text': {'KR': '지도 아이콘의 메뉴에서 시설 표시 기능을 켜면, 마을에서 각 시설의 위치를 표시하는 버튼이 미니맵 위에 나타납니다.',
+                          'JP': '地図アイコンのメニューで施設の位置表示をオンにすると、町では各施設の位置を表示するボタンがミニマップの上に表示されます。',
+                          'EN': 'Turn on Facility markers from the map icon menu to show buttons above the '
+                                'minimap while in town. Use these buttons to display the locations of town '
+                                'facilities.'}},
+                {'image': 'tutorials/tutorial_008_facilities.png'},
+                {'text': {'KR': '시설은 한 번에 한 종류만 표시할 수 있습니다.',
+                          'JP': '施設は一度に1種類だけ表示できます。',
+                          'EN': 'Only one type of facility can be displayed at a time.'}})},
+
 )
 
 
@@ -498,10 +634,18 @@ class TutorialUI:
         return TEXTS[self.language()]
 
     def read_flags(self):
-        value = self.config.get("tutorial_read_flags", {})
+        value = self.config.setdefault("tutorial_read_flags", {})
         if not isinstance(value, dict):
             value = {}
             self.config["tutorial_read_flags"] = value
+        # Preserve read state from IDs used before sequential numbering.
+        for old_id, new_id in (
+            ("tutorial_intro", "Tutorial_001_intro"),
+            ("Tutorial_003_clock_alarm", "Tutorial_004_clock_alarm"),
+            ("Tutorial_004_stopwatch_exp", "Tutorial_005_stopwatch_exp"),
+        ):
+            if old_id in value:
+                value.setdefault(new_id, value.pop(old_id))
         return value
 
     def is_read(self, tutorial):
@@ -522,6 +666,7 @@ class TutorialUI:
             bool(self.config.get("onboarding_complete"))
             and not bool(self.config.get("tutorial_notice_dismissed", False))
             and not self.notice_shown_this_session
+            and self.has_unread()
         )
 
     def show_notice(self, close_callback=None):

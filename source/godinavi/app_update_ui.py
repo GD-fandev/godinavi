@@ -24,7 +24,7 @@ from config_store import load_section, save_section
 TEXTS = {
     "KR": {
         "title": "GodiNavi 업데이트", "current": "현재 버전", "latest": "최신 버전", "size": "다운로드 크기",
-        "heading": "GodiNavi 2 업데이트", "description": "{current}에서 {target}(으)로 업데이트합니다.",
+        "heading": "가디내비 3 업데이트", "description": "{current}에서 {target}(으)로 업데이트합니다.",
         "notes": "패치노트", "checking": "새 버전을 확인하고 있습니다...", "latest_status": "현재 최신 버전입니다.",
         "available": "업데이트 내용을 확인한 후 진행해주세요.", "downloading": "새 버전을 다운로드하고 있습니다...",
         "ready": "검증이 완료되었습니다. 가디내비를 재시작해 업데이트합니다.",
@@ -36,7 +36,7 @@ TEXTS = {
     },
     "JP": {
         "title": "GodiNaviアップデート", "current": "現在のバージョン", "latest": "最新バージョン", "size": "ダウンロードサイズ",
-        "heading": "GodiNavi 2 アップデート", "description": "{current}から{target}へアップデートします。",
+        "heading": "ガディナビ 3 アップデート", "description": "{current}から{target}へアップデートします。",
         "notes": "パッチノート", "checking": "新しいバージョンを確認しています...", "latest_status": "現在のバージョンは最新です。",
         "available": "更新内容を確認してから実行してください。", "downloading": "新しいバージョンをダウンロードしています...",
         "ready": "検証が完了しました。GodiNaviを再起動して更新します。",
@@ -48,7 +48,7 @@ TEXTS = {
     },
     "EN": {
         "title": "GodiNavi Update", "current": "Current version", "latest": "Latest version", "size": "Download size",
-        "heading": "GodiNavi 2 Update", "description": "Updating from {current} to {target}.",
+        "heading": "GodiNavi 3 Update", "description": "Updating from {current} to {target}.",
         "notes": "Patch notes", "checking": "Checking for a new version...", "latest_status": "GodiNavi is up to date.",
         "available": "Review the changes before installing the update.", "downloading": "Downloading the new version...",
         "ready": "Verification complete. GodiNavi will restart to update.",

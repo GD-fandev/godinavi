@@ -1,3 +1,7 @@
+from auto_ui.mode import legacy_enabled
+from auto_ui.region_display import exclude_from_capture
+from auto_ui.service import service as auto_regions
+from godinavi.process_match import matches_game_process
 import ctypes
 import json
 import math
@@ -13,6 +17,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageGrab, ImageTk
 
 from .window_attachment import attach_above, focus_native_window
+from .buff_manual_settings import ManualBuffSettings, input_state, load_bindings
 from v2_runtime_assets import materialize_runtime_assets
 
 try:
@@ -38,7 +43,7 @@ def calibration_ping_expansions(now: float) -> tuple[int, int, int]:
     phase = int(now * 24) % 24
     return tuple((phase + offset) % 24 for offset in (0, 8, 16))
 
-APP_VERSION = "2.1.3"
+from godinavi import __version__ as APP_VERSION
 DEFAULT_BUFF_CONFIG_JSON = r'''{
   "process_name": "Godius.exe",
   "window_title": "Godius Client",
@@ -50,6 +55,7 @@ DEFAULT_BUFF_CONFIG_JSON = r'''{
   "icon_path": "icons/ice_display.png",
   "program_icon_path": "icons/Godius_104.png",
   "auto_detect": true,
+  "manual_start_mode": false,
   "detect_template_path": "icons/ice_crystal_template.png",
   "absent_template_path": "icons/ice_absent_template.png",
   "ignore_template_paths": [
@@ -350,13 +356,12 @@ def window_title_for_hwnd(hwnd):
 
 def find_window_by_process_name(process_name):
     matches = []
-    target = process_name.lower()
 
     def callback(hwnd, _):
         if not user32.IsWindowVisible(hwnd):
             return True
         name, _pid = process_name_for_hwnd(hwnd)
-        if name.lower() == target:
+        if matches_game_process(name, process_name):
             matches.append(hwnd)
         return True
 
@@ -461,6 +466,9 @@ class BuffTimerApp:
         self.expired_buff_lock_until = 0.0
         self.last_grow_down = False
         self.last_shrink_down = False
+        self.manual_start_mode = bool(config.get("manual_start_mode", False))
+        self.last_manual_keys_down = set()
+        self.manual_settings = None
         self.calibration_mode = False
         self.calibration_ping_until = 0.0
         self.calibration_guide_window = None
@@ -1284,6 +1292,8 @@ class BuffTimerApp:
         return win
 
     def begin_region_drag(self, event):
+        if not legacy_enabled(self.config):
+            return
         self.drag_enabled = self.calibration_mode
         if self.drag_enabled:
             try:
@@ -1293,6 +1303,8 @@ class BuffTimerApp:
                 pass
 
     def region_drag(self, event):
+        if not legacy_enabled(self.config):
+            return
         if not self.drag_enabled or not self.calibration_mode:
             return
         self.calibrate_region_at_screen_point(event.x_root, event.y_root)
@@ -1306,6 +1318,8 @@ class BuffTimerApp:
         if self.closed:
             return
         self.closed = True
+        if self.manual_settings:
+            self.manual_settings.close()
         if self.owns_capture_coordinator and self.desktop_camera is not None:
             try:
                 self.desktop_camera.release()
@@ -1449,7 +1463,7 @@ class BuffTimerApp:
         if not fg:
             return False
         name, _pid = process_name_for_hwnd(fg)
-        return name.lower() == self.config["process_name"].lower()
+        return matches_game_process(name, self.config["process_name"])
 
     def position_near_target(self):
         if not self.target_hwnd:
@@ -1579,6 +1593,7 @@ class BuffTimerApp:
         user32.SetWindowPos(root_hwnd(self.text_window), 0, int(x), int(y), 0, 0, move_flags)
 
     def handle_hotkey(self):
+        self.handle_manual_hotkeys()
         grow_vks = self.key_codes_for(self.config.get("grow_key", "+"), "+", "NUMPAD_ADD")
         shrink_vks = self.key_codes_for(self.config.get("shrink_key", "-"), "-", "NUMPAD_SUBTRACT")
 
@@ -1602,9 +1617,56 @@ class BuffTimerApp:
                 codes.append(code)
         return codes
 
-    def start_timer(self, buff_key):
+    def handle_manual_hotkeys(self):
+        keys_down, modifiers = input_state(user32.GetAsyncKeyState)
+        pressed = keys_down - self.last_manual_keys_down
+        self.last_manual_keys_down = keys_down
+        settings = getattr(self, "manual_settings", None)
+        if settings and settings.window:
+            return
+        if self.manual_start_mode and self.is_target_foreground():
+            for buff, binding in load_bindings(self.config).items():
+                if binding["key"] in pressed and set(binding["modifiers"]) == modifiers:
+                    self.manual_timer_action(buff)
+                    break
+
+    def open_manual_settings(self):
+        if self.manual_settings is None:
+            self.manual_settings = ManualBuffSettings(self)
+        self.manual_settings.open()
+
+    def toggle_manual_start_mode(self):
+        self.manual_start_mode = not self.manual_start_mode
+        self.config["manual_start_mode"] = self.manual_start_mode
+        self.reset_timer_detection()
+        self.last_detect_at = 0.0
+        self.save_config()
+
+    def reset_timer_detection(self):
+        self.detect_hits.clear()
+        self.absent_hits = 0
+        self.missing_hits = 0
+        self.expired_buff_lock = None
+        self.expired_buff_lock_until = 0.0
+
+    def manual_timer_action(self, buff_key):
+        if (not self.manual_start_mode or buff_key not in {"ice", "fire"}
+                or self.timer_resize_mode or self.calibration_mode or not self.timer_visible):
+            return None
+        if self.end_time is not None and self.end_time > time.monotonic():
+            self.end_time = None
+            self.started_at = None
+            self.active_buff = None
+        else:
+            self.start_timer(buff_key, seconds=load_bindings(self.config)[buff_key]["seconds"])
+        self.reset_timer_detection()
+        self.update_display()
+        return "break"
+
+    def start_timer(self, buff_key, seconds=None):
         now = time.monotonic()
-        seconds = float(self.config["duration_seconds"]) - float(self.config.get("start_adjust_seconds", 0))
+        if seconds is None:
+            seconds = float(self.config["duration_seconds"]) - float(self.config.get("start_adjust_seconds", 0))
         self.active_buff = buff_key
         self.base_icon = self.icon_for_buff(buff_key)
         self.started_at = now
@@ -1623,6 +1685,11 @@ class BuffTimerApp:
         )
 
     def manual_hidden_buff_start(self, _event, buff_key):
+        if getattr(self, "manual_start_mode", False):
+            result = self.manual_timer_action(buff_key)
+            if result:
+                self.focus_target_window()
+            return result
         if buff_key not in {"ice", "fire"} or not self.can_manually_start_hidden_buff():
             return None
         self.start_timer(buff_key)
@@ -1658,10 +1725,16 @@ class BuffTimerApp:
             self.root.deiconify()
             self.text_window.deiconify()
         else:
+            if self.timer_resize_mode:
+                self.toggle_timer_resize_mode()
             self.root.withdraw()
             self.text_window.withdraw()
 
     def toggle_calibration_mode(self):
+        if not legacy_enabled(self.config):
+            self.auto_region_viewing = not getattr(self, "auto_region_viewing", False)
+            self.update_region_window()
+            return
         self.calibration_mode = not self.calibration_mode
         if not self.calibration_mode:
             self.save_config()
@@ -1742,6 +1815,8 @@ class BuffTimerApp:
             save_config_file(self.config)
 
     def calibrate_region_at_screen_point(self, screen_x, screen_y):
+        if not legacy_enabled(self.config):
+            return
 
         box_w = 40
         box_h = 40
@@ -1777,6 +1852,8 @@ class BuffTimerApp:
         self.last_capture_bbox = self.current_detection_bbox()
 
     def resize_detect_region(self, delta):
+        if not legacy_enabled(self.config):
+            return
         region = self.config.get("detect_region", [0, 0, 40, 40])
         left, top, right, bottom = [int(v) for v in region]
         width = max(8, (right - left) + delta)
@@ -1786,6 +1863,8 @@ class BuffTimerApp:
         self.last_capture_bbox = self.current_detection_bbox()
 
     def move_detect_region(self, delta_x, delta_y):
+        if not legacy_enabled(self.config):
+            return
         bbox = self.current_detection_bbox()
         client = get_client_screen_rect(self.target_hwnd) if self.target_hwnd else None
         if bbox and client:
@@ -1821,6 +1900,9 @@ class BuffTimerApp:
             self.target_hwnd = find_window_by_process_name(self.config["process_name"])
         if not self.target_hwnd:
             return None
+        if not legacy_enabled(self.config):
+            layout = auto_regions.snapshot(self.target_hwnd, get_client_screen_rect(self.target_hwnd))
+            return layout.bbox("buff")
         region = self.config.get("detect_region")
         if not region or len(region) != 4:
             return None
@@ -2102,32 +2184,10 @@ class BuffTimerApp:
         if not self.buffs or not self.target_hwnd:
             self.update_debug_status("No buffs loaded or target window missing")
             return None
-        region = self.config.get("detect_region")
-        if not region or len(region) != 4:
-            self.update_debug_status("detect_region is missing")
+        bbox = self.current_detection_bbox()
+        if not bbox:
+            self.update_debug_status("Detection region unavailable")
             return None
-        origin = str(self.config.get("detect_coordinate_origin", "client")).lower()
-        base_rect = get_detection_base_rect(self.target_hwnd, origin)
-        if not base_rect:
-            self.target_hwnd = None
-            self.update_debug_status(f"Cannot get target rect\norigin: {origin}")
-            return None
-
-        base_left, base_top, base_right, base_bottom = base_rect
-        base_width = max(1, base_right - base_left)
-        base_height = max(1, base_bottom - base_top)
-        left, top, right, bottom = [int(v) for v in region]
-        reference = self.config.get("detect_reference_size", [base_width, base_height])
-        if reference and len(reference) == 2:
-            ref_width = max(1, float(reference[0]))
-            ref_height = max(1, float(reference[1]))
-            scale_x = base_width / ref_width
-            scale_y = base_height / ref_height
-            left = round(left * scale_x)
-            right = round(right * scale_x)
-            top = round(top * scale_y)
-            bottom = round(bottom * scale_y)
-        bbox = (base_left + left, base_top + top, base_left + right, base_top + bottom)
         if bbox[2] <= bbox[0] or bbox[3] <= bbox[1]:
             self.update_debug_status(f"Invalid bbox: {bbox}")
             return None
@@ -2153,6 +2213,8 @@ class BuffTimerApp:
                 self.text_window.deiconify()
         if capture is None:
             self.update_debug_status(f"Capture returned None\nbbox: {bbox}")
+            return None
+        if self.current_detection_bbox() != bbox:
             return None
         self.update_debug_capture_preview(capture, bbox, "captured")
 
@@ -2468,7 +2530,10 @@ class BuffTimerApp:
             if self.calibration_guide_window and not self.calibration_guide_drag_origin:
                 self.show_calibration_guide()
             self.last_capture_bbox = self.current_detection_bbox()
-        if not self.calibration_mode or not self.last_capture_bbox:
+        viewing = getattr(self, "auto_region_viewing", False)
+        if viewing:
+            self.last_capture_bbox = self.current_detection_bbox()
+        if not (self.calibration_mode or viewing) or not self.last_capture_bbox:
             self.region_window.withdraw()
             return
         left, top, right, bottom = self.last_capture_bbox
@@ -2483,7 +2548,7 @@ class BuffTimerApp:
         canvas = self.region_window.winfo_children()[0]
         canvas.configure(width=canvas_width, height=canvas_height)
         canvas.delete("all")
-        if time.monotonic() < self.calibration_ping_until:
+        if self.calibration_mode and time.monotonic() < self.calibration_ping_until:
             for expansion in sorted(calibration_ping_expansions(time.monotonic()), reverse=True):
                 color = "#ff3030" if expansion >= 16 else "#ff8a45" if expansion >= 8 else "#fff0a0"
                 canvas.create_rectangle(
@@ -2503,8 +2568,11 @@ class BuffTimerApp:
             fill="#ff3030",
             width=3,
         )
+        canvas.configure(cursor="arrow" if viewing else "fleur")
+        exclude_from_capture(self.region_window, viewing)
         attach_above(self.region_window, self.target_hwnd, left - padding, top - padding)
-        self.update_calibration_magnifier(self.last_capture_bbox)
+        if self.calibration_mode:
+            self.update_calibration_magnifier(self.last_capture_bbox)
 
     def handle_auto_detect(self):
         if not self.config.get("auto_detect", False):
@@ -2529,6 +2597,10 @@ class BuffTimerApp:
         if self.last_absent_score is not None:
             absent_detected = self.last_absent_score >= float(self.config.get("absent_threshold", 0.82))
         self._observe_party_buff_presence(detected_buff, absent_detected)
+        # Keep party observation independent; recognition must never change a
+        # manually controlled personal countdown.
+        if getattr(self, "manual_start_mode", False):
+            return
         if not getattr(self, "timer_visible", True):
             # Party presence observation remains active while the personal
             # timer is OFF, but it must not start or retain a personal
@@ -2659,6 +2731,7 @@ class BuffTimerApp:
         if self.closed:
             return
         if self.overlays_temporarily_hidden:
+            self.last_manual_keys_down, _ = input_state(user32.GetAsyncKeyState)
             self.root.withdraw()
             self.text_window.withdraw()
             self.region_window.withdraw()
@@ -2674,6 +2747,7 @@ class BuffTimerApp:
             return
         attached = self.position_near_target()
         if not attached or (self.target_hwnd and user32.IsIconic(self.target_hwnd)):
+            self.last_manual_keys_down, _ = input_state(user32.GetAsyncKeyState)
             self.root.withdraw()
             self.text_window.withdraw()
             self.region_window.withdraw()

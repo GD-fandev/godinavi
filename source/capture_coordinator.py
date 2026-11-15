@@ -1,8 +1,8 @@
 import threading
 import time
 
-import dxcam
-from PIL import Image, ImageGrab
+from desktop_capture import DesktopCapture
+from PIL import ImageGrab
 
 
 class CaptureCoordinator:
@@ -18,7 +18,7 @@ class CaptureCoordinator:
         self.camera = None
         self.backend = "Desktop Duplication"
         try:
-            self.camera = dxcam.create(output_color="RGB", processor_backend="numpy")
+            self.camera = DesktopCapture()
         except Exception:
             self.backend = "ImageGrab fallback"
 
@@ -39,10 +39,17 @@ class CaptureCoordinator:
             started = time.perf_counter()
             cpu_started = time.process_time()
             if self.camera is not None:
-                array = self.camera.grab(region=rect, new_frame_only=False)
-                frame = None if array is None else Image.fromarray(array, mode="RGB")
+                try:
+                    frame, _info = self.camera.capture_client(rect)
+                except Exception:
+                    # Output topology/access can change after a monitor switch.
+                    # Release duplicated outputs and retry on the next tick.
+                    self.camera.close()
+                    self.camera = DesktopCapture()
+                    self.invalidate()
+                    return None
             else:
-                frame = ImageGrab.grab(bbox=rect).convert("RGB")
+                frame = ImageGrab.grab(bbox=rect, all_screens=True).convert("RGB")
             if self.performance is not None:
                 self.performance.record(
                     "capture_full_client",
@@ -67,6 +74,6 @@ class CaptureCoordinator:
             self.invalidate()
         if camera is not None:
             try:
-                camera.release()
+                camera.close()
             except Exception:
                 pass
