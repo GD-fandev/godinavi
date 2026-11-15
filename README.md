@@ -2,7 +2,7 @@
 
 ![GodiNavi 3](docs/images/godinavi-3-logo.png)
 
-> ### [⬇ GodiNavi 3.0.0 Full Download](https://github.com/GD-fandev/godinavi/releases/download/v3.0.0/GodiNavi-3.0.0-Full.zip)
+> ### [⬇ GodiNavi 3.0.1 Full Download](https://github.com/GD-fandev/godinavi/releases/download/v3.0.1/GodiNavi-3.0.1-Full.zip)
 
 新規利用者の方は、上のリンクからフルバージョンをダウンロードしてください。2.xからは通常のアップデートをご利用いただけます。1.xからの自動移行は終了しました。新しいフォルダーに展開してご利用ください。既存の個人設定は保持されます。
 
@@ -77,7 +77,7 @@ GodiNavi（ガディナビ）は、ガディウスのプレイに必要な便利
 
 - [日本語版 解説動画](https://youtu.be/fcWgLNT3ayk)
 
-旧バージョンの動画です。3.0.0の自動OCRと地図機能はアプリ内のチュートリアルもご確認ください。
+旧バージョンの動画です。3.0.1の自動OCRと地図機能はアプリ内のチュートリアルもご確認ください。
 
 ### 冒険者様を募集しています
 
@@ -187,7 +187,7 @@ Godiusとガディナビの互換モードおよび管理者権限の設定が�
 
 - [한국어판 해설영상](https://youtu.be/eCkEvMEkAuc)
 
-이전 버전 기준 영상입니다. 3.0.0의 자동 OCR과 지도 기능은 앱 안의 튜토리얼도 확인해 주세요.
+이전 버전 기준 영상입니다. 3.0.1의 자동 OCR과 지도 기능은 앱 안의 튜토리얼도 확인해 주세요.
 
 ### 지도 조사와 자료 제공에 감사드립니다
 

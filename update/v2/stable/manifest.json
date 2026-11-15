@@ -1,40 +1,40 @@
 {
   "schemaVersion": 2,
   "channel": "stable",
-  "clientVersion": "3.0.0",
+  "clientVersion": "3.0.1",
   "snapshotVersion": "2026.11.15.1",
   "historyUrl": "https://api.github.com/repos/GD-fandev/godinavi/contents/update/v2/stable/history.json?ref=main",
   "components": {
     "launcher": {
-      "version": "3.0.0",
+      "version": "3.0.1",
       "path": "GodiNavi.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.0/GodiNaviLauncher-3.0.0.exe",
-      "size": 16029434,
-      "sha256": "217e2073a86f98d9f26324c1ea08abf78d97b1f3a2d532bbf859b8fa0c849e95",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.1/GodiNaviLauncher-3.0.1.exe",
+      "size": 16030816,
+      "sha256": "7460a9df280f83046eb159d317ba43a12885af939019d1659e3d16dc020ea0c7",
       "format": "file"
     },
     "updater": {
-      "version": "3.0.0",
+      "version": "3.0.1",
       "path": "GodiNaviUpdater.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.0/GodiNaviUpdater.exe",
-      "size": 16223722,
-      "sha256": "8c69bd7bb772afaa6b448320c50f14ff69638219879757053f461dc4e04d55e4",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.1/GodiNaviUpdater.exe",
+      "size": 16223576,
+      "sha256": "4bd7a86e3427c23f726b3ca4b02d9dc290208a0d202cbd73e0840364ba6434b0",
       "format": "file"
     },
     "core": {
-      "version": "3.0.0",
+      "version": "3.0.1",
       "path": "data/GodiNaviCore.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.0/GodiNaviCore.exe",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.1/GodiNaviCore.exe",
       "size": 9458719,
-      "sha256": "fdc72cb88c3a9a9e8d1263acac0225e8b6bd4332bd42813807bd4d4e9cc3d169",
+      "sha256": "95bc120f0b5357df84c32d8453a3d805a47705dfab09155c4bebd40c7f51d321",
       "format": "file"
     },
     "runtime": {
-      "version": "3.0.0",
+      "version": "3.0.1",
       "path": "data/runtime",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.0/runtime-3.0.0.zip",
-      "size": 90371037,
-      "sha256": "52bdf5a6f7dd1358384918533b9fd7efbe8c7d95ce1473abe79bbed3f2547fe4",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.1/runtime-3.0.1.zip",
+      "size": 90368132,
+      "sha256": "71aa99fa8db44937e1c9071179f3fa711b072a14b48d7b8fb620be485dadc71c",
       "format": "zip"
     },
     "ocr_models": {

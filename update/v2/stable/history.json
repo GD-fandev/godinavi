@@ -2,22 +2,19 @@
   "schemaVersion": 2,
   "entries": [
     {
-      "id": "client-3.0.0",
+      "id": "client-3.0.1",
       "kind": "client",
-      "version": "3.0.0",
+      "version": "3.0.1",
       "components": [
         "launcher",
         "updater",
         "core",
-        "runtime",
-        "ui_assets",
-        "maps",
-        "equipment"
+        "runtime"
       ],
       "publishedAt": "2026-11-15T11:55:41Z",
       "changes": {
         "KR": {
-          "summary": "가디내비 3 v3.0.0",
+          "summary": "가디내비 3 v3.0.1",
           "details": [
             "[새로운 기능]",
             "OCR 영역 자동 지정\n지도명, 현재 좌표, 버프, 경험치, 내구도 인식 영역을 자동으로 설정하는 기능을 추가했습니다. 게임 창 크기가 바뀌면 인식 영역도 자동으로 조정됩니다.\n설정의 ‘수동 OCR 영역 지정’이 꺼져 있으면 자동 인식 모드입니다. 인식에 문제가 있으면 이 옵션을 켜서 기존처럼 직접 영역을 조정할 수 있습니다.\n자동 인식 모드에서 영역 조정 화면을 열면 현재 인식 중인 영역을 확인할 수 있으며, 이동과 크기 변경은 할 수 없습니다.",
@@ -31,11 +28,11 @@
             "지도 데이터 업데이트\n지도 이미지 109개를 새 이미지로 교체하고, 기존에 현재 위치를 표시하던 지도 80개의 좌표 정보를 새 이미지에 맞게 갱신했습니다.\n카를마뉴 동굴 1~3층과 중부등뼈동굴 1~3층에 현재 위치 표시용 좌표 정보를 추가했습니다.\n좌표 정보 기여: 1층 림치 님, 2~3층 SERE 님.",
             "장비도감 업데이트\n코스튬에 해골옷 세트를 추가했습니다. 마법/물리 데미지 +10 효과를 반영했습니다.\n안도레안 수트와 에시르의 여자옷 염색 이미지를 추가했습니다.\n염색정보 제공: セリシア 님.",
             "기존 2.x 사용자는 업데이트로 가디내비 3을 이용할 수 있으며 기존 설정은 유지됩니다. 새 지도 기능을 이용하려면 본체와 지도 데이터를 함께 업데이트해 주세요.",
-            "1.x 자동 이전 지원은 종료했습니다. 1.x 이용자는 3.0.0 풀버전을 새 폴더에 압축 해제해 이용해 주세요. 기존 개인 설정은 유지됩니다."
+            "1.x 자동 이전 지원은 종료했습니다. 1.x 이용자는 3.0.1 풀버전을 새 폴더에 압축 해제해 이용해 주세요. 기존 개인 설정은 유지됩니다."
           ]
         },
         "JP": {
-          "summary": "ガディナビ 3 v3.0.0",
+          "summary": "ガディナビ 3 v3.0.1",
           "details": [
             "[新機能]",
             "OCR領域の自動設定\nマップ名、現在の座標、バフ、経験値、耐久度の認識領域を自動で設定する機能を追加しました。ゲームウィンドウのサイズが変わると、認識領域も自動で調整されます。\n設定の「手動OCR領域指定」がオフの場合は、自動認識モードです。認識に問題がある場合は、この設定をオンにすると、従来どおり手動で領域を調整できます。\n自動認識モードで領域調整画面を開くと、現在認識している領域を確認できます。領域の移動やサイズ変更はできません。",
@@ -49,11 +46,11 @@
             "地図データの更新\n109枚の地図画像を新しい画像に差し替え、従来から現在地表示に対応していた80マップの座標情報を新しい画像に合わせて更新しました。\nカールマーニュ洞窟1～3階と中部背骨洞窟1～3階に、現在地表示用の座標情報を追加しました。\n座標情報提供：1階 림치 様、2～3階 SERE 様。",
             "装備図鑑の更新\nコスチュームにスケルトン服セットを追加しました。魔法・物理ダメージ +10の効果を反映しました。\nアンドレアンスーツとエシールの女性用衣装の染色画像を追加しました。\n染色情報提供：セリシア 様。",
             "2.xをご利用中の方は、アップデートでガディナビ 3をご利用いただけます。既存の設定は引き継がれます。新しい地図機能を利用するには、本体と地図データをあわせて更新してください。",
-            "1.xからの自動移行のサポートは終了しました。1.xをご利用の方は、3.0.0フルバージョンを新しいフォルダーに展開してご利用ください。既存の個人設定は保持されます。"
+            "1.xからの自動移行のサポートは終了しました。1.xをご利用の方は、3.0.1フルバージョンを新しいフォルダーに展開してご利用ください。既存の個人設定は保持されます。"
           ]
         },
         "EN": {
-          "summary": "GodiNavi 3 v3.0.0",
+          "summary": "GodiNavi 3 v3.0.1",
           "details": [
             "[New Features]",
             "Automatic OCR Regions\nAdded automatic region setup for recognizing map names, current coordinates, buffs, experience, and durability. Recognition regions also adjust automatically when the game window is resized.\nAutomatic recognition is active when “Manual OCR regions” is off in Settings. If recognition is unreliable, turn this option on to adjust the regions manually as before.\nOpening the region adjustment view in automatic mode shows the regions currently being recognized. These regions cannot be moved or resized in this mode.",
@@ -67,7 +64,7 @@
             "Map Data Update\nReplaced 109 map images and updated the coordinates for 80 maps that already supported current-position display to match the new images.\nAdded coordinates for current-position display on floors 1–3 of Karlmannu Cave and Central Spine Cave.\nCoordinate contributions: 림치 for floor 1; SERE for floors 2–3.",
             "Equipment Catalog Update\nAdded the Skeleton Outfit set to the costume catalog, including its Magic/Physical damage +10 effect.\nAdded dye images for the female versions of the Andorrean Suit and Aesir.\nDye information courtesy of セリシア.",
             "Existing 2.x users can upgrade to GodiNavi 3 while keeping their settings. Update both the application and map data to use the new map features.",
-            "Automatic migration from 1.x is no longer supported. If you use 1.x, extract the full 3.0.0 package into a new folder. Your existing personal settings are preserved."
+            "Automatic migration from 1.x is no longer supported. If you use 1.x, extract the full 3.0.1 package into a new folder. Your existing personal settings are preserved."
           ]
         }
       }
