@@ -1,6 +1,14 @@
-# GodiNavi / ガディナビ / 가디내비
+# GodiNavi 3 / ガディナビ 3 / 가디내비 3
 
-> ### [⬇ GodiNavi 2.1.0 Download](https://github.com/GD-fandev/godinavi/releases/tag/v2.1.0)
+![GodiNavi 3](docs/images/godinavi-3-logo.png)
+
+> ### [⬇ GodiNavi 3.0.0 Full Download](https://github.com/GD-fandev/godinavi/releases/download/v3.0.0/GodiNavi-3.0.0-Full.zip)
+
+新規利用者の方は、上のリンクからフルバージョンをダウンロードしてください。2.xからは通常のアップデートをご利用いただけます。1.xからの自動移行は終了しました。新しいフォルダーに展開してご利用ください。既存の個人設定は保持されます。
+
+신규 이용자는 위 링크에서 풀버전을 받아 주세요. 2.x는 일반 업데이트로 이용할 수 있습니다. 1.x 자동 이전 지원은 종료했으므로 풀버전을 새 폴더에 압축 해제해 이용해 주세요. 기존 개인 설정은 유지됩니다.
+
+New users should download the full package above. Existing 2.x users can use the normal updater. Automatic migration from 1.x has ended; extract the full package into a new folder. Existing personal settings are preserved.
 
 ## 目次 / 목차 / Table of Contents
 
@@ -15,7 +23,7 @@
   - [ライセンスと注意事項](#ライセンスと注意事項)
 - [한국어](#한국어)
   - [가디내비 소개](#가디내비-소개)
-  - [주요 기능](#주요-기능-1)
+  - [주요 기능](#주요-기능)
   - [시작하기](#시작하기)
   - [해설 영상](#해설-영상)
   - [설정 및 문제 해결](#설정-및-문제-해결)
@@ -37,50 +45,59 @@ GodiNavi（ガディナビ）は、ガディウスのプレイに必要な便利
 
 ### 主な機能
 
-- ミニマップとワールドマップ
+- ミニマップ・ワールドマップと現在地表示
+- 地図上の出入口・町の施設・職業ギルド表示と表示設定
+- マップ名・座標・バフ・経験値・耐久度の認識領域の自動設定
 - ポータルコマンドの登録・コピーとプリセット管理
-- バフタイマー
+- バフタイマーと手動開始モード
 - 武器・鎧・盾の耐久度監視と警告
+- パーティールームとメンバーの位置表示
+- 装備図鑑と染色画像
 - 日本語・韓国語・英語UI
-- マップデータおよびGodiNavi本体のアップデート
+- 本体と地図・装備などのデータ更新
 
 ### はじめに
 
-1. 初回起動時に、画面の案内に従ってバフ認識領域とマップOCR領域を設定してください。
-2. 歯車アイコンを左クリックすると、メインボタンの位置やサイズを調整できます。
-3. 各ボタンにマウスカーソルを合わせると、その機能のメニューが表示されます。実際に操作しながら必要な機能を確認してください。
-4. 旧GodiMapで使用していた `F11` 操作は廃止されました。現在の専用ショートカットは、ワールドマップを開閉する `F10` のみです。それ以外の操作はオーバーレイボタンから行います。
+1. フルバージョンのZIP全体を展開し、`GodiNavi.exe`を起動してください。実行ファイルだけを移動しないでください。
+2. ガディウスを起動するとゲームウィンドウを検出してオーバーレイを表示します。認識領域は自動設定され、ウィンドウのサイズ変更にも追従します。
+3. 各ボタンにマウスを合わせるとメニューが開きます。歯車アイコンを左クリックするとメインボタンの位置・サイズを調整できます。
+4. 自動認識に問題がある場合は、設定の「手動OCR領域指定」をオンにして領域を調整してください。自動モードの領域表示は確認専用です。
+5. ワールドマップは`F10`で開閉できます。バフの手動開始キーは該当機能の設定で確認・変更できます。
+6. 詳しい使い方はアプリ内のチュートリアルをご確認ください。
+
+### 地図の使い方
+
+地図アイコンの「地図設定」で地形、移動地点、現在地、施設ラベルや接続線、施設ボタンのサイズを調整できます。
+
+「施設表示」をオンにするとミニマップの上に施設ボタンが表示されます。ギルドボタンにマウスを合わせると、その町の職業ギルド一覧から選択できます。一度に表示できる施設は1種類です。施設選択による自動移動は行いません。
+
+現在地表示は座標情報のある地図に対応します。地図画像が表示されても、座標情報のない地域では現在地が表示されない場合があります。
 
 ### 解説動画
 
 - [日本語版 解説動画](https://youtu.be/fcWgLNT3ayk)
 
+旧バージョンの動画です。3.0.0の自動OCRと地図機能はアプリ内のチュートリアルもご確認ください。
+
 ### 冒険者様を募集しています
 
-ガディナビには、まだ測量が完了していない未調査地域があります。
+地図画像を新たに整備しました。現在地表示のための座標確認にご協力いただける冒険者様を募集しています。
 
-現在の未調査地域は以下の通りです。
-
-- カールマーニュ洞窟 1F
-- 中部背骨洞窟 1F
 - 西部背骨洞窟 4～5F
-- シャドミュム洞窟 5～6F
+- シャドミュム洞窟 2F・5～6F
 - エブリン・エチリン洞窟 2～5F
 - ヘル 1～10F
 
-これらの地域は入場条件のため制作者自身での調査が難しく、現時点では多くの地図が未完成となっています。十分な状態でお届けできず申し訳ありませんが、いつか自分で調査するか、有志の方のお力を借りながら、少しずつ完成させていきたいと考えています。
-
-未知の地へ赴き、地図の完成に力を貸してくださる勇気ある冒険者様を募集しています。ご協力いただける方は、Discordにて制作者までDMをお送りいただけますと幸いです。
-
-ささやかですが感謝の印として、次回の配布時に地図の完成へご協力くださった冒険者様のお名前を、該当地域のミニマップ左下に刻ませていただきたいと思います。
-
-皆様の冒険の記録が、次にその地を訪れる冒険者様の道標となります。ご協力を心よりお待ちしております。
+ご協力いただける方や、地図と実際の位置のずれを発見された方は、Discordで制作者までDMをお送りください。ご協力者のお名前は該当地域の地図に表示します。
 
 ### 調査にご協力してくださった冒険者様（Special Thanks）
 
-- レゲ地下洞窟 9～10F：狐 様
-- シャドミュム洞窟 3～4F：狐 様
-- エブリン・エチリン洞窟 1F：狐 様
+- カリ地下洞窟 9～10F、レゲ地下洞窟 9～10F、シャドミュム洞窟 3～4F、エブリン・エチリン洞窟 1F：狐 様
+- イスカルド半島、カールマーニュ洞窟・中部背骨洞窟 2～3F：SERE 様
+- カールマーニュ洞窟・中部背骨洞窟 1F：림치 様
+- ラリビントス迷路の仕様調査協力：本格炒飯剣士 様
+- モンスター名の日本語表記情報提供：セリシア 様
+- アンドレアンスーツ・エシールの女性用衣装の染色情報提供：セリシア 様
 
 ### 設定・トラブルシューティング
 
@@ -107,23 +124,23 @@ Godiusとガディナビの互換モードおよび管理者権限の設定が�
 
 #### OCRが認識しない、または途切れる
 
-- 地域名・座標範囲を再設定し、文字切れや余分なUIがないか確認してください。
-- 解像度やゲームUI配置を変更した場合は再設定してください。
+- 認識対象が表示され、メニューなどに隠れていないか確認してください。自動モードでは領域表示で認識範囲を確認できます。
+- 自動認識が難しい場合は「手動OCR領域指定」をオンにして調整してください。手動モードではウィンドウサイズ変更後に領域も確認してください。
 - マウスオーバー等による短い欠落では、最後の正常なマップを一定時間維持します。
 
 #### ミニマップが表示されない
 
 - 状態欄とOCR結果を確認してください。
-- `maps`と`mapdata`に該当地域が含まれているか確認してください。
+- 地図表示を有効にし、本体と地図データを更新してください。現在地表示には該当地域の座標情報が必要です。
 - ZIPから配布物全体を展開したか確認してください。
 
 ### ライセンスと注意事項
 
 - ガディナビ独自のソースコードは[MIT License](https://github.com/GD-fandev/godinavi/blob/main/LICENSE.txt)で公開しています。
 - ゲーム関連素材、地図画像、アイコン等はMIT Licenseの対象外です。詳細は[Asset Notice](https://github.com/GD-fandev/godinavi/blob/main/licenses/ASSET_NOTICE.txt)をご確認ください。
-- ダンジョン地図画像の出典：[Godius公式ホームページ](https://www.godius.co.kr/guide_8?t_id=2)
-- 町の地図画像の出典：[Godius Online Forum](http://godius.s201.xrea.com/mmain.html)
-- フィールド地図画像の出典：[フィールドマップ](https://www3.hp-ez.com/hp/chombo/field)
+- 旧地図資料の参考・謝辞（ダンジョン）：[Godius公式ホームページ](https://www.godius.co.kr/guide_8?t_id=2)
+- 旧地図資料の参考・謝辞（町）：[Godius Online Forum](http://godius.s201.xrea.com/mmain.html)
+- 旧地図資料の参考・謝辞（フィールド）：[フィールドマップ](https://www3.hp-ez.com/hp/chombo/field)
 - モンスター名の日本語表記情報：[Godius＠モブ表・レアドロ実績表](https://docs.google.com/spreadsheets/d/1HVeLbYElGRoVfSbh26oiRwD-ZGLhCBVE3GfKPZ55Jvc/edit?gid=1783106804#gid=1783106804&fvid=445972214)
 - 第三者ソフトウェアとOCRモデルについては[Third-Party Notices](https://github.com/GD-fandev/godinavi/blob/main/licenses/THIRD_PARTY_NOTICES.txt)と`licenses/third_party`をご確認ください。
 - ガディナビは非公式ツールです。ゲーム運営方針および素材提供元の規約に従い、各自の判断でご利用ください。
@@ -138,23 +155,57 @@ Godiusとガディナビの互換モードおよび管理者権限の設定が�
 
 ### 주요 기능
 
-- 미니맵과 월드맵
+- 미니맵·월드맵과 현재 위치 표시
+- 지도 입구·마을 시설·직업 길드 위치 표시와 표시 설정
+- 지도명·좌표·버프·경험치·내구도 인식 영역 자동 설정
 - 포탈 명령어 등록·복사 및 프리셋 관리
-- 버프 타이머
+- 버프 타이머와 수동 시작 모드
 - 무기·갑옷·방패 내구도 감시 및 경고
-- 한국어·日本語·English UI
-- 지도 데이터 및 가디내비 본체 업데이트
+- 파티룸과 파티원 위치 표시
+- 장비도감과 염색 이미지
+- 한국어·일본어·영어 UI
+- 본체와 지도·장비 등 데이터 업데이트
 
 ### 시작하기
 
-1. 처음 실행하면 화면에 표시되는 안내에 따라 버프 인식 영역과 지도 OCR 영역을 지정하세요.
-2. 톱니바퀴 아이콘을 좌클릭하면 메인 버튼의 위치와 크기를 조절할 수 있습니다.
-3. 각 버튼에 마우스를 올리면 해당 기능의 메뉴가 나타납니다. 직접 눌러보며 필요한 기능과 사용법을 확인하세요.
-4. 기존 가디맵에서 사용하던 `F11` 조작은 없어졌습니다. 현재 별도의 단축키는 월드맵을 열고 닫는 `F10`뿐이며, 나머지 기능은 오버레이 버튼으로 조작합니다.
+1. 풀버전 ZIP 전체를 압축 해제한 뒤 `GodiNavi.exe`를 실행하세요. 실행 파일만 따로 옮기지 마세요.
+2. 가디우스를 실행하면 게임 창을 찾아 오버레이를 표시합니다. 인식 영역은 자동으로 설정되며 창 크기가 바뀌면 함께 조정됩니다.
+3. 각 버튼에 마우스를 올리면 메뉴가 나타납니다. 톱니바퀴 아이콘을 좌클릭하면 메인 버튼의 위치와 크기를 조절할 수 있습니다.
+4. 자동 인식에 문제가 있다면 설정의 ‘수동 OCR 영역 지정’을 켜서 직접 조정하세요. 자동 모드의 영역 표시는 확인용이며 이동·크기 변경은 할 수 없습니다.
+5. 월드맵은 `F10`으로 열고 닫을 수 있습니다. 버프 수동 시작 키는 해당 기능의 설정에서 확인하거나 변경할 수 있습니다.
+6. 자세한 사용 방법은 앱 안의 튜토리얼을 확인해 주세요.
+
+### 지도 사용하기
+
+지도 아이콘의 ‘지도 설정’에서 지형, 이동 지점, 내 위치, 시설 라벨과 연결선, 시설 버튼 크기를 조절할 수 있습니다.
+
+‘시설 표시’를 켜면 미니맵 위에 시설 버튼이 나타납니다. 길드 버튼에 마우스를 올리면 현재 마을의 직업 길드 목록에서 선택할 수 있습니다. 시설은 한 번에 한 종류만 표시할 수 있으며, 선택 시 자동으로 이동하지 않습니다.
+
+현재 위치 표시는 좌표 정보가 있는 지도에서 사용할 수 있습니다. 지도 이미지가 표시돼도 좌표 정보가 없는 지역에서는 현재 위치가 표시되지 않을 수 있습니다.
 
 ### 해설 영상
 
 - [한국어판 해설영상](https://youtu.be/eCkEvMEkAuc)
+
+이전 버전 기준 영상입니다. 3.0.0의 자동 OCR과 지도 기능은 앱 안의 튜토리얼도 확인해 주세요.
+
+### 지도 조사와 자료 제공에 감사드립니다
+
+현재 위치 표시용 좌표 확인이 더 필요한 지역은 다음과 같습니다.
+
+- 서부등뼈동굴 4~5층
+- 샤드뮴동굴 2층·5~6층
+- 에블린동굴·에칠린동굴 2~5층
+- 헬 1~10층
+
+조사에 협력하시거나 위치 오류를 발견하셨다면 Discord에서 제작자에게 DM으로 알려 주세요. 기여자 이름은 해당 지역의 지도에 표시합니다.
+
+- 칼리 지하동굴 9~10층, 레게 지하동굴 9~10층, 샤드뮴동굴 3~4층, 에블린동굴·에칠린동굴 1층: 狐 님
+- 이스칼드 반도, 카를마뉴 동굴·중부등뼈동굴 2~3층: SERE 님
+- 카를마뉴 동굴·중부등뼈동굴 1층: 림치 님
+- 라비린토스미로 사양 조사 협력: 本格炒飯剣士 님
+- 몬스터명 일본어 표기 정보 제공: セリシア 님
+- 안도레안 수트·에시르 여자옷 염색정보 제공: セリシア 님
 
 ### 설정 및 문제 해결
 
@@ -181,23 +232,23 @@ Godius와 가디내비의 호환 모드 또는 관리자 권한 설정이 서로
 
 #### OCR이 인식되지 않거나 끊기는 경우
 
-- 지역명·좌표 영역을 다시 설정하고, 글자가 잘리거나 불필요한 UI가 포함되지 않았는지 확인하세요.
-- 해상도나 게임 UI 배치를 변경했다면 영역을 다시 설정하세요.
+- 인식할 정보가 화면에 표시되고 메뉴 등에 가려지지 않았는지 확인하세요. 자동 모드의 영역 표시에서 인식 범위를 확인할 수 있습니다.
+- 자동 인식이 어렵다면 ‘수동 OCR 영역 지정’을 켜서 조정하세요. 수동 모드에서는 창 크기 변경 후 영역도 다시 확인하세요.
 - 마우스 오버 등으로 잠시 인식이 끊기면 마지막으로 정상 인식된 지도를 일정 시간 유지합니다.
 
 #### 미니맵이 표시되지 않는 경우
 
 - 상태 표시와 OCR 결과를 확인하세요.
-- `maps`와 `mapdata`에 해당 지역이 포함되어 있는지 확인하세요.
+- 지도 기능을 켜고 본체와 지도 데이터를 업데이트하세요. 현재 위치 표시에는 해당 지역의 좌표 정보가 필요합니다.
 - ZIP 배포본 전체를 압축 해제했는지 확인하세요.
 
 ### 라이선스 및 주의사항
 
 - 가디내비 고유 소스 코드는 [MIT License](https://github.com/GD-fandev/godinavi/blob/main/LICENSE.txt)로 공개됩니다.
 - 게임 관련 리소스, 지도 이미지, 아이콘 등은 MIT License 적용 대상이 아닙니다. 자세한 내용은 [Asset Notice](https://github.com/GD-fandev/godinavi/blob/main/licenses/ASSET_NOTICE.txt)를 확인하세요.
-- 던전 지도 이미지 출처: [Godius 공식 홈페이지](https://www.godius.co.kr/guide_8?t_id=2)
-- 마을 지도 이미지 출처: [Godius Online Forum](http://godius.s201.xrea.com/mmain.html)
-- 필드 지도 이미지 출처: [필드맵](https://www3.hp-ez.com/hp/chombo/field)
+- 기존 지도 자료의 출처와 감사 안내 — 던전: [Godius 공식 홈페이지](https://www.godius.co.kr/guide_8?t_id=2)
+- 기존 지도 자료의 출처와 감사 안내 — 마을: [Godius Online Forum](http://godius.s201.xrea.com/mmain.html)
+- 기존 지도 자료의 출처와 감사 안내 — 필드: [필드맵](https://www3.hp-ez.com/hp/chombo/field)
 - 제3자 소프트웨어와 OCR 모델은 [Third-Party Notices](https://github.com/GD-fandev/godinavi/blob/main/licenses/THIRD_PARTY_NOTICES.txt) 및 `licenses/third_party`를 확인하세요.
 - 가디내비는 비공식 도구입니다. 게임 운영 정책과 리소스 제공처의 약관을 준수하고 각자의 판단과 책임에 따라 사용하세요.
 
@@ -211,19 +262,51 @@ GodiNavi is an in-game overlay that brings together useful tools for playing God
 
 ### Features
 
-- Minimap and world map
+- Minimap, world map, and current-position display
+- Configurable entrance, exit, town facility, and class guild markers
+- Automatic recognition region setup for map names, coordinates, buffs, experience, and durability
 - Portal command registration, copying, and preset management
-- Buff timer
+- Buff timer with a manual start mode
 - Weapon, armor, and shield durability monitoring and warnings
+- Party rooms and party member locations
+- Equipment catalog and dye images
 - Japanese, Korean, and English UI
-- Map data and GodiNavi application updates
+- Application, map, equipment, and other data updates
 
 ### Getting Started
 
-1. On the first launch, follow the on-screen guide to configure the buff detection region and map OCR regions.
-2. Left-click the gear icon to adjust the position and size of the main buttons.
-3. Hover over each button to open its feature menu. Explore the available controls directly to learn how each feature works.
-4. The `F11` control from the previous GodiMap is no longer used. The only dedicated shortcut is `F10`, which opens and closes the world map. All other features are controlled through the overlay buttons.
+1. Extract the entire full-package ZIP and run `GodiNavi.exe`. Do not move the executable on its own.
+2. Start Godius. GodiNavi detects the game window and displays its overlays. Recognition regions are set automatically and follow window resizing.
+3. Hover over a button to open its menu. Left-click the gear icon to adjust the main toolbar position and size.
+4. If automatic recognition is unreliable, enable “Manual OCR regions” in Settings to adjust the regions yourself. Automatic region previews cannot be moved or resized.
+5. Press `F10` to open or close the world map. Check or change manual buff start keys in the corresponding settings.
+6. Read the in-app tutorials for detailed instructions.
+
+### Using Maps
+
+Open “Map settings” from the map icon to adjust terrain, exits, your position, facility labels and leader lines, and facility button size.
+
+Enable “Facility markers” to show buttons above the minimap. Hover over Guild to select a class guild in the current town. Only one facility type can be displayed at a time. Selecting a facility does not move your character automatically.
+
+Current-position display requires coordinate data. A map image may be available even when current-position display is not supported.
+
+### Map Research and Contributions
+
+We welcome help verifying coordinates for current-position display in these areas:
+
+- Western Spine Cave, floors 4–5
+- Shadmyoom Cave, floors 2 and 5–6
+- Evlin and Echilin Caves, floors 2–5
+- Hell, floors 1–10
+
+To help with research or report incorrect positions, please DM the creator on Discord. Contributors are credited on the relevant maps.
+
+- Kali Underground Cave floors 9–10, Rege Underground Cave floors 9–10, Shadmyoom Cave floors 3–4, and Evlin and Echilin Caves floor 1: 狐
+- Iskald Peninsula, Karlmannu Cave and Central Spine Cave floors 2–3: SERE
+- Karlmannu Cave and Central Spine Cave floor 1: 림치
+- Laribintos Maze mechanics research: 本格炒飯剣士
+- Japanese monster name information: セリシア
+- Dye information for the female Andorrean Suit and Aesir: セリシア
 
 ### Configuration and Troubleshooting
 
@@ -250,22 +333,22 @@ If the movement keys still do not respond, exit capture-region editing mode, the
 
 #### OCR does not recognize text or recognition is intermittent
 
-- Reconfigure the region-name and coordinate regions, and check for clipped text or unrelated UI elements.
-- Reconfigure the regions after changing the resolution or game UI layout.
+- Make sure the information is visible and not covered by menus. In automatic mode, open the region preview to check the recognized area.
+- If automatic recognition is unreliable, enable “Manual OCR regions” and adjust the regions. In manual mode, check them again after resizing the game window.
 - For brief recognition gaps caused by mouse hover or similar events, GodiNavi keeps the last successfully recognized map for a short time.
 
 #### The minimap is not displayed
 
 - Check the status display and OCR results.
-- Make sure the relevant area is included in `maps` and `mapdata`.
+- Enable the map feature and update the application and map data. Current-position display requires coordinate data for that area.
 - Make sure you extracted the entire ZIP distribution.
 
 ### License and Notices
 
 - GodiNavi's original source code is available under the [MIT License](https://github.com/GD-fandev/godinavi/blob/main/LICENSE.txt).
 - Game-related assets, map images, icons, and similar materials are not covered by the MIT License. See the [Asset Notice](https://github.com/GD-fandev/godinavi/blob/main/licenses/ASSET_NOTICE.txt) for details.
-- Dungeon map image source: [Official Godius website](https://www.godius.co.kr/guide_8?t_id=2)
-- Town map image source: [Godius Online Forum](http://godius.s201.xrea.com/mmain.html)
-- Field map image source: [Field Map](https://www3.hp-ez.com/hp/chombo/field)
+- Earlier map references and acknowledgements — dungeons: [Official Godius website](https://www.godius.co.kr/guide_8?t_id=2)
+- Earlier map references and acknowledgements — towns: [Godius Online Forum](http://godius.s201.xrea.com/mmain.html)
+- Earlier map references and acknowledgements — fields: [Field Map](https://www3.hp-ez.com/hp/chombo/field)
 - For third-party software and OCR models, see the [Third-Party Notices](https://github.com/GD-fandev/godinavi/blob/main/licenses/THIRD_PARTY_NOTICES.txt) and `licenses/third_party`.
 - GodiNavi is an unofficial tool. Follow the game operator's policies and the terms of the asset providers, and use it at your own discretion and responsibility.
