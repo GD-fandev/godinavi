@@ -7,6 +7,7 @@ updater, publishing tools, and tests can all enforce the same rules.
 from __future__ import annotations
 
 import re
+import os
 from pathlib import PurePosixPath
 from urllib.parse import urlparse
 
@@ -48,8 +49,9 @@ CONTENT_COMPONENTS = {"maps", "monsters", "equipment"}
 
 CHANNEL_REPOSITORIES = {
     "stable": "GD-fandev/godinavi",
-    "test": "GD-fandev/private-repository-removed",
 }
+if os.environ.get("GODINAVI_TEST_REPOSITORY", "").strip():
+    CHANNEL_REPOSITORIES["test"] = os.environ["GODINAVI_TEST_REPOSITORY"].strip()
 
 
 class ContractError(ValueError):
@@ -97,6 +99,8 @@ def validate_channel(payload):
     if "/releases/latest" in payload["manifestUrl"].lower():
         raise ContractError("V2 channels must not use GitHub releases/latest.")
     parsed = urlparse(payload["manifestUrl"])
+    if payload["channel"] not in CHANNEL_REPOSITORIES:
+        raise ContractError("Test channel repository is not configured for this environment.")
     expected_path = f"/repos/{CHANNEL_REPOSITORIES[payload['channel']]}/contents/"
     if parsed.netloc.lower() != "api.github.com" or not parsed.path.startswith(expected_path):
         raise ContractError(

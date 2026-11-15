@@ -61,3 +61,7 @@ Desktop.ini
 # Other build systems
 **/bin/
 **/obj/
+
+# Private test-channel metadata must not be published.
+update/v2/test/
+source/auto_ui/assets/

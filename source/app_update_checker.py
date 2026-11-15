@@ -10,10 +10,7 @@ import certifi
 
 
 from godinavi import __version__ as APP_VERSION
-REPOSITORIES = {
-    "stable": "GD-fandev/godinavi",
-    "test": "GD-fandev/private-repository-removed",
-}
+from v2_contracts import CHANNEL_REPOSITORIES as REPOSITORIES
 USER_AGENT = "GodiNavi-VersionChecker/1.0"
 EXE_ASSET_NAME = "GodiNavi.exe"
 CHECKSUM_ASSET_NAME = "GodiNavi.exe.sha256"
