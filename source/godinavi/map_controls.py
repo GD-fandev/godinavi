@@ -334,7 +334,7 @@ class MapControls:
                 page.grid_remove()
                 buttons[key].configure(bg='#6b5537' if key==section else '#2a2118')
             pages[section].grid(row=0,column=0,sticky='nsew')
-        labels = {'terrain':'지형 이미지', 'pk':'PK 표시',
+        labels = {'terrain':'지형 이미지', 'pk':'PK 표시', 'reaper_timer':'사신의 칼날 시간 표시',
                   'visible':'표시', 'labels':'이름 표시', 'color':'점 색상', 'outline':'점 테두리',
                   'radius':'점 크기', 'font_size':'글자 크기', 'font_weight':'글자 굵기', 'text_color':'글자 색상',
                   'label_background':'라벨 배경 표시', 'background':'배경 색상', 'border':'라벨 테두리',
@@ -368,7 +368,7 @@ class MapControls:
             tab = buttons[section] = button(tabs,name,lambda key=section:show(key))
             tab.pack(side='left',expand=True,fill='x',padx=2)
             data = self.values if section is None else self.values[section]
-            keys = ['terrain','pk','background'] if section is None else list(data)
+            keys = ['terrain','pk','reaper_timer','background'] if section is None else list(data)
             for index,key in enumerate(keys):
                 value=data[key]
                 var=tk.BooleanVar(win,value=value) if isinstance(value,bool) else tk.StringVar(win,value=str(value))

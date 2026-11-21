@@ -1,32 +1,32 @@
 {
   "schemaVersion": 2,
   "channel": "stable",
-  "clientVersion": "3.0.2",
+  "clientVersion": "3.0.3",
   "snapshotVersion": "2026.11.21.1",
   "historyUrl": "https://api.github.com/repos/GD-fandev/godinavi/contents/update/v2/stable/history.json?ref=main",
   "components": {
     "launcher": {
-      "version": "3.0.2",
+      "version": "3.0.3",
       "path": "GodiNavi.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.2/GodiNaviLauncher-3.0.2.exe",
-      "size": 16029141,
-      "sha256": "ac16ca725376e41d137a35cca718b2fee538d1bf54f081e956eeed8c22288031",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.3/GodiNaviLauncher-3.0.3.exe",
+      "size": 16028845,
+      "sha256": "b355c05656e9161a133c518c624b9df3da1af4f555617d5a26005874400d2d28",
       "format": "file"
     },
     "updater": {
-      "version": "3.0.2",
+      "version": "3.0.3",
       "path": "GodiNaviUpdater.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.2/GodiNaviUpdater.exe",
-      "size": 16222445,
-      "sha256": "47b68ddd63787b5dd990cec473c5f537a395b12624b7022598deebcd76ac487a",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.3/GodiNaviUpdater.exe",
+      "size": 16223504,
+      "sha256": "b749316498293f3f87480ff87b487ad97ee32f87c66679d2acc59280ba13f9ce",
       "format": "file"
     },
     "core": {
-      "version": "3.0.2",
+      "version": "3.0.3",
       "path": "data/GodiNaviCore.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.2/GodiNaviCore.exe",
-      "size": 9488318,
-      "sha256": "fd33f9d661ee606cb8042ac852b9996edd4813545b2fce949bbf02c18ad6c999",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.3/GodiNaviCore.exe",
+      "size": 9488629,
+      "sha256": "e85bd1e5c6315e17efc0744d4cb2602d72d86f6782ea3b42fbc425f18ab73e5c",
       "format": "file"
     },
     "runtime": {

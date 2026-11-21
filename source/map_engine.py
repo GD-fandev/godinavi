@@ -2901,15 +2901,17 @@ class MapEngine:
         level = map_pk_level(self.active_map, schedule[1])
         width = max(1, int(float(self.map_canvas.cget("width"))))
         height = max(1, int(float(self.map_canvas.cget("height"))))
-        timer = self.map_canvas.create_text(
-            width-6, height-6, text=clock_text(schedule, getattr(self, 'ui_language', 'KR')),
-            anchor="se", justify="right", fill=WORLD_MAP_COLORS['free'] if schedule[1] else '#f4e7bc',
-            font=("Malgun Gothic", 8, "bold"), width=max(40, width-12), tags="minimap_event_clock")
-        box = self.map_canvas.bbox(timer)
-        if box:
-            bg = self.map_canvas.create_rectangle(box[0]-3, box[1]-2, box[2]+3, box[3]+2,
-                                                  fill="#0b1b27", outline="", tags="minimap_event_clock")
-            self.map_canvas.tag_lower(bg, timer)
+        if (self.config.get('map_display', {}).get('reaper_timer', True)
+                and map_pk_level(self.active_map, False) != map_pk_level(self.active_map, True)):
+            timer = self.map_canvas.create_text(
+                width-6, height-6, text=clock_text(schedule, getattr(self, 'ui_language', 'KR')).split('\n', 1)[1],
+                anchor="se", justify="right", fill=WORLD_MAP_COLORS['free'] if schedule[1] else '#f4e7bc',
+                font=("Malgun Gothic", 8, "bold"), width=max(40, width-12), tags="minimap_event_clock")
+            box = self.map_canvas.bbox(timer)
+            if box:
+                bg = self.map_canvas.create_rectangle(box[0]-3, box[1]-2, box[2]+3, box[3]+2,
+                                                      fill="#0b1b27", outline="", tags="minimap_event_clock")
+                self.map_canvas.tag_lower(bg, timer)
         if not self.config.get("pk_zone_alert_enabled", True) or not level:
             return
         accent = WORLD_MAP_COLORS["free" if level == 2 else "pk"]

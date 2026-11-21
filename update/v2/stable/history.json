@@ -2,6 +2,43 @@
   "schemaVersion": 2,
   "entries": [
     {
+      "id": "client-3.0.3",
+      "kind": "client",
+      "version": "3.0.3",
+      "components": [
+        "launcher",
+        "updater",
+        "core"
+      ],
+      "publishedAt": "2026-11-21T12:06:50Z",
+      "changes": {
+        "KR": {
+          "summary": "가디내비 업데이트",
+          "details": [
+            "[개선]",
+            "미니맵 사신의 칼날 안내\n현재 시각을 제거하고, 사신의 칼날 시작·종료까지 남은 시간만 표시하도록 개선했습니다. 마을·제외 필드·상시 FREE PK 지역에서는 카운트다운을 표시하지 않습니다.",
+            "지도 설정의 기본 탭에 ‘사신의 칼날 시간 표시’ 옵션을 추가했습니다. 시간 표시를 꺼도 PK 표시가 켜져 있으면 사신의 칼날 시간에 대상 지역을 FREE PK로 표시합니다."
+          ]
+        },
+        "JP": {
+          "summary": "ガディナビ アップデート",
+          "details": [
+            "[改善]",
+            "ミニマップの死神の刃の案内\n現在時刻の表示を削除し、死神の刃の開始・終了までの残り時間のみ表示するように改善しました。町・対象外のフィールド・常時FREE PKの地域では、カウントダウンを表示しません。",
+            "地図設定の基本タブに「死神の刃の時間表示」オプションを追加しました。時間表示をオフにしても、PK表示がオンであれば、死神の刃の時間帯には対象地域をFREE PKとして表示します。"
+          ]
+        },
+        "EN": {
+          "summary": "GodiNavi Update",
+          "details": [
+            "[Improvements]",
+            "Reaper’s Blade Information on the Minimap\nRemoved the current time from the minimap, leaving only the countdown to the start or end of Reaper’s Blade. The countdown is hidden in towns, excluded fields, and permanent FREE PK areas.",
+            "Added a “Reaper’s Blade timer” option to the General tab in Map settings. Turning off the timer does not affect PK indicators: when PK indicators are enabled, eligible areas still appear as FREE PK during Reaper’s Blade."
+          ]
+        }
+      }
+    },
+    {
       "id": "client-3.0.2",
       "kind": "client",
       "version": "3.0.2",

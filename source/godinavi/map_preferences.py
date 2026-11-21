@@ -5,7 +5,7 @@ import re
 LAYER_DEFAULT = dict(visible=True, labels=True, color='#ff3030', outline='#000000',
                      radius=5, font_size=14, font_weight=600, text_color='#ffffff', label_background=True,
                      background='#182733', border='#637586', leaders=True, leader_color='#aeb8c2')
-DEFAULTS = {'terrain':True,'background':'#101820','pk':True,'navigation':True,
+DEFAULTS = {'terrain':True,'background':'#101820','pk':True,'navigation':True,'reaper_timer':True,
             'portals':dict(LAYER_DEFAULT),
             'facilities':dict(LAYER_DEFAULT,color='#44ddeb',radius=7,button_size=36),
             'player':dict(LAYER_DEFAULT,color='#ffe500',radius=7,labels=False,leaders=False)}
