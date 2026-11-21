@@ -22,7 +22,7 @@ from modal_window import activate_modal, bind_modal_escape, modal_font_family, p
 from .actions import DockItem, QuickAction
 from .alchemy_ui import AlchemyUI
 from .app_update_ui import AppUpdateUI
-from .armor_catalog_ui import ArmorCatalogUI
+from .armor_catalog_host import ArmorCatalogHost
 from .buff_timer_engine import BuffTimerApp, default_buff_config
 from .clock_overlay import ClockOverlay
 from .dock import OverlayDock
@@ -292,7 +292,7 @@ class PrototypeApp:
             self.map_engine.config,
             lambda: save_config(self.map_engine.config),
         )
-        self.armor_catalog_ui = ArmorCatalogUI(
+        self.armor_catalog_ui = ArmorCatalogHost(
             self.root,
             RESOURCE_DIR,
             lambda: self.map_engine.ui_language if self.map_engine else "KR",
@@ -882,12 +882,12 @@ class PrototypeApp:
 
         update_available = bool(self.map_update_ui and self.map_update_ui.update_available)
         map_actions = [
+            QuickAction(texts["map_adjust"], self.toggle_map_adjustment),
             QuickAction(self.map_controls.tr('지도 설정'), self.map_controls.open_settings),
             QuickAction(
                 lambda: self.map_controls.tr('시설 위치') + ': ' + self.map_controls.tr('켜짐' if self.map_controls.values['navigation'] else '꺼짐'),
                 self.map_controls.toggle,
             ),
-            QuickAction(texts["map_adjust"], self.toggle_map_adjustment),
             QuickAction(
                 lambda: texts["map_boundary_on"] if self.map_engine.minimap_boundary_restricted else texts["map_boundary_off"],
                 self.toggle_map_boundary_restriction,
@@ -906,8 +906,8 @@ class PrototypeApp:
         if update_available:
             map_actions.append(QuickAction(texts["map_update_available"], self.open_map_update))
         settings_actions = [
-            QuickAction(self.auto_region_label, self.toggle_auto_regions),
             QuickAction(self.current_language_name, self.cycle_language),
+            QuickAction(self.auto_region_label, self.toggle_auto_regions),
             QuickAction(texts["button_ui"], lambda: self.dock.toggle_lock() if self.dock else None),
             QuickAction(texts["toolbar_customize"], self.open_toolbar_customize),
             QuickAction(texts["orientation"], lambda: self.dock.toggle_orientation() if self.dock else None),

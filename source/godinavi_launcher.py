@@ -6,12 +6,26 @@ import sys
 from pathlib import Path
 
 from godinavi import __version__
-from godinavi.main import main
 from v2_core_health import write_health_token
 
 
 def run():
+    if "--equipment-catalog" in sys.argv[1:]:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--equipment-catalog", action="store_true")
+        parser.add_argument("--project-dir", required=True)
+        parser.add_argument("--language", choices=("KR", "JP", "EN"), default="KR")
+        args = parser.parse_args()
+        from godinavi.armor_catalog_host import ensure_catalog_stdio, run_catalog_process
+        ensure_catalog_stdio()
+        try:
+            run_catalog_process(args.project_dir, args.language)
+        except Exception as exc:
+            print(json.dumps({'action': 'error', 'message': str(exc)}), flush=True)
+            return 1
+        return 0
     if "--v2-health-check" not in sys.argv[1:]:
+        from godinavi.main import main
         main()
         return 0
     parser = argparse.ArgumentParser()

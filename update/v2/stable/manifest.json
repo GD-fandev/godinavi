@@ -1,32 +1,32 @@
 {
   "schemaVersion": 2,
   "channel": "stable",
-  "clientVersion": "3.0.1",
-  "snapshotVersion": "2026.11.15.1",
+  "clientVersion": "3.0.2",
+  "snapshotVersion": "2026.11.21.1",
   "historyUrl": "https://api.github.com/repos/GD-fandev/godinavi/contents/update/v2/stable/history.json?ref=main",
   "components": {
     "launcher": {
-      "version": "3.0.1",
+      "version": "3.0.2",
       "path": "GodiNavi.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.1/GodiNaviLauncher-3.0.1.exe",
-      "size": 16030816,
-      "sha256": "7460a9df280f83046eb159d317ba43a12885af939019d1659e3d16dc020ea0c7",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.2/GodiNaviLauncher-3.0.2.exe",
+      "size": 16029141,
+      "sha256": "ac16ca725376e41d137a35cca718b2fee538d1bf54f081e956eeed8c22288031",
       "format": "file"
     },
     "updater": {
-      "version": "3.0.1",
+      "version": "3.0.2",
       "path": "GodiNaviUpdater.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.1/GodiNaviUpdater.exe",
-      "size": 16223576,
-      "sha256": "4bd7a86e3427c23f726b3ca4b02d9dc290208a0d202cbd73e0840364ba6434b0",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.2/GodiNaviUpdater.exe",
+      "size": 16222445,
+      "sha256": "47b68ddd63787b5dd990cec473c5f537a395b12624b7022598deebcd76ac487a",
       "format": "file"
     },
     "core": {
-      "version": "3.0.1",
+      "version": "3.0.2",
       "path": "data/GodiNaviCore.exe",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.1/GodiNaviCore.exe",
-      "size": 9458719,
-      "sha256": "95bc120f0b5357df84c32d8453a3d805a47705dfab09155c4bebd40c7f51d321",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.2/GodiNaviCore.exe",
+      "size": 9488318,
+      "sha256": "fd33f9d661ee606cb8042ac852b9996edd4813545b2fce949bbf02c18ad6c999",
       "format": "file"
     },
     "runtime": {
@@ -62,27 +62,27 @@
       "format": "pak"
     },
     "maps": {
-      "version": "2026.11.15.1",
+      "version": "2026.11.21.1",
       "path": "data/content/maps.pak",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.0/maps-2026.11.15.1.pak",
-      "size": 21515447,
-      "sha256": "748d07eff436594837ea173b7ac2665c6af9cef14b977c3b92c55b3bf2dddfd7",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.2/maps-2026.11.21.1.pak",
+      "size": 23063940,
+      "sha256": "f6e605633dcf1273454bddb58dd7598af0e47e50d7d5996a0d3a55be46eb486c",
       "format": "pak"
     },
     "monsters": {
-      "version": "2026.09.10.1",
+      "version": "2026.11.21.1",
       "path": "data/content/monsters.pak",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v2.1.4/monsters-2026.09.10.1.pak",
-      "size": 1493604,
-      "sha256": "0021d9444fcfb8bdb2dc8cca8ab311db93ef4db39e5c7f1e8a2853e5104a0407",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.2/monsters-2026.11.21.1.pak",
+      "size": 1493712,
+      "sha256": "c3fc16a4e5859b44ade15ae73f40c90538d171e9545c6f34b3f71c61be40318b",
       "format": "pak"
     },
     "equipment": {
-      "version": "2026.11.15.1",
+      "version": "2026.11.21.1",
       "path": "data/content/equipment.pak",
-      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.0/equipment-2026.11.15.1.pak",
-      "size": 432890,
-      "sha256": "d1322a8825e360b236014594f40afb5592d3fedaeef887e9bec7ff4d4c7984a4",
+      "url": "https://github.com/GD-fandev/godinavi/releases/download/v3.0.2/equipment-2026.11.21.1.pak",
+      "size": 437901,
+      "sha256": "9234f9a84a50106dd174cbc75d48fa5d2c651a541b71016c9bda2a870dcb3ef9",
       "format": "pak"
     }
   }

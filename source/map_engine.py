@@ -26,6 +26,8 @@ from v2_runtime_assets import installed_data_root, materialize_runtime_assets
 from app_update_checker import APP_VERSION, fetch_latest_release, is_newer_version
 from config_store import AUXILIARY_KEYS
 from godinavi.map_geometry import project_coordinate
+from godinavi.world_map_hotkey import WorldMapHotkey
+from godinavi.world_map_overlay import draw_overlay as draw_world_overlay, marker_visibility, reaper_schedule, draw_clock, clock_text, map_pk_level, COLORS as WORLD_MAP_COLORS
 from godinavi.map_annotations import annotate_points
 
 
@@ -1106,6 +1108,9 @@ class MapEngine:
         if not self.shell_mode:
             self.root.after(1600, self.start_app_update_check)
         self.root.after(50, self.tick)
+
+        self.world_map_hotkey = WorldMapHotkey()
+        self.root.after(20, self.drain_world_map_hotkey)
 
         if self.shell_mode:
             self.root.withdraw()
@@ -2427,6 +2432,20 @@ class MapEngine:
         return win
 
     def load_world_map_image(self):
+        self.world_map_background_key = None
+        self.world_map_layout = None
+        if ASSET_STORE.exists('maps/other/worldmap-layout.json'):
+            try:
+                layout = json.loads(ASSET_STORE.read('maps/other/worldmap-layout.json'))
+                with ASSET_STORE.open(layout['image']) as stream, Image.open(stream) as source:
+                    if list(source.size) != layout['size']:
+                        raise ValueError('World map layout/image size mismatch')
+                    self.world_map_original_image = source.convert('RGB')
+                self.world_map_layout = layout
+                self.world_map_render_key = None
+                return True
+            except (OSError, ValueError, KeyError, TypeError):
+                pass
         locale_key = {"KR": "ko", "JP": "ja"}.get(str(self.ui_language).upper())
         candidates = []
         if locale_key:
@@ -2454,7 +2473,7 @@ class MapEngine:
         client_width = max(1, right - left)
         client_height = max(1, bottom - top)
         source_width, source_height = self.world_map_original_image.size
-        fit_ratio = min((client_width * 0.92) / source_width, (client_height * 0.92) / source_height, 1.0)
+        fit_ratio = min((client_width * 0.78) / source_width, (client_height * 0.78) / source_height, 1.0)
         size_scale = max(0.4, min(2.0, float(self.config.get("world_map_size_scale", 1.0))))
         self.config["world_map_size_scale"] = size_scale
         ratio = fit_ratio * size_scale
@@ -2479,12 +2498,21 @@ class MapEngine:
         position_key = None
         if isinstance(position, dict):
             position_key = (position.get("x"), position.get("y"))
-        render_key = (width, height, str(self.active_map.get("id", "")) if self.active_map else "", position_key)
+        schedule = reaper_schedule()
+        resizing = bool(getattr(self, 'map_resize_mode', False))
+        render_key = (width, height, str(self.active_map.get("id", "")) if self.active_map else "", position_key, self.ui_language, schedule[1], resizing)
         if render_key == self.world_map_render_key:
+            marker_visibility(self.map_canvas, getattr(self, 'marker_visible', True))
+            if getattr(self, 'world_map_layout', None):
+                draw_clock(self.map_canvas, (width, height), self.ui_language, schedule)
             return
         self.world_map_render_key = render_key
-        image = self.world_map_original_image.resize((width, height), Image.Resampling.LANCZOS)
-        self.world_map_photo = ImageTk.PhotoImage(image)
+        background_key = (id(self.world_map_original_image), width, height, resizing)
+        if background_key != getattr(self, 'world_map_background_key', None):
+            image = self.world_map_original_image.resize((width, height),
+                    Image.Resampling.BILINEAR if resizing else Image.Resampling.LANCZOS, reducing_gap=3.0)
+            self.world_map_photo = ImageTk.PhotoImage(image)
+            self.world_map_background_key = background_key
         self.map_canvas.configure(
             width=width,
             height=height,
@@ -2494,7 +2522,13 @@ class MapEngine:
         self.map_canvas.delete("all")
         self.map_canvas.create_image(0, 0, image=self.world_map_photo, anchor="nw")
 
-        if isinstance(position, dict):
+        if getattr(self, 'world_map_layout', None):
+            draw_world_overlay(self.map_canvas, self.world_map_layout, self.maps,
+                               self.active_map.get('id') if self.active_map else None,
+                               (width, height), self.ui_language, schedule[1])
+            draw_clock(self.map_canvas, (width, height), self.ui_language, schedule)
+            marker_visibility(self.map_canvas, getattr(self, 'marker_visible', True))
+        elif isinstance(position, dict):
             try:
                 marker_x = round(float(position["x"]) * ratio)
                 marker_y = round(float(position["y"]) * ratio)
@@ -2586,8 +2620,9 @@ class MapEngine:
         if self.world_map_mode:
             self.world_map_mode = False
             self.map_resize_mode = False
-            set_window_click_through(self.map_window, True)
             self.hide_world_map()
+            self.world_map_render_key = None
+            set_window_click_through(self.map_window, True)
             if self.active_map and self.minimap_enabled:
                 self.apply_minimap_border()
                 self.apply_map_size()
@@ -2597,9 +2632,12 @@ class MapEngine:
         if not self.find_target():
             self.set_status("target_missing", "#ff7777")
             return
-        if not self.load_world_map_image():
+        if self.world_map_original_image is None and not self.load_world_map_image():
             self.set_status("world_map_missing", "#ff7777")
             return
+        if self.config.get('world_map_view_version') != 2:
+            self.config['world_map_size_scale'] = min(1.0, float(self.config.get('world_map_size_scale', 1.0)))
+            self.config['world_map_view_version'] = 2
         self.calibration_mode = None
         self.region_window.withdraw()
         self.coordinate_region_window.withdraw()
@@ -2856,56 +2894,47 @@ class MapEngine:
     def draw_pk_area_label(self):
         """Give PK-enabled maps a compact warning treatment."""
         self.map_canvas.delete("pk_area_label")
-        if (
-            not self.config.get("pk_zone_alert_enabled", True)
-            or not self.active_map
-            or not self.active_map.get("isPKArea")
-            or self.map_resize_mode
-        ):
+        self.map_canvas.delete("minimap_event_clock")
+        if self.map_resize_mode or not self.active_map:
             return
+        schedule = reaper_schedule()
+        level = map_pk_level(self.active_map, schedule[1])
         width = max(1, int(float(self.map_canvas.cget("width"))))
         height = max(1, int(float(self.map_canvas.cget("height"))))
-        accent = "#ff4658"
-        self.map_canvas.create_rectangle(
-            0,
-            0,
-            width - 1,
-            height - 1,
-            outline=accent,
-            width=1,
-            tags="pk_area_label",
-        )
-        if self.pk_mark_photo is not None:
-            icon_right = width - 4
-            icon_top = 4
-            self.map_canvas.create_image(
-                icon_right,
-                icon_top,
-                image=self.pk_mark_photo,
-                anchor="ne",
-                tags="pk_area_label",
-            )
-            self.map_canvas.create_text(
-                icon_right - self.pk_mark_photo.width() // 2,
-                icon_top + self.pk_mark_photo.height() + 1,
-                text="PK",
-                anchor="n",
-                fill=accent,
-                font=("Arial", 11, "bold"),
-                tags="pk_area_label",
-            )
+        timer = self.map_canvas.create_text(
+            width-6, height-6, text=clock_text(schedule, getattr(self, 'ui_language', 'KR')),
+            anchor="se", justify="right", fill=WORLD_MAP_COLORS['free'] if schedule[1] else '#f4e7bc',
+            font=("Malgun Gothic", 8, "bold"), width=max(40, width-12), tags="minimap_event_clock")
+        box = self.map_canvas.bbox(timer)
+        if box:
+            bg = self.map_canvas.create_rectangle(box[0]-3, box[1]-2, box[2]+3, box[3]+2,
+                                                  fill="#0b1b27", outline="", tags="minimap_event_clock")
+            self.map_canvas.tag_lower(bg, timer)
+        if not self.config.get("pk_zone_alert_enabled", True) or not level:
+            return
+        accent = WORLD_MAP_COLORS["free" if level == 2 else "pk"]
+        self.map_canvas.create_rectangle(0, 0, width-1, height-1,
+                                        outline=accent, width=1, tags="pk_area_label")
+        photo = getattr(self, 'pk_mark_photo', None)
+        icon_right, icon_top = width-4, 4
+        if photo is not None:
+            self.map_canvas.create_image(icon_right, icon_top, image=photo, anchor="ne", tags="pk_area_label")
+        self.map_canvas.create_text(
+            icon_right, icon_top + photo.height() + 1 if photo is not None else icon_top,
+            text="FREE PK" if level == 2 else "PK", anchor="ne", fill=accent,
+            font=("Arial", 11, "bold"), tags="pk_area_label")
 
     def apply_minimap_border(self):
+        level = map_pk_level(self.active_map, reaper_schedule()[1])
         if self.world_map_mode:
             color = "#7a1c1c"
         elif self.map_resize_mode:
             color = "#d8b15a"
         elif (
             self.config.get("pk_zone_alert_enabled", True)
-            and self.active_map
-            and self.active_map.get("isPKArea")
+            and level
         ):
-            color = "#ff4658"
+            color = WORLD_MAP_COLORS["free" if level == 2 else "pk"]
         else:
             color = "#444444"
         self.map_canvas.configure(highlightbackground=color, highlightcolor=color)
@@ -3481,7 +3510,7 @@ class MapEngine:
         target_root = user32.GetAncestor(self.target_hwnd, GA_ROOT) or self.target_hwnd
         if foreground_root == target_root:
             return True
-        if self.map_resize_mode:
+        if self.map_resize_mode or getattr(self, 'world_map_mode', False):
             map_root = user32.GetAncestor(self.map_window.winfo_id(), GA_ROOT) or self.map_window.winfo_id()
             return foreground_root == map_root
         favorite_root = user32.GetAncestor(self.favorite_window.winfo_id(), GA_ROOT) or self.favorite_window.winfo_id()
@@ -3504,6 +3533,8 @@ class MapEngine:
         updated_maps = load_map_database()
         active_id = self.active_map.get("id") if self.active_map else None
         self.maps = updated_maps
+        if getattr(self, "world_map_mode", False):
+            self.load_world_map_image()
         if active_id:
             updated_active = next((item for item in self.maps if item.get("id") == active_id), None)
             if updated_active:
@@ -4149,9 +4180,36 @@ class MapEngine:
 
         self.root.after_idle(run)
 
+    def poll_world_map_key(self):
+        if getattr(getattr(self, 'world_map_hotkey', None), 'enabled', False):
+            return
+        down = is_toggle_key_down()
+        pressed = down and not self.last_toggle_down
+        self.last_toggle_down = down
+        if pressed and not self.overlays_temporarily_hidden and self.is_target_foreground():
+            self.toggle_world_map()
+
+    def drain_world_map_hotkey(self):
+        if self.closed:
+            return
+        events = self.world_map_hotkey.drain()
+        if events and not self.overlays_temporarily_hidden:
+            allowed = {self.target_hwnd} if self.target_hwnd else set()
+            for window in (self.map_window, self.favorite_window):
+                hwnd = window.winfo_id()
+                allowed.add(user32.GetAncestor(hwnd, GA_ROOT) or hwnd)
+            if self.target_hwnd:
+                allowed.add(user32.GetAncestor(self.target_hwnd, GA_ROOT) or self.target_hwnd)
+            count = sum((user32.GetAncestor(hwnd, GA_ROOT) or hwnd) in allowed for hwnd in events if hwnd)
+            # Preserve every press's final state without replaying stale intermediate frames.
+            if count % 2:
+                self.toggle_world_map()
+        self.root.after(20, self.drain_world_map_hotkey)
+
     def tick(self):
         if self.closed:
             return
+        self.poll_world_map_key()
         self.reload_map_database_if_changed()
         self.find_target()
         self.get_stable_client_rect()
@@ -4163,11 +4221,6 @@ class MapEngine:
             self.hide_favorite_chrome()
             self.root.after(50, self.tick)
             return
-        toggle_down = self.is_target_foreground() and is_toggle_key_down()
-        if toggle_down and not self.last_toggle_down:
-            self.toggle_world_map()
-        self.last_toggle_down = toggle_down
-
         favorite_should_show = (
             bool(self.config.get("favorite_overlay_visible"))
             and bool(self.target_hwnd)
@@ -4271,6 +4324,8 @@ class MapEngine:
 
     def quit(self):
         self.closed = True
+        if getattr(self, 'world_map_hotkey', None):
+            self.world_map_hotkey.close()
         self.performance.flush_if_due(state="shutdown=1", force=True)
         if not self.shell_mode:
             self.config["debug_x"] = self.root.winfo_x()

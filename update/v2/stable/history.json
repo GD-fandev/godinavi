@@ -2,6 +2,76 @@
   "schemaVersion": 2,
   "entries": [
     {
+      "id": "client-3.0.2",
+      "kind": "client",
+      "version": "3.0.2",
+      "components": [
+        "launcher",
+        "updater",
+        "core",
+        "maps",
+        "monsters",
+        "equipment"
+      ],
+      "publishedAt": "2026-11-21T11:47:55Z",
+      "changes": {
+        "KR": {
+          "summary": "가디내비 업데이트",
+          "details": [
+            "[새로운 기능]",
+            "사신의 칼날 안내\n사신의 칼날 시간에 맞춰 월드맵과 미니맵의 대상 지역을 FREE PK로 표시하는 기능을 추가했습니다. 현재 시각과 시작·종료까지 남은 시간도 표시합니다.",
+            "- 한국시간 기준 매 0·4·8·12·16·20시부터 1시간 동안 적용됩니다.\n- 모든 마을과 칼리브리아반도·가므리아해안·람파스소택지·루크레시아소택지·칼비론숲·샤드뮴숲·사에프평원은 제외됩니다.",
+            "[개선]",
+            "월드맵 표시\n선택한 언어에 따라 지역명을 표시하고, 현재 지역을 깜빡이는 화살표로 안내하도록 개선했습니다. 마을 소속과 PK 구분을 표시하고 범례를 추가했습니다.",
+            "F10으로 월드맵을 열고 닫을 수 있습니다.",
+            "장비 도감 염색 확인\n갑옷·옷의 염색표에서 세트 신발을 함께 착용한 모습을 확인할 수 있도록 개선했습니다.",
+            "신발 탭에서 옷 염색과 신발 염색을 선택할 수 있습니다. 신발 목록은 유지되며, 선택한 염색이 적용되는 신발만 색상이 바뀝니다.",
+            "[최적화]",
+            "도감과 월드맵 반응 속도\n장비 도감의 스크롤과 월드맵의 열기·크기 조절 반응을 개선했습니다.",
+            "[그 외]",
+            "몬스터·장비 도감 데이터 업데이트\n개편 지역의 출현 몬스터 정보를 갱신했습니다. 세트 신발의 누락된 염색 이미지와 색상 연결을 정리하고, 킬트를 옷 카테고리로 변경했습니다.",
+            "새 월드맵과 도감 변경 사항을 이용하려면 본체와 관련 데이터를 함께 업데이트해 주세요."
+          ]
+        },
+        "JP": {
+          "summary": "ガディナビ アップデート",
+          "details": [
+            "[新機能]",
+            "死神の刃の案内\n死神の刃の時間帯に合わせて、ワールドマップとミニマップの対象地域をFREE PKとして表示する機能を追加しました。現在時刻と開始・終了までの残り時間も表示します。",
+            "- 韓国時間の0・4・8・12・16・20時から、それぞれ1時間適用されます。\n- すべての町と、カリブリア半島・ガムリア海岸・ランパス湿地・ルクレシア湿地・カルビロンの森・シャドミューの森・サエフ平原は対象外です。",
+            "[改善]",
+            "ワールドマップの表示\n選択した言語で地域名を表示し、現在いる地域を点滅する矢印で示すように改善しました。町の所属とPK区分を表示し、凡例を追加しました。",
+            "F10でワールドマップを開閉できます。",
+            "装備図鑑の染色確認\n鎧・服の染色一覧で、セットの靴を一緒に装備した姿を確認できるように改善しました。",
+            "靴タブでは、服の染色と靴の染色を選択できます。靴の一覧はそのまま表示され、選択した染色が適用される靴だけ色が変わります。",
+            "[最適化]",
+            "図鑑とワールドマップの応答速度\n装備図鑑のスクロールと、ワールドマップを開く際やサイズ変更時の応答を改善しました。",
+            "[その他]",
+            "モンスター・装備図鑑のデータ更新\n改編された地域の出現モンスター情報を更新しました。セットの靴で不足していた染色画像と色の対応を整理し、キルトを服カテゴリに変更しました。",
+            "新しいワールドマップと図鑑の変更内容を利用するには、本体と関連データをあわせて更新してください。"
+          ]
+        },
+        "EN": {
+          "summary": "GodiNavi Update",
+          "details": [
+            "[New Features]",
+            "Reaper’s Blade Information\nAdded FREE PK indicators for eligible areas on the world map and minimap during Reaper’s Blade. The current time and a countdown to the start or end are also displayed.",
+            "- Runs for one hour starting at 00:00, 04:00, 08:00, 12:00, 16:00, and 20:00 Korean time.\n- Excludes all towns, Calibria Peninsula, Gamria Coast, Rampas Marsh, Lucreshia Marsh, Kalbiron Forest, Shadmum Forest, and Saiefe Plains.",
+            "[Improvements]",
+            "World Map Display\nArea names now appear in the selected language, and a blinking arrow marks your current area. Added town affiliations, PK classifications, and a legend.",
+            "Press F10 to open or close the world map.",
+            "Equipment Catalog Dye Preview\nArmor and clothing dye previews now show the matching set shoes worn together with the outfit.",
+            "The Shoes tab lets you choose clothing dyes or shoe dyes. All shoes remain listed, and only shoes compatible with the selected dye change color.",
+            "[Optimization]",
+            "Catalog and World Map Responsiveness\nImproved equipment catalog scrolling and the responsiveness of opening and resizing the world map.",
+            "[Other Updates]",
+            "Monster and Equipment Catalog Data\nUpdated monster lineups for the revamped areas. Restored missing dye images and corrected color mappings for set shoes, and moved kilts to the clothing category.",
+            "Update both the application and related data to use the new world map and catalog changes."
+          ]
+        }
+      }
+    },
+    {
       "id": "client-3.0.1",
       "kind": "client",
       "version": "3.0.1",

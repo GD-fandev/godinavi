@@ -2,7 +2,7 @@
 
 ![GodiNavi 3](docs/images/godinavi-3-logo.png)
 
-> ### [⬇ GodiNavi 3.0.1 Full Download](https://github.com/GD-fandev/godinavi/releases/download/v3.0.1/GodiNavi-3.0.1-Full.zip)
+> ### [⬇ GodiNavi 3.0.2 Full Download](https://github.com/GD-fandev/godinavi/releases/download/v3.0.2/GodiNavi-3.0.2-Full.zip)
 
 新規利用者の方は、上のリンクからフルバージョンをダウンロードしてください。2.xからは通常のアップデートをご利用いただけます。1.xからの自動移行は終了しました。新しいフォルダーに展開してご利用ください。既存の個人設定は保持されます。
 

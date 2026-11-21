@@ -76,10 +76,63 @@ class ArmorCatalogStore:
         profile = category if category in {"armor", "shoes"} else "clothes"
         return list(self.catalog().get("enhancement", {}).get("profiles", {}).get(profile, {}).get("steps", []))
 
+    def item_color_labels(self, item, locale):
+        labels = dict(self.color_labels(item.get("category"), locale))
+        overrides = item.get("color_labels", {})
+        mapping = item.get("set_dye_colors") or {"0": 0, "1": 1, "2": 2, "3": 6, "4": 5}
+        if item.get("category") != "shoes" or not self.uses_clothing_dyes(item):
+            labels.update(overrides.get(locale) or overrides.get("ko") or {})
+            return labels
+        clothing = self.color_labels("armor", locale)
+        for dye_id, sprite_color_id in mapping.items():
+            dye, color = clothing.get(str(dye_id)), labels.get(str(sprite_color_id))
+            if dye and color:
+                labels[str(sprite_color_id)] = dye
+        labels.update(overrides.get(locale) or overrides.get("ko") or {})
+        return labels
+
+    @staticmethod
+    def uses_clothing_dyes(item):
+        return (item.get("category") in {"armor", "clothes"}
+                or (item.get("category") == "shoes" and bool(item.get("set_effect"))
+                    and item.get("id") not in {"S0-000-19", "S1-000-19"}))
+
+    def display_color_id(self, item, selected):
+        if item.get("category") == "shoes" and self.uses_clothing_dyes(item):
+            color = self.matching_shoe_color(item, selected)
+            return str(color['id']) if color else None
+        return selected
+
+    def matching_set_shoes(self, item):
+        if item.get("category") not in {"armor", "clothes"}:
+            return []
+        return [shoe for shoe in self.items() if shoe.get("category") == "shoes"
+                and shoe.get("gender") == item.get("gender")
+                and (shoe.get("set_effect") or {}).get("required_item", {}).get("id") == item.get("id")]
+
+    def matching_shoe_color(self, shoe, clothing_color_id):
+        mapping = shoe.get("set_dye_colors") or {"0": 0, "1": 1, "2": 2, "3": 6, "4": 5}
+        color_id = mapping.get(str(clothing_color_id))
+        return next((color for color in shoe.get("colors", []) if color.get("id") == color_id), None)
+
     def image(self, relative):
         raw = self.backend.read_bytes(relative)
         with Image.open(io.BytesIO(raw)) as source:
             return source.convert("RGBA")
+
+    def equipped_variant_image(self, item, color):
+        body = self.image(color.get("image"))
+        combined = Image.new("RGBA", body.size)
+        for shoe in self.matching_set_shoes(item):
+            shoe_color = self.matching_shoe_color(shoe, color.get("id"))
+            if shoe_color is None:
+                continue
+            feet = self.image(shoe_color.get("image"))
+            if feet.size != body.size:
+                raise ValueError("Equipment sprites must share the same coordinate canvas")
+            combined.alpha_composite(feet)
+        combined.alpha_composite(body)
+        return combined
 
     def close(self):
         self.backend.close()

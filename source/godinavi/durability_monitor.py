@@ -1101,6 +1101,10 @@ class DurabilityMonitor:
             return
         if client_capture is None:
             return
+        # A desktop capture can straddle an Alt+Tab transition. Do not feed
+        # another application's pixels into the unchanged recognizer.
+        if not self._target_or_owned_overlay_is_foreground(hwnd):
+            return
         client_capture = client_capture.convert("RGB")
         if layout and layout.supported and auto_regions.snapshot(hwnd, rect) != layout:
             return
@@ -1374,7 +1378,11 @@ class DurabilityMonitor:
             return
         hwnd, rect = self._client_rect()
         now = time.monotonic()
-        if not hwnd or not rect or user32.IsIconic(hwnd):
+        capture_allowed = bool(hwnd and rect and not user32.IsIconic(hwnd)
+                               and self._target_or_owned_overlay_is_foreground(hwnd))
+        if not capture_allowed:
+            if self.ocr_future is not None:
+                self.ocr_future.discard_on_focus_change = True
             self._hide_warning()
         else:
             if self.editing:
@@ -1383,12 +1391,12 @@ class DurabilityMonitor:
                 try:
                     context = getattr(self.ocr_future, "capture_context", None)
                     current_layout = auto_regions.snapshot(hwnd, rect) if not legacy_enabled(self.config) else None
-                    if context is None or context == (hwnd, tuple(rect), current_layout):
+                    if (not getattr(self.ocr_future, "discard_on_focus_change", False)
+                            and (context is None or context == (hwnd, tuple(rect), current_layout))):
                         self._accept_results(self.ocr_future.result(), now)
                 except Exception:
                     pass
                 self.ocr_future = None
-            capture_allowed = self._target_or_owned_overlay_is_foreground(hwnd)
             if (
                 (self.monitoring_enabled or self.editing)
                 and capture_allowed
