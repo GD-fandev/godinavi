@@ -2,6 +2,38 @@
   "schemaVersion": 2,
   "entries": [
     {
+      "id": "content-2026.11.27.1",
+      "kind": "content",
+      "version": "2026.11.27.1",
+      "components": [
+        "maps"
+      ],
+      "publishedAt": "2026-11-27T09:06:25Z",
+      "changes": {
+        "KR": {
+          "summary": "가디내비 지도 업데이트",
+          "details": [
+            "[오류 수정]",
+            "특정 던전 입구 오표기 수정"
+          ]
+        },
+        "JP": {
+          "summary": "ガディナビ 地図アップデート",
+          "details": [
+            "[不具合修正]",
+            "一部ダンジョンの入口の誤表示を修正"
+          ]
+        },
+        "EN": {
+          "summary": "GodiNavi Map Update",
+          "details": [
+            "[Bug Fixes]",
+            "Fixed incorrect entrance markers for certain dungeons."
+          ]
+        }
+      }
+    },
+    {
       "id": "client-3.0.3",
       "kind": "client",
       "version": "3.0.3",

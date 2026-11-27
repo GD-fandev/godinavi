@@ -1,0 +1,227 @@
+{
+  "id": "centralspine",
+  "isPKArea": true,
+  "names": {
+    "ko": [
+      "중부등뼈산맥"
+    ],
+    "ja": [
+      "中部背骨山脈"
+    ],
+    "en": [
+      "Central Spine Mountains"
+    ]
+  },
+  "image": "maps/rendered/centralspine.webp",
+  "images": {
+    "ko": "maps/rendered/centralspine.webp",
+    "ja": "maps/rendered/centralspine.webp",
+    "en": "maps/rendered/centralspine.webp"
+  },
+  "imageSize": {
+    "width": 1504,
+    "height": 785
+  },
+  "controlPoints": [],
+  "transform": {
+    "imageX": {
+      "gameX": 2.0,
+      "gameY": -2.0,
+      "offset": 672.0
+    },
+    "imageY": {
+      "gameX": 1.0,
+      "gameY": 1.0,
+      "offset": 33.0
+    },
+    "method": "original-tile-renderer"
+  },
+  "levelRange": {
+    "min": 72,
+    "max": 90
+  },
+  "monsterZones": [],
+  "worldMapPosition": {
+    "x": 890,
+    "y": 178
+  },
+  "monsterIds": [
+    "bcouatl",
+    "ice-gagoyle",
+    "ice-salamander",
+    "yeti",
+    "ice-golem",
+    "albino-hydra",
+    "snowy-worm",
+    "titan",
+    "king-orcberserker",
+    "ice-spider"
+  ],
+  "gameMapIds": [
+    19
+  ],
+  "geometry": {
+    "kind": "isometric-tiles",
+    "tileWidth": 400,
+    "tileHeight": 320,
+    "nativeTilePixels": [
+      64,
+      32
+    ],
+    "divisor": 16,
+    "padding": [
+      32,
+      32
+    ],
+    "anchor": "tile-center"
+  },
+  "portals": [
+    {
+      "x": 218,
+      "y": 8,
+      "targetMapId": 603,
+      "targetAttribute": 7,
+      "name": "중부등뼈동굴1",
+      "names": {
+        "ko": "중부등뼈동굴1",
+        "ja": "中部背骨洞窟1",
+        "en": "Central spine cave 1"
+      },
+      "sourceMapId": 19,
+      "sourceMapIds": [
+        19
+      ],
+      "atrEvent": true,
+      "evidence": "client-minimap-portals"
+    },
+    {
+      "x": 1,
+      "y": 115,
+      "targetMapId": 18,
+      "targetAttribute": 2,
+      "name": "서부등뼈산맥",
+      "names": {
+        "ko": "서부등뼈산맥",
+        "ja": "西部背骨山脈",
+        "en": "Western Spine Mountains"
+      },
+      "sourceMapId": 19,
+      "sourceMapIds": [
+        19
+      ],
+      "atrEvent": true,
+      "evidence": "client-minimap-portals"
+    },
+    {
+      "x": 398,
+      "y": 172,
+      "targetMapId": 20,
+      "targetAttribute": 2,
+      "name": "동부등뼈산맥",
+      "names": {
+        "ko": "동부등뼈산맥",
+        "ja": "東部背骨山脈",
+        "en": "Eastern Spine Mountains"
+      },
+      "sourceMapId": 19,
+      "sourceMapIds": [
+        19
+      ],
+      "atrEvent": true,
+      "evidence": "client-minimap-portals"
+    },
+    {
+      "x": 105,
+      "y": 318,
+      "targetMapId": 13,
+      "targetAttribute": 7,
+      "name": "로렌산맥",
+      "names": {
+        "ko": "로렌산맥",
+        "ja": "ローレン山脈",
+        "en": "Loren Mountains"
+      },
+      "sourceMapId": 19,
+      "sourceMapIds": [
+        19
+      ],
+      "atrEvent": true,
+      "evidence": "client-minimap-portals"
+    },
+    {
+      "x": 200,
+      "y": 318,
+      "targetMapId": 13,
+      "targetAttribute": 7,
+      "name": "로렌산맥",
+      "names": {
+        "ko": "로렌산맥",
+        "ja": "ローレン山脈",
+        "en": "Loren Mountains"
+      },
+      "sourceMapId": 19,
+      "sourceMapIds": [
+        19
+      ],
+      "atrEvent": true,
+      "evidence": "client-minimap-portals"
+    },
+    {
+      "x": 360,
+      "y": 318,
+      "targetMapId": 550,
+      "targetAttribute": 1,
+      "name": "록키",
+      "names": {
+        "ko": "록키",
+        "ja": "ロッキー",
+        "en": "rocky"
+      },
+      "sourceMapId": 19,
+      "sourceMapIds": [
+        19
+      ],
+      "atrEvent": true,
+      "evidence": "client-minimap-portals"
+    }
+  ],
+  "excludedPortals": [
+    {
+      "x": 274,
+      "y": 14,
+      "targetMapId": 276,
+      "targetAttribute": 2,
+      "name": "중부사막동굴",
+      "names": {
+        "ko": "중부사막동굴",
+        "ja": "中部砂漠洞窟",
+        "en": "Central Desert Cave"
+      },
+      "sourceMapId": 19,
+      "sourceMapIds": [
+        19
+      ],
+      "atrEvent": true,
+      "evidence": "client-minimap-portals",
+      "exclusionReason": "not-live-service"
+    }
+  ],
+  "annotationTransform": {
+    "imageX": {
+      "gameX": 2.0,
+      "gameY": -2.0,
+      "offset": 672.0
+    },
+    "imageY": {
+      "gameX": 1.0,
+      "gameY": 1.0,
+      "offset": 33.0
+    },
+    "method": "original-tile-renderer"
+  },
+  "facilities": [],
+  "mapArtworkSource": {
+    "kind": "ngn-rendered",
+    "sha256": "033d713ebdb2a1c71d04d9fee84cf520b4b1d23f179e5682570d733ab0ed1351"
+  }
+}

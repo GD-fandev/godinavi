@@ -1,0 +1,116 @@
+{
+  "id": "evil5",
+  "isPKArea": true,
+  "names": {
+    "ko": [
+      "에블린동굴5"
+    ],
+    "ja": [
+      "エブリン洞窟5F"
+    ],
+    "en": [
+      "Evelyn Cave 5F"
+    ]
+  },
+  "image": "maps/rendered/evil5.webp",
+  "images": {
+    "ko": "maps/rendered/evil5.webp",
+    "ja": "maps/rendered/evil5.webp",
+    "en": "maps/rendered/evil5.webp"
+  },
+  "imageSize": {
+    "width": 2048,
+    "height": 1058
+  },
+  "controlPoints": [],
+  "transform": null,
+  "levelRange": {
+    "min": 113,
+    "max": 119
+  },
+  "monsterZones": [],
+  "monsterIds": [
+    "poison-dragon",
+    "dark-bonyus",
+    "black-floop",
+    "gold-panzer",
+    "white-bonyus"
+  ],
+  "gameMapIds": [
+    637
+  ],
+  "geometry": {
+    "kind": "isometric-tiles",
+    "tileWidth": 336,
+    "tileHeight": 160,
+    "nativeTilePixels": [
+      64,
+      32
+    ],
+    "divisor": 8,
+    "padding": [
+      32,
+      32
+    ],
+    "anchor": "tile-center"
+  },
+  "portals": [
+    {
+      "x": 335,
+      "y": 24,
+      "targetMapId": 638,
+      "targetAttribute": 7,
+      "name": "에블린동굴4",
+      "names": {
+        "ko": "에블린동굴4",
+        "ja": "エブリン洞窟4F",
+        "en": "Evelyn Cave 4F"
+      },
+      "sourceMapId": 637,
+      "sourceMapIds": [
+        637
+      ],
+      "atrEvent": true,
+      "evidence": "client-minimap-portals"
+    }
+  ],
+  "excludedPortals": [
+    {
+      "x": 21,
+      "y": 0,
+      "targetMapId": 697,
+      "targetAttribute": 8,
+      "name": "카일룸",
+      "names": {
+        "ko": "카일룸",
+        "ja": "カイルム",
+        "en": "Kailrum"
+      },
+      "sourceMapId": 637,
+      "sourceMapIds": [
+        637
+      ],
+      "atrEvent": true,
+      "evidence": "client-minimap-portals",
+      "exclusionReason": "not-in-live-entry-table"
+    }
+  ],
+  "annotationTransform": {
+    "imageX": {
+      "gameX": 4.0,
+      "gameY": -4.0,
+      "offset": 672.0
+    },
+    "imageY": {
+      "gameX": 2.0,
+      "gameY": 2.0,
+      "offset": 34.0
+    },
+    "method": "original-tile-renderer"
+  },
+  "facilities": [],
+  "mapArtworkSource": {
+    "kind": "ngn-rendered",
+    "sha256": "d4caaf0c6625a186f890bd543438fc402aebdd752eca797e9a70c32eb0e9d3c2"
+  }
+}
